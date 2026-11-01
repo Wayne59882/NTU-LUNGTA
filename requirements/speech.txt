@@ -1,0 +1,3 @@
+# Optional service environment; FFmpeg and model files are also required.
+faster-whisper>=1.1,<2
+edge-tts

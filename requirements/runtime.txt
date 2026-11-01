@@ -1,0 +1,3 @@
+# Text/PDF course preparation. Record the resolved versions for an experiment.
+PyMuPDF<2
+numpy

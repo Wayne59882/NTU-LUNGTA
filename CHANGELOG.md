@@ -1,5 +1,13 @@
 # Change Log
 
+## 專案結構重整 — 2026-11-01
+
+- 正式程式集中至 `app/`，測試、研究資料、版本說明與歷史工具分開分類。
+- 共用 26 組 JavaScript、9 組 CSS 及圖片／音訊資產，保留原有腳本順序。
+- 加入前端搬移契約、HTTP 資源與匿名頁面轉址檢查。
+- 重寫完整 README，更新安裝、操作、架構、評測與遷移路徑。
+
+
 ## 文件整理草案 — 2026-11-01
 
 - 建立專案首頁、主程式 README 與統一文件導覽。
@@ -16,8 +24,8 @@
 
 | 文件標示 | 內容 | 原始說明 |
 |---|---|---|
-| R12 · 2026-10-30 | 帳號登入、教師／學生及課程權限 | [R12](README_ACCOUNTS_R12_20261030.md) |
-| R11 · 2026-10-28 | 問答備援、雲端輸出長度及課程名稱處理 | [R11](README_QA_FIX_R11_20261028.md) |
-| R9 · 2026-10-21 | 語音問題與停止／送出流程 | [R9](README_VOICE_FIX_R9_20261021.md) |
-| R8 · 2026-10-21 | 預設 V/Q 課程相關調整 | [R8](README_DEFAULT_VQ_ONLY_R8_20261021.md) |
-| R7 · 2026-10-21 | 手動錄音流程 | [R7](README_MANUAL_RECORDING_R7_20261021.md) |
+| R12 · 2026-10-30 | 帳號登入、教師／學生及課程權限 | [R12](docs/releases/deployment/README_ACCOUNTS_R12_20261030.md) |
+| R11 · 2026-10-28 | 問答備援、雲端輸出長度及課程名稱處理 | [R11](docs/releases/deployment/README_QA_FIX_R11_20261028.md) |
+| R9 · 2026-10-21 | 語音問題與停止／送出流程 | [R9](docs/releases/deployment/README_VOICE_FIX_R9_20261021.md) |
+| R8 · 2026-10-21 | 預設 V/Q 課程相關調整 | [R8](docs/releases/deployment/README_DEFAULT_VQ_ONLY_R8_20261021.md) |
+| R7 · 2026-10-21 | 手動錄音流程 | [R7](docs/releases/deployment/README_MANUAL_RECORDING_R7_20261021.md) |

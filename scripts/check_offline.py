@@ -11,14 +11,16 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED"
+APP = ROOT / "app"
+TESTS = ROOT / "tests" / "regression"
 SKIP = {".git", ".venv", "node_modules", "__pycache__", "course_workspaces",
-        "auth", "logs", ".wrangler"}
+        "logs", ".wrangler", "archive", "legacy", "legacy_benchmarks"}
 
 
 def source_files():
     for current, dirs, names in os.walk(ROOT):
-        dirs[:] = sorted(d for d in dirs if d not in SKIP)
+        dirs[:] = sorted(d for d in dirs if d not in SKIP and not
+                         (Path(current) in (APP, ROOT / "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED") and d == "auth"))
         for name in sorted(names):
             yield Path(current) / name
 
@@ -43,7 +45,8 @@ def validate_document_links():
     paths = [ROOT / name for name in ("README.md", "CHANGELOG.md", "CONTRIBUTING.md")]
     paths += sorted((ROOT / "docs").glob("*.md"))
     paths += [APP / "README.md", APP / "reference_corpus/README.md",
-              APP / "research/three_model_10q/SOURCE_AUDIT_10Q.md"]
+              ROOT / "research/three_model_10q/SOURCE_AUDIT_10Q.md",
+              ROOT / "research/README.md", ROOT / "tests/README.md", ROOT / "archive/README.md"]
     checked = 0
     for path in paths:
         body = path.read_text(encoding="utf-8")
@@ -72,17 +75,16 @@ def main():
     syntax = validate_sources(node)
     links = validate_document_links()
     suites = [
-        ("V/Q numerical constraints", [node, "VERIFY_VQ_CONSERVATION.cjs"]),
-        ("Quiz navigation", [node, "VERIFY_V241_12_1_QUIZ_NAV.cjs"]),
-        ("Batch recovery fixtures", [node, "VERIFY_V241_12_4_BATCH.cjs"]),
-        ("Speech pronunciation fixtures", [node, "VERIFY_V241_12_5_VOICE.cjs"]),
-        ("Manual stop: reference", [node, str(ROOT / "VERIFY_VOICE_MANUAL_STOP.cjs"),
-                                   "web/reference/js/25_v105_resume_after_question_mouth_sync.js"]),
-        ("Manual stop: knowledge base", [node, str(ROOT / "VERIFY_VOICE_MANUAL_STOP.cjs"),
-                                        "web/kb/js/25_v105_resume_after_question_mouth_sync.js"]),
-        ("Question-generation fixtures", [sys.executable, "VERIFY_V241_12_1_QUIZ_QUALITY.py"]),
+        ("V/Q numerical constraints", [node, str(TESTS / "test_vq_conservation.cjs")]),
+        ("Quiz navigation", [node, str(TESTS / "test_quiz_navigation.cjs")]),
+        ("Batch recovery fixtures", [node, str(TESTS / "test_batch_recovery.cjs")]),
+        ("Speech pronunciation fixtures", [node, str(TESTS / "test_speech_pronunciation.cjs")]),
+        ("Manual stop", [node, str(TESTS / "test_manual_stop.cjs"),
+                         "web/shared/js/speech/recognition-controller.js"]),
+        ("Question-generation fixtures", [sys.executable, str(TESTS / "test_question_generation.py")]),
         ("Pilot dataset self-test", [sys.executable,
-                                    "research/three_model_10q/benchmark_3models.py", "--self-test"]),
+                                    str(ROOT / "research/three_model_10q/benchmark_3models.py"), "--self-test"]),
+        ("Static resources and HTTP routes", [sys.executable, str(TESTS / "test_static_assets.py")]),
     ]
     results = []
     for name, command in suites:

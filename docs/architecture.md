@@ -52,4 +52,9 @@ Worker 同時提供靜態資產，並處理公開 API 路由與部分雲端回�
 
 `feedback/feedback_service.py` 負責答案回報與更正資料。更正紀錄的查詢與再利用應依該版本實作說明；目前不能據此宣稱系統已自動重新訓練模型。
 
-V/Q 模擬由前端的數值計算引擎處理，使用 `VERIFY_VQ_CONSERVATION.cjs` 檢查守恆、預設值、部分參考案例與錯誤輸入行為。
+V/Q 模擬由前端的數值計算引擎處理，使用 `tests/regression/test_vq_conservation.cjs` 檢查守恆、預設值、部分參考案例與錯誤輸入行為。
+
+
+## 共用前端
+
+相同 JavaScript、CSS 與資產集中在 `app/web/shared/`；JavaScript 再依功能分組。各頁面保留自己的入口與必要差異，原有腳本順序及內容由搬移契約檢查。`app/static_assets.py` 讓 gateway 與直接開啟的後端頁面都能取得共用資源。

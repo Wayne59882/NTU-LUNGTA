@@ -1,0 +1,437 @@
+{
+  "baseline_commit": "16701b93f1d24dfd6798a690689c1a5e5b942f2f",
+  "shared_javascript_modules": 26,
+  "shared_stylesheets": 9,
+  "pages": {
+    "reference": [
+      {
+        "old": "js/01_original_ui_core.js",
+        "query": "v=179",
+        "sha256": "bfafbcb6aa07c154788fb70eb1d7525e45f002132290014d8aaff0f9e32a2dd9",
+        "new": "shared/js/ui/core.js"
+      },
+      {
+        "old": "js/02_stable_webspeech_patch.js",
+        "query": "v=207serverstt1",
+        "sha256": "573a0adca0aea7be8b9e85288b10fd37791e148882f1646c119838006604ebf4",
+        "new": "shared/js/speech/webspeech.js"
+      },
+      {
+        "old": "js/31_local_llm_selector.js",
+        "query": "v=237selective1",
+        "sha256": "8ffe9cbb6a530c4d9cc3a0adb3a83f4dde6b1603561bef6c4f72ed2ed36e1a50",
+        "new": "reference/js/local-llm-selector.js"
+      },
+      {
+        "old": "js/50_cloud_byok_selector.js",
+        "query": "v=212byoklang",
+        "sha256": "9c466a83fcac5930834a76a3e7e1210e1a9a838fbef4f32de2daf1ce656e38f9",
+        "new": "shared/js/models/cloud-selector.js"
+      },
+      {
+        "old": "js/46_v204_2_multilingual_language_router.js",
+        "query": "v=212lang",
+        "sha256": "9a7bb57a6eb55712b0115deeb0ff23a16bf28955130227f509c48af2acf84abe",
+        "new": "shared/js/language/question-language.js"
+      },
+      {
+        "old": "js/48_reference_textbook.js",
+        "query": "v=237selective1",
+        "sha256": "99bf21de6ec66d0fdba9b81a5511a4f179ad9801c3907ffb067b9570b83463c8",
+        "new": "reference/js/reference-textbook.js"
+      },
+      {
+        "old": "js/04_global_speech_stop_patch.js",
+        "query": "v=186",
+        "sha256": "eb4726a0d2cf9133e4f063f49cf32e557a687a62be119c1656e525ee2c443278",
+        "new": "shared/js/speech/global-stop.js"
+      },
+      {
+        "old": "js/05_recognition_stop_on_submit.js",
+        "query": "v=241125manualR720261021",
+        "sha256": "9325bd7b51ce0659d55dad058fe24f3f0e2e3ed4f51b820d3e4b64e7f22b156c",
+        "new": "shared/js/speech/stop-on-submit.js"
+      },
+      {
+        "old": "js/06_abort_guard_patch.js",
+        "query": "v=179",
+        "sha256": "f95a8148e0038f88d419a115139f39a2e7e614035d9457fbfe697ec30f0fef7f",
+        "new": "shared/js/qa/abort-guard.js"
+      },
+      {
+        "old": "js/07_typewriter_highlight_patch.js",
+        "query": "v=179",
+        "sha256": "cd724714c23d0ae83fbdf1f102d1172e24fba2268fcd58f29455a06e834cbe97",
+        "new": "shared/js/ui/typewriter-highlight.js"
+      },
+      {
+        "old": "js/08_script_typewriter_sync.js",
+        "query": "v=179",
+        "sha256": "cd724714c23d0ae83fbdf1f102d1172e24fba2268fcd58f29455a06e834cbe97",
+        "new": "shared/js/lecture/script-sync.js"
+      },
+      {
+        "old": "js/09_lesson_dropdown_confirm_stop.js",
+        "query": "v=179",
+        "sha256": "a70d31255a0e2646afa1bed432cd4159c1f904476e10a286108f92e33d166644",
+        "new": "shared/js/lecture/lesson-controls.js"
+      },
+      {
+        "old": "js/20_stop_clears_teacher_script_patch.js",
+        "query": "v=179",
+        "sha256": "b5d27e71d9991c4362d89b94719c5428e18892c22ddb9d0f83819d646aa44c7e",
+        "new": "shared/js/lecture/clear-script.js"
+      },
+      {
+        "old": "js/25_v105_resume_after_question_mouth_sync.js",
+        "query": "v=241125voiceR920261021",
+        "sha256": "6b934fd14f275c7671a56c2b63a440fb4636d648b8197a7b1a8c6290da13d683",
+        "new": "shared/js/speech/recognition-controller.js"
+      },
+      {
+        "old": "js/29_v153_course_aligned_student_results.js",
+        "query": "v=241129vqhopkinsregion20261010",
+        "sha256": "d40c16bb9effd732a0b99f28380d89abb0c6effbe0f26b8f3728d298a0e1712e",
+        "new": "shared/js/visual/course-results.js"
+      },
+      {
+        "old": "js/35_hopkins_reference_lung_physiology.js",
+        "query": "v=241129vqhopkinsregion20261010",
+        "sha256": "cb330392486649bb44aa99ccb5e3017d8b9d53f1f9a4a2fc9cdbffe4280962c6",
+        "new": "shared/js/visual/gas-exchange.js"
+      },
+      {
+        "old": "js/40_v199_main_3d_avatar.js",
+        "query": "v=216mergedvoice",
+        "sha256": "af90843e965bf0ab0b08cd8e9af0df8bb2cc3db45fcfa60aa6123f4efeac4b4f",
+        "new": "shared/js/avatar/avatar-controller.js"
+      },
+      {
+        "old": "js/41_v200_english_ui_bilingual.js",
+        "query": "v=202fix2",
+        "sha256": "d92e2cdb517954cff0974b5feb75b85c674693b929fceb601cf66d6d58369d39",
+        "new": "shared/js/language/bilingual-ui.js"
+      },
+      {
+        "old": "js/42_v201_final_ui_language_teacher_voice.js",
+        "query": "v=202fix2",
+        "sha256": "391a27863f10825559f55f4430f07e7f5d7cfef6ffeb616d0cc8258710eb9534",
+        "new": "shared/js/language/teacher-voice.js"
+      },
+      {
+        "old": "js/43_v202_strict_final.js",
+        "query": "v=202fix2",
+        "sha256": "c35ff6ca7f66c7468fc492026a8af0c6b5d1c908e872ba86563d2e2e2ff1f83e",
+        "new": "shared/js/ui/final-bindings.js"
+      },
+      {
+        "old": "js/45_v204_final_voice_controller.js",
+        "query": "v=241125answerletter",
+        "sha256": "f9a0c627b40a87de912ec7b0a6b4da22b40f828b55722539eb901588452ee9c8",
+        "new": "shared/js/speech/voice-controller.js"
+      },
+      {
+        "old": "js/49_v206_knowledge_source_nav.js",
+        "query": "v=2067",
+        "sha256": "456bd43d87dc8ebcc71733380566cf65427da789b6c9dcbe8fca3649edf93f7b",
+        "new": "shared/js/navigation/knowledge-source.js"
+      },
+      {
+        "old": "js/47_v204_2_single_qa_guard.js",
+        "query": "v=REFSINGLE206",
+        "sha256": "7bb426fa8a6d2a0f278f73bd548a0afdee1304338220f0896bb770be9cd9f6e5",
+        "new": "shared/js/qa/single-question-guard.js"
+      },
+      {
+        "old": "js/51_v228_multi_question_batch.js",
+        "query": "v=241125complete",
+        "sha256": "765847e52d881413242eb4fc2938d0d466addcb76bdb6dedf6d98a08218aff25",
+        "new": "shared/js/qa/batch-questions.js"
+      },
+      {
+        "old": "js/52_v229_semantic_microbatch.js",
+        "query": "v=241125complete",
+        "sha256": "10c5f7ecabb1b1a82d7eacd1128101ccb0a4de4ab4f8dc9dc1171bb30c6001ba",
+        "new": "reference/js/semantic-microbatch.js"
+      },
+      {
+        "old": "js/53_local_answer_feedback.js",
+        "query": "v=241121mailfix",
+        "sha256": "6c1c44c1f03856ed08fe3bb91ed9caaf9ac8a159ace37ed21ea17dc69a5c0208",
+        "new": "shared/js/feedback/answer-feedback.js"
+      },
+      {
+        "old": "js/54_site_metrics.js",
+        "query": "v=2401",
+        "sha256": "ed59ba240068fec066034f0506c2970f15024f33e54ad3d977d9adbe33ac01bc",
+        "new": "shared/js/analytics/site-metrics.js"
+      },
+      {
+        "old": "js/55_v241_course_adaptive_ta.js",
+        "query": "v=courseNameR1020261022",
+        "sha256": "b9605707736560e8beda8600aa76e865512f0c45dddba8008ccdee2032d5a610",
+        "new": "shared/js/course/course-controller.js"
+      },
+      {
+        "old": "js/57_role_access.js",
+        "query": "v=rolesR1220261030",
+        "sha256": "ea1153e1981ca7b59ca416902f0aafffc6ae22d7c77390ef53477dc2d91a1ac2",
+        "new": "shared/js/auth/role-access.js"
+      }
+    ],
+    "kb": [
+      {
+        "old": "js/01_original_ui_core.js",
+        "query": "v=179",
+        "sha256": "bfafbcb6aa07c154788fb70eb1d7525e45f002132290014d8aaff0f9e32a2dd9",
+        "new": "shared/js/ui/core.js"
+      },
+      {
+        "old": "js/02_stable_webspeech_patch.js",
+        "query": "v=207serverstt1",
+        "sha256": "573a0adca0aea7be8b9e85288b10fd37791e148882f1646c119838006604ebf4",
+        "new": "shared/js/speech/webspeech.js"
+      },
+      {
+        "old": "js/kb_data/00_kb_bootstrap.js",
+        "query": "v=206",
+        "sha256": "0d4b27dc167130c1ae90b4386b965b1c464ee9da1a779f1797ec8b65ce99515d",
+        "new": "kb/data/00_kb_bootstrap.js"
+      },
+      {
+        "old": "js/kb_data/01_basic.js",
+        "query": "v=206",
+        "sha256": "6f88476c74c1032dbe2271bac75db59f247102645abe205c67209dda979189ef",
+        "new": "kb/data/01_basic.js"
+      },
+      {
+        "old": "js/kb_data/02_ventilation.js",
+        "query": "v=206",
+        "sha256": "12fe7dcd93b3f508fd580403a016db315190ba8c20c18b38cae2e63df82f2761",
+        "new": "kb/data/02_ventilation.js"
+      },
+      {
+        "old": "js/kb_data/03_alveolar_gas.js",
+        "query": "v=206",
+        "sha256": "e324d953636389a711c3a53edb4d2c8da7ad81602cea45e10166d196192497ae",
+        "new": "kb/data/03_alveolar_gas.js"
+      },
+      {
+        "old": "js/kb_data/04_perfusion.js",
+        "query": "v=206",
+        "sha256": "fde1a8f2c60b4a7b71feef40f603c838331dcc6239649ba32d9de436838d1a52",
+        "new": "kb/data/04_perfusion.js"
+      },
+      {
+        "old": "js/kb_data/05_normal_vq.js",
+        "query": "v=206",
+        "sha256": "6bf6cab2276b2831e928c441a7dd67d06f9ee0953caaa1a634c059fc92f60a56",
+        "new": "kb/data/05_normal_vq.js"
+      },
+      {
+        "old": "js/kb_data/06_low_vq.js",
+        "query": "v=206",
+        "sha256": "78e532761fe0042d846bc297dc5daa3449a95329195f8afc61794820d40db89c",
+        "new": "kb/data/06_low_vq.js"
+      },
+      {
+        "old": "js/kb_data/07_high_vq.js",
+        "query": "v=206",
+        "sha256": "439af08f67b543d7ccd713c540b3b6b18d32c26a714c808b11e2d9e6c815efd4",
+        "new": "kb/data/07_high_vq.js"
+      },
+      {
+        "old": "js/kb_data/08_shunt.js",
+        "query": "v=206",
+        "sha256": "52e9651c62b783166ffbd42a40ac12abfece98cae6ec40ddc2ba015a9a9c45c9",
+        "new": "kb/data/08_shunt.js"
+      },
+      {
+        "old": "js/kb_data/09_diffusion.js",
+        "query": "v=206",
+        "sha256": "f9f60234298be5d1aaa415b0b72bda089eac26df25d718101436fad225344531",
+        "new": "kb/data/09_diffusion.js"
+      },
+      {
+        "old": "js/kb_data/10_oxygen_content.js",
+        "query": "v=206",
+        "sha256": "fd6b205181c7c162d837ecc47509f27dfee2cb9b2c39abddc73e60818fdedbe1",
+        "new": "kb/data/10_oxygen_content.js"
+      },
+      {
+        "old": "js/kb_data/11_integrated_disease.js",
+        "query": "v=206",
+        "sha256": "4de6e032980593e76c22169638a4c0a8aa8fd51e77a069ad142ee4640a6bdbd6",
+        "new": "kb/data/11_integrated_disease.js"
+      },
+      {
+        "old": "js/kb_data/12_fine_grained_terms.js",
+        "query": "v=206",
+        "sha256": "891c9b262500f0becb700abdf727a40c24be0c5c3aa078d0aa371ba3b5d62dc4",
+        "new": "kb/data/12_fine_grained_terms.js"
+      },
+      {
+        "old": "js/kb_data/13_ppt_lecture_questions.js",
+        "query": "v=206",
+        "sha256": "832f5a003a3300f9cff1f7e62168ee9c89fd37106310127d0cf8674d383f8113",
+        "new": "kb/data/13_ppt_lecture_questions.js"
+      },
+      {
+        "old": "js/46_v204_2_multilingual_language_router.js",
+        "query": "v=206",
+        "sha256": "9a7bb57a6eb55712b0115deeb0ff23a16bf28955130227f509c48af2acf84abe",
+        "new": "shared/js/language/question-language.js"
+      },
+      {
+        "old": "js/30_server_response_diversification.js",
+        "query": "v=206",
+        "sha256": "8bf4d8971f74b1cab4cb7b18204f02b1849537379c001481f9e773e1316e61f1",
+        "new": "kb/js/server-response-diversification.js"
+      },
+      {
+        "old": "js/31_local_llm_selector.js",
+        "query": "v=224",
+        "sha256": "062041a658b0fcc034978f0d2a5fde464b33cb20aade6fa786f508a94764aa4a",
+        "new": "kb/js/local-llm-selector.js"
+      },
+      {
+        "old": "js/03_full_kb_course_specific_qa.js",
+        "query": "v=206",
+        "sha256": "80522390223ffc56a261a7f140caddb228ca926357a19ff540755202b82c0faa",
+        "new": "kb/js/full-kb-course-specific-qa.js"
+      },
+      {
+        "old": "js/04_global_speech_stop_patch.js",
+        "query": "v=186",
+        "sha256": "eb4726a0d2cf9133e4f063f49cf32e557a687a62be119c1656e525ee2c443278",
+        "new": "shared/js/speech/global-stop.js"
+      },
+      {
+        "old": "js/05_recognition_stop_on_submit.js",
+        "query": "v=241125manualR720261021",
+        "sha256": "9325bd7b51ce0659d55dad058fe24f3f0e2e3ed4f51b820d3e4b64e7f22b156c",
+        "new": "shared/js/speech/stop-on-submit.js"
+      },
+      {
+        "old": "js/06_abort_guard_patch.js",
+        "query": "v=179",
+        "sha256": "f95a8148e0038f88d419a115139f39a2e7e614035d9457fbfe697ec30f0fef7f",
+        "new": "shared/js/qa/abort-guard.js"
+      },
+      {
+        "old": "js/07_typewriter_highlight_patch.js",
+        "query": "v=179",
+        "sha256": "cd724714c23d0ae83fbdf1f102d1172e24fba2268fcd58f29455a06e834cbe97",
+        "new": "shared/js/ui/typewriter-highlight.js"
+      },
+      {
+        "old": "js/08_script_typewriter_sync.js",
+        "query": "v=179",
+        "sha256": "cd724714c23d0ae83fbdf1f102d1172e24fba2268fcd58f29455a06e834cbe97",
+        "new": "shared/js/lecture/script-sync.js"
+      },
+      {
+        "old": "js/09_lesson_dropdown_confirm_stop.js",
+        "query": "v=179",
+        "sha256": "a70d31255a0e2646afa1bed432cd4159c1f904476e10a286108f92e33d166644",
+        "new": "shared/js/lecture/lesson-controls.js"
+      },
+      {
+        "old": "js/20_stop_clears_teacher_script_patch.js",
+        "query": "v=179",
+        "sha256": "b5d27e71d9991c4362d89b94719c5428e18892c22ddb9d0f83819d646aa44c7e",
+        "new": "shared/js/lecture/clear-script.js"
+      },
+      {
+        "old": "js/25_v105_resume_after_question_mouth_sync.js",
+        "query": "v=241125voiceR920261021",
+        "sha256": "6b934fd14f275c7671a56c2b63a440fb4636d648b8197a7b1a8c6290da13d683",
+        "new": "shared/js/speech/recognition-controller.js"
+      },
+      {
+        "old": "js/29_v153_course_aligned_student_results.js",
+        "query": "v=241129vqhopkinsregion20261010",
+        "sha256": "d40c16bb9effd732a0b99f28380d89abb0c6effbe0f26b8f3728d298a0e1712e",
+        "new": "shared/js/visual/course-results.js"
+      },
+      {
+        "old": "js/35_hopkins_reference_lung_physiology.js",
+        "query": "v=241129vqhopkinsregion20261010",
+        "sha256": "cb330392486649bb44aa99ccb5e3017d8b9d53f1f9a4a2fc9cdbffe4280962c6",
+        "new": "shared/js/visual/gas-exchange.js"
+      },
+      {
+        "old": "js/40_v199_main_3d_avatar.js",
+        "query": "v=216mergedvoice",
+        "sha256": "af90843e965bf0ab0b08cd8e9af0df8bb2cc3db45fcfa60aa6123f4efeac4b4f",
+        "new": "shared/js/avatar/avatar-controller.js"
+      },
+      {
+        "old": "js/41_v200_english_ui_bilingual.js",
+        "query": "v=202fix2",
+        "sha256": "d92e2cdb517954cff0974b5feb75b85c674693b929fceb601cf66d6d58369d39",
+        "new": "shared/js/language/bilingual-ui.js"
+      },
+      {
+        "old": "js/42_v201_final_ui_language_teacher_voice.js",
+        "query": "v=202fix2",
+        "sha256": "391a27863f10825559f55f4430f07e7f5d7cfef6ffeb616d0cc8258710eb9534",
+        "new": "shared/js/language/teacher-voice.js"
+      },
+      {
+        "old": "js/43_v202_strict_final.js",
+        "query": "v=202fix2",
+        "sha256": "c35ff6ca7f66c7468fc492026a8af0c6b5d1c908e872ba86563d2e2e2ff1f83e",
+        "new": "shared/js/ui/final-bindings.js"
+      },
+      {
+        "old": "js/45_v204_final_voice_controller.js",
+        "query": "v=241125answerletter",
+        "sha256": "f9a0c627b40a87de912ec7b0a6b4da22b40f828b55722539eb901588452ee9c8",
+        "new": "shared/js/speech/voice-controller.js"
+      },
+      {
+        "old": "js/49_v206_knowledge_source_nav.js",
+        "query": "v=2067",
+        "sha256": "456bd43d87dc8ebcc71733380566cf65427da789b6c9dcbe8fca3649edf93f7b",
+        "new": "shared/js/navigation/knowledge-source.js"
+      },
+      {
+        "old": "js/47_v204_2_single_qa_guard.js",
+        "query": "v=KBSINGLE206",
+        "sha256": "7bb426fa8a6d2a0f278f73bd548a0afdee1304338220f0896bb770be9cd9f6e5",
+        "new": "shared/js/qa/single-question-guard.js"
+      },
+      {
+        "old": "js/51_v228_multi_question_batch.js",
+        "query": "v=241125complete",
+        "sha256": "765847e52d881413242eb4fc2938d0d466addcb76bdb6dedf6d98a08218aff25",
+        "new": "shared/js/qa/batch-questions.js"
+      },
+      {
+        "old": "js/53_local_answer_feedback.js",
+        "query": "v=241121mailfix",
+        "sha256": "6c1c44c1f03856ed08fe3bb91ed9caaf9ac8a159ace37ed21ea17dc69a5c0208",
+        "new": "shared/js/feedback/answer-feedback.js"
+      },
+      {
+        "old": "js/54_site_metrics.js",
+        "query": "v=2401",
+        "sha256": "ed59ba240068fec066034f0506c2970f15024f33e54ad3d977d9adbe33ac01bc",
+        "new": "shared/js/analytics/site-metrics.js"
+      },
+      {
+        "old": "js/55_v241_course_adaptive_ta.js",
+        "query": "v=courseNameR1020261022",
+        "sha256": "b9605707736560e8beda8600aa76e865512f0c45dddba8008ccdee2032d5a610",
+        "new": "shared/js/course/course-controller.js"
+      },
+      {
+        "old": "js/57_role_access.js",
+        "query": "v=rolesR1220261030",
+        "sha256": "ea1153e1981ca7b59ca416902f0aafffc6ae22d7c77390ef53477dc2d91a1ac2",
+        "new": "shared/js/auth/role-access.js"
+      }
+    ]
+  }
+}
