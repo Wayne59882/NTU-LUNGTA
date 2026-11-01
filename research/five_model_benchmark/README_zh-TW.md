@@ -20,7 +20,8 @@ Local 模型逐模型跑完整題集，先做一次不計時 warm-up，避免每
 
 ## 設定 Cloud Key
 ```bash
-cd /path/to/workdir/NTULUNG_TA_v206_7/research/five_model_benchmark
+# 從 NTU-LUNGTA 儲存庫根目錄開始
+cd research/five_model_benchmark
 ./CONFIGURE_CLOUD_KEYS.sh
 ```
 Key 只存在 server 的 `benchmark.env`（chmod 600），不會寫進 CSV/JSON。

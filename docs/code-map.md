@@ -45,8 +45,8 @@
 | `research/physician_benchmark/` | 既有醫師題目測試原始資料、來源與摘要 |
 | `research/legacy_benchmarks/` | 國考題評測與已看過題目的回歸工具 |
 | `research/vq_validation/` | V/Q 驗證案例、數值與既有圖檔 |
-| `VERIFY_*.cjs`、`VERIFY_*.py` | 各版本功能驗證工具 |
-| `README_V*.md`、`BUILD_MANIFEST_*.txt` | 歷史版本說明 |
+| `tests/regression/`、`tests/legacy/` | 現行回歸測試與歷史版本驗證工具 |
+| `docs/releases/` | 歷史版本說明與 build manifest |
 
 ## 開發時的追蹤方式
 

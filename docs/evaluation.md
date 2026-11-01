@@ -56,10 +56,10 @@ bash research/three_model_10q/RUN_3MODEL_10Q_BENCHMARK.sh
 
 | 路徑 | 用途 | 解讀前需要核對 |
 |---|---|---|
-| [`PHYSICIAN_BENCHMARK_DATA/`](../research/physician_benchmark) | 原始結果、來源與 mean/SD 摘要 | 題目、模型、單位、測試日期及版本 |
-| [`benchmark/regression/`](../research/legacy_benchmarks/regression) | seen regression 題集與工具 | 是否已用於系統調整 |
-| [`benchmark/moex/`](../research/legacy_benchmarks/moex) | 國考題抓取、評估與診斷工具 | 題目取得、答案鍵、去重與 seen/unseen 區分 |
-| [`VQ_CALCULATION_REPORT/`](../research/vq_validation) | V/Q 數值、守恆與參考比較 | 檔名中的日期與模型 revision |
+| [`research/physician_benchmark/`](../research/physician_benchmark) | 原始結果、來源與 mean/SD 摘要 | 題目、模型、單位、測試日期及版本 |
+| [`research/legacy_benchmarks/regression/`](../research/legacy_benchmarks/regression) | seen regression 題集與工具 | 是否已用於系統調整 |
+| [`research/legacy_benchmarks/moex/`](../research/legacy_benchmarks/moex) | 國考題抓取、評估與診斷工具 | 題目取得、答案鍵、去重與 seen/unseen 區分 |
+| [`research/vq_validation/`](../research/vq_validation) | V/Q 數值、守恆與參考比較 | 檔名中的日期與模型 revision |
 | [`QA_FIX_VALIDATION_R11_20261028.json`](../research/validation_history/QA_FIX_VALIDATION_R11_20261028.json) | R11 歷史檢查範圍 | 明列尚未測試真實模型與公開部署 |
 
 本次整理沒有把不同版本結果合併，也沒有把離線通過率填入模型 accuracy 表。50／200 題 gate 分析需先找到對應原始題集、ground truth、計分規則與程式設定，再獨立核對。
