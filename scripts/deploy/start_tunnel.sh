@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-BASE="$(cd "$(dirname "$0")" && pwd)"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../lib/paths.sh"
+BASE="$(cd "$LUNGTA_APP_DIR" && pwd)"
 BIN="$HOME/.local/bin/cloudflared"
 LOG="$BASE/logs/cloudflared.log"
 PIDFILE="$BASE/logs/cloudflared.pid"

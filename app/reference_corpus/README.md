@@ -10,4 +10,4 @@
 
 目前 `reference_search.py` 使用語義向量檢索與視窗重排，另含嵌入／索引失敗時的文字檢索備援。完整路徑見[系統架構](../../docs/architecture.md)，環境設定見[安裝文件](../../docs/getting-started.md)。
 
-取得可合法使用的教材並完成本地環境後，再從主程式目錄執行 `PREPARE_REFERENCE_VECTOR_RAG.sh` 準備索引。
+取得可合法使用的教材並完成本地環境後，再從儲存庫根目錄執行 `bash scripts/setup/prepare_reference.sh` 準備索引。

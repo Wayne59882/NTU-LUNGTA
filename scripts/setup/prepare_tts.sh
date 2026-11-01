@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname -- "${BASH_SOURCE[0]}")/../lib/paths.sh"
 BASE="${VQ_BASE:-/path/to/workdir}"
 PREFIX="${VQ_TTS_PREFIX:-$BASE/miniforge-tts}"
 INSTALLER="$BASE/Miniforge3-Linux-x86_64.sh"

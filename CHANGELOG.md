@@ -1,5 +1,14 @@
 # Change Log
 
+## Operator layout and English README — 2026-11-01
+
+- Separate setup, runtime, deployment, and corpus-ingestion tools under `scripts/`.
+- Resolve launcher paths independently of the caller's working directory while retaining application data under `app/`.
+- Replace the deployment tool's archived 3D-check dependency with a current local web-resource check.
+- Let the speech setup helper create the expected Python environment instead of referring to an obsolete preparation script.
+- Add isolated operator-script routing checks and document the verification limits.
+- Rewrite the main and application READMEs in English with consistent feature, installation, usage, configuration, architecture, troubleshooting, and project-structure sections.
+
 ## 專案結構重整 — 2026-11-01
 
 - 正式程式集中至 `app/`，測試、研究資料、版本說明與歷史工具分開分類。

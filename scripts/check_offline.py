@@ -47,6 +47,7 @@ def validate_document_links():
     paths += [APP / "README.md", APP / "reference_corpus/README.md",
               ROOT / "research/three_model_10q/SOURCE_AUDIT_10Q.md",
               ROOT / "research/README.md", ROOT / "tests/README.md", ROOT / "archive/README.md"]
+    paths += [ROOT / "scripts/README.md"]
     checked = 0
     for path in paths:
         body = path.read_text(encoding="utf-8")
@@ -85,6 +86,7 @@ def main():
         ("Pilot dataset self-test", [sys.executable,
                                     str(ROOT / "research/three_model_10q/benchmark_3models.py"), "--self-test"]),
         ("Static resources and HTTP routes", [sys.executable, str(TESTS / "test_static_assets.py")]),
+        ("Operator script routing", [sys.executable, str(TESTS / "test_operator_scripts.py")]),
     ]
     results = []
     for name, command in suites:
@@ -94,8 +96,10 @@ def main():
             print(result.stderr, end="", file=sys.stderr)
             raise RuntimeError("FAILED: " + name)
         output = result.stdout.strip().splitlines()
-        print("PASS {}: {}".format(name, output[-1] if output else "completed"), flush=True)
-        results.append({"name": name, "status": "passed", "output": result.stdout.strip()})
+        skipped = bool(output and output[0].startswith("SKIP "))
+        print("{} {}: {}".format("SKIP" if skipped else "PASS", name,
+                                 output[-1] if output else "completed"), flush=True)
+        results.append({"name": name, "status": "skipped" if skipped else "passed", "output": result.stdout.strip()})
     report = {"scope": "offline fixtures and syntax only", "python": sys.version.split()[0],
               "node": node_version, "syntax": syntax, "local_links": links, "suites": results,
               "not_tested": ["real model accuracy or latency", "GPU or private textbook retrieval",
@@ -104,7 +108,9 @@ def main():
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("PASS: {} existing offline suites; no live-model performance was measured.".format(len(results)))
+    passed = sum(result["status"] == "passed" for result in results)
+    skipped = len(results) - passed
+    print("PASS: {} offline suites; {} skipped; no live-model performance was measured.".format(passed, skipped))
 
 
 if __name__ == "__main__":

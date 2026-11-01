@@ -1,65 +1,105 @@
-# NTU-LUNGTA
+# NTU-LUNGTA — Course-Adaptive Virtual Human Teaching Assistant
 
-### Course-Adaptive Virtual Human Teaching Assistant
+A browser-based physiology teaching system that brings course-material
+retrieval, virtual-human lectures, student questions, scenario practice, and
+ventilation–perfusion (V/Q) simulation into one interface.
 
-![NTU-LUNGTA overview](docs/assets/overview.svg)
+Teachers upload PDF materials, review the extracted chapters, prepare lecture
+scripts and practice questions, and share a course code with students. Students
+can follow a lecture, ask questions grounded in the selected material, complete
+practice, and explore the respiratory physiology model. Local and cloud answer
+models are supported through separate execution paths.
 
-**整合教材檢索、虛擬人講解、課程問答、情境練習與通氣／灌流模擬的教學系統。**
+This master's research project was developed at the Graduate Institute of
+Physiology, National Taiwan University. Its evaluation focuses on software
+behavior, answer accuracy, and response time. Learning outcomes require a
+separate educational study.
 
-國立臺灣大學生理學研究所碩士研究專案。系統以呼吸生理作為內建教學情境，並讓教師上傳 PDF、依章節建立教材與練習，再由學生使用課程代碼加入。研究重點包括教材對應的回答、課程操作整合，以及回答正確率與等待時間的技術評估。
+[Research system](https://lungta.twchu.workers.dev) (approved account required)
+· [Setup guide](docs/getting-started.md)
+· [Code guide](docs/code-map.md)
+· [Evaluation guide](docs/evaluation.md)
 
-[研究系統入口](https://lungta.twchu.workers.dev)（需已核准帳號） · [安裝說明](docs/getting-started.md) · [程式導覽](docs/code-map.md) · [評測說明](docs/evaluation.md)
+This README and the application directory README are in English. Linked detailed
+setup and research guides currently use Traditional Chinese.
 
-## 目錄
+---
 
-- [專案目的](#專案目的)
-- [主要功能](#主要功能)
-- [執行環境](#執行環境)
-- [快速開始](#快速開始)
-- [安裝與啟動](#安裝與啟動)
-- [操作流程](#操作流程)
-- [系統架構](#系統架構)
-- [設定](#設定)
-- [專案結構](#專案結構)
-- [測試與評測](#測試與評測)
-- [常見問題](#常見問題)
-- [資料與目前限制](#資料與目前限制)
-- [版本與引用](#版本與引用)
+## Table of Contents
 
-## 專案目的
+- [Key Features](#key-features)
+- [Requirements](#requirements)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Usage Guide](#usage-guide)
+- [Command-Line Usage](#command-line-usage)
+- [Configuration Reference](#configuration-reference)
+- [Pipeline Architecture](#pipeline-architecture)
+- [Testing and Evaluation](#testing-and-evaluation)
+- [Troubleshooting](#troubleshooting)
+- [Project Structure](#project-structure)
+- [Methodology Notes](#methodology-notes)
+- [Version and Citation](#version-and-citation)
 
-本專案把教材準備、講解、自由提問、練習與呼吸生理模擬整合在同一個教學介面。學生的問題可經教材檢索取得支持段落，再交由本地或雲端回答模型處理；教師可透過課程與章節管理，維持教材和教學活動之間的關係。
+---
 
-系統目前的研究定位是軟體開發與技術表現評估。回答是否正確、等待時間多長、操作是否符合預期，分別以對應資料與測試檢查；學習成效需要另外設計教學研究。
+## Key Features
 
-## 主要功能
+- **Course preparation from PDFs** — upload material, review chapters, and prepare
+  course-specific scripts, question banks, and retrieval indices.
+- **Virtual-human lectures** — select a course and chapter, display the lecture
+  script, and use the avatar and speech playback controls.
+- **Student Q&A with evidence retrieval** — ask by text or voice and retrieve
+  supporting passages before generating an answer.
+- **Local and cloud answer models** — configure the installed local models and
+  the deployment's cloud route; model tags must match the actual services.
+- **Scenario practice and quiz navigation** — draw questions from the chapter
+  bank, move between questions, retain selections, and review feedback.
+- **Interactive V/Q simulation** — adjust ventilation, perfusion, and gas-exchange
+  parameters and inspect the coupled numerical results.
+- **Accounts, courses, and feedback** — administrator approval, teacher/student
+  roles, course-code access, and answer reporting are part of the application.
 
-| 模組 | 功能與使用方式 |
+The question-bank target is 100 questions per unit; the usable count depends on
+source coverage and generation/review results. The respiratory simulator applies
+to respiratory physiology. Uploading another subject's material does not
+establish validated teaching performance for that subject.
+
+---
+
+## Requirements
+
+| Component | Purpose |
 |---|---|
-| **Teacher Lecture** | 選擇課程及章節，呈現講稿，搭配虛擬人與語音播放。 |
-| **Student Q&A** | 輸入文字或透過語音提問，依教材證據產生回答；本地與雲端模型的執行路徑分開管理。 |
-| **Scenario Practice** | 依章節準備題庫、抽題、自由跳題、保留選項，並顯示作答回饋。 |
-| **V/Q Visual Model** | 調整通氣、灌流與氣體交換參數，觀察耦合計算的變化；包含守恆及參考案例檢查。 |
-| **Course Management** | 教師上傳 PDF、確認章節、準備課程內容；學生以課程代碼加入。 |
-| **Accounts & Feedback** | 帳號申請與管理員審核、教師／學生權限、課程存取，以及答案回報。 |
+| Git, Python 3.12, Node.js 22 or 24 | Clone the repository and run the offline checks. |
+| Bash | Run operator scripts and the launcher regression suite on Linux; the suite is skipped without Bash or on non-POSIX systems. |
+| PyMuPDF | Parse PDF course materials. |
+| NumPy | Accelerate vector calculations; see [runtime requirements](requirements/runtime.txt). |
+| Ollama and configured answer models | Run local answer generation. |
+| BGE-M3 | Generate embeddings for retrieval. |
+| Faster-Whisper, FFmpeg, and speech-model files | Run server-side speech recognition; see [speech requirements](requirements/speech.txt). |
+| HTTPS, Cloudflare Worker/Tunnel, and a reachable backend | Provide the public entry point and complete browser login. |
+| Administrator and mail-provider settings | Approve accounts and operate the configured email flows. |
 
-上傳課程以每單元 100 題作為題庫目標，實際可用題數受到教材內容及生成／審查結果影響。呼吸生理模擬僅適用於相關課程；支援上傳其他教材，不表示已驗證所有科目的教學表現。
+The full-service launch scripts target a Linux server. Offline checks do not need
+third-party Python packages, a GPU, private textbook content, or model/API keys.
 
-## 執行環境
+### Hardware and private data
 
-| 使用範圍 | 需要的環境 |
-|---|---|
-| 閱讀與離線檢查 | Git、Python 3.12、Node.js 22 或 24；檢查入口不需要第三方 Python 套件或模型。 |
-| PDF 課程準備 | Python、PyMuPDF；NumPy 可加速向量計算，依賴見 [runtime.txt](requirements/runtime.txt)。 |
-| 本地檢索與回答 | Ollama、BGE-M3，以及與設定相符的回答模型。 |
-| 語音提問 | Faster-Whisper、FFmpeg 與語音模型；可選套件見 [speech.txt](requirements/speech.txt)。 |
-| 公開入口 | Cloudflare Worker、Tunnel、可連線後端、HTTPS 與帳號／寄信設定。 |
+GPU/VRAM, RAM, model quantization, and concurrent users affect response time.
+Minimum hardware requirements and cold-start time have not been measured on a
+clean deployment; record the actual environment used for each experiment.
 
-完整服務以 Linux 伺服器啟動腳本為主。GPU／VRAM、RAM、模型量化與同時使用人數會影響速度；本儲存庫尚未量測全新環境的最低硬體門檻，應以實際部署環境記錄為準。
+Textbook full text, private vector indices, model weights, uploaded course
+materials, account databases, and credentials are not distributed here. A complete
+installation needs the corresponding data and services in the operator's own
+environment.
 
-## 快速開始
+---
 
-先取得程式並執行離線檢查：
+## Quick Start
+
+Clone the project and run its offline checks first:
 
 ```bash
 git clone https://github.com/Wayne59882/NTU-LUNGTA.git
@@ -67,13 +107,17 @@ cd NTU-LUNGTA
 python3 scripts/check_offline.py
 ```
 
-Windows 可將 `python3` 改為 `py -3`。這個流程使用現有 fixtures 與本地暫時 HTTP 服務，檢查計算、測驗、語音控制及搬移後資源路徑；不需要教科書全文、GPU 或 API 金鑰。
+On Windows, replace `python3` with `py -3` if needed. The check command uses
+fixtures and temporary local HTTP services. It does not start the complete
+teaching service. Continue with Installation to prepare that environment.
 
-## 安裝與啟動
+---
 
-### 1. 準備 Python 與設定
+## Installation
 
-以下指令從儲存庫根目錄執行：
+### 1. Prepare Python and deployment settings
+
+Run these commands from the repository root in Linux/Bash:
 
 ```bash
 python3 -m venv .venv
@@ -82,31 +126,54 @@ python -m pip install -r requirements/runtime.txt
 cp config/runtime.env.example .env
 ```
 
-修改自己的 `.env`，填入實際 `VQ_BASE`、`PYTHON_BIN`、模型、公開網址與管理員信箱。`VQ_BASE` 下的 Ollama、模型及語音環境路徑必須已準備完成；完整配置見[安裝文件](docs/getting-started.md)。
+Edit `.env` with the actual paths, model tags, public URL, and administrator
+email. Set `PYTHON_BIN` to the absolute path of the Python executable that can
+import PyMuPDF, such as `.venv/bin/python` under the cloned repository.
 
-### 2. 準備教材與模型
+> **The environment file is a template, not a complete installer.** Set `VQ_BASE`
+> to the server's actual base directory and prepare the expected Ollama binary,
+> model storage, and speech environment. The launchers do not load `.env`
+> automatically; source it explicitly. See the [setup guide](docs/getting-started.md)
+> for the required layout and the [operator script guide](scripts/README.md).
 
-內建 Reference Textbook 模式需要本地的 `app/reference_corpus/chunks.jsonl`，公開版本只保留 metadata。取得有權使用的教材後，完成自己的段落與模型準備，再執行：
+### 2. Prepare speech, materials, and models
+
+The speech setup helper creates the expected Python environment if absent and
+installs Faster-Whisper. FFmpeg and speech-model files still need to be available:
 
 ```bash
 source .env
-cd app
-chmod +x ./*.sh
-bash PREPARE_REFERENCE_VECTOR_RAG.sh
-python reference_search.py --status
-cd ..
+bash scripts/setup/prepare_stt.sh
 ```
 
-這會檢查或啟動嵌入服務、必要時下載 BGE-M3，並準備教材索引。回答模型與語音辨識環境仍需分別設定；上傳課程使用各課程獨立的工作區與索引。
+The built-in Reference Textbook mode expects
+`app/reference_corpus/chunks.jsonl`; the public repository contains metadata only.
+Prepare passages from material you are entitled to use and configure the local
+model services before preparing the index:
 
-### 3. 啟動並檢查服務
+```bash
+bash scripts/setup/prepare_reference.sh
+"$PYTHON_BIN" app/reference_search.py --status
+```
+
+The reference helper checks or starts the embedding service, downloads BGE-M3
+when necessary, and prepares the corpus index. Answer models need to be installed
+separately with tags matching `.env`. The supplied model preparation helper also
+downloads the legacy Granite model; review its downloads before using it.
+Uploaded courses use their own workspaces and indices.
+
+### 3. Start and check the services
 
 ```bash
 source .env
 bash scripts/start.sh
 ```
 
-另一個終端機可檢查：
+The launcher checks the model, speech, and retrieval services, starts the teaching
+backends, and runs the gateway. It restarts matching backend processes on ports
+8181/8182; account for running work when using it on an existing server.
+
+In a second terminal, check the service endpoints:
 
 ```bash
 curl --fail http://127.0.0.1:8179/api/health
@@ -115,122 +182,236 @@ curl --fail http://127.0.0.1:8182/api/reference/health
 curl --fail http://127.0.0.1:11437/health
 ```
 
-完整登入使用自己的 HTTPS 入口與已核准帳號。健康檢查表示服務有回應；實際教材檢索、模型回答及麥克風操作需要另外確認。
+A successful health response means that endpoint responds. Verify retrieval,
+model answers, microphone input, and login separately.
 
-## 操作流程
+---
 
-### 教師
+## Usage Guide
 
-1. 申請教師帳號並完成管理員核准，登入系統。
-2. 上傳有權使用的 PDF，確認課程名稱、章節與教材內容。
-3. 準備講稿、題庫及檢索索引，查看各項準備狀態。
-4. 選擇章節，核對講稿、問題與回答來源，再提供課程代碼給學生。
-5. 收集答案回報與操作問題，保留當次教材、模型與測試記錄。
+### 1. Open the system and sign in
 
-### 學生
+Use the deployment's own HTTPS URL and an approved account. New accounts require
+administrator approval. The complete login flow uses secure cookies; configure
+the public URL, mail provider, and backend connectivity first. See the
+[account guide](docs/releases/deployment/README_ACCOUNTS_R12_20261030.md).
 
-1. 使用已核准帳號登入，選擇內建課程，或輸入教師提供的課程代碼。
-2. 依章節使用 Lecture，或提出教材相關問題。
-3. 使用 Scenario Practice 作答，可跳題並保留選項，完成後查看回饋。
-4. 在呼吸生理情境中使用 V/Q 模型，比較調整參數前後的計算結果。
+### 2. Prepare a course as a teacher
 
-詳細展示順序與可提供給老師的程式、數據依據見[展示流程](docs/demo-guide.md)。
+Upload a PDF, confirm the course name and extracted chapters, and prepare the
+lecture scripts, question bank, and retrieval index. Review the preparation
+status and generated content before sharing the course code. Keep the source
+materials, model settings, and review records with the evaluation run.
 
-## 系統架構
+### 3. Join a course as a student
+
+Select the built-in course or enter the teacher's code. Choose a chapter before
+starting a lecture, asking a course question, or opening practice.
+
+### 4. Use lectures and Student Q&A
+
+Open the selected chapter's lecture and use its avatar and speech controls. Ask
+a question by text or voice and review the returned answer and evidence. Report
+an answer that needs review through the feedback interface.
+
+### 5. Complete scenario practice
+
+Draw questions from the prepared chapter bank, move between questions, and retain
+answer selections. Finish the quiz to inspect feedback. Check the available bank
+size if preparation produced fewer questions than the target.
+
+### 6. Explore the V/Q model
+
+For respiratory physiology, select a scenario or adjust ventilation, perfusion,
+and gas-exchange parameters, then compare the calculated results. Numerical
+checks include conservation constraints and reference cases.
+
+The [demonstration guide](docs/demo-guide.md) lists a suggested presentation order
+and the code and evaluation records that support it.
+
+---
+
+## Command-Line Usage
+
+Run the main operator commands from the repository root:
+
+```bash
+# Run offline checks and optionally write a JSON report
+python3 scripts/check_offline.py --report /tmp/ntu-lungta-offline.json
+
+# Check local web assets without network calls
+python3 scripts/check_web_assets.py
+
+# Start the complete service after configuring the environment
+source .env
+bash scripts/start.sh
+```
+
+Inspect the built-in corpus/index status or run the pilot dataset self-test:
+
+```bash
+python3 app/reference_search.py --status
+python3 research/three_model_10q/benchmark_3models.py --self-test
+```
+
+The pilot self-test does not call real models or measure their performance.
+Follow the [pilot instructions](research/three_model_10q/) before a live run,
+which requires model endpoints and may call a cloud API. Setup, data preparation,
+and deployment commands are indexed in [scripts/README.md](scripts/README.md).
+
+---
+
+## Configuration Reference
+
+| Variable | Purpose / current default |
+|---|---|
+| `VQ_BASE` | Server environment base directory; set the actual path. |
+| `PYTHON_BIN` | Python executable for the teaching services; must import PyMuPDF. |
+| `OLLAMA_HOST` | Answer-model service; defaults to `127.0.0.1:11435`. |
+| `VQ_REFERENCE_EMBED_HOST` | Embedding service; defaults to `127.0.0.1:11438`. |
+| `VQ_REFERENCE_EMBED_MODEL` | Embedding model tag; defaults to `bge-m3:latest`. |
+| `VQ_GEMMA_MODEL_TAG`, `VQ_MISTRAL_MODEL_TAG` | Local tags; must match models installed on the server. |
+| `VQ_AUTH_ADMIN_EMAIL`, `VQ_FEEDBACK_TO_EMAIL` | Administrator and answer-report recipient settings. |
+| `VQ_PUBLIC_URL` | The deployment's own public HTTPS URL. |
+
+See [runtime.env.example](config/runtime.env.example). Names in settings are
+configuration strings; record actual model IDs, quantization, hardware, and
+software versions when reporting an evaluation.
+
+---
+
+## Pipeline Architecture
 
 ```mermaid
 flowchart TD
-    U["教師／學生"] --> W["公開入口與帳號權限"]
-    W --> C["課程與章節"]
-    C --> T["講稿與練習"]
-    C --> R["教材檢索與證據"]
-    C --> V["V/Q 數值模型"]
-    R --> L["本地回答模型"]
-    R --> K["雲端回答模型"]
-    L --> A["回答、來源與回報"]
+    U["Teachers and students"] --> W["Gateway and access control"]
+    W --> C["Courses and chapters"]
+    C --> T["Lectures and practice"]
+    C --> R["Retrieval and evidence"]
+    C --> V["V/Q numerical model"]
+    R --> L["Local answer model"]
+    R --> K["Cloud answer model"]
+    L --> A["Answers, sources, and reports"]
     K --> A
 ```
 
-`app/gateway.py` 處理入口與帳號／課程權限；`reference_server.py` 與 `course_runtime.py` 負責教材服務和課程準備；`reference_search.py` 處理內建教材檢索。前端共用程式依語音、問答、課程、虛擬人及生理模擬分組於 `app/web/shared/`。
+`app/gateway.py` handles entry and account/course access.
+`app/reference_server.py` and `app/course_runtime.py` provide material services
+and course preparation. `app/reference_search.py` handles built-in retrieval.
+Shared frontend code is grouped by function under `app/web/shared/`.
 
-BGE-M3 把 Python 已切好的段落與學生問題轉成向量。內建教材採向量相似度、來源平衡及語義視窗重排，預設最多整理 6 份證據，並受門檻與文字預算限制；嵌入／索引失敗時另有教材文字檢索備援。完整服務路徑與埠號見[架構文件](docs/architecture.md)。
+BGE-M3 embeds passages already segmented by Python and embeds the student's
+question. Built-in retrieval combines vector similarity, source balancing, and
+semantic-window reranking. By default it assembles up to six evidence items,
+subject to thresholds and the text budget. Text retrieval provides a fallback
+when embedding or indexing fails.
 
-## 設定
+See the [architecture guide](docs/architecture.md) for service paths and ports,
+the [code guide](docs/code-map.md) for modules, and the
+[development guide](docs/development.md) for directory responsibilities.
 
-| 變數 | 用途／目前預設 |
+---
+
+## Testing and Evaluation
+
+### Offline functional checks
+
+The check entry point covers V/Q numerical constraints, quiz navigation,
+batch-response recovery, pronunciation text, manual recording stop,
+question-generation fixtures, the 10-question pilot self-test, frontend
+script order/content and local HTTP routes, and operator-script routing.
+It also checks source syntax and maintained local documentation links.
+
+GitHub Actions runs the same entry point with Python 3.12 and Node.js 22/24.
+Launcher tests use stand-in commands in a temporary copy; they do not download
+models, start the real backends, send mail, or deploy the website.
+
+### Model evaluation
+
+The [three-model, 10-question pilot](research/three_model_10q/) compares the same
+questions using cached evidence and exports individual answers and a summary.
+`expected_option` is used for scoring and is not inserted into the model prompt.
+Live evaluation requires the private environment and model/API settings.
+
+| Metric | Definition |
 |---|---|
-| `VQ_BASE` | 伺服器環境基底目錄；需指定實際值。 |
-| `PYTHON_BIN` | 能匯入 PyMuPDF 的教材服務 Python。 |
-| `OLLAMA_HOST` | 回答模型服務，預設 `127.0.0.1:11435`。 |
-| `VQ_REFERENCE_EMBED_HOST` | 嵌入服務，預設 `127.0.0.1:11438`。 |
-| `VQ_REFERENCE_EMBED_MODEL` | 嵌入模型標籤，預設 `bge-m3:latest`。 |
-| `VQ_GEMMA_MODEL_TAG`、`VQ_MISTRAL_MODEL_TAG` | 必須對應伺服器實際安裝的本地模型。 |
-| `VQ_AUTH_ADMIN_EMAIL`、`VQ_FEEDBACK_TO_EMAIL` | 管理員及回報收件設定。 |
-| `VQ_PUBLIC_URL` | 自己的 HTTPS 公開入口。 |
+| Accuracy | Report correctness over all requests and over successfully completed requests separately. |
+| Availability | Successfully completed requests divided by all requests. |
+| Inference time | Time from the model request to completion of the response. |
+| Question-to-reply time | Context retrieval time plus model response time; excludes browser rendering and TTS. |
 
-範例見 [runtime.env.example](config/runtime.env.example)。模型名稱在此代表程式設定字串；執行評測時仍需保留真實 model ID、量化與環境資訊。
+See the [evaluation guide](docs/evaluation.md) for question sources, existing
+results, seen/unseen distinctions, and scope. Passing offline checks does not
+establish current model accuracy, latency, account isolation, production
+reliability, or learning effectiveness.
 
-## 專案結構
+---
 
-| 位置 | 責任 |
+## Troubleshooting
+
+| Symptom | What to check |
 |---|---|
-| [app/](app/) | Python 服務、課程處理、帳號、教材索引與網頁。 |
-| [app/web/shared/](app/web/shared/) | 共用 JavaScript、CSS、虛擬人及圖片／音訊資產。 |
-| [config/](config/) | 可公開的環境設定範例。 |
-| [requirements/](requirements/) | Python 執行與語音套件需求。 |
-| [scripts/](scripts/) | 現行啟動與離線檢查入口。 |
-| [tests/](tests/) | 現行回歸測試、前端搬移契約與歷史驗證工具。 |
-| [research/](research/) | 模型比較工具、題目、既有數據與 V/Q 驗證資料。 |
-| [docs/](docs/) | 架構、操作、評測、展示及歷史版本文件。 |
-| [archive/](archive/) | 舊版部署／安裝工具與未載入前端程式。 |
+| A fresh clone cannot run the complete service | Prepare models, private materials, indices, speech dependencies, and administrator settings. |
+| PDF parsing fails | Confirm that `PYTHON_BIN` can import `fitz`. |
+| A model cannot be found | Compare installed model tags and service addresses with the configured values. |
+| Retrieval returns no evidence | Check the selected material scope, index status, and fallback behavior. |
+| The bank has fewer than 100 questions | Review source coverage and generation/review outcomes; 100 is the target. |
+| An account cannot access a course | Check approval status, role, course code, HTTPS, and cookies. |
+| Speech recognition does not start | Check Faster-Whisper, FFmpeg, model files, and port 11437. |
+| An old tool appears to be missing | Check the [script index](scripts/README.md), `archive/`, and the [migration map](docs/migration-map.json). |
+| The public URL returns 502 | Check the gateway, internal backends, Tunnel, and Worker origin separately. |
 
-舊版長名稱目錄僅保留導覽頁，正式程式已集中到 `app/`。每個功能對應的程式見[程式導覽](docs/code-map.md)，舊路徑對照見[遷移說明](docs/migration.md)。
+---
 
-## 測試與評測
+## Project Structure
 
-### 功能檢查
-
-```bash
-python3 scripts/check_offline.py
-```
-
-目前入口包含 8 組檢查：V/Q 計算與守恆、測驗導覽、批次回覆復原、發音文字、錄音停止、題庫生成 fixtures、10 題 pilot 自檢，以及腳本順序／內容與本地 HTTP 資源檢查。GitHub Actions 使用 Node.js 22／24 與 Python 3.12 執行同一套入口。
-
-### 模型評測
-
-[三模型 10 題 pilot](research/three_model_10q/) 使用同一題及快取教材證據逐題比較，輸出逐題回答與摘要。`expected_option` 僅在評分時使用，不放入模型提示。真實評測會呼叫模型與雲端 API，須先完成私有環境設定。
-
-| 指標 | 定義 |
+| Location | Responsibility |
 |---|---|
-| Accuracy | 區分全部請求與成功完成請求的正確率。 |
-| Availability | 成功完成請求數／全部請求數。 |
-| Inference time | 模型請求至完整回應完成的時間。 |
-| Question-to-reply time | 取得教材 context 的時間加上模型回應時間；不包含瀏覽器呈現與 TTS。 |
+| [app/](app/) | Runtime Python services, course processing, accounts, retrieval, and web pages. |
+| [app/web/shared/](app/web/shared/) | Shared JavaScript, CSS, avatars, images, and audio. |
+| [scripts/setup/](scripts/setup/) | Model, embedding, speech, and TTS preparation. |
+| [scripts/runtime/](scripts/runtime/) | Service startup and model/speech process helpers. |
+| [scripts/deploy/](scripts/deploy/) | Cloudflare login, Tunnel, and Worker deployment tools. |
+| [scripts/data/](scripts/data/) | Reference-material ingestion. |
+| [config/](config/) | Public environment-setting examples. |
+| [requirements/](requirements/) | Python runtime and optional speech package requirements. |
+| [tests/](tests/) | Current regression checks, frontend migration contracts, and historical validators. |
+| [research/](research/) | Model comparisons, questions, existing datasets, and V/Q validation records. |
+| [docs/](docs/) | Architecture, setup, evaluation, demonstration, migration, and releases. |
+| [archive/](archive/) | Historical deployment/install tools and inactive frontend code. |
 
-題目來源、既有資料、seen/unseen 區分與適用範圍見[評測文件](docs/evaluation.md)。離線功能檢查通過，不等於已重新量測模型 accuracy、latency 或教學成效。
+The application lives in `app/`; operator tools live in `scripts/`. Historical
+release files are separate from current runtime code. See the
+[development guide](docs/development.md) for maintenance rules and the
+[migration guide](docs/migration.md) for old-to-new paths and server migration.
 
-## 常見問題
+---
 
-| 問題 | 檢查方向 |
-|---|---|
-| 複製後不能直接完整使用 | 確認模型、私有教材、索引、語音環境及管理員設定。 |
-| PDF 無法解析 | 確認 `PYTHON_BIN` 指向的 Python 能匯入 `fitz`。 |
-| 找不到模型 | 比對實際 `ollama list`、model tag 與服務位址。 |
-| 檢索沒有證據 | 確認課程／教材範圍、索引狀態及是否使用備援路徑。 |
-| 題庫不足 100 題 | 查看教材能支持的題數及草稿／審查結果；100 是目標值。 |
-| 登入後無法看課程 | 確認核准狀態、身分、課程代碼及自己的 HTTPS 入口。 |
-| 搬移後找不到舊工具 | 查看 `docs/releases/`、`archive/` 及[舊路徑對照](docs/migration-map.json)。 |
-| 公開網址 502 | 分別檢查 gateway、內部教材服務、Tunnel 與 Worker origin。 |
+## Methodology Notes
 
-## 資料與目前限制
+- **Material grounding:** retrieved evidence supports an answer but does not
+  establish its correctness. Accuracy needs an independently scored evaluation.
+- **Functional tests and model results:** fixtures check defined software
+  behavior; live accuracy and response time require the specified dataset,
+  endpoints, and environment.
+- **Reproducibility:** package requirements are not a fully validated lockfile.
+  Preserve resolved versions, hardware, models, source data, and Git commit.
+- **Remaining implementation work:** shared frontend resources preserve their
+  original loading order. Some global-function wrappers and large backend
+  modules remain candidates for further refactoring.
+- **Deployment:** source changes do not migrate or redeploy a teaching server.
+  Transfer private data and settings and validate full workflows when updating
+  the server; see the [migration guide](docs/migration.md).
 
-- 公開版本未提供教科書全文、模型權重、教師上傳教材、帳號資料庫與金鑰；完整實驗需要研究者有權使用的原始資料與環境。
-- 套件需求尚未形成已驗證的完整 lockfile；重現實驗時應保存解析後版本、硬體、模型與 commit。
-- 前端共用程式已集中，並保留原有載入順序；部分既有全域函式包裝與大型後端模組仍可繼續改善。
-- 這次原始碼重整不會自動遷移或部署既有教學伺服器。更新伺服器時，需一併處理私有資料、設定與完整操作驗證，見[遷移說明](docs/migration.md)。
+---
 
-## 版本與引用
+## Version and Citation
 
-程式基底為 `v241.12.5-full-answer-voice`，包含 R12 帳號及課程權限更新；目錄重整由 Git commit 追蹤，不另行虛構模型或研究結果版本。歷史更新見 [CHANGELOG](CHANGELOG.md)。
+The application is based on `v241.12.5-full-answer-voice`, including the R12
+account and course-access updates. Source-layout changes are tracked through Git
+commits; historical changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
-作者：朱庭汶，國立臺灣大學生理學研究所。引用資訊見 [CITATION.cff](CITATION.cff)；使用研究資料時應記錄當次 commit。本儲存庫尚未提供 LICENSE，程式、教材、模型及第三方資產的授權需分別確認。
+Author metadata and citation information are provided in
+[CITATION.cff](CITATION.cff). Record the commit used when citing this research
+software. This repository currently has no LICENSE file; code, teaching
+materials, models, and third-party assets have separate licensing considerations.
