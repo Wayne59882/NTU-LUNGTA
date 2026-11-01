@@ -1,0 +1,6 @@
+v239.3 checked release
+- Fixes brittle Resend acceptance mock that could fail on server with AttributeError despite valid runtime code.
+- Adds deterministic request-capture test with no network/API quota.
+- Adds full pre-deployment preflight: shell syntax, Python compile, JS syntax, v239/v239.1/v239.2 checks, SQLite, runtime-secret overlay, 10-question/5-model statistics dry-run.
+- Supports VQ_PREFLIGHT_ONLY=1 ./INSTALL_FINAL.sh to verify before touching running services.
+- Does not package benchmark.env, feedback.env, feedback.sqlite3, benchmark run outputs, or API keys.

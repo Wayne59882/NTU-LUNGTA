@@ -1,0 +1,7 @@
+v241.4-course-flow-fixed
+Source: NTULUNG_TA_v241_3_COURSE_UPLOAD_FIXED (1).zip
+Changed: course_runtime.py, reference_server.py, gateway.py, web/reference and web/kb adaptive JS/CSS/HTML, version and deployment checks.
+Added: README_V241_4_zh-TW.md, VERIFY_V241_4_COURSE_FLOW.py.
+Behavior: front-matter TOC filter; successful build auto-activates course; built-in V/Q visible; course-specific lecture, Q&A and scenario; exactly 100 stored questions per selected unit required for ready status; 2 random questions per unit.
+Validation: CHECK_V241_2_ONE_CLICK_STABLE.sh and local HTTP upload/build/quiz/RAG smoke flow with generated PDFs and mock model/embedding passed.
+Limit: the user's original PDF, live Ollama generation, Cloudflare deployment, and browser UI were not available in this local validation.

@@ -1,0 +1,11 @@
+V181 TARGET SPECIFICATION
+
+- Three selectable local LLM families: Granite / Gemma / Mistral
+- Companies: Alibaba / Google / Mistral AI × NVIDIA
+- Same selected model performs semantic recognition and final generation
+- Formal Domain Gate = 1 removed
+- Active-7 KB Gate remains 68
+- Active-7 domain_terms_overlap retained only as a scoring feature
+- One active Ollama model at a time
+- Shared RTX A5000 profile uses Q4_K_M models and 4096-token context
+- No GLM or DeepSeek option remains in the current build

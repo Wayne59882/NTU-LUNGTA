@@ -1,0 +1,21 @@
+NTULUNG TA v226
+
+Purpose:
+- Improve MCQ answer accuracy and answer-option consistency.
+- Prevent student-facing answers from ending mid-sentence.
+- Remove reference-text / table / figure / page / chapter attribution from displayed answers.
+- Refine question-type routing so direct normal-value recall is conceptual while true derived-value questions are calculation tasks.
+- Preserve v225/v224 three-local-model QLoRA pipeline, Reference Textbook Vector RAG, cloud BYOK prompt engineering, voice/avatar, lecture controls, and Hopkins simulator.
+
+Accuracy safeguards:
+- Structured MCQ solver for local Granite/Gemma/Ministral, with one audited option decision rendered deterministically.
+- Normal quiet adult VT ~500 mL.
+- FRC/TLC ~40% from standard adult values.
+- Peripheral chemoreceptor: low PaO2; CO != CO2; PaO2 != oxygen content.
+- Quiet inspiration: diaphragm.
+- Dynamic vs static compliance distinction.
+- Henry-law coefficient vs dissolved amount distinction.
+
+SFT corpus:
+- 491 total rows: 371 train / 60 validation / 60 held-out test.
+- Instructor/test-style course rows are ordinary members of the main train corpus; no priority flag, no separate gold file, no repeat weighting.

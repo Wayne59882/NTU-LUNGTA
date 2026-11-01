@@ -1,0 +1,10 @@
+v241.12.1-quiz-navigation
+Base: v241.12 verified single-archive feedback receipts and email repair.
+Quiz: fast source-linked relationship cases with short choices; PDF printer debris excluded; 100 quality-gated cards per readable unit; old banks rebuilt after restart.
+UI: uploaded-course number strip and question picker, preserved selections, submit and results.
+Install: Python 3.6 SQLite test compatibility; migrate v241.12 course, feedback and settings.
+Install hotfix: direct feedback migration imports the root package; preflight executes the actual post-stop migration command on an isolated legacy database before stopping services.
+Report mail fix: recover provider credentials from previous releases, verify a real test email before stopping services, and save a new Resend configuration only after its test succeeds. The report email includes the student's requested change; the browser receipt is temporary and does not show the revised answer.
+Recipient correction: use the verified Resend account address admin@example.com as the interactive default; never override the saved recipient in the server, retry script or installer; compare against the optional saved expected recipient at runtime.
+Validation: CHECK_V241_2_ONE_CLICK_STABLE.sh and VERIFY_V241_12_1_QUIZ_QUALITY.py / VERIFY_V241_12_1_QUIZ_NAV.cjs / VERIFY_V241_12_1_INSTALL_MIGRATION.py.
+Deploy: ./INSTALL_FINAL.sh

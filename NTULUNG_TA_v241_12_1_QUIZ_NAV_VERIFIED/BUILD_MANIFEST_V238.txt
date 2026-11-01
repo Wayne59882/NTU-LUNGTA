@@ -1,0 +1,17 @@
+v238 ACCURACY-FIRST ROBUST-BATCH STABLE
+
+Purpose
+- Preserve the v237 accuracy-first physiology/RAG decision improvements.
+- Fix the real browser batch parser failure where Markdown numeric headings such as "### 2" were misclassified as trailing metadata and everything after Question 1 was discarded.
+
+Changes
+1. Robust parser accepts: 2., 2、, 2.【metadata】, ### 2, ### 2.【metadata】, and a bare numeric heading line such as 2.
+2. Numeric Markdown headings are never stripped as metadata.
+3. Bare-number candidates are accepted only when the following segment contains a complete A-D MCQ, reducing false splits.
+4. Reference async batch wrapper contains an independent fallback parser so one parser failure cannot silently collapse a multi-question batch to a single question.
+5. Batch wrappers install idempotently to avoid repeated nested wrappers from delayed installation timers.
+6. Every batch response remains formatted with an explicit 第 N 題 / Question N heading.
+7. Existing server-side missing-item recovery remains active.
+8. Production physiology scope, 4,792-passage corpus, 16,151 rerank windows, v237 accuracy-first selective verification, BYOK cloud path, scope lock, TTS/STT/avatar/Hopkins behavior are preserved.
+
+No exam answer key is introduced into production prompts, retrieval, model weights, or deterministic physiology rules.

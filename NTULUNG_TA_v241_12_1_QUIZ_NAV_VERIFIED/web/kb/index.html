@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+
+<!-- Split GitHub version v110: mode switch fully stops speech, mouth motion, lecture timers, and highlight. -->
+<!-- Single-file laboratory upload version. FIXED: pause/resume now uses a custom chunk-aware speech controller instead of unreliable native resume only. -->
+<html data-knowledge-mode="kb" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Course-Adaptive Virtual Human TA</title>
+<script>window.VQ_SERVER_TTS_MODE=true;</script>
+<!-- v206.7 dual knowledge-source interface. -->
+<link href="css/styles.css?v=187" rel="stylesheet"/>
+<link href="css/v130_right_panel_background_theme.css?v=179" rel="stylesheet"/>
+<!-- Direct Answer AI v2: real qaBuildRelevantAnswer patched -->
+<!-- Strict Assessment v3: scoring, wrong-concept detection, stricter formative feedback -->
+<!-- Strict Assessment v4 FIXED CASE: fallback case dropdown and button bindings -->
+<!-- Strict Assessment v5 CONCISE: no numeric score, shorter feedback -->
+<!-- Strict Assessment v6 CLEAN QA: fixed direct Q&A and blank teacher script fallback -->
+<!-- V8 SAFE ROUTER: safe generateAnswer override -->
+<!-- V9 HARD FIX: usable case mode, click-to-clear, robust QA -->
+<!-- V10 DOMAIN GUARD: prevent off-topic and filler KB fallback -->
+<!-- V11 FORCE OVERRIDE: clone buttons, remove old event handlers, curated QA -->
+<!-- V12 COURSE LOCK + TYPEWRITER: original lesson scripts, typed lecture, course-scoped Q&A -->
+<!-- V13 TYPEWRITER ANSWER: thinking delay and typed AI answer -->
+<!-- V14 RUBRIC + CSV: visible assessment rubric and student record export -->
+<!-- V15 NO RUBRIC + CLICK CLEAR -->
+<!-- V16 APEX + CASE TYPEWRITER -->
+<!-- V17 COURSE FIX + EDITABLE BOXES -->
+<!-- V29 CLEAN TWO MODE MCQ -->
+<!-- V30 LESSON6 MODEL CALCULATE -->
+<!-- V31 FULL LUNGAPP VALUES FIXED MODEL -->
+<!-- V32 COMPLETE LAB COURSE CASES DYNAMIC LOBES -->
+<!-- V33 FIXED LOBE SCALING -->
+<!-- V34 BIG TOPIC COURSES FIXED LOBES -->
+<!-- V35 SYNC COURSE QA INPUTS -->
+<!-- V36 HANDOUT SCRIPT SYNC -->
+<!-- V38 COURSE QA DATABASE -->
+<!-- V39 QA FEEDBACK MODEL FIX -->
+<!-- V41 11000 KNOWLEDGE PER UNIT ENGINE -->
+<!-- V42 PRECISION QA 1000 PER UNIT -->
+<!-- V43 PLACEHOLDER CLICK FIX -->
+<!-- V44 VOICE AND PLAYBACK FIXED -->
+<!-- V45 SIMPLE VOICE EDGE/CHROME TEXT FIX -->
+<!-- V46 MULTILANG VOICE WEIGHTED EVIDENCE -->
+
+<link href="css/v149_hard_integrated.css?v=179" rel="stylesheet"/>
+<link href="css/v150_ui_repackaged.css?v=179" rel="stylesheet"/><link rel="stylesheet" href="css/v153_student_results_lecture_controls.css?v=179"/>
+<link rel="stylesheet" href="css/v199_main_3d_avatar.css?v=199">
+
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+  }
+}
+</script>
+<link href="css/v206_knowledge_source.css?v=2066" rel="stylesheet"/>
+<link href="css/v216_ui_cleanup.css?v=216" rel="stylesheet"/>
+<link rel="stylesheet" href="css/v240_site_metrics.css?v=2401"/>
+<link rel="stylesheet" href="css/v241_course_adaptive.css?v=241128"/>
+</head>
+<body>
+<div class="app">
+<div class="title">Course-Adaptive Virtual Human TA</div>
+<div class="layout">
+<div class="card teacher-panel">
+<div>
+<div class="section-label">VIRTUAL HUMAN TA</div>
+<div class="avatar-wrap">
+<div class="avatar real-avatar canvas-avatar avatar-bootstrap" id="avatar" data-avatar-role="zhiwei">
+<img class="real-avatar-bootstrap-image" id="realAvatarBootstrapImage" alt="Virtual Human TA portrait"/>
+</div>
+<script>
+(function(){
+  try{
+    var key=localStorage.getItem('VQ_REAL_AVATAR_ROLE')||'zhiwei';
+    if(key!=='yating'&&key!=='zhiwei') key='zhiwei';
+    var avatar=document.getElementById('avatar');
+    var img=document.getElementById('realAvatarBootstrapImage');
+    if(avatar) avatar.setAttribute('data-avatar-role',key);
+    if(img){
+      img.src='assets/'+(key==='yating'?'avatar_female_closed.png':'avatar_male_closed.png');
+    }
+  }catch(_){ }
+})();
+</script>
+</div>
+<div class="real-avatar-switch v216-avatar-voice-settings">
+<div class="section-label">3D AVATAR &amp; VOICE SETTINGS</div>
+<label for="avatarRoleSelect">Avatar / Voice</label>
+<select id="avatarRoleSelect" aria-label="3D avatar and voice role">
+<option value="yating">Yating</option>
+<option value="zhiwei">Zhiwei</option>
+</select>
+<label for="rateRange">Speech Rate</label>
+<input id="rateRange" max="2.00" min="0.50" step="0.05" type="range" value="1.00"/>
+<label for="pitchRange">Pitch</label>
+<input id="pitchRange" max="1.50" min="0.50" step="0.05" type="range" value="1.00"/>
+<label for="recognitionLangSelect">Speech Recognition</label>
+<select id="recognitionLangSelect"><option selected value="auto">Auto — Detect Spoken Language</option></select>
+</div>
+</div>
+<div style="width:100%;">
+<div class="status" id="status">Status: Ready — select a mode</div>
+<div class="local-model-control">
+<div class="section-label">LOCAL LANGUAGE MODEL</div>
+<label for="localModelSelect">Local Language Model</label>
+<select id="localModelSelect" aria-label="Local language model">
+<option selected value="gemma">Gemma 4 12B · Google</option>
+<option value="mistral">Ministral 3 8B · Mistral AI</option>
+</select>
+</div>
+
+</div>
+</div>
+<div class="card">
+<div class="tabs">
+<button class="tab-btn active" id="lessonTab">Lecture / Free Q&A</button>
+<button class="tab-btn" id="caseTab">Scenario Practice</button>
+<button class="tab-btn" id="modelTab">V/Q Visual Model</button>
+</div>
+<section class="mode-panel active" id="lessonPanel">
+<div class="section-label">LESSON MODE</div>
+<div class="course-selector">
+<div class="lesson-select-area">
+<label class="control-label" for="lessonSelect">Select Lecture Unit</label>
+<select id="lessonSelect">
+<option value="basic">Course 1: Gas Exchange Framework</option>
+<option value="ventilation">Course 2: Ventilation and Alveolar Ventilation</option>
+<option value="alveolar_gas">Course 3: Alveolar Gas Equation and Oxygenation</option>
+<option value="perfusion">Course 4: Perfusion, Cardiac Output, and Mixed Venous Blood</option>
+<option value="normal_vq">Course 5: Normal V/Q Gradient — Apex and Base</option>
+<option value="low_vq">Course 6: Low V/Q and Shunt-like Physiology</option>
+<option value="high_vq">Course 7: High V/Q, Dead Space, and Pulmonary Embolism</option>
+<option value="shunt">Course 8: True Shunt and the Shunt Equation</option>
+<option value="diffusion">Course 9: Diffusion Limitation and the A-a Gradient</option>
+<option value="oxygen_content">Course 10: Hemoglobin, CaO2, and Oxygen Delivery</option>
+<option value="integrated_disease">Course 11: Integrated Disease Physiology — PE, Pneumonia, Asthma, and COPD</option>
+</select>
+</div>
+<div class="lecture-control-card">
+<div class="control-label">Lecture Controls</div>
+<button class="success lesson-start-btn" id="startLessonBtn">▶ Start Lecture</button>
+<div class="lecture-mini-controls">
+<button class="secondary compact-lesson-btn" disabled="" id="pauseLessonBtn">⏸ Pause</button>
+<button class="secondary compact-lesson-btn" disabled="" id="resumeLessonBtn">▶ Resume</button>
+<button class="danger compact-lesson-btn" disabled="" id="stopLessonBtn">■ Stop</button>
+</div>
+<div class="lecture-control-note">Pause, resume, or stop the audio. The lecture script remains visible.</div>
+</div>
+</div>
+<div class="section-label">TEACHER SCRIPT</div>
+<div class="lesson-box" id="lessonText"></div>
+<div class="controls">
+<button class="primary" id="askBtn">🎙 Start Voice Question</button>
+<button class="danger" disabled="" id="stopAskBtn">Stop Recording & Answer</button>
+<button class="secondary" id="submitTypedQuestionBtn">⌨️ Submit Typed Question</button>
+<button class="secondary" id="repeatBtn">Replay Teacher Voice</button>
+<button class="secondary" id="clearBtn">Clear Conversation</button>
+</div>
+<div class="dialog-grid">
+<div>
+<div class="section-label">STUDENT QUESTION</div>
+<div class="dialog-box editable-transcript" contenteditable="true" data-placeholder="Type your question here, or select “Start Voice Question” to use speech input." id="studentQuestion" spellcheck="false"></div>
+<div class="typed-input-hint">Type or edit the question here, then select “Submit Typed Question”.</div>
+</div>
+<div>
+<div class="section-label">AI TEACHER ANSWER</div>
+<div class="dialog-box answer-box" id="teacherAnswer">The AI teacher answer will appear here.</div>
+</div>
+</div>
+</section>
+<section class="mode-panel" id="casePanel">
+<div class="section-label">LECTURE-ALIGNED SCENARIO PRACTICE</div>
+<div class="v149-soft-card">
+<div class="v149-toolbar">
+<label for="v149StudentProfile">Student ID</label>
+<input aria-label="Student ID" id="v149StudentProfile" list="v151StudentProfiles" type="text" value="Student-1"/><datalist id="v151StudentProfiles"></datalist>
+<button id="v149StartQuizBtn">Start 22-Question Balanced Quiz</button>
+<button class="secondary" id="v149ClearHistoryBtn">Clear This Student History</button>
+</div>
+<div class="v149-quiz-grid">
+<aside>
+<div class="v149-panel-title">11 lecture-aligned question banks</div>
+<div class="v149-course-list" id="v149CourseList"></div>
+</aside>
+<main class="v149-question-card">
+<div class="v149-progress-wrap"><div class="v149-progress-bar" id="v149ProgressBar"></div></div>
+<div class="v187-question-nav" id="v187QuestionNav" aria-label="Question navigation"></div>
+<div class="v149-question-meta" id="v149QuestionMeta">Press “Start 22-Question Balanced Quiz”.</div>
+<div class="v149-question-text" id="v149QuestionText">The scenario module generates a balanced 22-question quiz: 2 questions from each of the 11 lecture units.</div>
+<div id="v149Choices"></div>
+<div class="v149-feedback" id="v149Feedback">Answer feedback will appear here.</div>
+<div class="v149-actions">
+<button class="secondary" disabled="" id="v149PrevBtn">Previous</button>
+<button disabled="" id="v149NextBtn">Next</button>
+<button class="secondary" disabled="" id="v149FinishBtn">Finish &amp; Show Wrong Items</button>
+</div>
+<div class="v149-summary" hidden="" id="v149SessionSummary"></div>
+<div class="v149-wrong-list" hidden="" id="v149WrongList"></div>
+<details class="v152-results-shell" id="v152StudentResultsPanel">
+  <summary>Student Results</summary>
+  <div class="v152-results-body">
+    <p class="v152-results-note">Each Student ID keeps an independent answer history and quiz summary.</p>
+    <div id="v152CurrentStudentRecord"></div>
+  </div>
+</details>
+
+</main>
+</div>
+</div>
+</section>
+<section class="mode-panel" id="modelPanel">
+<div class="section-label">V/Q VISUAL MODEL</div>
+<div class="v149-model-shell v150-model-shell">
+  <div class="v150-model-layout">
+    <section class="v149-panel v150-controls-panel">
+      <div class="v149-panel-title">Model Controls</div>
+      <div class="v150-control-group">
+        <label class="v150-field-label" for="v149ScenarioPreset">Preset</label>
+        <select aria-label="Scenario preset" id="v149ScenarioPreset">
+          <option value="normal">No V/Q mismatch</option>
+          <option value="lowvq">Low V/Q</option>
+          <option value="highvq">High V/Q</option>
+          <option value="pe">Pulmonary Embolism</option>
+          <option value="pneumonia">Pneumonia</option>
+          <option value="shunt">True Shunt</option>
+          <option value="diffusion">Diffusion Limitation</option>
+          <option value="anemia">Anemia / Low Hemoglobin</option>
+          <option value="altitude">High Altitude</option>
+        </select>
+        <div class="v150-model-buttons">
+          <button id="v149CalculateBtn" type="button">Start / Calculate</button>
+          <button class="secondary" id="v149ApplyPresetBtn" type="button">Apply Preset</button>
+          <button class="secondary" id="v149ResetModelBtn" type="button">Reset</button>
+        </div>
+      </div>
+      <div class="v150-divider"></div>
+      <div class="v149-panel-title">Input Variables</div>
+      <div class="v149-input-row"><label for="v149_VT">Tidal volume</label><input id="v149_VT" step="any" type="number" value="500"/><span>mL</span></div>
+      <div class="v149-input-row"><label for="v149_VD">Dead space</label><input id="v149_VD" step="any" type="number" value="150"/><span>mL</span></div>
+      <div class="v149-input-row"><label for="v149_f">Respiratory rate</label><input id="v149_f" step="any" type="number" value="15"/><span>breaths/min</span></div>
+      <div class="v149-input-row"><label for="v149_FIO2">Inspired O2</label><input id="v149_FIO2" step="any" type="number" value="0.21"/><span>fraction</span></div>
+      <div class="v149-input-row"><label for="v149_Altitude">Altitude</label><input id="v149_Altitude" step="any" type="number" value="0"/><span>m</span></div>
+      <div class="v149-input-row"><label for="v149_VO2">O2 Uptake</label><input id="v149_VO2" step="any" type="number" value="300"/><span>mL/min</span></div>
+      <div class="v149-input-row"><label for="v149_R">Resp. exchange ratio</label><input id="v149_R" step="any" type="number" value="0.80"/><span>ratio</span></div>
+      <div class="v149-input-row"><label for="v149_Hb">Hemoglobin</label><input id="v149_Hb" step="any" type="number" value="15"/><span>g/dL</span></div>
+      <div class="v149-input-row"><label for="v149_QT">Cardiac Output</label><input id="v149_QT" step="any" type="number" value="5.5"/><span>L/min</span></div>
+      <div class="v149-input-row"><label for="v149_Shunt">Shunt fraction</label><input id="v149_Shunt" step="any" type="number" value="0"/><span>ratio</span></div>
+      <div class="v149-input-row"><label for="v149_DLO2">O2 diffusing capacity</label><input id="v149_DLO2" step="any" type="number" value="32"/><span>mL/min/mmHg</span></div>
+    </section>
+
+    <div class="v150-dashboard">
+      <section class="v149-panel v150-corner v150-mixed">
+        <div class="v149-panel-title">Mixed Venous</div>
+        <div class="v149-output-row"><span>PCO2</span><strong id="v149_mv_pco2">—</strong><span>mmHg</span></div>
+        <div class="v149-output-row"><span>CO2 Content</span><strong id="v149_mv_co2">—</strong><span>mL/dL</span></div>
+        <div class="v149-output-row"><span>pH</span><strong id="v149_mv_ph">—</strong><span></span></div>
+        <div class="v149-output-row"><span>PO2</span><strong id="v149_mv_po2">—</strong><span>mmHg</span></div>
+        <div class="v149-output-row"><span>O2 Saturation</span><strong id="v149_mv_sat">—</strong><span>%</span></div>
+        <div class="v149-output-row"><span>O2 Content</span><strong id="v149_mv_o2">—</strong><span>mL/dL</span></div>
+      </section>
+
+      <section class="v149-lung-stage v150-lung-stage">
+        <img alt="Static lung and circulation reference" class="v149-lung-reference" src="assets/lung_reference_v149.png"/>
+      </section>
+
+      <section class="v149-panel v150-corner v150-endcap">
+        <div class="v149-panel-title" id="v149EndCapillaryTitle" title="Blood leaving the selected V/Q region, before regional blood mixing.">End Capillary — Selected Region</div>
+        <div id="v149SelectedRegionLabel" style="font-size:11px;color:#475569;line-height:1.3;margin:-3px 0 8px;overflow-wrap:anywhere;">Single ventilated region</div>
+        <div class="v149-output-row"><span>PCO2</span><strong id="v149_ec_pco2">—</strong><span>mmHg</span></div>
+        <div class="v149-output-row"><span>CO2 Content</span><strong id="v149_ec_co2">—</strong><span>mL/dL</span></div>
+        <div class="v149-output-row"><span>PO2</span><strong id="v149_ec_po2">—</strong><span>mmHg</span></div>
+        <div class="v149-output-row"><span>O2 Saturation</span><strong id="v149_ec_sat">—</strong><span>%</span></div>
+        <div class="v149-output-row"><span>O2 Content</span><strong id="v149_ec_o2">—</strong><span>mL/dL</span></div>
+      </section>
+
+      <section class="v149-panel v150-corner v150-general">
+        <div class="v149-panel-title">General</div>
+        <div class="v149-output-row"><span>Minute Vent.</span><strong id="v149_gen_ve">—</strong><span>L/min</span></div>
+        <div class="v149-output-row"><span>Alveolar Vent.</span><strong id="v149_gen_va">—</strong><span>L/min</span></div>
+        <div class="v149-output-row"><span>Alveolar PCO2</span><strong id="v149_gen_paco2">—</strong><span>mmHg</span></div>
+        <div class="v149-output-row"><span>Inspired PO2</span><strong id="v149_gen_pio2">—</strong><span>mmHg</span></div>
+        <div class="v149-output-row"><span>Alveolar PO2</span><strong id="v149_gen_pao2">—</strong><span>mmHg</span></div>
+      </section>
+
+      <section class="v149-panel v150-corner v150-arterial">
+        <div class="v149-panel-title">Arterial Blood</div>
+        <div class="v149-output-row"><span>PCO2</span><strong id="v149_art_pco2">—</strong><span>mmHg</span></div>
+        <div class="v149-output-row"><span>CO2 Content</span><strong id="v149_art_co2">—</strong><span>mL/dL</span></div>
+        <div class="v149-output-row"><span>pH</span><strong id="v149_art_ph">—</strong><span></span></div>
+        <div class="v149-output-row"><span>PO2</span><strong id="v149_art_po2">—</strong><span>mmHg</span></div>
+        <div class="v149-output-row"><span>O2 Saturation</span><strong id="v149_art_sat">—</strong><span>%</span></div>
+        <div class="v149-output-row"><span>O2 Content</span><strong id="v149_art_o2">—</strong><span>mL/dL</span></div>
+        <div class="v149-output-row"><span>A-a O2 Diff</span><strong id="v149_art_aa">—</strong><span>mmHg</span></div>
+      </section>
+
+      <section class="v149-panel v149-interpretation v150-interpretation">
+        <div class="v149-panel-title">Physiological Interpretation</div>
+        <div id="v149Interpretation">Select a preset or adjust parameters, then click Start / Calculate.</div>
+      </section>
+    </div>
+  </div>
+</div>
+</section>
+
+</div>
+</div>
+</div>
+<!-- v49: removed original oversized/duplicated KB script #4 to prevent white-screen freeze; visible UI/course scripts are preserved. -->
+<!-- v49: removed original oversized/duplicated KB script #5 to prevent white-screen freeze; visible UI/course scripts are preserved. -->
+<!-- v49: removed original oversized/duplicated KB script #9 to prevent white-screen freeze; visible UI/course scripts are preserved. -->
+<script src="js/01_original_ui_core.js?v=179"></script><script src="js/02_stable_webspeech_patch.js?v=207serverstt1"></script>
+<script src="js/kb_data/00_kb_bootstrap.js?v=206"></script>
+<script src="js/kb_data/01_basic.js?v=206"></script>
+<script src="js/kb_data/02_ventilation.js?v=206"></script>
+<script src="js/kb_data/03_alveolar_gas.js?v=206"></script>
+<script src="js/kb_data/04_perfusion.js?v=206"></script>
+<script src="js/kb_data/05_normal_vq.js?v=206"></script>
+<script src="js/kb_data/06_low_vq.js?v=206"></script>
+<script src="js/kb_data/07_high_vq.js?v=206"></script>
+<script src="js/kb_data/08_shunt.js?v=206"></script>
+<script src="js/kb_data/09_diffusion.js?v=206"></script>
+<script src="js/kb_data/10_oxygen_content.js?v=206"></script>
+<script src="js/kb_data/11_integrated_disease.js?v=206"></script>
+<script src="js/kb_data/12_fine_grained_terms.js?v=206"></script>
+<script src="js/kb_data/13_ppt_lecture_questions.js?v=206"></script>
+<script src="js/46_v204_2_multilingual_language_router.js?v=206"></script>
+<script src="js/30_server_response_diversification.js?v=206"></script>
+<script src="js/31_local_llm_selector.js?v=224"></script>
+<script src="js/03_full_kb_course_specific_qa.js?v=206"></script>
+<script src="js/04_global_speech_stop_patch.js?v=186"></script>
+<script src="js/05_recognition_stop_on_submit.js?v=241125manualR720261021"></script>
+<script src="js/06_abort_guard_patch.js?v=179"></script>
+<script src="js/07_typewriter_highlight_patch.js?v=179"></script>
+<script src="js/08_script_typewriter_sync.js?v=179"></script>
+<!-- V66 patch: teacher script typewriter synchronized speech + stable controls -->
+<script src="js/09_lesson_dropdown_confirm_stop.js?v=179"></script>
+<!-- v86: course dropdown opening does not interrupt lecture; only confirmed changed option stops lecture. -->
+
+
+<!-- v100 verified patch: Stop button clears TEACHER SCRIPT completely. Built from v98. -->
+<script src="js/20_stop_clears_teacher_script_patch.js?v=179"></script>
+<!-- v101 verified patch: keep the detailed Lung Lab calculation result after Calculate -->
+
+<!-- v102 verified patch: no literal \n, no calculation-panel flash, condition-based lobe size refinement -->
+
+<!-- v104 patch: units only in calculation result; no live input redraw; calculate updates lobe sizes once -->
+
+<!-- v105 TRUE: convert literal backslash-n in case feedback / answer boxes into real line breaks -->
+
+<script src="js/25_v105_resume_after_question_mouth_sync.js?v=241125voiceR920261021"></script>
+<!-- v126: force initial voice to Yating/Zhiwei only; prevent browser default fallback -->
+<!-- v148: all-course scenario question bank + static lung reference V/Q model -->
+
+<script src="js/29_v153_course_aligned_student_results.js?v=241129vqhopkinsregion20261010"></script>
+<!-- v185: server-side Taiwan male/female TTS; identical voices on iPhone, Android, and Windows -->
+<!-- v206.1: Hopkins-reference fidelity lung model. Restores numerical compatibility with the Johns Hopkins Gas Exchange Simulator reference instead of the later v193 approximation set. -->
+<script src="js/35_hopkins_reference_lung_physiology.js?v=241129vqhopkinsregion20261010"></script>
+<!-- v199: main-project 3D avatar integration. Self-hosted Three.js + TalkingHead + dedicated male/female GLB avatars. -->
+<script type="module" src="js/40_v199_main_3d_avatar.js?v=216mergedvoice"></script>
+<script src="js/41_v200_english_ui_bilingual.js?v=202fix2"></script>
+<script src="js/42_v201_final_ui_language_teacher_voice.js?v=202fix2"></script>
+<script src="js/43_v202_strict_final.js?v=202fix2"></script>
+<script src="js/45_v204_final_voice_controller.js?v=241125answerletter"></script>
+<script src="js/49_v206_knowledge_source_nav.js?v=2067"></script>
+<script src="js/47_v204_2_single_qa_guard.js?v=KBSINGLE206"></script>
+<script src="js/51_v228_multi_question_batch.js?v=241125complete"></script>
+<script src="js/53_local_answer_feedback.js?v=241121mailfix"></script>
+<script src="js/54_site_metrics.js?v=2401"></script>
+<script src="js/55_v241_course_adaptive_ta.js?v=courseNameR1020261022"></script>
+<script src="js/57_role_access.js?v=rolesR1220261030"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+NTULUNG TA v240.1 — Node PATH deployment fix
+
+Purpose:
+- Fixes v240 deployment preflight failure on servers where Node.js exists at
+  /path/to/workdir/node-v22/bin/node but is not exported in the interactive SSH PATH.
+- No student UI, RAG, model, site-metrics, benchmark, corpus, feedback, or inference
+  behavior is changed relative to v240.
+
+Deployment sequence:
+INSTALL_FINAL.sh
+ -> INSTALL_V240_1_NODE_BOOTSTRAP_FIXED.sh
+ -> locate project-local Node.js and export PATH
+ -> INSTALL_V240_SITE_METRICS_3MODEL_REFERENCE_FLOW.sh
+ -> CHECK_V240_SITE_METRICS_3MODEL_UI.sh
+ -> existing v239.6 deployment chain
+
+Safety:
+- If Node.js truly does not exist, deployment exits before changing the running service.

@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+logs/
+*.log
+*.pid
+.env
+.DS_Store
+# User-provided reference source / generated search artifacts should not be committed publicly.
+*.pdf
+feedback/feedback.env
+feedback/feedback.sqlite3
+research/five_model_benchmark/benchmark.env
+research/five_model_benchmark/runs/

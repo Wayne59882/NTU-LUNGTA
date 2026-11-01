@@ -1,0 +1,5 @@
+NTU-LUNGTA v225 SERVER-PYTHON-COMPAT + v224 INTEGRATED SFT
+
+Base: v224 integrated SFT + 3 local model QLoRA + cloud prompt engineering.
+Fix: finetune/EVALUATE_BASE_VS_FINETUNED.py no longer uses `from __future__ import annotations`, which is unavailable on the server's older system Python and caused CHECK_V206_7.sh to abort before service startup.
+No model, RAG, UI, dataset, prompt-engineering, or fine-tuning behavior was otherwise changed.

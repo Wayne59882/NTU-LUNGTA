@@ -1,0 +1,31 @@
+R5 COMPLETE release: deployment-verifier repair (2026-10-10)
+
+This complete release retains the R5 selected-region V/Q engine, all original
+inputs, preset values, UI display values, backend, corpus and Worker code.
+It fixes a strict floating-point comparison in VERIFY_VQ_CONSERVATION.cjs.
+
+For the single-region, zero-shunt diffusion preset, end-capillary and arterial
+O2 contents are equal. The calculated PO2 values use separate numerical
+inversions. A strict endPO2 >= artPO2 assertion is not appropriate for values
+that may differ by floating-point rounding. The repaired test uses an absolute
+1e-7 mmHg rounding tolerance, requires finite pressures and also verifies
+equality within this tolerance. The alveolar/end-capillary gap still must
+exceed 20 mmHg. All O2/CO2 conservation tests retain their original tolerances.
+An added regression rejects a 0.01 mmHg ordering error, NaN and infinity.
+The verifier prints runtime version, both pressures and their actual difference.
+
+Local validation uses Node 24.19.0. The user server uses Node 22.23.2; the
+deployment runs the full repaired verifier on that actual server before it
+changes application files. No remote deployment is claimed by this package.
+
+The companion RESUME_R5_NODE22_FIX_20261010.ps1 reconstructs this exact COMPLETE
+ZIP from the already uploaded R5 archive and a small binary delta. The source
+and reconstructed archive both must match their pinned SHA256 digests. It then
+uses the same complete-release checks, backup, install, tunnel verification,
+Worker publication and public-byte/API verification as normal deployment.
+It does not upload a reduced program and does not skip any release checks.
+
+Alternatively, DEPLOY_FROM_WINDOWS.ps1 accepts -ZipPath and -ExpectedArchive
+for ordinary deployment of this complete ZIP from Windows.
+
+This change does not constitute new clinical validation of the teaching model.

@@ -1,0 +1,10 @@
+v241.9-clean-chinese-scenarios-feedback-voice
+Source: v241.8 package, upgraded without replacing the built-in physiology corpus.
+PDF: verified subset glyph repair, unknown-glyph sentence exclusion, old-course text and index migration.
+Lecture: selected-unit, evidence-grounded Traditional Chinese script prepared asynchronously; no raw PDF fallback.
+Practice: 100 distinct source concepts per selected unit; two random draws become validated Chinese applied MCQs and are cached.
+Feedback: Report visible for uploaded-course and built-in answers; saved report, optional configured email, reviewed correction memory.
+Voice: Yating female and Zhiwei male voice matched to the spoken language; unavailable match yields an explicit status.
+Persistence: v241.8 workspaces, pending uploads, feedback DB and mail settings recovered at deployment.
+Preflight: ./CHECK_V241_2_ONE_CLICK_STABLE.sh
+Deploy: ./INSTALL_FINAL.sh

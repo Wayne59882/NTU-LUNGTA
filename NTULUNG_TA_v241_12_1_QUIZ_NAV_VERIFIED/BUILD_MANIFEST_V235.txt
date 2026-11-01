@@ -1,0 +1,36 @@
+NTULUNG TA v235 — FULL HUMAN PHYSIOLOGY MULTI-TEXTBOOK AGENT
+
+Production scope
+- Human physiology across organ systems plus directly related pathophysiology.
+- Open-domain chat, weather, restaurants, resumes, finance, entertainment and unrelated topics remain out of scope.
+- The same scope gate runs before Local and BYOK Cloud answer routes.
+
+Production reference corpus
+- Guyton & Hall Textbook of Medical Physiology, 15th ed.: full indexed body, 2,644 passages, 85 chapters.
+- Vander's Human Physiology, 16th ed.: full Chapters 1-19 body, 1,610 passages.
+- Beachey Respiratory Care Anatomy and Physiology: complete Chapters 1-13 corpus, 538 passages.
+- Total: 4,792 passages.
+- Rau Respiratory Care Pharmacology is excluded from the primary physiology corpus.
+
+Retrieval / answer-agent changes
+- Source-balanced exact semantic Vector RAG: global Top16 plus equal per-book candidate quotas.
+- Exact precomputed sentence-window rerank to Top6 evidence with source-monopoly control.
+- Symmetric A/B/C/D option-contrast evidence retrieval for MCQs; no answer key is used.
+- MCQ solver extracts target polarity and binding state/timing/anatomy/threshold/range/sign/unit constraints before selecting.
+- Same-model blind verification and high-risk challenge remain active.
+- Model-structured option-consistency repair may correct only an internal contradiction between the LLM's own per-option verdict table and its emitted letter; it contains no physiology facts.
+- Condition-matched normal-value/range evidence is required instead of widening values from model memory.
+
+Serving stability / latency
+- v231 async shared-GPU serving is retained.
+- One answer model loaded at a time with cross-process lock.
+- Granite prewarm now uses the production context length (4096) instead of a tiny 256-token context, preventing a first-real-question runner reload caused by context-size mismatch.
+- Embedding Ollama remains CPU-only on 11438; answer Ollama remains 11435.
+- Optional BYOK Gemini/OpenAI fallback remains after 10 s and uses the same RAG evidence and scope decision.
+
+Benchmark integrity
+- No official exam answer is inserted into production retrieval, prompts, deterministic rules, or model training.
+- No per-question answer patch or question-ID rule.
+- The 12 already-seen items are stored only under benchmark/regression as a development regression suite.
+- The regression runner sends question + model only; expected options are read after the production answer completes for post-hoc scoring.
+- Seen regression is not an unbiased held-out benchmark. New unseen official items must be used for generalization evaluation.

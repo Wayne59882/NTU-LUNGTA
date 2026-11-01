@@ -1,0 +1,14 @@
+NTU-LUNGTA v224
+
+Base: v220 default Reference Textbook + v219 Lecture Pause/Resume + v222 question-type-aware prompt engineering + v223 QLoRA framework.
+
+Corrections in v224:
+- The 4 course/teacher examples are integrated directly into the main train.jsonl corpus. There is no teacher_gold.jsonl, no priority flag, no rehearsal repeat, and no up-weighting.
+- Main SFT corpus = 491 rows total: 371 train / 60 validation / 60 held-out test.
+- The same question-type-aware prompt engineering is used by all three local choices: Granite 4.2 8B, Gemma 4 12B, Ministral 3 8B.
+- QLoRA training pipeline now supports all three local model families using the same main SFT corpus, one model at a time.
+- A one-active-model fine-tuned router on 127.0.0.1:11439 can serve any trained adapter; untrained models automatically remain on the original Ollama path.
+- BYOK Gemini 3.8 Flash and GPT-5.6 Luna receive the same question-type response contract and calculation safeguards. Cloud weights are not fine-tuned by this package.
+- RAG continues to provide textbook grounding; fine-tuning changes response behavior/format, not the reference corpus.
+
+Important: adapter weights are generated only after actual training on the target machine. No trained weights are fabricated or bundled.

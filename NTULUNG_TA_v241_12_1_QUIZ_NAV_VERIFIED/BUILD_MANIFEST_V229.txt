@@ -1,0 +1,28 @@
+NTULUNG TA v229
+
+Purpose
+- Preserve v228 multi-question parsing and v227 physiology safeguards.
+- Replace slow per-question Reference Textbook execution with dynamic server-side LLM micro-batches.
+- Every batch item is still understood and answered by an LLM; deterministic rules never replace LLM question understanding.
+- Every batch answer receives mandatory second-pass semantic verification.
+
+Reference Textbook batch path
+- Existing v228 parser still detects 2-40 complete MCQs and preserves order.
+- v229 browser adapter submits the complete batch once to /api/reference/answer-batch.
+- Per-question semantic Vector RAG remains independent: BGE-M3, Top16 -> exact semantic window rerank -> Top5.
+- Server dynamically groups up to 8 items per LLM call, bounded by an approximate prompt-size budget.
+- Primary batch LLM call answers every item independently using only that item's evidence.
+- Mandatory batch verifier performs a second semantic pass over every item.
+- Deterministic fast validation runs on every final answer; concrete inconsistencies invoke corrective single-item review.
+- A singleton tail still receives the mandatory two-pass verifier.
+
+Cloud/BYOK
+- Off remains Local-only.
+- If Gemini/OpenAI is selected and the user supplies their own API key, Local is given a 10-second budget before cloud fallback starts.
+- Cloud uses the SAME per-question textbook evidence and the same answer + mandatory-verification micro-batch design.
+- No server-owned API key is stored.
+
+Preserved
+- Single-question Reference behavior remains the existing v227 path.
+- Query Knowledge Base behavior remains unchanged from v228.
+- Three selectable Local models, voice/STT, Yating/Zhiwei avatar/TTS, and Hopkins simulator are unchanged.

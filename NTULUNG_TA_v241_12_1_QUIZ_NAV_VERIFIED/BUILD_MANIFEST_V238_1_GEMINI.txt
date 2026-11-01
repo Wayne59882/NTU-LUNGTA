@@ -1,0 +1,9 @@
+v238.1 Gemini BYOK compatibility fix
+
+- Keeps v238 accuracy-first robust-batch behavior unchanged.
+- Keeps model id gemini-3.8-flash and v1beta generateContent endpoint.
+- Removes deprecated Gemini 3.8 sampling parameter `temperature`.
+- Uses generationConfig.thinkingConfig.thinkingLevel = medium for accuracy-first cloud fallback.
+- Keeps maxOutputTokens and x-goog-api-key authentication.
+- Raises per-Gemini call timeout from 30s to 45s to reduce false timeout on reasoning-heavy physiology batches.
+- No API keys are stored in the package.

@@ -1,0 +1,44 @@
+v237 ACCURACY-FIRST FULL-REGRESSION STABLE
+
+Goal
+- Fix the failure modes observed in prior production/local/cloud MCQ tests.
+- Preserve full Human Physiology scope and the 4,792-passage Guyton+Vander+Beachey corpus.
+- Do not memorize MOEX answers or add per-question answer rules.
+
+Previously observed failure classes addressed
+- exact normal value / condition-matched range
+- negative-polarity / EXCEPT semantics
+- threshold discrimination
+- state / phase / starting condition
+- compartment substitution
+- temporal order / early-vs-late / sign
+- set-membership and combination options
+- relationship/anatomical endpoint topology
+- option-letter vs explanation contradiction
+- batch missing/empty output
+
+Production retrieval
+- stem-dominant main Top-6
+- independent per-option diagnostic probes
+- option probes cannot alter main candidate ranking
+- batch compaction reserves probe budget
+
+Decision
+- structured A/B/C/D support/contradiction comparison
+- selective blind review for risky wording classes
+- adjudication only on disagreement
+- no same-model third-pass challenge on agreement
+- Local and BYOK Cloud follow the same accuracy-first discipline
+
+Batch reliability
+- default max 4 items per micro-batch
+- missing/empty local rows retried individually
+- numbered frontend output for every item
+
+Development regression
+- 22 previously reviewed items isolated under benchmark/regression
+- keys are post-hoc only and absent from production prompt/retrieval/model logic
+
+Serving
+- Build: v237-selective-evidence-decision-agent
+- Profile: v237-selective-evidence-decision-stable

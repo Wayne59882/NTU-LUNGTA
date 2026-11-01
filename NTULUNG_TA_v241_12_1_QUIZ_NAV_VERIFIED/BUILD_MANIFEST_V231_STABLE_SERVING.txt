@@ -1,0 +1,36 @@
+NTULUNG TA v231 — Stable Shared-GPU Serving Patch
+
+Purpose
+- Preserve the v231 MOEX benchmark-guided agent/RAG logic.
+- Fix serving failures observed when the shared RTX A5000 is heavily occupied.
+- Avoid long browser/Cloudflare HTTP requests for Local-only Q&A.
+
+Measured diagnosis before this patch
+- Granite direct test did generate successfully.
+- Cold model load dominated latency (~35.9 s in the observed test); 16-token generation itself was ~2.1 s.
+- Browser auto-warm/model switching could evict the intended answer model.
+- 15-item synchronous micro-batch could exceed the 300 s gateway timeout.
+
+Stable-serving changes
+1. Local-only single-question answering uses server-side async jobs + short browser polling.
+2. Local-only multi-question answering uses server-side async jobs + short browser polling.
+3. Local micro-batches default to 4 items instead of 8, reducing one-call timeout risk on a contended GPU.
+4. Granite is pre-warmed once from the server; stale browser state no longer auto-warms another model on page load.
+5. Selected answer model stays resident for 30 minutes unless the user explicitly switches models or Ollama must evict it.
+6. KB and Reference backends share an inter-process answer-model lock, preventing simultaneous model swaps on port 11435.
+7. /api/reference/warm-model is now correctly routed/accepted (previously returned 404 through the gateway).
+8. bge-m3 embedding Ollama is launched CPU-only on port 11438 so its VRAM is returned to the answer model.
+9. Broken client connections no longer dump avoidable BrokenPipe stack traces from the gateway.
+10. BYOK Gemini/OpenAI fallback behavior remains unchanged when the user explicitly selects a cloud provider.
+
+Not changed
+- Guyton corpus and v231 retrieval logic.
+- Top16 -> semantic rerank -> Top5 quality settings for normal Reference retrieval.
+- v231 model-centric answer -> blind self-check -> disagreement adjudication policy.
+- MOEX official answers remain post-hoc benchmark scoring only; no exam-answer training or per-question patches.
+- Hopkins lung-simulator regression behavior.
+- 3D avatars, STT, TTS, multilingual answer routing.
+
+Operational limitation
+- No software package can reclaim GPU memory owned by other Linux users without administrator permission.
+- Under extreme shared-GPU contention, Local answers may still be slower, but the website should remain responsive because Local-only work no longer depends on one long Cloudflare request.

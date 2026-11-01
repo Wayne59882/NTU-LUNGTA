@@ -1,0 +1,24 @@
+v239 — FIVE-MODEL BENCHMARK + STUDENT FEEDBACK COMPENSATION
+
+BASELINE
+- Built from v238.1 package.
+- Existing physiology corpus, RAG retrieval, Local answer logic, Cloud fallback logic, avatars, TTS/STT and lung simulator are preserved.
+
+RESEARCH-ONLY (NOT IN STUDENT WEB UI)
+- research/five_model_benchmark/benchmark_5models.py
+- Exactly 5 models: Granite 4.2 8B, Gemma 4 12B, Ministral 3 8B, GPT-5.6 Luna, Gemini 3.8 Flash.
+- Each question retrieves RAG evidence once, caches it, and gives the identical question/context to all five models.
+- Expected answer is post-hoc scoring only and never enters model prompts.
+- Captures model latency, total end-to-end latency, accuracy, availability, errors and API token metadata.
+- Quota-safe checkpoint/resume for Cloud free-tier limits.
+- Outputs raw_results.csv, summary.csv, summary.json.
+- Pairwise 3 Local x 2 Cloud comparisons = 6 comparisons, including accuracy delta, latency delta, exact McNemar and Wilcoxon approximation.
+
+STUDENT FEEDBACK COMPENSATION
+- Local AI answers show "Report this answer".
+- Reasons: incorrect / incomplete / unclear / too slow / other + optional comment.
+- POST /api/reference/feedback.
+- Save-first SQLite: feedback/feedback.sqlite3.
+- Optional SMTP email to developer via private server environment; credentials never shipped to browser.
+- Email includes question, AI answer, local model, engine, latency, source IDs and student comment.
+- Batch feedback supports selecting the specific question number.

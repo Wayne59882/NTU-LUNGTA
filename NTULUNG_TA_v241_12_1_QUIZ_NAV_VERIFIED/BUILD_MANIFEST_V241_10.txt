@@ -1,0 +1,9 @@
+v241.10-quiz-report-course-management
+Base: v241.9, preserving the built-in physiology corpus and existing retrieval behavior.
+Practice: 100 source concepts per selected unit; choose 1–10 random concepts per unit, author and verify two Chinese clinical scenarios per model call, cache validated questions, show generation metrics.
+Results: persistent quiz sessions and idempotent submissions; per-question, per-unit, and per-course statistics.
+UI: trimmed course title block; distinguish same-name saved courses and delete only the selected uploaded course with a private server code.
+Feedback: classify positive/performance/repair and specific shortcomings; preserve praise, use course evidence for reviewed correction, never treat comments as factual source.
+Migration: recover v241.9 course workspaces and feedback data before generating a deletion code; do not package user data or credentials.
+Preflight: ./CHECK_V241_2_ONE_CLICK_STABLE.sh
+Deploy: ./INSTALL_FINAL.sh

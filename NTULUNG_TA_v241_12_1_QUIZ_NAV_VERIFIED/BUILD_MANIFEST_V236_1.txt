@@ -1,0 +1,13 @@
+NTULUNG TA v236.1 deployment-fixed package
+
+Backend/agent build remains: v236-evidence-precision-decision-agent
+Serving profile remains: v236-evidence-precision-decision-stable
+
+Packaging correction:
+- CHECK_REFERENCE_RETRIEVAL_RUNTIME.sh now accepts the intentional v236 rerank mode
+  "precomputed exact semantic window vectors + stem-anchor precision"
+  and verifies stem_blend_weight=0.92.
+- No model prompt, physiology corpus, benchmark key, answer logic, vector data,
+  cloud routing, scope policy, avatar, TTS/STT, or Hopkins simulator behavior changed.
+- INSTALL_FINAL.sh remains one-command deployment and will proceed through steps 7-9
+  instead of stopping on the stale v235 exact-string assertion.

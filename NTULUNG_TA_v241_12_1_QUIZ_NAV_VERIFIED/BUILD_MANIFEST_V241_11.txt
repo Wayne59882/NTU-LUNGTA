@@ -1,0 +1,8 @@
+v241.11-instant-quiz-direct-cloud
+Base: v241.10, preserving uploaded courses, built-in physiology and report history.
+Question bank: 100 complete source-evidence choice cards per unit prepared from readable uploaded PDF statements; zero model calls on Start Quiz.
+Practice: choose 1-10 per unit, random draw, persistent graded submission and statistics; existing v241.10 workspaces rebuild the complete bank without re-uploading.
+Course deletion: selected uploaded course, browser confirmation, no server code; persistent deletion tombstone.
+Cloud Q&A: a confirmed provider key sends grounded course, reference, and batch answers directly to cloud; Off uses local; no 10-second wait.
+Preflight: ./CHECK_V241_2_ONE_CLICK_STABLE.sh
+Deploy: ./INSTALL_FINAL.sh

@@ -1,0 +1,25 @@
+NTU-LUNGTA v207 semantic Vector RAG release
+
+Core modes
+1. Query Knowledge Base: original 12,134 curated KB, Active-7, ONLY Gate 68, Local LLM only.
+2. Reference Textbook: multilingual semantic Vector RAG using local BGE-M3 multilingual embedding, compact top-k evidence, selected Local LLM, and optional user-selected BYOK Gemini/OpenAI after the 3-second public local-path budget using the same textbook evidence. No server-owned cloud API key is stored.
+
+Reference Book pipeline
+- Guyton & Hall PDF -> existing 2,644 chunks -> local embeddings -> persistent vector index.
+- Student question -> multilingual question embedding -> cosine semantic retrieval -> compact sentence-window reranking -> 3-5 focused evidence windows -> selected Local LLM.
+- No BM25 main retrieval path and no 12B/14B Local-LLM query-expansion prepass.
+- The answer prompt must directly answer the exact question first and ignore broad side topics that do not bear on the question.
+
+Regression fixes retained
+- Speech rate/pitch changes preserve the current playback position instead of jumping to the next sentence.
+- Yating/Zhiwei 3D Avatar runtime/models use pinned public CDN sources and no longer depend on deleted old server folders.
+- Conversation History removed completely.
+- V/Q speech normalized to “V Q”.
+- STT remains mandatory with browser fallback.
+- Lung simulator uses one numerical authority only: Hopkins-reference engine.
+- Initial lung values: VT 500, VD 150, RR 15, FiO2 0.21, altitude 0, VO2 300, R 0.8, Hb 15, CO 5.5, shunt 0, DLO2 32.
+- Same simulator input is deterministic across refresh/mode; legacy v153 output writer disabled.
+
+- Student-facing Reference answers do not expose internal Evidence/Context/Chunk labels or source-attribution prefaces; citations remain in the separate source UI.
+
+- v218 model update: replaces Qwen3.5 9B with IBM Granite 4.2 8B Q5_K_M for higher RAG/instruction quality at similar 8-9B compute; Gemma 4 12B and Ministral 3 8B unchanged. v216 UI cleanup and v217 5-second voice auto-submit/transcript preservation retained.

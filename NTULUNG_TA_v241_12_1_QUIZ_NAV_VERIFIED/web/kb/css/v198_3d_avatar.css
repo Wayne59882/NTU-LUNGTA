@@ -1,0 +1,115 @@
+/* v198 — self-hosted 3D avatar, no-importmap + responsive containment fix */
+.avatar-wrap{
+  width:100% !important;
+  max-width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  padding:0 !important;
+  margin:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+#avatar.vq-3d-avatar-host{
+  width:min(100%, 270px) !important;
+  max-width:100% !important;
+  aspect-ratio:13 / 16 !important;
+  height:auto !important;
+  min-height:0 !important;
+  padding:0 !important;
+  margin:8px auto 12px !important;
+  border:1px solid rgba(148,163,184,.55) !important;
+  border-radius:22px !important;
+  overflow:hidden !important;
+  background:linear-gradient(180deg,#eef6ff 0%,#f8fbff 58%,#e7eff8 100%) !important;
+  box-shadow:0 12px 26px rgba(15,23,42,.12) !important;
+  position:relative !important;
+  isolation:isolate !important;
+  box-sizing:border-box !important;
+  flex:0 1 auto !important;
+}
+#vq3dAvatarStage{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:5 !important;
+  width:100% !important;
+  height:100% !important;
+  overflow:hidden !important;
+  background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.98),rgba(226,238,250,.50) 48%,rgba(199,216,234,.68) 100%) !important;
+}
+#vq3dAvatarStage canvas{
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  display:block !important;
+  touch-action:none !important;
+}
+#vq3dAvatarLoading{
+  position:absolute !important;
+  z-index:20 !important;
+  left:10px !important;
+  right:10px !important;
+  bottom:10px !important;
+  max-width:calc(100% - 20px) !important;
+  box-sizing:border-box !important;
+  padding:8px 10px !important;
+  border-radius:10px !important;
+  background:rgba(15,23,42,.82) !important;
+  color:#fff !important;
+  font-size:12px !important;
+  line-height:1.35 !important;
+  text-align:center !important;
+  overflow-wrap:anywhere !important;
+  pointer-events:none !important;
+  transition:opacity .25s ease !important;
+}
+#vq3dAvatarLoading.vq-hidden{opacity:0 !important;visibility:hidden !important;}
+#vq3dAvatarFallback{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:3 !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  object-fit:cover !important;
+  object-position:center top !important;
+  transition:opacity .25s ease !important;
+}
+#avatar.vq-3d-ready #vq3dAvatarFallback{opacity:0 !important;pointer-events:none !important;}
+#avatar.vq-3d-ready .real-avatar-bootstrap-image,
+#avatar.vq-3d-ready .real-avatar-canvas,
+#avatar.vq-3d-ready .vq-sprite-avatar-stage{display:none !important;}
+body.speaking #avatar.vq-3d-avatar-host{
+  box-shadow:0 16px 32px rgba(37,99,235,.18),0 0 0 2px rgba(59,130,246,.10) !important;
+}
+.vq-3d-badge{
+  position:absolute !important;
+  z-index:21 !important;
+  top:9px !important;
+  left:9px !important;
+  display:flex !important;
+  gap:6px !important;
+  align-items:center !important;
+  max-width:calc(100% - 18px) !important;
+  padding:5px 8px !important;
+  border-radius:999px !important;
+  color:#0f4c81 !important;
+  background:rgba(239,248,255,.90) !important;
+  border:1px solid rgba(147,197,253,.8) !important;
+  backdrop-filter:blur(4px) !important;
+  font-size:11px !important;
+  font-weight:800 !important;
+  box-sizing:border-box !important;
+  pointer-events:none !important;
+}
+.vq-3d-badge-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.12);flex:0 0 auto;}
+.teacher-panel,.card.teacher-panel{overflow:hidden !important;min-width:0 !important;}
+@media (max-width:760px){
+  #avatar.vq-3d-avatar-host{width:min(100%, 250px) !important;border-radius:20px !important;}
+}
+@media (max-width:390px){
+  #avatar.vq-3d-avatar-host{width:min(100%, 238px) !important;margin-top:6px !important;}
+}

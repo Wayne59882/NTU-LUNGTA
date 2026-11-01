@@ -1,0 +1,9 @@
+v240 feature delta over v239.6:
+- Small English Online now / Total visitors badge in Reference and KB pages.
+- Anonymous SQLite visitor/session heartbeat counter at /api/reference/site-metrics.
+- Student-selectable model set reduced to Gemma 4 12B, Ministral 3 8B, GPT-5.6 Luna.
+- Default/pre-warmed local model changed from Granite to Gemma.
+- Gemini 3.8 Flash removed from student UI and Cloudflare provider catalog.
+- Fixed exact-source 10Q × 3-model benchmark with accuracy, inference latency, retrieval latency, question-to-reply time.
+- Summary flowchart adds Reference Textbook branch under Student Q&A.
+- Existing v239.6 RAG alias normalization, v239.4 dynamic feedback, server-private env files, and vector indexes are preserved.

@@ -1,0 +1,5 @@
+v241.7-course-lecture-quiz-fast
+Source: NTULUNG_TA_v241_6_RESUMABLE_FAST_COURSE.zip
+Fixes: uploaded-unit lecture routing through the active voice controller; 2 source-linked questions per unit unlock Scenario Practice; 100-question banks grow in background with smaller batches and partial JSON recovery; restart also resumes previously failed partial banks.
+Check: ./CHECK_V241_2_ONE_CLICK_STABLE.sh
+Deploy: ./INSTALL_V241_2_ONE_CLICK_STABLE.sh

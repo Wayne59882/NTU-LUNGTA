@@ -1,0 +1,45 @@
+/* v148: course-wide scenario question bank + static lung-reference V/Q model */
+.v148-soft-card{background:#f8fbff;border:1px solid #cfe0f3;border-radius:18px;padding:18px;box-shadow:0 12px 30px rgba(15,55,95,.08);}
+.v148-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 14px;}
+.v148-toolbar select,.v148-toolbar button,.v148-quiz-actions button,.v148-vq-top select,.v148-vq-top button{border-radius:10px;border:1px solid #b9cfe7;padding:10px 14px;background:#fff;color:#0b2f5f;font-weight:700;}
+.v148-toolbar button,.v148-quiz-actions button,.v148-vq-top button{background:linear-gradient(135deg,#0d3b78,#11979a);color:#fff;cursor:pointer;border:none;box-shadow:0 6px 14px rgba(14,88,130,.18);}
+.v148-toolbar button.secondary,.v148-quiz-actions button.secondary{background:#eef5fc;color:#0d3b78;border:1px solid #b9cfe7;box-shadow:none;}
+.v148-toolbar button:disabled,.v148-quiz-actions button:disabled{opacity:.45;cursor:not-allowed;}
+.v148-bank-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0 18px;}
+.v148-metric{background:#fff;border:1px solid #d8e5f2;border-radius:14px;padding:12px;text-align:center;}
+.v148-metric .num{font-size:24px;font-weight:900;color:#0d3b78;}
+.v148-metric .label{font-size:12px;color:#64748b;margin-top:4px;}
+.v148-quiz-layout{display:grid;grid-template-columns:minmax(220px,.86fr) minmax(360px,1.35fr);gap:16px;align-items:start;}
+.v148-course-list{max-height:520px;overflow:auto;padding-right:4px;}
+.v148-course-item{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#fff;border:1px solid #d8e5f2;border-radius:12px;padding:10px 12px;margin-bottom:8px;font-size:13px;}
+.v148-course-item strong{color:#102a55;}
+.v148-question-card{background:#fff;border:1px solid #cfe0f3;border-radius:18px;padding:20px;min-height:500px;}
+.v148-question-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px;}
+.v148-tag{display:inline-flex;align-items:center;gap:4px;background:#e8f5f5;color:#0a6f6f;border:1px solid #b9e1df;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:800;}
+.v148-question-text{font-size:20px;font-weight:900;line-height:1.4;color:#102a55;margin:12px 0 18px;}
+.v148-choice{display:block;width:100%;text-align:left;border:1px solid #d7e3f0;background:#f8fbff;border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:16px;cursor:pointer;color:#1e293b;}
+.v148-choice:hover{border-color:#138d90;background:#eefafa;}
+.v148-choice.selected{border-color:#0b83a5;background:#e8f7fb;}
+.v148-choice.correct{border-color:#2e9b56;background:#eaf8ef;color:#135c31;}
+.v148-choice.wrong{border-color:#c74545;background:#fff0f0;color:#9d2424;}
+.v148-feedback{white-space:pre-wrap;background:#fbfdff;border:1px solid #d8e5f2;border-radius:14px;padding:12px;margin-top:12px;line-height:1.55;color:#1f2a37;}
+.v148-quiz-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.v148-wrong-list{margin-top:16px;background:#fff8f8;border:1px solid #ffc9c9;border-radius:14px;padding:12px;}
+.v148-wrong-list h4{margin:0 0 8px;color:#b91c1c;}
+.v148-wrong-list li{margin:6px 0;}
+.v148-vq-wrap{background:#f7fbff;border:1px solid #cfe0f3;border-radius:18px;padding:16px;box-shadow:0 12px 30px rgba(15,55,95,.08);}
+.v148-vq-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;}
+.v148-vq-grid{display:grid;grid-template-columns:300px minmax(420px,1fr) 300px;gap:14px;align-items:start;}
+.v148-panel{background:#fff;border:1px solid #d5e3f0;border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(20,50,80,.06);}
+.v148-panel-title{font-size:18px;font-weight:900;color:#102a55;margin-bottom:12px;}
+.v148-input-row,.v148-output-row{display:grid;grid-template-columns:1fr 80px 80px;gap:8px;align-items:center;margin-bottom:8px;}
+.v148-output-row{grid-template-columns:1fr 76px 70px;}
+.v148-input-row label,.v148-output-row span:first-child{background:#eef2f6;border-radius:8px;padding:8px 10px;font-weight:700;color:#1f2937;}
+.v148-input-row input,.v148-output-value{border:1px solid #c9d8e8;background:#fff;border-radius:8px;padding:8px;text-align:center;font-weight:800;color:#102a55;}
+.v148-unit{font-size:13px;color:#334155;}
+.v148-lung-stage{position:relative;background:radial-gradient(circle at center,#fff 0%,#f4f9ff 58%,#eef6fc 100%);border:1px solid #d6e4f2;border-radius:20px;min-height:560px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.v148-lung-img{max-width:92%;max-height:540px;object-fit:contain;opacity:.96;filter:drop-shadow(0 14px 25px rgba(38,52,66,.18));}
+.v148-status-strip{position:absolute;left:16px;right:16px;bottom:14px;background:rgba(255,255,255,.88);border:1px solid #d4e2ef;border-radius:12px;padding:10px 14px;text-align:center;color:#475569;font-size:13px;}
+.v148-side-stack{display:flex;flex-direction:column;gap:12px;}
+.v148-usage{background:#eef8ff;border:1px solid #cfe8f7;border-radius:14px;padding:12px;color:#334155;line-height:1.45;font-size:13px;margin-top:12px;}
+@media(max-width:1100px){.v148-vq-grid{grid-template-columns:1fr}.v148-quiz-layout{grid-template-columns:1fr}.v148-lung-stage{min-height:430px}.v148-lung-img{max-height:410px}}

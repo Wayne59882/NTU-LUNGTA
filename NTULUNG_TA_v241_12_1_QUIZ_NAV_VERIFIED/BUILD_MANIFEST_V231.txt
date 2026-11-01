@@ -1,0 +1,13 @@
+NTULUNG TA v231 — MOEX Benchmark-Guided Agent Optimization
+
+Base: v229 semantic micro-batch.
+Production principles:
+- MOEX official answers are benchmark-only and never enter production retrieval/prompts.
+- No exam-answer training, no per-question answer patches, no added runtime knowledge validator.
+- Optimized retrieval reduces MCQ distractor pollution by stem-weighted semantic retrieval.
+- Same selected Local LLM performs primary answer + blind independent self-check; disagreements are adjudicated by the same model.
+- 10-15 year MOEX benchmark writes full diagnostic traces.
+- Post-hoc diagnosis distinguishes retrieval/reasoning/interpretation/option mapping/self-verification/corpus coverage gaps.
+- Beachey + Vander supplemental respiratory passages are A/B tested only if the Guyton trace shows a high-confidence coverage gap or unresolved coverage diagnosis.
+- Expanded sources are retained only if official-MOEX correct count strictly improves; ties keep Guyton-only.
+- Rau is not included.

@@ -1,0 +1,59 @@
+{
+ "revision": "v241.12.5-voice-fix-R9-20261021",
+ "base_archive": "LUNGTA_COMPLETE_V241_12_5_DEFAULT_VQ_ONLY_R8_20261021.zip",
+ "root_cause": "R7/R8 sent all speech audio to /api/reference/stt. The production gateway forwards that path to reference_server.py, which only serves /api/stt, so every live-text and final transcription request returned HTTP 404.",
+ "reproduced_with_real_gateway": {
+  "R8": "3 x POST /api/reference/stt -> 404; no live text; after Stop: 'Server speech recognition is temporarily unavailable'",
+  "R9": "POST /api/kb/stt -> KB /api/stt; live text during recording; final transcript submitted; answer displayed"
+ },
+ "browser_tests_chromium_fake_microphone": [
+  {
+   "page": "reference",
+   "path": "server Whisper live text",
+   "result": "text appeared at ~6 s and kept growing until Stop; recording continued 14 s; one final STT; one answer request"
+  },
+  {
+   "page": "reference",
+   "path": "browser live text with session restarts",
+   "result": "words appeared each second; browser sessions ended every 5 s and restarted (start/end x2, then stop); Stop stayed enabled; no server preview requests; one final STT; one answer request"
+  },
+  {
+   "page": "kb",
+   "path": "browser live text",
+   "result": "live text, final STT via /api/kb/stt, KB answer pipeline ran"
+  }
+ ],
+ "voice_mock_checks": "27/27 per page (reference, kb)",
+ "functional_comparison_R8_vs_R9": {
+  "identical": [
+   "11 lecture units and lecture script",
+   "typed Q&A answer",
+   "Clear",
+   "22-question scenario quiz, answer feedback, Next",
+   "V/Q 23 default values and Reset",
+   "End Capillary - Selected Region title",
+   "model selector",
+   "Lecture/Scenario/V/Q tabs",
+   "no page errors"
+  ],
+  "changed_as_intended": {
+   "V/Q Low V/Q selected-region PcCO2": "52.07 -> 46.03",
+   "High V/Q PcO2/PcCO2/PaCO2": "138.02/18.79/55.27 -> 139.22/17.39/58.41",
+   "Diffusion PaO2 (A-a)": "77.88 (20.48) -> 70.40 (27.96)",
+   "True shunt PaO2 FiO2 0.21->0.4": "41.34->46.05 -> 39.45->42.60"
+  }
+ },
+ "package_verifiers": "All verifiers that pass on R8 also pass on R9; VERIFY_V206_7_LUNG.cjs now also passes. The remaining failing legacy Python checks fail identically on R8 (old build-name assertions / missing fitz in this test machine).",
+ "deploy_simulation": [
+  "preflight: 503 files, running backend unchanged",
+  "HTML cache check",
+  "V/Q model revision and 23 defaults",
+  "payload verifiers",
+  "backup -> apply -> VERIFY_VQ_CONSERVATION -> restore on a copy of the R8 install"
+ ],
+ "not_tested": [
+  "real microphone and real Faster-Whisper/Gemma on the server",
+  "Windows PowerShell runtime",
+  "public Cloudflare publication"
+ ]
+}

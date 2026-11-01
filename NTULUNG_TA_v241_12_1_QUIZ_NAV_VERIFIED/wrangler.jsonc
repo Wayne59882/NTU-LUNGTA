@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lungta",
+  "main": "cloudflare/worker/src/index.js",
+  "compatibility_date": "2026-08-28",
+  "workers_dev": true,
+  "assets": {
+    "directory": "web",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*",
+      "/",
+      "/index.html",
+      "/reference",
+      "/reference/",
+      "/reference/index.html",
+      "/kb",
+      "/kb/",
+      "/kb/index.html"
+    ]
+  },
+  "vars": {
+    "ORIGIN_URL": "https://REPLACE-ME.trycloudflare.com"
+  }
+}

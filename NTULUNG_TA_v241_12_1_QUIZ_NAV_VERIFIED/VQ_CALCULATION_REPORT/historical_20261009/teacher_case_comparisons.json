@@ -1,0 +1,120 @@
+{
+  "note": "Manual comparison cases do not change original preset inputs.",
+  "cases": [
+    {
+      "label": "Diffusion original DLO2=16",
+      "inputs": {
+        "VT": 500,
+        "VD": 150,
+        "f": 14,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0,
+        "DLO2": 16,
+        "preset": "diffusion"
+      },
+      "alveolarPO2": 99.11241661555125,
+      "arterialPO2": 99.10945146123495,
+      "arterialPCO2": 42.269384384007886,
+      "AaDifference": 0.0029607389155899,
+      "oxygenBalanceResidual": -0.00005565873499335794,
+      "co2BalanceResidual": -0.000019136989124035608
+    },
+    {
+      "label": "Manual comparison DLO2=8",
+      "inputs": {
+        "VT": 500,
+        "VD": 150,
+        "f": 14,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0,
+        "DLO2": 8,
+        "preset": "diffusion"
+      },
+      "alveolarPO2": 99.1124081632653,
+      "arterialPO2": 92.8170911485715,
+      "arterialPCO2": 42.26938775510203,
+      "AaDifference": 6.295317014693808,
+      "oxygenBalanceResidual": 2.833826329151634e-8,
+      "co2BalanceResidual": 1.4161145145408227e-8
+    },
+    {
+      "label": "Manual comparison DLO2=5",
+      "inputs": {
+        "VT": 500,
+        "VD": 150,
+        "f": 14,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0,
+        "DLO2": 5,
+        "preset": "diffusion"
+      },
+      "alveolarPO2": 99.1124081632653,
+      "arterialPO2": 50.47309902191799,
+      "arterialPCO2": 42.26938775510203,
+      "AaDifference": 48.639309141347326,
+      "oxygenBalanceResidual": 0.000006078930539388239,
+      "co2BalanceResidual": 9.051121878655977e-7
+    },
+    {
+      "label": "True shunt original FiO2=0.21",
+      "inputs": {
+        "VT": 400,
+        "VD": 150,
+        "f": 16,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0.3,
+        "DLO2": 32,
+        "preset": "shunt"
+      },
+      "alveolarPO2": 87.72344999999999,
+      "arterialPO2": 56.384989363255755,
+      "arterialPCO2": 57.605713231521634,
+      "AaDifference": 24.362169041997078,
+      "oxygenBalanceResidual": 1.8906933973994455e-7,
+      "co2BalanceResidual": -1.6828508364596928e-7
+    },
+    {
+      "label": "True shunt manual FiO2=0.40",
+      "inputs": {
+        "VT": 400,
+        "VD": 150,
+        "f": 16,
+        "FIO2": 0.4,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0.3,
+        "DLO2": 32,
+        "preset": "shunt"
+      },
+      "alveolarPO2": 225.653,
+      "arterialPO2": 70.13277172719157,
+      "arterialPCO2": 57.7081916210387,
+      "AaDifference": 148.70280790861392,
+      "oxygenBalanceResidual": -6.506518275273265e-7,
+      "co2BalanceResidual": -2.2419038714360795e-7
+    }
+  ]
+}

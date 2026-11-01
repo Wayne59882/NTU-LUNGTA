@@ -1,0 +1,200 @@
+{
+  "revision": "v241.12.5-manual-recording-R7-20261021",
+  "base_archive": "LUNGTA_COMPLETE_V241_12_5_R5_NODE22_FIXED_20261010.zip",
+  "complete_release_files": 503,
+  "manual_stop_mock_cases_per_mode": 18,
+  "modes": [
+    "kb",
+    "reference"
+  ],
+  "real_device_microphone_tested": false,
+  "real_stt_or_model_used": false,
+  "public_deployment_performed": false,
+  "windows_powershell_runtime_tested": false,
+  "checks": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/25_v105_resume_after_question_mouth_sync.js"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/05_recognition_stop_on_submit.js"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "RELEASE/VERIFY_VOICE_MANUAL_STOP.cjs",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/25_v105_resume_after_question_mouth_sync.js"
+      ],
+      "exit_code": 0,
+      "output": "PASS a long pause never stops audio or submits a question\nPASS successive audio windows keep appending text until explicit Stop\nPASS no counters, timestamps or extra status elements are created\nPASS manual Stop includes final recorded bytes and submits full STT exactly once\nPASS unexpected recorder end waits for the student Stop before answering\nPASS mode cancellation closes capture without submitting it\nPASS a live STT response arriving after Stop cannot overwrite the final question\nPASS temporary live STT failure neither stops recording nor answers early\nPASS only one bounded PCM transcription window is in flight at a time\nPASS PCM WAV encoding has valid headers, sample rate, size and clipping\nPASS AudioWorklet capture stays connected through a muted output graph\nPASS text stays within the existing box and respects manual scrollback\nPASS the legacy browser-only fallback has no silence-submit or reconnect\nPASS browser-only manual Stop waits for final recognition results\nPASS other submission calls cannot answer while voice recording is active\nPASS a stale full-audio transcription cannot overwrite a new mode\nPASS missing live text and failed final STT never submit a listening placeholder\nPASS overlapping audio windows do not duplicate their matching boundary text\n18/18 manual-stop event/PCM mock checks passed. No microphone, real STT/model, SSH or public deployment used.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/25_v105_resume_after_question_mouth_sync.js"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/05_recognition_stop_on_submit.js"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "RELEASE/VERIFY_VOICE_MANUAL_STOP.cjs",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/25_v105_resume_after_question_mouth_sync.js"
+      ],
+      "exit_code": 0,
+      "output": "PASS a long pause never stops audio or submits a question\nPASS successive audio windows keep appending text until explicit Stop\nPASS no counters, timestamps or extra status elements are created\nPASS manual Stop includes final recorded bytes and submits full STT exactly once\nPASS unexpected recorder end waits for the student Stop before answering\nPASS mode cancellation closes capture without submitting it\nPASS a live STT response arriving after Stop cannot overwrite the final question\nPASS temporary live STT failure neither stops recording nor answers early\nPASS only one bounded PCM transcription window is in flight at a time\nPASS PCM WAV encoding has valid headers, sample rate, size and clipping\nPASS AudioWorklet capture stays connected through a muted output graph\nPASS text stays within the existing box and respects manual scrollback\nPASS the legacy browser-only fallback has no silence-submit or reconnect\nPASS browser-only manual Stop waits for final recognition results\nPASS other submission calls cannot answer while voice recording is active\nPASS a stale full-audio transcription cannot overwrite a new mode\nPASS missing live text and failed final STT never submit a listening placeholder\nPASS overlapping audio windows do not duplicate their matching boundary text\n18/18 manual-stop event/PCM mock checks passed. No microphone, real STT/model, SSH or public deployment used.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "RELEASE/INSTALL_FULL_PROGRAM.cjs"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "RELEASE/PATCH_HTML_CACHE.cjs"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--check",
+        "RELEASE/VERIFY_VOICE_MANUAL_STOP.cjs"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "RELEASE/DEPLOY_COMPLETE.sh"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "VERIFY_VQ_CONSERVATION.cjs"
+      ],
+      "exit_code": 0,
+      "output": "PASS pressure ordering accepts round-off and rejects meaningful errors or non-finite values\nPASS all eleven initial engine defaults are unchanged\nPASS both pages retain every original initial HTML input\nPASS KB and Reference use identical authoritative calculation code\nPASS normal: oxygen/CO2 conservation and content mixing\nPASS lowvq: oxygen/CO2 conservation and content mixing\nPASS highvq: oxygen/CO2 conservation and content mixing\nPASS pe: oxygen/CO2 conservation and content mixing\nPASS pneumonia: oxygen/CO2 conservation and content mixing\nPASS shunt: oxygen/CO2 conservation and content mixing\nPASS diffusion: oxygen/CO2 conservation and content mixing\nPASS anemia: oxygen/CO2 conservation and content mixing\nPASS altitude: oxygen/CO2 conservation and content mixing\nPASS Low V/Q selected-region CO2 matches that region and retains its original inputs\nPASS High V/Q separates low regional end-capillary CO2 from elevated mixed arterial CO2\n[DIFFUSION] Node 24.19.0; PAO2=98.36237142857142; endPO2=77.87928269235667; artPO2=77.87928269235422; end-minus-art=2.4442670110147446e-12 mmHg; rounding tolerance=1e-7 mmHg\nPASS Diffusion actual preset creates a visible alveolar/end-capillary oxygen gap\nPASS True shunt actual preset gives a small, content-conserving oxygen response\nPASS homogeneous ventilation matches the independent alveolar equations\nPASS regional wasted ventilation changes arterial, not whole-lung input values\nPASS lower diffusing capacity widens A-a oxygen difference\nPASS true shunt has a reduced oxygen response, without a false flat PaO2\nPASS diffusion solver agrees with the exact dissolved-only exponential limit\nPASS invalid/infeasible settings return errors, without plausible fabricated outputs\nPASS reset defaults stay original and scenario inputs match the authoritative registry\n24 checks passed. Initial defaults preserved.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "VERIFY_V241_12_4_BATCH.cjs"
+      ],
+      "exit_code": 0,
+      "output": "[OK] 5/20/41/100 questions, no-space/fullwidth options, count/order, local/cloud missing-row recovery, errors and emoji cleanup. Offline fixtures only.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "VERIFY_V241_12_5_VOICE.cjs"
+      ],
+      "exit_code": 0,
+      "output": "[OK] Reference/KB answer letters A-E, fullwidth options, Chinese/English, emoji cleanup and native utterance text; display text stays unchanged.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "RELEASE/INSTALL_FULL_PROGRAM.cjs",
+        "preflight",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED"
+      ],
+      "exit_code": 0,
+      "output": "[OK] Full release manifest verified: 503 files; running backend is unchanged.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "RELEASE/PATCH_HTML_CACHE.cjs",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED",
+        "--check-only"
+      ],
+      "exit_code": 0,
+      "output": "[OK] Existing HTML inputs and script loaders verified.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "RELEASE/INSTALL_FULL_PROGRAM.cjs",
+        "backup",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/backups/isolated_manual_fixture"
+      ],
+      "exit_code": 0,
+      "output": "[OK] Full program files backed up: 531 destinations.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "RELEASE/INSTALL_FULL_PROGRAM.cjs",
+        "apply",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/backups/isolated_manual_fixture"
+      ],
+      "exit_code": 0,
+      "output": "[OK] Complete program installed; existing configuration, corpus, courses, databases and keys retained.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "RELEASE/PATCH_HTML_CACHE.cjs",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED"
+      ],
+      "exit_code": 0,
+      "output": "[OK] Cache tags patched; other existing HTML content preserved.\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "RELEASE/INSTALL_FULL_PROGRAM.cjs",
+        "restore",
+        "RELEASE/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED",
+        "/workspace/scratch/48704b5f3de5/voice_manual_stop_20261021/manual_install_verify_s46aer_d/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/backups/isolated_manual_fixture"
+      ],
+      "exit_code": 0,
+      "output": "[OK] Original full program files restored.\n"
+    },
+    {
+      "check": "isolated complete install/cache/backup/restore/user-data retention",
+      "passed": true
+    }
+  ]
+}

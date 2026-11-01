@@ -1,0 +1,28 @@
+NTULUNG TA v232 — Semantic-Constraint Verified Stable Agent
+
+Purpose
+- Preserve v231 stable async shared-GPU serving.
+- Improve MCQ accuracy by fixing semantic-state/phase/timing/sign interpretation failures without adding exam-answer rules.
+
+Observed development failure
+- A normal quiet-inspiration MCQ was answered as +1 cm H2O even though the existing Guyton corpus already contains the decisive relation: during normal inspiration alveolar pressure is about -1 cm H2O.
+- Therefore corpus coverage is sufficient for this case; the failure is semantic interpretation/reasoning (or retrieval ranking if the exact evidence is absent from the selected Top5), not a reason to add a per-question fact patch.
+
+Production changes
+1. Remove old fact-list course_accuracy_safeguards from production prompts; keep only a compatibility alias returning generic semantic constraints.
+2. Preserve state/phase/timing/negation/comparison/reference/sign/direction qualifiers as binding MCQ constraints.
+3. Force first-pass structured fields: constraint_summary, decisive_relation, constraint_check. These are internal and are not shown to students.
+4. For conceptual MCQs with answer-agnostic semantic-risk wording (e.g. during/while/before/after/end/still/not-yet/except/comparison or signed-option sets), perform an independent blind same-model constraint verification.
+5. If primary and blind choices disagree, use same-model evidence-grounded adjudication. No official answer key is supplied.
+6. Batch primary/blind/adjudication prompts receive the same generic semantic-constraint discipline.
+7. Keep v231 Top16 -> exact semantic window rerank -> Top5 retrieval unchanged.
+8. Keep async jobs, model residency, shared model lock, CPU-only embedding, BYOK fallback, avatars/STT/TTS/Hopkins behavior unchanged.
+
+Explicit non-goals
+- No MOEX answer is inserted into retrieval, prompts, model weights, or deterministic production rules.
+- No per-question physiology validator is added.
+- The known MOEX/development items are regression/challenge items, not an untouched final test set.
+- No supplemental textbook is added for a failure already covered by Guyton.
+
+Validation limitation
+- Static acceptance verifies the new reasoning policy and corpus coverage. Actual answer accuracy/latency still must be measured on the server with the selected Ollama model and current shared-GPU load.

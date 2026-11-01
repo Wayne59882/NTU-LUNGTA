@@ -1,0 +1,26 @@
+NTULUNG TA v233 — Scope-Locked Semantic-Verified Stable Agent
+
+Scope policy
+- Reference Textbook is limited to respiratory physiology and related cardiopulmonary basic medical science.
+- Scope is enforced BEFORE any Local LLM or BYOK cloud answer call.
+- Out-of-scope questions return a fixed scope message and never invoke Gemini/OpenAI.
+- The gate uses the student wording plus existing Guyton retrieval metadata; it does not use an answer key and is not an exam-question rule patch.
+- Ambiguous questions without explicit cardiopulmonary terminology require the top semantic textbook match to fall in the approved cardiopulmonary/acid-base chapter set with sufficient similarity.
+
+In-scope examples
+- Pulmonary ventilation, mechanics, gas exchange, V/Q, diffusion, oxygen/CO2 transport, respiratory control/pathophysiology.
+- Cardiovascular physiology closely related to cardiopulmonary basic medicine: cardiac output, venous return, pressure/flow/resistance, ECG/arrhythmia, pulmonary circulation, shock.
+- Acid-base physiology relevant to cardiopulmonary interpretation.
+
+Out-of-scope examples
+- General conversation or emotional-support chat.
+- Weather, restaurants, resumes, unrelated general knowledge.
+- Renal/GI/endocrine questions that do not materially concern the cardiopulmonary scope.
+
+Preserved from v232/v231 stable
+- Semantic Vector RAG over 2,644 Guyton passages.
+- Top16 -> exact semantic-window rerank -> Top5 evidence.
+- Semantic state/phase/timing/sign/negation constraints and blind same-model verification for risky MCQs.
+- Async single/batch serving, shared model lock, CPU-only embedding, Granite prewarm, BYOK fallback for IN-SCOPE questions only.
+- No MOEX answers in production retrieval/prompt/model weights.
+- 3D avatar, STT/TTS, Hopkins simulator behavior retained.

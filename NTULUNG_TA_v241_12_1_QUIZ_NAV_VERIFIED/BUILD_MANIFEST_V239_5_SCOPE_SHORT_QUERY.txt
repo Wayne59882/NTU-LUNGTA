@@ -1,0 +1,6 @@
+v239.5 short physiology query scope regression fix
+- Preserves v238.1 inference/RAG behavior
+- Preserves v239.4 dynamic batch feedback (All / One / Multiple)
+- Accepts Chinese-adjacent physiology abbreviations such as 什麼是V/Q
+- Normalizes Unicode subscripts and slash variants (PaO₂, HCO₃⁻, V／Q, V∕Q)
+- Adds pre-deployment regression checks for valid and invalid short queries

@@ -1,0 +1,14 @@
+{
+  "base_version": "v241.12.5",
+  "changed_original_files": [
+    "CHECK_HOPKINS_REFERENCE.sh",
+    "VERIFY_HOPKINS_LUNG_REFERENCE.cjs",
+    "web/kb/index.html",
+    "web/kb/js/35_hopkins_reference_lung_physiology.js",
+    "web/reference/index.html",
+    "web/reference/js/35_hopkins_reference_lung_physiology.js"
+  ],
+  "initial_inputs_unchanged": true,
+  "all_original_preset_inputs_unchanged": true,
+  "other_original_files_byte_identical": true
+}

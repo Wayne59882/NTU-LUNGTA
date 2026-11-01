@@ -1,0 +1,1893 @@
+{
+  "lowvq": {
+    "ok": true,
+    "s": {
+      "VT": 350,
+      "VD": 180,
+      "f": 28,
+      "FIO2": 0.21,
+      "Altitude": 0,
+      "VO2": 300,
+      "R": 0.8,
+      "Hb": 15,
+      "QT": 5.5,
+      "Shunt": 0.08,
+      "DLO2": 32,
+      "preset": "lowvq"
+    },
+    "errors": [],
+    "warnings": [
+      "Regional teaching assumption: affected unit receives 20% of total alveolar ventilation and 50% of ventilated perfusion. Whole-lung input values are unchanged.",
+      "Low V/Q teaching preset includes compensatory breathing (28/min); changing the displayed inputs changes the computed result.",
+      "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. Compensation is specified by the displayed respiratory rate; no additional automatic compensation is applied."
+    ],
+    "Pb": 759.78,
+    "PIO2": 149.6838,
+    "VE": 9.8,
+    "VA": 4.76,
+    "VCO2": 240,
+    "PACO2": 44.11764704792856,
+    "PAO2": 96.85291777993633,
+    "extraction": 5.454545454545454,
+    "oxygenSupplyLimited": false,
+    "diffusionEffectiveness": 0.826671975261043,
+    "mvPO2": 35.52286518834385,
+    "mvPCO2": 55.68186755668975,
+    "mvSat": 0.6124953494919175,
+    "mixedVenousO2Content": 12.356475585403382,
+    "mixedVenousCO2Content": 57.519956370135866,
+    "mvPH": 7.299629997951949,
+    "mvHCO3": 26.452397830827913,
+    "endPO2": 62.79164027926143,
+    "endPCO2": 46.91727570223023,
+    "endSat": 0.9048477200592419,
+    "endCapO2Content": 18.28532932202267,
+    "endCO2Content": 52.77687336814333,
+    "artPO2": 57.96762916700615,
+    "artPCO2": 47.58549128609736,
+    "artSat": 0.8818559067795888,
+    "arterialO2Content": 17.811021023093126,
+    "arterialCO2Content": 53.15632000830274,
+    "artPH": 7.347683714325249,
+    "artHCO3": 25.25105492149539,
+    "idealAlveolarPO2": 92.7001741848984,
+    "aaGradient": 34.73254501789225,
+    "units": [
+      {
+        "r": [
+          -2.8129207407801005e-8,
+          3.57511993342996e-8
+        ],
+        "pa": 59.57921698151783,
+        "pc": 52.073586307189785,
+        "o2": 16.666077491752795,
+        "co2": 55.28058633601234,
+        "sat": 0.8256588912375031,
+        "ecPO2": 50.96655566757677,
+        "o2Flux": 109.03292823064015,
+        "co2Flux": 56.65606186332518,
+        "effectiveness": 0.6533968761905153,
+        "va": 0.952,
+        "q": 2.5300000000000002,
+        "dl": 16,
+        "localResidual": 3.57511993342996e-8
+      },
+      {
+        "r": [
+          5.749711817770731e-11,
+          2.3247537228598958e-10
+        ],
+        "pa": 106.17134297954094,
+        "pc": 42.128662233113246,
+        "o2": 19.90458115229254,
+        "co2": 50.27316040027432,
+        "sat": 0.979303942097595,
+        "ecPO2": 106.16743678021341,
+        "o2Flux": 190.96707084229573,
+        "co2Flux": 183.3439380374971,
+        "effectiveness": 0.9999470743315706,
+        "va": 3.808,
+        "q": 2.5300000000000002,
+        "dl": 16,
+        "localResidual": 2.3247537228598958e-10
+      }
+    ],
+    "profile": {
+      "va": 0.2,
+      "q": 0.5
+    },
+    "solverResidual": 9.270640930481022e-7,
+    "oxygenBalanceResidual": -9.270640930481022e-7,
+    "co2BalanceResidual": -9.917823717842111e-8,
+    "modelRevision": "v241.12.5-VQ-default-reference-R4-20261010"
+  },
+  "highvq": {
+    "ok": true,
+    "s": {
+      "VT": 650,
+      "VD": 280,
+      "f": 18,
+      "FIO2": 0.21,
+      "Altitude": 0,
+      "VO2": 300,
+      "R": 0.8,
+      "Hb": 15,
+      "QT": 3.4,
+      "Shunt": 0.02,
+      "DLO2": 32,
+      "preset": "highvq"
+    },
+    "errors": [],
+    "warnings": [
+      "Regional teaching assumption: affected unit receives 70% of total alveolar ventilation and 10% of ventilated perfusion. Whole-lung input values are unchanged.",
+      "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+    ],
+    "Pb": 759.78,
+    "PIO2": 149.6838,
+    "VE": 11.7,
+    "VA": 6.66,
+    "VCO2": 240,
+    "PACO2": 31.53153185297033,
+    "PAO2": 111.92478925456473,
+    "extraction": 8.823529411764707,
+    "oxygenSupplyLimited": false,
+    "diffusionEffectiveness": 0.6265866554388873,
+    "mvPO2": 21.520215717838028,
+    "mvPCO2": 69.8691478840475,
+    "mvSat": 0.23176135966768258,
+    "mixedVenousO2Content": 4.699787840507166,
+    "mixedVenousCO2Content": 64.20360350489814,
+    "mvPH": 7.2290879577501,
+    "mvHCO3": 28.215948835874112,
+    "endPO2": 39.184781578160965,
+    "endPCO2": 54.99162659501602,
+    "endSat": 0.6792917643518057,
+    "endCapO2Content": 13.703389631770914,
+    "endCO2Content": 57.0007221206574,
+    "artPO2": 38.69757537810514,
+    "artPCO2": 55.27058450895695,
+    "artSat": 0.670361243490516,
+    "arterialO2Content": 13.52331759594564,
+    "arterialCO2Content": 57.144779748342216,
+    "artPH": 7.301912054120205,
+    "artHCO3": 26.395346426621476,
+    "idealAlveolarPO2": 83.49727505052404,
+    "aaGradient": 44.799699672418896,
+    "units": [
+      {
+        "r": [
+          2.300162975643616e-7,
+          -0.000001100722702318535
+        ],
+        "pa": 138.02093134464698,
+        "pc": 18.792334746821844,
+        "o2": 20.318717699088687,
+        "co2": 34.15391401038513,
+        "sat": 0.9952327452527373,
+        "ecPO2": 138.02093134464698,
+        "o2Flux": 52.04227428879362,
+        "co2Flux": 100.12556539571735,
+        "effectiveness": 1,
+        "va": 4.662,
+        "q": 0.3332,
+        "dl": 3.2,
+        "localResidual": 0.000001100722702318535
+      },
+      {
+        "r": [
+          -0.0000015719013859438746,
+          2.576639985818474e-7
+        ],
+        "pa": 51.0337910443728,
+        "pc": 61.256325100650116,
+        "o2": 12.968353179846716,
+        "co2": 59.53925635513209,
+        "sat": 0.6426584280307617,
+        "ecPO2": 38.39487307716021,
+        "o2Flux": 247.9577373961144,
+        "co2Flux": 139.87444232718434,
+        "effectiveness": 0.5850962838209858,
+        "va": 1.9980000000000004,
+        "q": 2.9988,
+        "dl": 28.8,
+        "localResidual": 0.0000015719013859438746
+      }
+    ],
+    "profile": {
+      "va": 0.7,
+      "q": 0.1
+    },
+    "solverResidual": 0.000011684908145070949,
+    "oxygenBalanceResidual": 0.000011684908145070949,
+    "co2BalanceResidual": 0.00000772290141526355,
+    "modelRevision": "v241.12.5-VQ-default-reference-R4-20261010"
+  },
+  "diffusion": {
+    "ok": true,
+    "s": {
+      "VT": 500,
+      "VD": 150,
+      "f": 14,
+      "FIO2": 0.21,
+      "Altitude": 0,
+      "VO2": 300,
+      "R": 0.8,
+      "Hb": 15,
+      "QT": 5.5,
+      "Shunt": 0,
+      "DLO2": 16,
+      "preset": "diffusion"
+    },
+    "errors": [],
+    "warnings": [
+      "Diffusion teaching preset uses reduction of the displayed O2 diffusing capacity (16 mL/min/mmHg).",
+      "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+    ],
+    "Pb": 759.78,
+    "PIO2": 149.6838,
+    "VE": 7,
+    "VA": 4.9,
+    "VCO2": 240,
+    "PACO2": 42.857142857142854,
+    "PAO2": 98.36237142857142,
+    "extraction": 5.454545454545454,
+    "oxygenSupplyLimited": false,
+    "diffusionEffectiveness": 0.6699204017389131,
+    "mvPO2": 38.31938814738729,
+    "mvPCO2": 50.41840629712945,
+    "mvSat": 0.6836828402984468,
+    "mixedVenousO2Content": 13.7886149704111,
+    "mixedVenousCO2Content": 55.090161111314046,
+    "mvPH": 7.330075177066263,
+    "mvHCO3": 25.69126835297005,
+    "endPO2": 77.87928269235422,
+    "endPCO2": 42.857142857142826,
+    "endSat": 0.9504761282349529,
+    "endCapO2Content": 19.243160412776213,
+    "endCO2Content": 50.72652475694834,
+    "artPO2": 77.87928269235422,
+    "artPCO2": 42.857142857142826,
+    "artSat": 0.9504761282349529,
+    "arterialO2Content": 19.243160412776213,
+    "arterialCO2Content": 50.72652475694834,
+    "artPH": 7.379316265017518,
+    "artHCO3": 24.460241154188655,
+    "idealAlveolarPO2": 98.36237142857146,
+    "aaGradient": 20.48308873621724,
+    "units": [
+      {
+        "r": [
+          -1.1362713792095747e-7,
+          9.105113463192538e-8
+        ],
+        "pa": 98.36237142857142,
+        "pc": 42.857142857142854,
+        "o2": 19.243160412776213,
+        "co2": 50.72652475694834,
+        "sat": 0.9504761282349571,
+        "ecPO2": 77.87928269235667,
+        "o2Flux": 299.9999993300812,
+        "co2Flux": 239.99999949011365,
+        "effectiveness": 0.6699204017389131,
+        "va": 4.9,
+        "q": 5.5,
+        "dl": 16,
+        "localResidual": 1.1362713792095747e-7
+      }
+    ],
+    "profile": {
+      "va": 1,
+      "q": 1
+    },
+    "solverResidual": 6.699187906633597e-7,
+    "oxygenBalanceResidual": -6.699187906633597e-7,
+    "co2BalanceResidual": -5.098863482544402e-7,
+    "modelRevision": "v241.12.5-VQ-default-reference-R4-20261010"
+  },
+  "shunt": {
+    "ok": true,
+    "s": {
+      "VT": 400,
+      "VD": 150,
+      "f": 16,
+      "FIO2": 0.21,
+      "Altitude": 0,
+      "VO2": 300,
+      "R": 0.8,
+      "Hb": 15,
+      "QT": 5.5,
+      "Shunt": 0.5,
+      "DLO2": 32,
+      "preset": "shunt"
+    },
+    "errors": [],
+    "warnings": [
+      "True shunt teaching preset uses 50% bypass flow. Supplemental oxygen has a reduced arterial effect, not an exactly zero effect.",
+      "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+    ],
+    "Pb": 759.78,
+    "PIO2": 149.6838,
+    "VE": 6.4,
+    "VA": 4,
+    "VCO2": 240,
+    "PACO2": 52.50000017621418,
+    "PAO2": 86.81504608849623,
+    "extraction": 5.454545454545454,
+    "oxygenSupplyLimited": false,
+    "diffusionEffectiveness": 0.9997353523074508,
+    "mvPO2": 29.284668269979058,
+    "mvPCO2": 70.59768417970749,
+    "mvSat": 0.4188049659953302,
+    "mixedVenousO2Content": 8.463953324716542,
+    "mixedVenousCO2Content": 63.70413578450135,
+    "mvPH": 7.225833461727726,
+    "mvHCO3": 28.297311236433487,
+    "endPO2": 86.79907675479015,
+    "endPCO2": 52.500000176214044,
+    "endSat": 0.9556323909398898,
+    "endCapO2Content": 19.373045049062164,
+    "endCO2Content": 54.97686302794362,
+    "artPO2": 41.33717472173615,
+    "artPCO2": 61.20931375813018,
+    "artSat": 0.6897243831362417,
+    "arterialO2Content": 13.918499186889353,
+    "arterialCO2Content": 59.340499406222484,
+    "artPH": 7.27037211750039,
+    "artHCO3": 27.183844842116873,
+    "idealAlveolarPO2": 76.3856467746391,
+    "aaGradient": 35.04847205290295,
+    "units": [
+      {
+        "r": [
+          -1.3793055586575065e-10,
+          4.661870889322017e-11
+        ],
+        "pa": 86.81504608849623,
+        "pc": 52.50000017621418,
+        "o2": 19.373045049062164,
+        "co2": 54.97686302794362,
+        "sat": 0.9556323909398896,
+        "ecPO2": 86.79907675479001,
+        "o2Flux": 300.0000224195046,
+        "co2Flux": 240.0000008053374,
+        "effectiveness": 0.9997353523074508,
+        "va": 4,
+        "q": 2.75,
+        "dl": 32,
+        "localResidual": 1.3793055586575065e-10
+      }
+    ],
+    "profile": {
+      "va": 1,
+      "q": 1
+    },
+    "solverResidual": 0.000022419504603021778,
+    "oxygenBalanceResidual": 0.000022419504603021778,
+    "co2BalanceResidual": 8.053374074279418e-7,
+    "modelRevision": "v241.12.5-VQ-default-reference-R4-20261010"
+  },
+  "shunt_fio2_040": {
+    "ok": true,
+    "s": {
+      "VT": 400,
+      "VD": 150,
+      "f": 16,
+      "FIO2": 0.4,
+      "Altitude": 0,
+      "VO2": 300,
+      "R": 0.8,
+      "Hb": 15,
+      "QT": 5.5,
+      "Shunt": 0.5,
+      "DLO2": 32,
+      "preset": "shunt"
+    },
+    "errors": [],
+    "warnings": [
+      "True shunt teaching preset uses 50% bypass flow. Supplemental oxygen has a reduced arterial effect, not an exactly zero effect.",
+      "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+    ],
+    "Pb": 759.78,
+    "PIO2": 285.112,
+    "VE": 6.4,
+    "VA": 4,
+    "VCO2": 240,
+    "PACO2": 52.5,
+    "PAO2": 224.73700000000002,
+    "extraction": 5.454545454545454,
+    "oxygenSupplyLimited": false,
+    "diffusionEffectiveness": 1,
+    "mvPO2": 31.99702958200353,
+    "mvPCO2": 70.88529082358471,
+    "mvSat": 0.4804090491825775,
+    "mixedVenousO2Content": 9.704172072397562,
+    "mixedVenousCO2Content": 63.549647351844385,
+    "mvPH": 7.224557202041572,
+    "mvHCO3": 28.329217728587288,
+    "endPO2": 224.73700000000107,
+    "endPCO2": 52.49999999999986,
+    "endSat": 0.9969525990597076,
+    "endCapO2Content": 20.61326298119415,
+    "endCO2Content": 54.82237462462697,
+    "artPO2": 46.053142839500794,
+    "artPCO2": 61.43906173037003,
+    "artSat": 0.7510279049138895,
+    "arterialO2Content": 15.158717526795856,
+    "arterialCO2Content": 59.18601098823568,
+    "artPH": 7.269209257224018,
+    "artHCO3": 27.212916349026127,
+    "idealAlveolarPO2": 214.4570790100745,
+    "aaGradient": 168.4039361705737,
+    "units": [
+      {
+        "r": [
+          -1.1954170986427926e-9,
+          3.327187414470245e-10
+        ],
+        "pa": 224.73700000000002,
+        "pc": 52.5,
+        "o2": 20.61326298119415,
+        "co2": 54.82237462462697,
+        "sat": 0.9969525990597076,
+        "ecPO2": 224.73700000000002,
+        "o2Flux": 299.9999999919062,
+        "co2Flux": 239.99999999847898,
+        "effectiveness": 1,
+        "va": 4,
+        "q": 2.75,
+        "dl": 32,
+        "localResidual": 1.1954170986427926e-9
+      }
+    ],
+    "profile": {
+      "va": 1,
+      "q": 1
+    },
+    "solverResidual": 8.093820724752732e-9,
+    "oxygenBalanceResidual": -8.093820724752732e-9,
+    "co2BalanceResidual": -1.5211867321340833e-9,
+    "modelRevision": "v241.12.5-VQ-default-reference-R4-20261010"
+  },
+  "true_shunt_fio2_series": [
+    {
+      "shunt": 0,
+      "FiO2": 0.21,
+      "PaO2": 85.4037685926805,
+      "CaO2": 19.328719923903023,
+      "CvO2": 13.874174532178804,
+      "oxygen_balance_residual": -0.0000034551679846117622,
+      "CO2_balance_residual": -0.000002929165532350453
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.22,
+      "PaO2": 93.75156847402977,
+      "CaO2": 19.563084508042344,
+      "CvO2": 14.108537983166963,
+      "oxygen_balance_residual": 0.00005886814597033663,
+      "CO2_balance_residual": 0.00000154284961695339
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.23,
+      "PaO2": 101.28340692913795,
+      "CaO2": 19.723942445979493,
+      "CvO2": 14.26939699439981,
+      "oxygen_balance_residual": -1.631174200156238e-7,
+      "CO2_balance_residual": 1.1277847988822032e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.24,
+      "PaO2": 108.58689734380889,
+      "CaO2": 19.848052118720954,
+      "CvO2": 14.393506675707242,
+      "oxygen_balance_residual": -6.342457936625578e-7,
+      "CO2_balance_residual": -3.299376771792595e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.25,
+      "PaO2": 115.85084504997312,
+      "CaO2": 19.948987037671507,
+      "CvO2": 14.494441604275721,
+      "oxygen_balance_residual": -0.0000011632317296061956,
+      "CO2_balance_residual": -1.2331551602073887e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.26,
+      "PaO2": 123.11027673714037,
+      "CaO2": 20.033283776046446,
+      "CvO2": 14.578738349749935,
+      "oxygen_balance_residual": -0.0000015536919022451912,
+      "CO2_balance_residual": -2.1818379991600523e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.27,
+      "PaO2": 130.36934893856156,
+      "CaO2": 20.10511793186465,
+      "CvO2": 14.650572507051653,
+      "oxygen_balance_residual": -0.0000016352850593648327,
+      "CO2_balance_residual": -2.714410243243037e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.28,
+      "PaO2": 137.6283999594996,
+      "CaO2": 20.16744433716209,
+      "CvO2": 14.712898905323534,
+      "oxygen_balance_residual": -0.000001248879357262922,
+      "CO2_balance_residual": -2.380570833793172e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.29,
+      "PaO2": 144.88744999864522,
+      "CaO2": 20.222416428088735,
+      "CvO2": 14.767870978544115,
+      "oxygen_balance_residual": -2.7504592026161845e-7,
+      "CO2_balance_residual": -8.271507567769731e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.3,
+      "PaO2": 152.14649999999708,
+      "CaO2": 20.271629347472743,
+      "CvO2": 14.81708386809522,
+      "oxygen_balance_residual": 0.0000013657636941388773,
+      "CO2_balance_residual": 2.1842058117726992e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.31,
+      "PaO2": 159.4055499999989,
+      "CaO2": 20.316281189312473,
+      "CvO2": 14.861735667009999,
+      "oxygen_balance_residual": 0.0000037266361232468626,
+      "CO2_balance_residual": 6.807875934100593e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.32,
+      "PaO2": 166.66460000000072,
+      "CaO2": 20.357283318336222,
+      "CvO2": 14.902737739285826,
+      "oxygen_balance_residual": 0.000006847771828688565,
+      "CO2_balance_residual": 0.0000013146178048373258
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.33,
+      "PaO2": 173.92365000000254,
+      "CaO2": 20.39533714224559,
+      "CvO2": 14.940791491944633,
+      "oxygen_balance_residual": 0.000010766552691165998,
+      "CO2_balance_residual": 0.0000021281805970829737
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.34,
+      "PaO2": 181.18269780461205,
+      "CaO2": 20.4309883289907,
+      "CvO2": 14.976442602892723,
+      "oxygen_balance_residual": 0.000014935388776393665,
+      "CO2_balance_residual": 5.253697565876791e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.35,
+      "PaO2": 188.44174704121386,
+      "CaO2": 20.464665683526903,
+      "CvO2": 15.010119857767796,
+      "oxygen_balance_residual": 0.000020416750885488,
+      "CO2_balance_residual": 7.282520186890906e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.36,
+      "PaO2": 195.70079616778102,
+      "CaO2": 20.49670926693675,
+      "CvO2": 15.042163324591247,
+      "oxygen_balance_residual": 0.000026829002763406606,
+      "CO2_balance_residual": 9.668098925885715e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.37,
+      "PaO2": 202.9598451807253,
+      "CaO2": 20.52739111745415,
+      "CvO2": 15.072845040374945,
+      "oxygen_balance_residual": 0.00003423935629598418,
+      "CO2_balance_residual": 0.000001243376800630358
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.38,
+      "PaO2": 210.21889407557026,
+      "CaO2": 20.556930602429325,
+      "CvO2": 15.102384371054711,
+      "oxygen_balance_residual": 0.000042725603805138235,
+      "CO2_balance_residual": 0.0000015606958072567068
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.39,
+      "PaO2": 217.47794284701527,
+      "CaO2": 20.585505943328847,
+      "CvO2": 15.13095953648473,
+      "oxygen_balance_residual": 0.00005237642648125984,
+      "CO2_balance_residual": 0.0000019218772706608434
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.4,
+      "PaO2": 224.7369914890065,
+      "CaO2": 20.613262948509146,
+      "CvO2": 15.158716343207535,
+      "oxygen_balance_residual": 0.00006329158856033246,
+      "CO2_balance_residual": 0.0000023305266836359806
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.41,
+      "PaO2": 231.99603999482932,
+      "CaO2": 20.64032169137082,
+      "CvO2": 15.185774862604193,
+      "oxygen_balance_residual": 0.00007558216441339027,
+      "CO2_balance_residual": 0.00000279066375696857
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.42,
+      "PaO2": 239.25508835720066,
+      "CaO2": 20.666781661566123,
+      "CvO2": 15.212234582097025,
+      "oxygen_balance_residual": 0.00008937080036730549,
+      "CO2_balance_residual": 0.0000033067616413973155
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.43,
+      "PaO2": 246.51414999999943,
+      "CaO2": 20.69272581906956,
+      "CvO2": 15.238180364759563,
+      "oxygen_balance_residual": -1.2950067684869282e-8,
+      "CO2_balance_residual": -2.4970177037175745e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.44,
+      "PaO2": 253.77320000000125,
+      "CaO2": 20.71822354595138,
+      "CvO2": 15.263678091680582,
+      "oxygen_balance_residual": -1.510619540567859e-8,
+      "CO2_balance_residual": -2.885087724280311e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.45,
+      "PaO2": 261.032249999996,
+      "CaO2": 20.743333395905978,
+      "CvO2": 15.288787941678875,
+      "oxygen_balance_residual": -1.750930778143811e-8,
+      "CO2_balance_residual": -3.305586915303138e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.46,
+      "PaO2": 268.2912999999978,
+      "CaO2": 20.7681048870215,
+      "CvO2": 15.313559432843036,
+      "oxygen_balance_residual": -2.0184415916446596e-8,
+      "CO2_balance_residual": -3.834344397546374e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.47,
+      "PaO2": 275.55034999999964,
+      "CaO2": 20.792580118991644,
+      "CvO2": 15.338034664867157,
+      "oxygen_balance_residual": -2.3153233996708877e-8,
+      "CO2_balance_residual": -4.377938012112281e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.48,
+      "PaO2": 282.80940000000146,
+      "CaO2": 20.816795040083218,
+      "CvO2": 15.362249586018553,
+      "oxygen_balance_residual": -2.6443444767210167e-8,
+      "CO2_balance_residual": -5.022741333959857e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.49,
+      "PaO2": 290.0684499999961,
+      "CaO2": 20.84078047252376,
+      "CvO2": 15.386235018525255,
+      "oxygen_balance_residual": -3.008216253874707e-8,
+      "CO2_balance_residual": -5.669903657690156e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.5,
+      "PaO2": 297.32749999999794,
+      "CaO2": 20.8645629469333,
+      "CvO2": 15.41001749300784,
+      "oxygen_balance_residual": -3.40996848535724e-8,
+      "CO2_balance_residual": -6.4605103489157045e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.51,
+      "PaO2": 304.58654999999976,
+      "CaO2": 20.888165384907655,
+      "CvO2": 15.433619931062736,
+      "oxygen_balance_residual": -3.852949248539517e-8,
+      "CO2_balance_residual": -7.279993496922543e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.52,
+      "PaO2": 311.8456000000016,
+      "CaO2": 20.911607660160726,
+      "CvO2": 15.45706220640445,
+      "oxygen_balance_residual": -4.340478199083009e-8,
+      "CO2_balance_residual": -8.201908485716558e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.53,
+      "PaO2": 319.10464999999635,
+      "CaO2": 20.93490706201473,
+      "CvO2": 15.48036160835588,
+      "oxygen_balance_residual": -4.876324055658188e-8,
+      "CO2_balance_residual": -9.257462352252332e-9
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.54,
+      "PaO2": 326.3636999999982,
+      "CaO2": 20.958078679959545,
+      "CvO2": 15.5035332264076,
+      "oxygen_balance_residual": -5.4643010116706137e-8,
+      "CO2_balance_residual": -1.0339192613173509e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.55,
+      "PaO2": 333.62275,
+      "CaO2": 20.98113572409703,
+      "CvO2": 15.526590270662263,
+      "oxygen_balance_residual": -6.108786010372569e-8,
+      "CO2_balance_residual": -1.15514353637991e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.56,
+      "PaO2": 340.8818000000018,
+      "CaO2": 21.00408979325853,
+      "CvO2": 15.549544339951986,
+      "oxygen_balance_residual": -6.814008202127297e-8,
+      "CO2_balance_residual": -1.2893451639683917e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.57,
+      "PaO2": 348.1408499999965,
+      "CaO2": 21.02695110022303,
+      "CvO2": 15.57240564705662,
+      "oxygen_balance_residual": -7.584742434119107e-8,
+      "CO2_balance_residual": -1.4346824173117056e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.58,
+      "PaO2": 355.3998999999983,
+      "CaO2": 21.049728661612725,
+      "CvO2": 15.595183208599282,
+      "oxygen_balance_residual": -8.426064823652268e-8,
+      "CO2_balance_residual": -1.5966691080393502e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.59,
+      "PaO2": 362.6589500000001,
+      "CaO2": 21.072430458583657,
+      "CvO2": 15.617885005736927,
+      "oxygen_balance_residual": -9.342983275928418e-8,
+      "CO2_balance_residual": -1.7673698948783567e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.6,
+      "PaO2": 369.91800000000194,
+      "CaO2": 21.095063573273706,
+      "CvO2": 15.640518120608473,
+      "oxygen_balance_residual": -1.034122192322684e-7,
+      "CO2_balance_residual": -1.958312623173697e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.61,
+      "PaO2": 377.1770499999967,
+      "CaO2": 21.11763430505022,
+      "CvO2": 15.66308885258228,
+      "oxygen_balance_residual": -1.1426328683228348e-7,
+      "CO2_balance_residual": -2.161760903618415e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.62,
+      "PaO2": 384.43609999999853,
+      "CaO2": 21.140148269863648,
+      "CvO2": 15.685602817609977,
+      "oxygen_balance_residual": -1.2604812127392506e-7,
+      "CO2_balance_residual": -2.3869802134868223e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.63,
+      "PaO2": 391.69515000000035,
+      "CaO2": 21.16261048542297,
+      "CvO2": 15.70806503340163,
+      "oxygen_balance_residual": -1.388262376167404e-7,
+      "CO2_balance_residual": -2.6318929258195567e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.64,
+      "PaO2": 398.9542000000022,
+      "CaO2": 21.185025444431492,
+      "CvO2": 15.730479992661772,
+      "oxygen_balance_residual": -1.5266539321601158e-7,
+      "CO2_balance_residual": -2.8934152851434192e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.65,
+      "PaO2": 406.21324999999683,
+      "CaO2": 21.207397177735537,
+      "CvO2": 15.752851726237921,
+      "oxygen_balance_residual": -1.6763112853368511e-7,
+      "CO2_balance_residual": -3.1704132652521366e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.66,
+      "PaO2": 413.47229999999865,
+      "CaO2": 21.22972930892443,
+      "CvO2": 15.775183857720803,
+      "oxygen_balance_residual": -1.8380052324573626e-7,
+      "CO2_balance_residual": -3.477464360912563e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.67,
+      "PaO2": 420.7313500000005,
+      "CaO2": 21.252025101663417,
+      "CvO2": 15.797479650776944,
+      "oxygen_balance_residual": -2.0124400634813355e-7,
+      "CO2_balance_residual": -3.807963366853073e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.68,
+      "PaO2": 427.9904000000023,
+      "CaO2": 21.274287500831203,
+      "CvO2": 15.819742050286424,
+      "oxygen_balance_residual": -2.20037122744543e-7,
+      "CO2_balance_residual": -4.160307298661792e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.69,
+      "PaO2": 435.24944999999707,
+      "CaO2": 21.296519168360785,
+      "CvO2": 15.841973718183636,
+      "oxygen_balance_residual": -2.4025683842410217e-7,
+      "CO2_balance_residual": -4.546180321085558e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.7,
+      "PaO2": 442.5084999999989,
+      "CaO2": 21.31872251453963,
+      "CvO2": 15.864177064757449,
+      "oxygen_balance_residual": -2.619800625325297e-7,
+      "CO2_balance_residual": -4.953508891958336e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.71,
+      "PaO2": 449.7675500000007,
+      "CaO2": 21.34089972540698,
+      "CvO2": 15.886354276048548,
+      "oxygen_balance_residual": -2.8528620532597415e-7,
+      "CO2_balance_residual": -5.396910296440183e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.72,
+      "PaO2": 457.02660000000253,
+      "CaO2": 21.36305278678826,
+      "CvO2": 15.908507337883794,
+      "oxygen_balance_residual": -3.1025439284348977e-7,
+      "CO2_balance_residual": -5.868290031685319e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.73,
+      "PaO2": 464.2856499999972,
+      "CaO2": 21.385183505424326,
+      "CvO2": 15.930638057005446,
+      "oxygen_balance_residual": -3.369615910742141e-7,
+      "CO2_balance_residual": -6.371482186295907e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.74,
+      "PaO2": 471.544699999999,
+      "CaO2": 21.407293527585487,
+      "CvO2": 15.952748079685188,
+      "oxygen_balance_residual": -3.654835154520697e-7,
+      "CO2_balance_residual": -6.904804195073666e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.75,
+      "PaO2": 478.80375000000083,
+      "CaO2": 21.429384355502425,
+      "CvO2": 15.974838908155037,
+      "oxygen_balance_residual": -3.958937213610625e-7,
+      "CO2_balance_residual": -7.477910912712105e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.76,
+      "PaO2": 486.06280000000265,
+      "CaO2": 21.45145736189852,
+      "CvO2": 15.996911915139638,
+      "oxygen_balance_residual": -4.282615009287838e-7,
+      "CO2_balance_residual": -8.08685456377134e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.77,
+      "PaO2": 493.3218499999974,
+      "CaO2": 21.473513802866997,
+      "CvO2": 16.018968356733364,
+      "oxygen_balance_residual": -4.6265017772384454e-7,
+      "CO2_balance_residual": -8.729443834454287e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.78,
+      "PaO2": 500.58089999999925,
+      "CaO2": 21.49555482930246,
+      "CvO2": 16.04100938383184,
+      "oxygen_balance_residual": -4.991160267309169e-7,
+      "CO2_balance_residual": -9.411621704202844e-8
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.79,
+      "PaO2": 507.83995000000107,
+      "CaO2": 21.517581497067013,
+      "CvO2": 16.063036052298038,
+      "oxygen_balance_residual": -5.37706398517912e-7,
+      "CO2_balance_residual": -1.0133896921615815e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.8,
+      "PaO2": 515.0990000000029,
+      "CaO2": 21.539594776046712,
+      "CvO2": 16.085049332018652,
+      "oxygen_balance_residual": -5.784567065347801e-7,
+      "CO2_balance_residual": -1.089399859210971e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.81,
+      "PaO2": 522.3580499999975,
+      "CaO2": 21.56159555823288,
+      "CvO2": 16.10705011535487,
+      "oxygen_balance_residual": -6.417093914024008e-7,
+      "CO2_balance_residual": -3.219505799734179e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.82,
+      "PaO2": 529.6170999999994,
+      "CaO2": 21.583584664945125,
+      "CvO2": 16.129039222546094,
+      "oxygen_balance_residual": -6.680533033431857e-7,
+      "CO2_balance_residual": -1.4120234936854104e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.83,
+      "PaO2": 536.8761500000012,
+      "CaO2": 21.605562853297275,
+      "CvO2": 16.151017411759838,
+      "oxygen_balance_residual": -7.15440933163336e-7,
+      "CO2_balance_residual": -1.5109580431271752e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.84,
+      "PaO2": 544.135199999996,
+      "CaO2": 21.627530821994647,
+      "CvO2": 16.17298538135752,
+      "oxygen_balance_residual": -7.649580311408499e-7,
+      "CO2_balance_residual": -1.6148908343893709e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.85,
+      "PaO2": 551.3942499999978,
+      "CaO2": 21.649489216539425,
+      "CvO2": 16.19494377684007,
+      "oxygen_balance_residual": -8.165354188349738e-7,
+      "CO2_balance_residual": -1.723048512758396e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.86,
+      "PaO2": 558.6532999999996,
+      "CaO2": 21.671438633911457,
+      "CvO2": 16.216893195185374,
+      "oxygen_balance_residual": -8.700654348103853e-7,
+      "CO2_balance_residual": -1.8346605656915926e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.87,
+      "PaO2": 565.9123500000014,
+      "CaO2": 21.693379626783265,
+      "CvO2": 16.238834189063322,
+      "oxygen_balance_residual": -9.254031283489894e-7,
+      "CO2_balance_residual": -1.9499185555105214e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.88,
+      "PaO2": 573.1713999999961,
+      "CaO2": 21.715312707320855,
+      "CvO2": 16.26076727063637,
+      "oxygen_balance_residual": -9.823534128372557e-7,
+      "CO2_balance_residual": -2.0688503354904242e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.89,
+      "PaO2": 580.4304499999979,
+      "CaO2": 21.737238350615673,
+      "CvO2": 16.282692914991475,
+      "oxygen_balance_residual": -0.0000010406691330899775,
+      "CO2_balance_residual": -2.1901308855376556e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.9,
+      "PaO2": 587.6894999999997,
+      "CaO2": 21.759156997787464,
+      "CvO2": 16.304611563242663,
+      "oxygen_balance_residual": -0.0000011000359450008546,
+      "CO2_balance_residual": -2.3133495119509462e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.91,
+      "PaO2": 594.9485500000015,
+      "CaO2": 21.78106905879327,
+      "CvO2": 16.326523625340002,
+      "oxygen_balance_residual": -0.0000011600702123359952,
+      "CO2_balance_residual": -2.437244290831586e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.92,
+      "PaO2": 602.2075999999963,
+      "CaO2": 21.802974914973493,
+      "CvO2": 16.34842948261534,
+      "oxygen_balance_residual": -0.000001220301612647745,
+      "CO2_balance_residual": -2.561674534717895e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.93,
+      "PaO2": 609.4666499999981,
+      "CaO2": 21.824874921362483,
+      "CvO2": 16.37032949009273,
+      "oxygen_balance_residual": -0.0000012801635307368997,
+      "CO2_balance_residual": -2.6849872369894e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.94,
+      "PaO2": 616.7257,
+      "CaO2": 21.846769408787857,
+      "CvO2": 16.39222397858753,
+      "oxygen_balance_residual": -0.0000013389820310294454,
+      "CO2_balance_residual": -2.805485905810201e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.95,
+      "PaO2": 623.9847500000018,
+      "CaO2": 21.868658685780133,
+      "CvO2": 16.414113256615632,
+      "oxygen_balance_residual": -0.0000013959524380879884,
+      "CO2_balance_residual": -2.9215101449153735e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.96,
+      "PaO2": 631.2437999999964,
+      "CaO2": 21.890543040311705,
+      "CvO2": 16.43599761213229,
+      "oxygen_balance_residual": -0.000001450132174340979,
+      "CO2_balance_residual": -3.0314885179905104e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.97,
+      "PaO2": 638.5028499999983,
+      "CaO2": 21.91242274138223,
+      "CvO2": 16.45787731411695,
+      "oxygen_balance_residual": -0.0000015004095530457562,
+      "CO2_balance_residual": -3.131908101750014e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.98,
+      "PaO2": 645.7619000000001,
+      "CaO2": 21.934298040465467,
+      "CvO2": 16.479752614019915,
+      "oxygen_balance_residual": -0.0000015454946264981118,
+      "CO2_balance_residual": -3.221627764560253e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 0.99,
+      "PaO2": 653.0209500000019,
+      "CaO2": 21.956169172831142,
+      "CvO2": 16.501623747083602,
+      "oxygen_balance_residual": -0.0000015838853073546488,
+      "CO2_balance_residual": -3.295695876204263e-7
+    },
+    {
+      "shunt": 0,
+      "FiO2": 1,
+      "PaO2": 660.2799999999967,
+      "CaO2": 21.97803635875383,
+      "CvO2": 16.52349093355097,
+      "oxygen_balance_residual": -0.0000016138427554324153,
+      "CO2_balance_residual": -3.3515644304316083e-7
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.21,
+      "PaO2": 41.33717472173615,
+      "CaO2": 13.918499186889353,
+      "CvO2": 8.463953324716542,
+      "oxygen_balance_residual": 0.000022419504603021778,
+      "CO2_balance_residual": 8.053374074279418e-7
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.22,
+      "PaO2": 42.01279877437614,
+      "CaO2": 14.116261708083448,
+      "CvO2": 8.66171620152788,
+      "oxygen_balance_residual": 0.000002860556151063065,
+      "CO2_balance_residual": 8.651233258660795e-7
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.23,
+      "PaO2": 42.55607773786707,
+      "CaO2": 14.270335497652852,
+      "CvO2": 8.815789488898323,
+      "oxygen_balance_residual": 0.000030481499038614857,
+      "CO2_balance_residual": 0.000001924615986581557
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.24,
+      "PaO2": 43.002184838346835,
+      "CaO2": 14.393586255868145,
+      "CvO2": 8.939039559000086,
+      "oxygen_balance_residual": 0.0000683277432358409,
+      "CO2_balance_residual": 0.000004171086004589597
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.25,
+      "PaO2": 43.37539008504976,
+      "CaO2": 14.494446702664074,
+      "CvO2": 9.039901248179472,
+      "oxygen_balance_residual": -3.346883659105515e-9,
+      "CO2_balance_residual": -5.492779564519878e-10
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.26,
+      "PaO2": 43.6932524182545,
+      "CaO2": 14.578738569912957,
+      "CvO2": 9.12419311545199,
+      "oxygen_balance_residual": -4.646778961614473e-9,
+      "CO2_balance_residual": -8.701306342118187e-10
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.27,
+      "PaO2": 43.96865561449559,
+      "CaO2": 14.650572487171523,
+      "CvO2": 9.196027032730521,
+      "oxygen_balance_residual": -5.744880127167562e-9,
+      "CO2_balance_residual": -1.1597194315982051e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.28,
+      "PaO2": 44.21114063967835,
+      "CaO2": 14.71289888306909,
+      "CvO2": 9.258353428650592,
+      "oxygen_balance_residual": -6.982588729442796e-9,
+      "CO2_balance_residual": 1.4222791833162773e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.29,
+      "PaO2": 44.427853104128445,
+      "CaO2": 14.767870973685309,
+      "CvO2": 9.313325519272206,
+      "oxygen_balance_residual": -7.279368219315074e-9,
+      "CO2_balance_residual": -1.3043006674706703e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.3,
+      "PaO2": 44.624202558178894,
+      "CaO2": 14.817083893068428,
+      "CvO2": 9.362538438664114,
+      "oxygen_balance_residual": -7.762707809888525e-9,
+      "CO2_balance_residual": -1.3973249224363826e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.31,
+      "PaO2": 44.804327348348494,
+      "CaO2": 14.861735734914303,
+      "CvO2": 9.407190280516133,
+      "oxygen_balance_residual": -8.100641935016029e-9,
+      "CO2_balance_residual": -1.4629790712206159e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.32,
+      "PaO2": 44.97142535043608,
+      "CaO2": 14.902737863942084,
+      "CvO2": 9.448192409547946,
+      "oxygen_balance_residual": -8.322444955410901e-9,
+      "CO2_balance_residual": -1.507515889898059e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.33,
+      "PaO2": 45.12799155385849,
+      "CaO2": 14.940791687853864,
+      "CvO2": 9.486246233462138,
+      "oxygen_balance_residual": -8.455117495032027e-9,
+      "CO2_balance_residual": -1.5340901882154867e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.34,
+      "PaO2": 45.27599042213026,
+      "CaO2": 14.976442885301944,
+      "CvO2": 9.521897430911356,
+      "oxygen_balance_residual": -8.517645255778916e-9,
+      "CO2_balance_residual": -1.5587033885822166e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.35,
+      "PaO2": 45.416982169772524,
+      "CaO2": 15.01012024280417,
+      "CvO2": 9.555574788413752,
+      "oxygen_balance_residual": -8.52702441989095e-9,
+      "CO2_balance_residual": -1.57160684466362e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.36,
+      "PaO2": 45.552216173550875,
+      "CaO2": 15.042163829432516,
+      "CvO2": 9.58761837504148,
+      "oxygen_balance_residual": -8.492975211993326e-9,
+      "CO2_balance_residual": -1.5786554286023602e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.37,
+      "PaO2": 45.68270072209302,
+      "CaO2": 15.072845683437805,
+      "CvO2": 9.618300229045568,
+      "oxygen_balance_residual": -8.426980002695927e-9,
+      "CO2_balance_residual": -1.5594991964462679e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.38,
+      "PaO2": 45.809255570095075,
+      "CaO2": 15.10238517219125,
+      "CvO2": 9.647839717797346,
+      "oxygen_balance_residual": -8.335291568073444e-9,
+      "CO2_balance_residual": -1.5536443243036047e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.39,
+      "PaO2": 45.93255188133227,
+      "CaO2": 15.130960517183219,
+      "CvO2": 9.67641506278727,
+      "oxygen_balance_residual": -8.222741598729044e-9,
+      "CO2_balance_residual": -1.5419061583088478e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.4,
+      "PaO2": 46.053142839500794,
+      "CaO2": 15.158717526795856,
+      "CvO2": 9.704172072397562,
+      "oxygen_balance_residual": -8.093820724752732e-9,
+      "CO2_balance_residual": -1.5211867321340833e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.41,
+      "PaO2": 46.171487294056845,
+      "CaO2": 15.185776274456831,
+      "CvO2": 9.731230820055957,
+      "oxygen_balance_residual": -7.951939551276155e-9,
+      "CO2_balance_residual": -1.4996999198046979e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.42,
+      "PaO2": 46.28796816421854,
+      "CaO2": 15.212236249846374,
+      "CvO2": 9.75769079544273,
+      "oxygen_balance_residual": -7.79959918872919e-9,
+      "CO2_balance_residual": -1.4754846233699936e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.43,
+      "PaO2": 46.402906866735094,
+      "CaO2": 15.238180364662993,
+      "CvO2": 9.783634910256424,
+      "oxygen_balance_residual": -7.638732313353103e-9,
+      "CO2_balance_residual": -1.4621832633565646e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.44,
+      "PaO2": 46.51657470441606,
+      "CaO2": 15.263678091541763,
+      "CvO2": 9.809132637132148,
+      "oxygen_balance_residual": -7.47115791455144e-9,
+      "CO2_balance_residual": -1.4223360267351381e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.45,
+      "PaO2": 46.62920191443831,
+      "CaO2": 15.28878794149322,
+      "CvO2": 9.834242487080463,
+      "oxygen_balance_residual": -7.298353921214584e-9,
+      "CO2_balance_residual": -1.3898784345656168e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.46,
+      "PaO2": 46.740984902381655,
+      "CaO2": 15.313559432605537,
+      "CvO2": 9.859013978189575,
+      "oxygen_balance_residual": -7.122082479327219e-9,
+      "CO2_balance_residual": -1.3664589459949639e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.47,
+      "PaO2": 46.85209206010299,
+      "CaO2": 15.338034664572401,
+      "CvO2": 9.883489210153156,
+      "oxygen_balance_residual": -6.941547781025292e-9,
+      "CO2_balance_residual": -1.3340013538254425e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.48,
+      "PaO2": 46.96266847129138,
+      "CaO2": 15.362249585660654,
+      "CvO2": 9.907704131238091,
+      "oxygen_balance_residual": -6.759023563063238e-9,
+      "CO2_balance_residual": -1.3019700872973772e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.49,
+      "PaO2": 47.07283973796095,
+      "CaO2": 15.386235018097839,
+      "CvO2": 9.931689563671917,
+      "oxygen_balance_residual": -6.574282451765612e-9,
+      "CO2_balance_residual": -1.2679493011091836e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.5,
+      "PaO2": 47.182715108203155,
+      "CaO2": 15.41001749250401,
+      "CvO2": 9.955472038074719,
+      "oxygen_balance_residual": -6.388916062860517e-9,
+      "CO2_balance_residual": -1.2390444226184627e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.51,
+      "PaO2": 47.2923900454596,
+      "CaO2": 15.43361993047497,
+      "CvO2": 9.979074476042285,
+      "oxygen_balance_residual": -6.202355962159345e-9,
+      "CO2_balance_residual": -1.2058194442943204e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.52,
+      "PaO2": 47.40194834896627,
+      "CaO2": 15.457062205724643,
+      "CvO2": 10.002516751288558,
+      "oxygen_balance_residual": -6.0153411141072866e-9,
+      "CO2_balance_residual": -1.1812062439275905e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.53,
+      "PaO2": 47.51146391172867,
+      "CaO2": 15.48036160757525,
+      "CvO2": 10.025816153135773,
+      "oxygen_balance_residual": -5.828724169987254e-9,
+      "CO2_balance_residual": -1.1507381714181975e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.54,
+      "PaO2": 47.62100218432508,
+      "CaO2": 15.50353322551668,
+      "CvO2": 10.048987771073813,
+      "oxygen_balance_residual": -5.642334599542664e-9,
+      "CO2_balance_residual": -1.1151541912113316e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.55,
+      "PaO2": 47.73062139879514,
+      "CaO2": 15.5265902696508,
+      "CvO2": 10.072044815204572,
+      "oxygen_balance_residual": -5.457479801407317e-9,
+      "CO2_balance_residual": -1.0569465302978642e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.56,
+      "PaO2": 47.84037359607041,
+      "CaO2": 15.549544338808944,
+      "CvO2": 10.09499888435936,
+      "oxygen_balance_residual": -5.2727955335285515e-9,
+      "CO2_balance_residual": -1.036596586345695e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.57,
+      "PaO2": 47.9503054917636,
+      "CaO2": 15.572405645770125,
+      "CvO2": 10.117860191317222,
+      "oxygen_balance_residual": -5.090328158985358e-9,
+      "CO2_balance_residual": -1.0104201919602929e-9
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.58,
+      "PaO2": 48.060451001372684,
+      "CaO2": 15.595181409619213,
+      "CvO2": 10.140634188687248,
+      "oxygen_balance_residual": 0.00009715125810316749,
+      "CO2_balance_residual": 0.000006687673248961801
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.59,
+      "PaO2": 48.17086499585699,
+      "CaO2": 15.617883283661413,
+      "CvO2": 10.163336137768665,
+      "oxygen_balance_residual": 0.00009302410114742088,
+      "CO2_balance_residual": 0.000006394847133606163
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.6,
+      "PaO2": 48.28157366703678,
+      "CaO2": 15.640516473605361,
+      "CvO2": 10.185969401039454,
+      "oxygen_balance_residual": 0.00008899112486915328,
+      "CO2_balance_residual": 0.000006109165610723721
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.61,
+      "PaO2": 48.392608734307174,
+      "CaO2": 15.663087278789506,
+      "CvO2": 10.208540277804413,
+      "oxygen_balance_residual": 0.00008505418009008281,
+      "CO2_balance_residual": 0.000005830804923334654
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.62,
+      "PaO2": 48.50399931543237,
+      "CaO2": 15.685601315140172,
+      "CvO2": 10.231054383961256,
+      "oxygen_balance_residual": 0.00008121484034973037,
+      "CO2_balance_residual": 0.000005559737303428847
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.63,
+      "PaO2": 48.61577226020941,
+      "CaO2": 15.708063600346534,
+      "CvO2": 10.253516737175328,
+      "oxygen_balance_residual": 0.00007747441634364804,
+      "CO2_balance_residual": 0.000005296151925904269
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.64,
+      "PaO2": 48.72795243818828,
+      "CaO2": 15.730478627096236,
+      "CvO2": 10.27593183011478,
+      "oxygen_balance_residual": 0.00007383398008187214,
+      "CO2_balance_residual": 0.000005040036654690994
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.65,
+      "PaO2": 48.84056298769579,
+      "CaO2": 15.752850426223953,
+      "CvO2": 10.29830369359902,
+      "oxygen_balance_residual": 0.00007029437125538607,
+      "CO2_balance_residual": 0.000004791422384187172
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.66,
+      "PaO2": 48.953625531883205,
+      "CaO2": 15.775182621311098,
+      "CvO2": 10.320635951198138,
+      "oxygen_balance_residual": 0.0000668562127543737,
+      "CO2_balance_residual": 0.000004550293056126975
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.67,
+      "PaO2": 49.06716036674297,
+      "CaO2": 15.797478476018519,
+      "CvO2": 10.342931866565378,
+      "oxygen_balance_residual": 0.0000635199227758676,
+      "CO2_balance_residual": 0.0000043167315482151025
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.68,
+      "PaO2": 49.18118662510906,
+      "CaO2": 15.819740935224107,
+      "CvO2": 10.365194384574696,
+      "oxygen_balance_residual": 0.00006028571760907653,
+      "CO2_balance_residual": 0.0000040906491278747126
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.69,
+      "PaO2": 49.295722420207966,
+      "CaO2": 15.841972660863238,
+      "CvO2": 10.38742616716084,
+      "oxygen_balance_residual": 0.00005715363192848599,
+      "CO2_balance_residual": 0.0000038720407360415265
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.7,
+      "PaO2": 49.41078497160234,
+      "CaO2": 15.86417606322894,
+      "CvO2": 10.409629624619562,
+      "oxygen_balance_residual": 0.00005412351583800046,
+      "CO2_balance_residual": 0.000003660912625491619
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.71,
+      "PaO2": 49.52639071593623,
+      "CaO2": 15.886353328369186,
+      "CvO2": 10.43180694300471,
+      "oxygen_balance_residual": 0.00005119504612594028,
+      "CO2_balance_residual": 0.0000034571456239973486
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.72,
+      "PaO2": 49.6425554046418,
+      "CaO2": 15.908506442120734,
+      "CvO2": 10.453960108161738,
+      "oxygen_balance_residual": 0.00004836774479599626,
+      "CO2_balance_residual": 0.000003260739276811364
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.73,
+      "PaO2": 49.7592941903342,
+      "CaO2": 15.930637211238825,
+      "CvO2": 10.476090926857564,
+      "oxygen_balance_residual": 0.00004564096934700501,
+      "CO2_balance_residual": 0.0000030715908394540747
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.74,
+      "PaO2": 49.87662170345786,
+      "CaO2": 15.952747282010638,
+      "CvO2": 10.498201045393708,
+      "oxygen_balance_residual": 0.00004301393113337326,
+      "CO2_balance_residual": 0.0000028896307640025043
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.75,
+      "PaO2": 49.994552120342206,
+      "CaO2": 15.97483815668626,
+      "CvO2": 10.520291966037133,
+      "oxygen_balance_residual": 0.00004048570201575785,
+      "CO2_balance_residual": 0.000002714797659564283
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.76,
+      "PaO2": 50.11309922396023,
+      "CaO2": 15.99691120801084,
+      "CvO2": 10.54236506155229,
+      "oxygen_balance_residual": 0.00003805522021593788,
+      "CO2_balance_residual": 0.0000025469485365192668
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.77,
+      "PaO2": 50.232276458192615,
+      "CaO2": 16.0189676921017,
+      "CvO2": 10.564421588078224,
+      "oxygen_balance_residual": 0.000035721291226309404,
+      "CO2_balance_residual": 0.000002386041956015106
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.78,
+      "PaO2": 50.35209697645726,
+      "CaO2": 16.041008759879503,
+      "CvO2": 10.586462696559284,
+      "oxygen_balance_residual": 0.00003348261202518188,
+      "CO2_balance_residual": 0.0000022318934327358875
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.79,
+      "PaO2": 50.47257368544322,
+      "CaO2": 16.063035467234528,
+      "CvO2": 10.608489442911644,
+      "oxygen_balance_residual": 0.00003133775862806942,
+      "CO2_balance_residual": 0.000002084436943050605
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.8,
+      "PaO2": 50.5937192845245,
+      "CaO2": 16.085048784082836,
+      "CvO2": 10.630502797079124,
+      "oxygen_balance_residual": 0.000029285204163898015,
+      "CO2_balance_residual": 0.0000019435224203334656
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.81,
+      "PaO2": 50.71554630140085,
+      "CaO2": 16.10704960244744,
+      "CvO2": 10.652503651114237,
+      "oxygen_balance_residual": 0.000027323326094119693,
+      "CO2_balance_residual": 0.0000018090510138790705
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.82,
+      "PaO2": 50.83806712439198,
+      "CaO2": 16.129038743681253,
+      "CvO2": 10.674492826401083,
+      "oxygen_balance_residual": 0.000025450409339100588,
+      "CO2_balance_residual": 0.0000016808413647595444
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.83,
+      "PaO2": 50.961293988461165,
+      "CaO2": 16.15101696670915,
+      "CvO2": 10.696471080121027,
+      "oxygen_balance_residual": 0.000023762346756939223,
+      "CO2_balance_residual": 0.000005357599121680323
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.84,
+      "PaO2": 51.085239178394914,
+      "CaO2": 16.17298496652209,
+      "CvO2": 10.718439111049534,
+      "oxygen_balance_residual": 0.000022050990594379982,
+      "CO2_balance_residual": 0.000004958721660841547
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.85,
+      "PaO2": 51.20991478448289,
+      "CaO2": 16.194943390650522,
+      "CvO2": 10.740397564761622,
+      "oxygen_balance_residual": 0.000020423889509402215,
+      "CO2_balance_residual": 0.000004579951536243243
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.86,
+      "PaO2": 51.335332907310516,
+      "CaO2": 16.21689283611173,
+      "CvO2": 10.762347038312,
+      "oxygen_balance_residual": 0.000018878985031278717,
+      "CO2_balance_residual": 0.000004220724065362447
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.87,
+      "PaO2": 51.46150563220786,
+      "CaO2": 16.238833855616733,
+      "CvO2": 10.784288084450203,
+      "oxygen_balance_residual": 0.000017414159117379313,
+      "CO2_balance_residual": 0.000003880589872551354
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.88,
+      "PaO2": 51.58844504851956,
+      "CaO2": 16.260766961370912,
+      "CvO2": 10.80622121542097,
+      "oxygen_balance_residual": 0.000016027246772409853,
+      "CO2_balance_residual": 0.0000035589689559856197
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.89,
+      "PaO2": 51.716163267496285,
+      "CaO2": 16.282692628505835,
+      "CvO2": 10.828146906395993,
+      "oxygen_balance_residual": 0.000014716041278006742,
+      "CO2_balance_residual": 0.0000032552669040342153
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.9,
+      "PaO2": 51.84467243894275,
+      "CaO2": 16.30461129818202,
+      "CvO2": 10.85006559857658,
+      "oxygen_balance_residual": 0.000013478299308644637,
+      "CO2_balance_residual": 0.0000029690633027712465
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.91,
+      "PaO2": 51.973984766807035,
+      "CaO2": 16.326523380397838,
+      "CvO2": 10.871977702002402,
+      "oxygen_balance_residual": 0.00001231174894655851,
+      "CO2_balance_residual": 0.000002699596791444492
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.92,
+      "PaO2": 52.104112523867485,
+      "CaO2": 16.348429256535418,
+      "CvO2": 10.893883598097341,
+      "oxygen_balance_residual": 0.000011214094229217153,
+      "CO2_balance_residual": 0.0000024464515604449844
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.93,
+      "PaO2": 52.23506806555989,
+      "CaO2": 16.370329281671182,
+      "CvO2": 10.91578364197988,
+      "oxygen_balance_residual": 0.000010183021629472933,
+      "CO2_balance_residual": 0.000002209013359788514
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.94,
+      "PaO2": 52.36686384307987,
+      "CaO2": 16.392223786675036,
+      "CvO2": 10.937678164562215,
+      "oxygen_balance_residual": 0.000009216205171469483,
+      "CO2_balance_residual": 0.000001986671264830875
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.95,
+      "PaO2": 52.49951241584583,
+      "CaO2": 16.414113080119865,
+      "CvO2": 10.959567474459597,
+      "oxygen_balance_residual": 0.000008311314729780861,
+      "CO2_balance_residual": 0.0000017789216144592501
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.96,
+      "PaO2": 52.633026463443144,
+      "CaO2": 16.43599745002052,
+      "CvO2": 10.981451859729333,
+      "oxygen_balance_residual": 0.0000074660152336036845,
+      "CO2_balance_residual": 0.0000015851621526508097
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.97,
+      "PaO2": 52.76741879704261,
+      "CaO2": 16.457877165418964,
+      "CvO2": 11.003331589455696,
+      "oxygen_balance_residual": 0.000006677979740743467,
+      "CO2_balance_residual": 0.0000014048231093966024
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.98,
+      "PaO2": 52.90270237042094,
+      "CaO2": 16.479752477831163,
+      "CvO2": 11.025206915196861,
+      "oxygen_balance_residual": 0.000005944886595443677,
+      "CO2_balance_residual": 0.0000012373475897220487
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 0.99,
+      "PaO2": 53.03889029062603,
+      "CaO2": 16.501623622568793,
+      "CvO2": 11.047078072306444,
+      "oxygen_balance_residual": 0.00000526442920545378,
+      "CO2_balance_residual": 0.0000010821982243669481
+    },
+    {
+      "shunt": 0.5,
+      "FiO2": 1,
+      "PaO2": 53.17599582832955,
+      "CaO2": 16.52349081994802,
+      "CvO2": 11.068945281142208,
+      "oxygen_balance_residual": 0.000004634319680008048,
+      "CO2_balance_residual": 9.387923682879773e-7
+    }
+  ]
+}

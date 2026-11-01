@@ -1,0 +1,20 @@
+V185 QUICK SERVER DEPLOYMENT
+============================
+
+1. Upload and unzip v186 under /path/to/workdir.
+2. Run once:
+   ./PREPARE_SERVER_TTS.sh
+3. Verify:
+   ./CHECK_SERVER.sh
+4. Start the AI TA:
+   ./START_VQ_TA_SERVER.sh
+5. Existing Ollama models and ngrok do NOT need to be reinstalled.
+
+Server TTS roles:
+- Yating = female = zh-TW-HsiaoChenNeural
+- Zhiwei = male = zh-TW-YunJheNeural
+
+TTS endpoint:
+POST /api/tts
+JSON body: {"text":"...","role":"yating|zhiwei","rate":1.0,"pitch":1.0}
+Returns: audio/mpeg

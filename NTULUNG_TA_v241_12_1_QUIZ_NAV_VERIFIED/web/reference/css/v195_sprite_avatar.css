@@ -1,0 +1,89 @@
+/* v195 2D Sprite Avatar Integration
+   Replaces the static-photo presentation layer with a continuous 2D avatar layer.
+   Existing photo/viseme engine remains loaded underneath for compatibility, but is visually hidden.
+*/
+.avatar.real-avatar.canvas-avatar {
+  background: linear-gradient(180deg,#f8fbff 0%,#eef6ff 100%) !important;
+  overflow: hidden !important;
+}
+.avatar.real-avatar.canvas-avatar > .real-avatar-canvas,
+.avatar.real-avatar.canvas-avatar > .real-avatar-bootstrap-image {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+.vq-sprite-avatar-stage{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  pointer-events:none;
+  overflow:hidden;
+}
+.vq-sprite-avatar-img{
+  height:100%;
+  width:auto;
+  max-width:none;
+  display:block;
+  object-fit:contain;
+  transform-origin:50% 84%;
+  filter:drop-shadow(0 8px 12px rgba(15,23,42,.10));
+  will-change:transform,opacity;
+  transition:opacity 120ms linear;
+}
+.vq-sprite-mouth{
+  position:absolute;
+  left:50%;
+  top:31.1%;
+  width:15px;
+  height:4px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:rgba(112,35,40,.88);
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.18);
+  opacity:0;
+  z-index:22;
+  transform-origin:center;
+}
+body.speaking .vq-sprite-mouth{
+  opacity:.9;
+  animation:vq195Mouth 420ms steps(4,end) infinite;
+}
+body.speaking .vq-sprite-avatar-img{
+  animation:vq195SpeakingBody 1.85s ease-in-out infinite;
+}
+.vq-sprite-avatar-stage.vq-wave .vq-sprite-avatar-img{
+  animation:vq195WaveBody 900ms ease-in-out 1;
+}
+.vq-sprite-avatar-stage.vq-role-change{
+  animation:vq195RoleChange 340ms cubic-bezier(.2,.7,.2,1) 1;
+}
+@keyframes vq195Mouth{
+  0%,100%{height:3px;width:15px;transform:translate(-50%,-50%) scaleY(.7)}
+  25%{height:8px;width:14px;transform:translate(-50%,-50%) scaleY(1)}
+  50%{height:12px;width:13px;transform:translate(-50%,-50%) scaleY(1.05)}
+  75%{height:6px;width:16px;transform:translate(-50%,-50%) scaleY(.9)}
+}
+@keyframes vq195SpeakingBody{
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg) scale(1)}
+  30%{transform:translate3d(-1px,-2px,0) rotate(-.35deg) scale(1.005)}
+  65%{transform:translate3d(1px,-1px,0) rotate(.3deg) scale(1.003)}
+}
+@keyframes vq195WaveBody{
+  0%,100%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(0,-3px,0) scale(1.008)}
+}
+@keyframes vq195RoleChange{
+  0%{opacity:.15;transform:translateY(6px) scale(.98)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(max-width:900px){
+  .vq-sprite-mouth{top:31.1%;width:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.speaking .vq-sprite-avatar-img,
+  body.speaking .vq-sprite-mouth,
+  .vq-sprite-avatar-stage.vq-wave .vq-sprite-avatar-img,
+  .vq-sprite-avatar-stage.vq-role-change{animation:none!important}
+}

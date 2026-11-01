@@ -1,0 +1,31 @@
+NTULUNG TA v228
+
+Purpose
+- Preserve the complete v227 accuracy-first adaptive verification architecture.
+- Add deterministic multi-question MCQ batch parsing and orchestration for pasted national-exam style question sets.
+- Fix the observed failure where a 15-question paste produced only one answer.
+
+Batch parsing
+- Supports numbered headers such as 2.【原第 26 題】 and Markdown-wrapped equivalents.
+- Supports an unnumbered first MCQ followed by numbered items.
+- Requires complete A/B/C/D structure before a segment is treated as a question.
+- Circled sub-items such as ①②③ are never treated as top-level question boundaries.
+- Exam-year headings, separators, and source-note lines between groups are removed from the preceding item.
+- Maximum batch size: 40 MCQs per submission.
+
+Orchestration
+- Each detected MCQ is passed independently through the existing v227 single-question answer pipeline.
+- Reference Textbook mode therefore preserves per-item Vector RAG retrieval, question-type routing, deterministic Stage-1 audit, conditional Stage-2 semantic review, language routing, and optional BYOK cloud fallback.
+- Query Knowledge Base mode preserves its existing per-item KB scoring/canonical answer and v227 diversification/verification path.
+- Items are processed sequentially to avoid concurrent contention on the one-active-local-model GPU policy and to avoid accidental bursts of paid BYOK calls.
+- Final output is aggregated in original order as 1..N, with every item represented.
+- Single-question behavior is unchanged.
+
+Preserved from v227
+- Accuracy-first physiology QA and MCQ explicit-option contract.
+- Output truncation retry.
+- Source/Figure/Table/Page/Chapter leakage cleanup.
+- Granite 4.2 / Gemma 4 / Ministral 3 selection.
+- Semantic Vector RAG with bge-m3 and existing index files.
+- BYOK Gemini/OpenAI fallback policy.
+- Voice/STT, Yating/Zhiwei 3D avatar/TTS, lecture controls, and Hopkins simulator.

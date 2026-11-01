@@ -1,0 +1,22 @@
+VQ TA v181 ARCHITECTURE
+
+User selects one model before asking:
+  Granite 4.2 8B Q5_K_M / Gemma 4 12B / Ministral 3 8B
+
+One-pipeline path:
+  question
+  -> selected model semantic recognition (allowlist-only mapping)
+  -> deterministic KB retrieval + Active-7 scoring
+  -> KB Gate = 68
+  -> Top-6 KB evidence
+  -> same selected model grounded response generation
+
+Formal Domain Gate: DISABLED
+Active-7 domain_terms_overlap: RETAINED as a score feature, not a formal gate
+Off-topic/nonsense safeguards: RETAINED
+
+GPU policy:
+  one active Ollama model at a time
+  previous model unloaded on model-family switch
+  server-side inference lock serializes GPU requests
+  4096-token context to preserve VRAM headroom on the shared A5000

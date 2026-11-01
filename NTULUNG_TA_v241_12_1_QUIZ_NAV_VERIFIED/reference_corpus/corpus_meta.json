@@ -1,0 +1,32 @@
+{
+  "title": "Multi-textbook Full Human Physiology RAG Corpus",
+  "scope": "human physiology + directly related pathophysiology",
+  "chunk_count": 4792,
+  "chunking": "source-preserving paragraph/page-aware chunks; original Guyton corpus preserved, full Vander page-aware extraction, complete Beachey chapter corpus",
+  "answer_language": "same as detected student question",
+  "retrieval": "source-balanced exact semantic vector retrieval + exact semantic window rerank + symmetric MCQ option contrast",
+  "sources": [
+    {
+      "source": "Guyton and Hall Textbook of Medical Physiology, 15th ed.",
+      "passages": 2644,
+      "chapter_units": 85,
+      "coverage": "full indexed textbook body"
+    },
+    {
+      "source": "Vander Human Physiology, 16th ed.",
+      "passages": 1610,
+      "chapter_units": 19,
+      "coverage": "full Chapters 1-19 human physiology body"
+    },
+    {
+      "source": "Beachey Respiratory Care Anatomy and Physiology",
+      "passages": 538,
+      "chapter_units": 13,
+      "coverage": "complete Chapters 1-13 respiratory/cardiopulmonary physiology supplement"
+    }
+  ],
+  "excluded_sources": [
+    "Rau Respiratory Care Pharmacology (pharmacology-focused; outside primary physiology corpus)"
+  ],
+  "benchmark_policy": "official exam answers are post-hoc scoring only; never injected into retrieval, prompts, production rules, or training"
+}

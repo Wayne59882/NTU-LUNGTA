@@ -1,0 +1,19 @@
+{
+  "seed": 42206,
+  "total": 491,
+  "train": 371,
+  "validation": 60,
+  "test": 60,
+  "per_type_total": {
+    "knowledge_conceptual": 96,
+    "mechanism_explanation": 96,
+    "multiple_choice_calculation": 101,
+    "multiple_choice_conceptual": 102,
+    "numerical_calculation": 96
+  },
+  "purpose": "behavior/style SFT; course examples are integrated into the main corpus; factual grounding remains RAG at inference time",
+  "languages": [
+    "zh-TW",
+    "en-US"
+  ]
+}

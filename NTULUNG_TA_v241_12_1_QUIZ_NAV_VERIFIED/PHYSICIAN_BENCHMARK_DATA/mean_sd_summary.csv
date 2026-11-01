@@ -1,0 +1,5 @@
+﻿metric,model,n_year_cohorts,mean,sample_SD,ROC115,ROC114,ROC113
+accuracy_percent,gemma,3,90,0,90,90,90
+accuracy_percent,mistral,3,76.66666666666667,5.773502691896257,70,80,80
+time_per_10_item_batch_seconds,gemma,3,216.64499999999998,19.752772488944434,231.646,194.265,224.024
+time_per_10_item_batch_seconds,mistral,3,312.902,43.961928836210085,294.056,281.505,363.145

@@ -1,0 +1,15 @@
+{
+  "reference_pao2_display": 101.78,
+  "end_capillary_target": 101.777,
+  "venous_target_po2": 39.45,
+  "arterial_target_saturation": 0.9778,
+  "venous_target_saturation": 0.7144217772727274,
+  "co2_target_pco2": 47.22,
+  "hill_n": 2.8597191913032325,
+  "p50": 27.089689234195102,
+  "bicarbonate_intercept": 23.943147779626596,
+  "buffer_slope": 25,
+  "co2_scale": 1.0530464579278012,
+  "co2_haldane": 1.400373080770789,
+  "diffusion_reference_scale": 0.4121569110720884
+}

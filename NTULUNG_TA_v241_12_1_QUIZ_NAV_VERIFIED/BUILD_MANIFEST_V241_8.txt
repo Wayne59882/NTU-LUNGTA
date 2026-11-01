@@ -1,0 +1,10 @@
+v241.8-fast-bank-auto-correction
+Source: NTULUNG_TA_v241_7_COURSE_LECTURE_QUIZ_FAST.zip
+Course activation: selected-unit lecture and lexical course Q&A activate before question/index background work.
+Question bank: deterministic source-cloze-v1 builder; exactly 100 source-grounded four-choice items per selected unit; Scenario Practice unlocks only after complete banks and draws 2 random items per unit.
+Persistence: chunked PDF upload, staged build, partial/error course preparation and queued/reviewing feedback corrections resume after refresh/server restart.
+Feedback: report storage/email retained; course/source metadata captured; fresh grounded answer, semantic review, fast verification, exact-question correction memory and sanitized related-question guidance added.
+Visual/UI: built-in respiratory physiology keeps V/Q; nonrespiratory uploaded courses hide it; uploaded unit controls lecture; Select all/Clear all and automatic post-build activation retained.
+Migration: recovers v241.7/v241.6 course workspaces, indexes, metrics, feedback configuration/database and benchmark profile; SQLite schema migrates in place.
+Check: ./CHECK_V241_2_ONE_CLICK_STABLE.sh
+Deploy: ./INSTALL_FINAL.sh

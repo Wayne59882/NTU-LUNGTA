@@ -1,0 +1,7 @@
+v241.12-feedback-receipts-email-repair
+Base: v241.11 instant quiz, source-backed 100-question banks and direct confirmed-key cloud answers.
+Feedback: server-confirmed saved receipt and report ID; persistent reload-safe email and correction states; revised answer preview.
+Repair: student comment is untrusted; source-grounded revision with review, exact-question memory in course and built-in cloud single/batch routes; positive feedback unchanged.
+Mail: recipient admin@example.com, optional server-only Resend/SMTP credentials, old DB history merge, queued mail restart recovery, explicit retry for one unsent report. No credentials in package.
+Validation: CHECK_V241_2_ONE_CLICK_STABLE.sh (including v241.12 feedback UI, mocked email, correction memory, course integration).
+Deploy: ./INSTALL_FINAL.sh

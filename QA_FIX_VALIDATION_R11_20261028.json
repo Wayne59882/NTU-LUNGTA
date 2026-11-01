@@ -1,0 +1,21 @@
+{
+ "revision": "v241.12.5-qa-fix-R11-20261028",
+ "base": "LUNGTA_COMPLETE_V241_12_5_VOICE_FIX_R9_20261021.zip",
+ "changes": {
+  "reference_search.py": "R6 literal-textbook fallback after BGE-M3 failure; query timeout 20 s (R6: 8 s)",
+  "scope_guard.py": "R6 version (adds inspiration/expiration/breath terms)",
+  "cloudflare/worker/src/index.js": "single cloud answer max_output_tokens 650 -> 1400",
+  "web/*/js/25": "STT route also fails over on HTTP 502/503/504",
+  "course_runtime.py + web/*/js/55": "R10 course name detected from PDF content"
+ },
+ "tests": {
+  "fallback_retrieval_real_corpus": "13 questions incl. 吸氣/吐氣, 肺泡通氣量, Haldane, V/Q mismatch, MCQ: 12 in scope with textbook passages, 1 greeting rejected",
+  "voice_mock_checks": "28/28 per page",
+  "course_name_build": "Statistics detected on R9 and on R6 course program (fake model)",
+  "package_verifiers": "no regressions versus R9"
+ },
+ "not_tested": [
+  "real BGE-M3/Gemma/GPT on the server",
+  "public deployment"
+ ]
+}

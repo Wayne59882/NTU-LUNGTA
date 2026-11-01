@@ -1,0 +1,4 @@
+v241.6-resumable-fast-course
+Source: NTULUNG_TA_v241_5_COURSE_EMBED_RECOVERY.zip
+Changes: resumable 1 MiB PDF chunks, persisted browser draft and server jobs, fast course activation, background semantic indexing and 100-question/unit banks, select all/clear all controls.
+Check: ./CHECK_V241_2_ONE_CLICK_STABLE.sh

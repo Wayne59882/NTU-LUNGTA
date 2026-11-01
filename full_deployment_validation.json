@@ -1,0 +1,105 @@
+{
+  "revision": "v241.12.5-VQ-teaching-modes-20261010",
+  "complete_release_files": 483,
+  "normal_exact_baseline_preserved": true,
+  "conservation_checks": 23,
+  "DOM_handler_checks": 24,
+  "full_browser_layout_verified": false,
+  "checks": [
+    {
+      "command": [
+        "node",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/package/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_VQ_CONSERVATION.cjs",
+        "--write-report"
+      ],
+      "exit_code": 0,
+      "output": "PASS all eleven initial engine defaults are unchanged\nPASS both pages retain every original initial HTML input\nPASS KB and Reference use identical authoritative calculation code\nPASS normal: oxygen/CO2 conservation and content mixing\nPASS lowvq: oxygen/CO2 conservation and content mixing\nPASS highvq: oxygen/CO2 conservation and content mixing\nPASS pe: oxygen/CO2 conservation and content mixing\nPASS pneumonia: oxygen/CO2 conservation and content mixing\nPASS shunt: oxygen/CO2 conservation and content mixing\nPASS diffusion: oxygen/CO2 conservation and content mixing\nPASS anemia: oxygen/CO2 conservation and content mixing\nPASS altitude: oxygen/CO2 conservation and content mixing\nPASS Low V/Q teaching preset has end-capillary CO2 near 46 without output clamping\nPASS High V/Q actual preset raises arterial CO2 relative to the normal baseline\nPASS Diffusion actual preset creates a visible alveolar/end-capillary oxygen gap\nPASS True shunt actual preset gives a small, content-conserving oxygen response\nPASS homogeneous ventilation matches the independent alveolar equations\nPASS regional wasted ventilation changes arterial, not whole-lung input values\nPASS lower diffusing capacity widens A-a oxygen difference\nPASS true shunt has a reduced oxygen response, without a false flat PaO2\nPASS diffusion solver agrees with the exact dissolved-only exponential limit\nPASS invalid/infeasible settings return errors, without plausible fabricated outputs\nPASS reset defaults stay original and scenario inputs match the authoritative registry\n23 checks passed. Initial defaults preserved.\n"
+    },
+    {
+      "command": [
+        "node",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/build/verify_dom.cjs"
+      ],
+      "exit_code": 0,
+      "output": "{\"DOM_handler_checks\":24,\"normal_exactly_unchanged\":true,\"low_end_pco2\":47.11050684468017,\"high_art_pco2\":56.31491803391179,\"diffusion_alveolar_po2\":99.1124081632653,\"diffusion_art_po2\":69.91812394936048,\"shunt_air\":43.153258620758805,\"shunt_fio2_040\":48.73741812238208}\n"
+    },
+    {
+      "command": [
+        "node",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/package/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_4_BATCH.cjs"
+      ],
+      "exit_code": 0,
+      "output": "[OK] 5/20/41/100 questions, no-space/fullwidth options, count/order, local/cloud missing-row recovery, errors and emoji cleanup. Offline fixtures only.\n"
+    },
+    {
+      "command": [
+        "node",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/package/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_5_VOICE.cjs"
+      ],
+      "exit_code": 0,
+      "output": "[OK] Reference/KB answer letters A-E, fullwidth options, Chinese/English, emoji cleanup and native utterance text; display text stays unchanged.\n"
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/package/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/29_v153_course_aligned_student_results.js"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/package/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/35_hopkins_reference_lung_physiology.js"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/package/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/29_v153_course_aligned_student_results.js"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/package/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/35_hopkins_reference_lung_physiology.js"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/build/make_plot.py"
+      ],
+      "exit_code": 0,
+      "output": "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/output/VQ_TRUE_SHUNT_COMPARE_20261010.png\n"
+    },
+    {
+      "command": [
+        "python3",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/build/build_deployment.py"
+      ],
+      "exit_code": 0,
+      "output": "Built complete deployment entry; manifest files: 480\n"
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "/workspace/scratch/48704b5f3de5/vq_release_final_R3_20261010/package/DEPLOY_COMPLETE.sh"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "deployment_simulation_cases": 12
+}

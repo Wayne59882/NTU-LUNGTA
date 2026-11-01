@@ -1,0 +1,70 @@
+/* v150 UI repackaging: clean landing, full-width model tab, four-corner output dashboard */
+.v149-global-marker,.v149-build-banner,.v149-metrics{display:none!important}
+
+/* Wider shell. On model tab, use the full page and hide the avatar column to prevent overflow. */
+.app{max-width:1540px}
+body.v150-model-active .app{max-width:1880px;padding:16px 20px 28px}
+body.v150-model-active .app>.title{margin-bottom:14px}
+body.v150-model-active .layout{display:block}
+body.v150-model-active .teacher-panel{display:none!important}
+body.v150-model-active .layout>.card:not(.teacher-panel){width:100%;padding:18px;overflow:visible}
+body.v150-model-active #modelPanel{width:100%;overflow:visible}
+
+/* Scenario page cleanup. */
+.v149-course-item{display:block!important;padding:11px 13px}
+.v149-course-item span{display:none!important}
+.v149-course-list{max-height:640px}
+.v149-quiz-grid{margin-top:0}
+body.v150-case-active .app{max-width:1580px}
+
+/* Model: left control panel + four output cards around a fixed central lung image. */
+.v150-model-shell{padding:14px;overflow:visible}
+.v150-model-layout{display:grid;grid-template-columns:minmax(285px,330px) minmax(0,1fr);gap:14px;align-items:start}
+.v150-controls-panel{min-height:780px}
+.v150-control-group{display:grid;gap:10px}
+.v150-field-label{font-weight:800;color:#102a55}
+.v150-control-group select{width:100%;border:1px solid #b9cfe7;border-radius:10px;padding:10px 12px;background:#fff;color:#0b2f5f;font-weight:700}
+.v150-model-buttons{display:grid;grid-template-columns:1.2fr 1fr .72fr;gap:8px}
+.v150-model-buttons button{border:none;border-radius:10px;padding:10px 8px;background:linear-gradient(135deg,#0d3b78,#11979a);color:#fff;font-weight:800;cursor:pointer}
+.v150-model-buttons button.secondary{background:#eef5fc;color:#0d3b78;border:1px solid #b9cfe7}
+.v150-divider{height:1px;background:#dbe7f2;margin:14px 0}
+
+.v150-dashboard{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(390px,1.25fr) minmax(220px,.78fr);grid-template-areas:'mixed lung endcap' 'general lung arterial' 'interp interp interp';gap:12px;align-items:stretch;min-width:0}
+.v150-mixed{grid-area:mixed}.v150-general{grid-area:general}.v150-endcap{grid-area:endcap}.v150-arterial{grid-area:arterial}.v150-lung-stage{grid-area:lung}.v150-interpretation{grid-area:interp}
+.v150-corner{min-width:0;padding:12px}
+.v150-lung-stage{min-height:650px;height:100%;overflow:hidden;border-radius:18px;background:radial-gradient(circle at center,#fff 0,#f5f9fd 70%,#edf5fb 100%)}
+.v150-lung-stage .v149-lung-reference{max-width:96%;max-height:625px;width:auto;height:auto;object-fit:contain}
+.v150-interpretation{min-height:130px}
+.v150-interpretation #v149Interpretation{columns:2;column-gap:28px;white-space:pre-wrap}
+
+/* Compact result cells so all four corner cards stay inside the software frame. */
+.v150-dashboard .v149-output-row{grid-template-columns:minmax(88px,1fr) 70px 58px;gap:6px;margin-bottom:6px}
+.v150-dashboard .v149-output-row span:first-child{padding:7px 7px;font-size:12.5px}
+.v150-dashboard .v149-output-row strong{padding:7px 5px;font-size:13px}
+.v150-dashboard .v149-output-row span:last-child{font-size:10.5px;white-space:nowrap}
+.v150-dashboard .v149-panel-title{font-size:16px;margin-bottom:9px}
+
+@media(max-width:1320px){
+  .v150-model-layout{grid-template-columns:280px minmax(0,1fr)}
+  .v150-dashboard{grid-template-columns:minmax(185px,.72fr) minmax(320px,1.15fr) minmax(195px,.75fr)}
+  .v150-lung-stage{min-height:590px}.v150-lung-stage .v149-lung-reference{max-height:565px}
+}
+@media(max-width:1050px){
+  body.v150-model-active .app{min-width:980px}
+  .v150-model-layout{grid-template-columns:270px minmax(680px,1fr)}
+  .v150-dashboard{grid-template-columns:190px 285px 190px}
+  .v150-lung-stage{min-height:560px}.v150-lung-stage .v149-lung-reference{max-height:535px}
+}
+@media(max-width:820px){
+  body.v150-model-active .app{min-width:0}
+  .v150-model-layout{grid-template-columns:1fr}
+  .v150-controls-panel{min-height:0}
+  .v150-dashboard{grid-template-columns:1fr;grid-template-areas:'lung' 'mixed' 'endcap' 'general' 'arterial' 'interp'}
+  .v150-lung-stage{min-height:480px}.v150-lung-stage .v149-lung-reference{max-height:455px}
+  .v150-interpretation #v149Interpretation{columns:1}
+}
+/* Strong overrides for the legacy v130 theme, which uses !important on app/layout. */
+body.v150-model-active .app{max-width:1880px!important;margin:12px auto!important;padding:14px!important}
+body.v150-model-active .layout{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+body.v150-model-active .layout>.card:not(.teacher-panel){width:100%!important;max-width:none!important;padding:16px!important}
+body.v150-model-active #modelPanel,body.v150-model-active .v150-model-shell{width:100%!important;max-width:none!important}

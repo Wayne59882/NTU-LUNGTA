@@ -1,0 +1,8 @@
+v239.6 feature delta
+- Canonicalizes VQ / V Q / V/Q / VQratio / VQ ratio to V/Q forms for scope detection.
+- Canonicalizes VO2max / VO₂max / VO2 max to VO2 max.
+- Applies the same canonicalization to semantic retrieval queries.
+- Adds retrieval-only semantic aliases: V/Q -> ventilation perfusion ratio; VO2 max -> maximal oxygen uptake.
+- Does not alter the textbook corpus, answer keys, production model prompts, or vector indexes.
+- Preserves v239.4 dynamic All / One / Multiple feedback and Resend/SQLite behavior.
+- Preserves v238.1 inference/RAG behavior except query normalization before retrieval/scope gating.

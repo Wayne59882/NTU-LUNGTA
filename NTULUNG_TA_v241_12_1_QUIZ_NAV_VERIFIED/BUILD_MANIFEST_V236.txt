@@ -1,0 +1,18 @@
+NTULUNG TA v236 — EVIDENCE-PRECISION DECISION STABLE
+
+Goal
+- Recover MCQ accuracy after v235 regression without memorizing benchmark answers.
+- Preserve full Human Physiology + directly related Pathophysiology scope.
+- Preserve full 4,792-passage Guyton + Vander + Beachey corpus.
+
+Changes
+1. Stem-dominant retrieval blend = 0.92.
+2. Option-conditioned vectors expand recall only; they no longer determine candidate ranking.
+3. Numeric/range/sign/ordinal-option MCQs use stem-only retrieval to avoid distractor-value contamination.
+4. Generic stem-anchor precision tie-break in window reranking.
+5. Structured A-D comparison retained.
+6. Blind verification only when model evidence is ambiguous/weak.
+7. Third same-model challenge on agreement removed from production path.
+8. Semantic rewrite cannot routinely overwrite an already valid MCQ choice.
+9. Scope lock, BYOK cloud policy, async serving, 3D avatar, STT/TTS, Hopkins simulator retained.
+10. Seen regression answers stay isolated from production prompts/retrieval/weights.

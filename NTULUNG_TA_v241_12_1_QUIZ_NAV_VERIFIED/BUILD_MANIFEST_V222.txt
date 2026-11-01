@@ -1,0 +1,13 @@
+NTU-LUNGTA v222 — Question-Type-Aware Prompt Engineering
+
+Base: v220 default Reference Textbook + v219 lecture pause/resume.
+Changes:
+- Deterministic question-type routing: MCQ conceptual / MCQ calculation / numerical calculation / mechanism / knowledge-conceptual.
+- Mandatory output contracts injected into Reference Textbook local LLM, BYOK Gemini/OpenAI, and Query Knowledge Base synthesis.
+- MCQ must state option letter + option text before explanation.
+- Calculation MCQ must formula -> substitution -> units -> result -> option match.
+- Knowledge/conceptual must restate exact question then answer it directly; no extra quiz/background.
+- Same-language output enforced by existing language router.
+- Trusted respiratory equations included as calculation safeguards; no model fine-tuning required.
+- Existing Vector RAG / Top16 -> rerank -> Top5 / 8500-char context unchanged.
+- Existing v220 default Reference Textbook, v219 lecture controls, v218 voice/TTS/source cleanup, Hopkins simulator preserved.

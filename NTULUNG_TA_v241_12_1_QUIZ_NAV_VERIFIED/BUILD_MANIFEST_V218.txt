@@ -1,0 +1,13 @@
+V218 final build
+- Granite 4.2 8B Q5_K_M replaces Qwen3.5 9B
+- Gemma 4 12B retained
+- Ministral 3 8B retained
+- One local answer model active at a time
+- 5-second post-speech silence auto-submit with transcript preservation
+- Student-language detection and same-language answer/TTS
+- Zhiwei male-role / Yating female-role multilingual browser voice selection
+- Professional medical TTS for PaO2/PaCO2 and VA/VE/VT/VD
+- No student-facing figure/table/page/chapter/source attribution wording
+- 3D Avatar + Voice Settings merged
+- Hopkins 4-case numerical regression preserved
+- Gemini/OpenAI BYOK 3-second cloud fallback preserved

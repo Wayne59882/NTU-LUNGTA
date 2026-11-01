@@ -1,0 +1,7 @@
+Build: v241.12.3-clean-chapter-list
+
+- Chapter list shows titles only; internal evidence processing counts remain server-side.
+- Practice selector retains a compact question count for each chapter.
+- Preparation meter uses plain practice status without source-fact counts.
+- v241.12.2 quick-start question generation, scoped draws, and selected-chapter expansion are preserved.
+- Full one-click preflight and browser interaction regression are verified locally.

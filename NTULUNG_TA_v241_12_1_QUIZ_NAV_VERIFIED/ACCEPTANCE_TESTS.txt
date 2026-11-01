@@ -1,0 +1,21 @@
+v207 acceptance focus
+- original Curated Knowledge Base remains isolated and unchanged
+- Reference Book uses semantic Vector RAG: chunk -> local BGE-M3 embedding -> cosine similarity -> compact top-k evidence -> selected Local LLM
+- no BM25 main retrieval path and no Local-LLM query-expansion prepass
+- Reference context defaults to compact top-k evidence rather than an 18,000-character broad topic dump
+- public Reference answer optionally starts user-selected BYOK Gemini/OpenAI after the 10-second total local-path budget and uses the same retrieved textbook evidence
+- speech rate / pitch changes preserve the current playback position rather than jumping to the next punctuation/sentence
+- Yating/Zhiwei 3D Avatar browser runtime uses pinned CDN modules/models and does not depend on old deleted server folders
+- Curated Knowledge Base, quiz/scenario, lung simulator, STT, TTS voices, voice roles, and existing UI remain present
+
+- Student-facing Reference answers do not expose internal Evidence/Context/Chunk labels or source-attribution prefaces; citations remain in the separate source UI.
+
+- v211 shared-A5000 balanced set: Granite 4.2 8B Q5_K_M / Gemma 4 12B / Ministral 3 8B; single-active-model; STT large-v3-turbo adaptive CPU/GPU; cloud Gemini 3.8 Flash + GPT-5.6 Luna
+
+- v216 UI cleanup: merged 3D Avatar/Voice Settings with one Yating/Zhiwei selector; removed auto-submit helper sentence; plain-text answer sanitization blocks TeX/LaTeX artifacts and definition drift.
+
+V218 FINAL additions:
+- Granite 4.2 8B Q5_K_M replaces Qwen3.5 9B; Gemma 4 12B and Ministral 3 8B retained.
+- Zhiwei prefers male voices and Yating female voices in English/multilingual Q&A when matching browser voices are available.
+- Q&A TTS expands VA/VE/VT/VD to professional spoken terminology and spells PaO2/PaCO2-style abbreviations.
+- Student answers strip figure/table/page/chapter/source wording such as “as shown in Figure” in local, BYOK cloud, and browser display paths.

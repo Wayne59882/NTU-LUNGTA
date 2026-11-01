@@ -1,0 +1,28 @@
+VQ TA v175 VERIFICATION
+
+domain_gate_1: PASS
+kb_gate_68: PASS
+weights_unchanged: PASS
+active7_scoring_unchanged: PASS
+top6_retrieval_unchanged: PASS
+response_support_present: PASS
+comparison_prompt_present: PASS
+port_8175: PASS
+anatomic_shunt_support: PASS
+true_shunt_support: PASS
+
+Comparison support test:
+[
+  {
+    "concept": "anatomic shunt",
+    "course": "shunt",
+    "definition": "Anatomic shunt 是正常解剖結構造成的少量右到左分流；少量靜脈血會繞過已通氣肺泡或直接混入左心與肺靜脈血。",
+    "mechanism": "即使肺泡通氣正常，bronchial circulation 與 Thebesian veins 仍可讓少量低氧血混入 arterial blood，因此 PaO2 會略低於理想 end-capillary PO2。"
+  },
+  {
+    "concept": "true shunt",
+    "course": "shunt",
+    "definition": "true shunt 是有血流但沒有有效通氣。",
+    "mechanism": "血流未被氧合就進入 arterial blood。"
+  }
+]

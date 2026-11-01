@@ -1,0 +1,74 @@
+/* v194 Animated Avatar
+   Purpose: turn the existing portrait TA into a lightweight animated avatar
+   while preserving the existing full-portrait viseme/mouth-sync engine.
+   Animation is transform-only for mobile stability and low GPU/CPU cost. */
+
+.avatar-wrap {
+  perspective: 900px;
+}
+
+.avatar.real-avatar.canvas-avatar {
+  transform-origin: 50% 78%;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  animation: vqAvatarIdle 6.8s ease-in-out infinite;
+}
+
+/* Very small natural idle motion: breathing + posture drift. */
+@keyframes vqAvatarIdle {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateZ(0deg) scale(1); }
+  24%      { transform: translate3d(-1px, -1.2px, 0) rotateZ(-0.22deg) scale(1.002); }
+  52%      { transform: translate3d(0.8px, -2.1px, 0) rotateZ(0.18deg) scale(1.006); }
+  76%      { transform: translate3d(0.2px, -0.8px, 0) rotateZ(-0.10deg) scale(1.003); }
+}
+
+/* During speech, retain the original viseme canvas while adding subtle conversational motion. */
+body.speaking .avatar.real-avatar.canvas-avatar {
+  animation: vqAvatarSpeaking 2.25s ease-in-out infinite !important;
+}
+
+@keyframes vqAvatarSpeaking {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateZ(0deg) scale(1.002); }
+  22%      { transform: translate3d(0.6px, -1.6px, 0) rotateZ(0.24deg) scale(1.006); }
+  48%      { transform: translate3d(-0.7px, -0.5px, 0) rotateZ(-0.20deg) scale(1.004); }
+  72%      { transform: translate3d(0.4px, -1.9px, 0) rotateZ(0.15deg) scale(1.007); }
+}
+
+/* Short transition when changing Yating/Zhiwei. */
+.avatar.real-avatar.canvas-avatar.vq-avatar-role-transition {
+  animation: vqAvatarRoleChange 320ms cubic-bezier(.2,.7,.2,1) 1 !important;
+}
+@keyframes vqAvatarRoleChange {
+  0%   { opacity: .15; transform: translate3d(0, 5px, 0) scale(.985); }
+  65%  { opacity: 1; transform: translate3d(0, -1px, 0) scale(1.006); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Keep mouth-state crossfades crisp while the portrait itself moves. */
+.real-avatar-canvas,
+.real-avatar-bootstrap-image {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Mobile: avoid accidental scroll/jank from animation layers. */
+@media (max-width: 900px) {
+  .avatar.real-avatar.canvas-avatar {
+    animation-duration: 7.6s;
+  }
+  body.speaking .avatar.real-avatar.canvas-avatar {
+    animation-duration: 2.5s !important;
+  }
+}
+
+/* Accessibility: user/system can request reduced motion. Mouth sync still works. */
+@media (prefers-reduced-motion: reduce) {
+  .avatar.real-avatar.canvas-avatar,
+  body.speaking .avatar.real-avatar.canvas-avatar {
+    animation: none !important;
+  }
+  .avatar.real-avatar.canvas-avatar.vq-avatar-role-transition {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,39 @@
+NTULUNG TA v227
+
+Purpose
+- Keep physiology answer accuracy as the primary goal without making every question pay for a second full LLM pass.
+- Apply deterministic verification to every answer.
+- Invoke a short semantic LLM reviewer only when the fast audit finds a concrete risk or a weak-evidence answer is itself uncertain.
+- Preserve natural response diversity: correct answers are not rewritten merely to match preferred wording.
+- Preserve v226 MCQ safeguards, v224 three-local-model QLoRA pipeline, Reference Textbook Vector RAG, BYOK cloud fallback, voice/avatar, lecture controls, and Hopkins simulator.
+
+Two-stage verification
+Stage 1 (all answers; no extra LLM call)
+- completion / truncation check
+- source/figure/table/page/chapter leakage check
+- MCQ option-letter validity
+- deterministic respiratory calculation/option checks when rule-checkable
+- language/output-contract checks already present in the production path
+
+Stage 2 (conditional only)
+- same selected local model reviews the draft only if Stage 1 flags risk
+- for Reference conceptual MCQ, weak retrieval can trigger review
+- for knowledge/mechanism answers, weak retrieval alone does not force a second pass; it escalates only when the draft also signals uncertainty
+- cloud BYOK reviewer is called only when the cloud draft fails Stage 1, avoiding routine paid second calls
+- reviewer must return PASS without rewriting a correct answer
+
+Speed policy
+- normal valid answer: one retrieval + one LLM generation
+- deterministic checks: millisecond-scale Python/JS only
+- second semantic pass: conditional and short (JSON, temperature 0, small output budget)
+
+Diversity policy
+- correctness constraints are strict
+- surface wording is flexible
+- explanatory local answers use modest non-zero temperature; calculations/MCQ decisions remain low-temperature
+- SFT system instructions explicitly teach "do not rewrite a correct answer merely to enforce fixed wording"
+
+SFT corpus
+- 491 total rows: 371 train / 60 validation / 60 held-out test
+- no separate teacher-priority/gold weighting
+- Granite 4.2 / Gemma 4 / Ministral 3 retain independent QLoRA profiles

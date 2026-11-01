@@ -1,0 +1,12 @@
+v239.4 dynamic batch feedback release
+- Preserves v238.1 inference/RAG behavior and the v239 five-model benchmark.
+- Detects the submitted batch size dynamically using the existing robust batch parser (existing limit: 40 items).
+- Feedback scope supports All questions / One question / Multiple questions.
+- One-question reports use a typed question number; multiple-question reports accept forms such as 2,5,8-10.
+- Removes the old per-question dropdown behavior for multi-question feedback.
+- Stores report scope, detected batch size, and reported question numbers in SQLite and developer email.
+- Migrates existing v239.x feedback databases in place without deleting prior rows.
+- Raises feedback payload limits so complete multi-question reports are not clipped at single-question limits.
+- Keeps Resend SQLite-first delivery behavior.
+- Makes post-deployment server-to-workers.dev curl timeout non-fatal after Worker upload/origin health has succeeded.
+- Runtime credentials and generated feedback/benchmark data remain excluded from the release archive.

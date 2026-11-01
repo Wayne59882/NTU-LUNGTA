@@ -1,0 +1,33 @@
+VQ TA v172 ARCHITECTURE / RECOGNITION VERIFICATION
+
+active7_weights_unchanged: PASS
+domain_gate_1: PASS
+kb_gate_68: PASS
+domain_terms_scoring_list_unchanged: PASS
+active7_score_function_unchanged: PASS
+top6_preserved: PASS
+top6_qwen_preserved: PASS
+ambiguous_alias_guard: PASS
+kb_auto_fuzzy_removed: PASS
+Python syntax: PASS
+JavaScript syntax: PASS
+
+Smoke tests:
+
+INPUT: 所以站立跟坐立的那個vq到底怎麼會怎樣？
+EXPANDED: 所以站立跟坐立的那個V/Q到底怎麼會怎樣？ V/Q ratio perfusion apex base
+
+INPUT: 站著的時候肺血流怎麼分布？
+EXPANDED: 站著的時候肺血流怎麼分布？ perfusion V/Q ratio apex base
+
+INPUT: 通氣灌流比在肺尖跟肺底差在哪？
+EXPANDED: V/Q ratio在肺尖跟肺底差在哪？ apex base
+
+INPUT: deadspace 跟 shunt 差別？
+EXPANDED: dead space 跟 shunt 差別？ true shunt
+
+INPUT: A a gradiant 為什麼變大？
+EXPANDED: A a gradiant 為什麼變大？ A-a gradient diffusion
+
+INPUT: 我今天站著很累
+EXPANDED: 我今天站著很累

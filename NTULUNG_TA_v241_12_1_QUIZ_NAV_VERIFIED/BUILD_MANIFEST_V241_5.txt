@@ -1,0 +1,5 @@
+v241.5-course-embed-recovery
+Source: NTULUNG_TA_v241_4_COURSE_FLOW_FIXED.zip
+Changed: course_runtime.py (sanitize/split/shorten course embedding requests; show Ollama response and failing passage/window); web/reference and web/kb adaptive JS (distinguish accepted build job from background failure); installer (realistic bilingual course embedding preflight); version markers and checks.
+Added: VERIFY_V241_5_COURSE_FLOW.py, README_V241_5_zh-TW.md.
+Validation: local HTTP simulated 400 from embedding service; short-input retry; permanent 400 job-status phase/detail; upload -> build -> quiz -> course Q&A integration test. No actual textbook PDF or production Ollama logs were available.

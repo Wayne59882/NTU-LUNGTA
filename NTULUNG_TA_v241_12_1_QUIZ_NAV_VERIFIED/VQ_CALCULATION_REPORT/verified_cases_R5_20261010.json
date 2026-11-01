@@ -1,0 +1,581 @@
+{
+  "revision": "v241.12.5-VQ-selected-region-R5-20261010",
+  "checks": [
+    "all eleven initial engine defaults are unchanged",
+    "both pages retain every original initial HTML input",
+    "KB and Reference use identical authoritative calculation code",
+    "normal: oxygen/CO2 conservation and content mixing",
+    "lowvq: oxygen/CO2 conservation and content mixing",
+    "highvq: oxygen/CO2 conservation and content mixing",
+    "pe: oxygen/CO2 conservation and content mixing",
+    "pneumonia: oxygen/CO2 conservation and content mixing",
+    "shunt: oxygen/CO2 conservation and content mixing",
+    "diffusion: oxygen/CO2 conservation and content mixing",
+    "anemia: oxygen/CO2 conservation and content mixing",
+    "altitude: oxygen/CO2 conservation and content mixing",
+    "Low V/Q selected-region CO2 matches that region and retains its original inputs",
+    "High V/Q separates low regional end-capillary CO2 from elevated mixed arterial CO2",
+    "Diffusion actual preset creates a visible alveolar/end-capillary oxygen gap",
+    "True shunt actual preset gives a small, content-conserving oxygen response",
+    "homogeneous ventilation matches the independent alveolar equations",
+    "regional wasted ventilation changes arterial, not whole-lung input values",
+    "lower diffusing capacity widens A-a oxygen difference",
+    "true shunt has a reduced oxygen response, without a false flat PaO2",
+    "diffusion solver agrees with the exact dissolved-only exponential limit",
+    "invalid/infeasible settings return errors, without plausible fabricated outputs",
+    "reset defaults stay original and scenario inputs match the authoritative registry"
+  ],
+  "rows": [
+    {
+      "preset": "normal",
+      "inputs": {
+        "VT": 500,
+        "VD": 150,
+        "f": 15,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0,
+        "DLO2": 32,
+        "preset": "normal"
+      },
+      "VE": 7.5,
+      "VA": 5.25,
+      "alveolarPCO2": 40,
+      "alveolarPO2": 101.78379999999999,
+      "endCapillaryPCO2": 40,
+      "endCapillaryPO2": 101.77699999994874,
+      "arterialPCO2": 39.99999999999998,
+      "arterialPO2": 101.77699999994516,
+      "AaDifference": 0.006800000054852262,
+      "oxygenBalanceResidual": 3.856723083117686e-7,
+      "co2BalanceResidual": -0.000005757635761938218,
+      "units": [
+        {
+          "r": [
+            -1.5073706549628696e-7,
+            9.59605962691512e-7
+          ],
+          "pa": 101.78379999999999,
+          "pc": 40,
+          "o2": 19.861330999999222,
+          "co2": 49.210000000000115,
+          "sat": 0.9777999999999688,
+          "ecPO2": 101.77699999994874,
+          "o2Flux": 300.0000003856723,
+          "co2Flux": 239.99999424236424,
+          "effectiveness": 0.9998944649416828,
+          "va": 5.25,
+          "q": 5.5,
+          "dl": 32,
+          "localResidual": 9.59605962691512e-7
+        }
+      ],
+      "assumptions": [
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+      ]
+    },
+    {
+      "preset": "lowvq",
+      "inputs": {
+        "VT": 350,
+        "VD": 180,
+        "f": 28,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0.08,
+        "DLO2": 32,
+        "preset": "lowvq"
+      },
+      "VE": 9.8,
+      "VA": 4.76,
+      "alveolarPCO2": 44.11764704792856,
+      "alveolarPO2": 96.85291777993633,
+      "endCapillaryPCO2": 52.073586307189785,
+      "endCapillaryPO2": 50.96655566757677,
+      "arterialPCO2": 47.58549128609736,
+      "arterialPO2": 57.96762916700615,
+      "AaDifference": 34.73254501789225,
+      "oxygenBalanceResidual": -9.270640930481022e-7,
+      "co2BalanceResidual": -9.917823717842111e-8,
+      "units": [
+        {
+          "r": [
+            -2.8129207407801005e-8,
+            3.57511993342996e-8
+          ],
+          "pa": 59.57921698151783,
+          "pc": 52.073586307189785,
+          "o2": 16.666077491752795,
+          "co2": 55.28058633601234,
+          "sat": 0.8256588912375031,
+          "ecPO2": 50.96655566757677,
+          "o2Flux": 109.03292823064015,
+          "co2Flux": 56.65606186332518,
+          "effectiveness": 0.6533968761905153,
+          "va": 0.952,
+          "q": 2.5300000000000002,
+          "dl": 16,
+          "localResidual": 3.57511993342996e-8
+        },
+        {
+          "r": [
+            5.749711817770731e-11,
+            2.3247537228598958e-10
+          ],
+          "pa": 106.17134297954094,
+          "pc": 42.128662233113246,
+          "o2": 19.90458115229254,
+          "co2": 50.27316040027432,
+          "sat": 0.979303942097595,
+          "ecPO2": 106.16743678021341,
+          "o2Flux": 190.96707084229573,
+          "co2Flux": 183.3439380374971,
+          "effectiveness": 0.9999470743315706,
+          "va": 3.808,
+          "q": 2.5300000000000002,
+          "dl": 16,
+          "localResidual": 2.3247537228598958e-10
+        }
+      ],
+      "assumptions": [
+        "Regional teaching assumption: affected unit receives 20% of total alveolar ventilation and 50% of ventilated perfusion. Whole-lung input values are unchanged.",
+        "Low V/Q teaching preset includes compensatory breathing (28/min); changing the displayed inputs changes the computed result.",
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. Compensation is specified by the displayed respiratory rate; no additional automatic compensation is applied."
+      ]
+    },
+    {
+      "preset": "highvq",
+      "inputs": {
+        "VT": 650,
+        "VD": 280,
+        "f": 18,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 3.4,
+        "Shunt": 0.02,
+        "DLO2": 32,
+        "preset": "highvq"
+      },
+      "VE": 11.7,
+      "VA": 6.66,
+      "alveolarPCO2": 31.53153185297033,
+      "alveolarPO2": 111.92478925456473,
+      "endCapillaryPCO2": 18.792334746821844,
+      "endCapillaryPO2": 138.02093134464698,
+      "arterialPCO2": 55.27058450895695,
+      "arterialPO2": 38.69757537810514,
+      "AaDifference": 44.799699672418896,
+      "oxygenBalanceResidual": 0.000011684908145070949,
+      "co2BalanceResidual": 0.00000772290141526355,
+      "units": [
+        {
+          "r": [
+            2.300162975643616e-7,
+            -0.000001100722702318535
+          ],
+          "pa": 138.02093134464698,
+          "pc": 18.792334746821844,
+          "o2": 20.318717699088687,
+          "co2": 34.15391401038513,
+          "sat": 0.9952327452527373,
+          "ecPO2": 138.02093134464698,
+          "o2Flux": 52.04227428879362,
+          "co2Flux": 100.12556539571735,
+          "effectiveness": 1,
+          "va": 4.662,
+          "q": 0.3332,
+          "dl": 3.2,
+          "localResidual": 0.000001100722702318535
+        },
+        {
+          "r": [
+            -0.0000015719013859438746,
+            2.576639985818474e-7
+          ],
+          "pa": 51.0337910443728,
+          "pc": 61.256325100650116,
+          "o2": 12.968353179846716,
+          "co2": 59.53925635513209,
+          "sat": 0.6426584280307617,
+          "ecPO2": 38.39487307716021,
+          "o2Flux": 247.9577373961144,
+          "co2Flux": 139.87444232718434,
+          "effectiveness": 0.5850962838209858,
+          "va": 1.9980000000000004,
+          "q": 2.9988,
+          "dl": 28.8,
+          "localResidual": 0.0000015719013859438746
+        }
+      ],
+      "assumptions": [
+        "Regional teaching assumption: affected unit receives 70% of total alveolar ventilation and 10% of ventilated perfusion. Whole-lung input values are unchanged.",
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+      ]
+    },
+    {
+      "preset": "pe",
+      "inputs": {
+        "VT": 650,
+        "VD": 300,
+        "f": 20,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 3.2,
+        "Shunt": 0.02,
+        "DLO2": 32,
+        "preset": "pe"
+      },
+      "VE": 13,
+      "VA": 7,
+      "alveolarPCO2": 29.999999999933763,
+      "alveolarPO2": 113.75880000409673,
+      "endCapillaryPCO2": 17.97788708197822,
+      "endCapillaryPO2": 139.55813154938437,
+      "arterialPCO2": 38.954302446039215,
+      "arterialPO2": 81.8251547437363,
+      "AaDifference": 21.21086807713172,
+      "oxygenBalanceResidual": -4.1460054944764124e-8,
+      "co2BalanceResidual": -1.8260379874845967e-9,
+      "units": [
+        {
+          "r": [
+            -1.9895196601282805e-11,
+            9.421796676178928e-11
+          ],
+          "pa": 139.55813154938437,
+          "pc": 17.97788708197822,
+          "o2": 20.329737948978018,
+          "co2": 33.293531766862834,
+          "sat": 0.9955531777164932,
+          "ecPO2": 139.55813154938437,
+          "o2Flux": 32.153479308354925,
+          "co2Flux": 71.91154832753601,
+          "effectiveness": 1,
+          "va": 3.5,
+          "q": 0.31360000000000005,
+          "dl": 3.2,
+          "localResidual": 9.421796676178928e-11
+        },
+        {
+          "r": [
+            -7.086953246471239e-11,
+            2.298108370268892e-10
+          ],
+          "pa": 87.95946845880908,
+          "pc": 42.02211291788931,
+          "o2": 19.566742160818677,
+          "co2": 50.268995318350434,
+          "sat": 0.9651441730226736,
+          "ecPO2": 87.95290012173524,
+          "o2Flux": 267.846520650185,
+          "co2Flux": 168.088451670638,
+          "effectiveness": 0.9998913159944238,
+          "va": 3.5,
+          "q": 2.8224,
+          "dl": 28.8,
+          "localResidual": 2.298108370268892e-10
+        }
+      ],
+      "assumptions": [
+        "Regional teaching assumption: affected unit receives 50% of total alveolar ventilation and 10% of ventilated perfusion. Whole-lung input values are unchanged.",
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+      ]
+    },
+    {
+      "preset": "pneumonia",
+      "inputs": {
+        "VT": 320,
+        "VD": 150,
+        "f": 18,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0.18,
+        "DLO2": 32,
+        "preset": "pneumonia"
+      },
+      "VE": 5.76,
+      "VA": 3.06,
+      "alveolarPCO2": 68.6274509467215,
+      "alveolarPO2": 67.50242757605773,
+      "endCapillaryPCO2": 74.8268046265543,
+      "endCapillaryPO2": 43.12272422046719,
+      "arterialPCO2": 72.51992315804256,
+      "arterialPO2": 45.19651772932676,
+      "AaDifference": 17.644674288917273,
+      "oxygenBalanceResidual": -0.000001361111117148539,
+      "co2BalanceResidual": -3.0106201620583306e-7,
+      "units": [
+        {
+          "r": [
+            -5.132723828182861e-7,
+            1.428546596571323e-7
+          ],
+          "pa": 53.457329267946506,
+          "pc": 74.8268046265543,
+          "o2": 13.586557280287503,
+          "co2": 64.01523635108511,
+          "sat": 0.6728594553813051,
+          "ecPO2": 43.12272422046719,
+          "o2Flux": 106.92338270158903,
+          "co2Flux": 78.5040074468986,
+          "effectiveness": 0.5459176498710434,
+          "va": 0.9179999999999999,
+          "q": 2.2550000000000003,
+          "dl": 16,
+          "localResidual": 5.132723828182861e-7
+        },
+        {
+          "r": [
+            -6.64180106468848e-8,
+            1.3658137731908937e-8
+          ],
+          "pa": 73.52175542239112,
+          "pc": 65.97058508393602,
+          "o2": 17.40709977411059,
+          "co2": 60.33488225773071,
+          "sat": 0.8612440034931953,
+          "ecPO2": 60.73990141556093,
+          "o2Flux": 193.0766159372997,
+          "co2Flux": 161.49599225204022,
+          "effectiveness": 0.7103435417058247,
+          "va": 2.142,
+          "q": 2.2550000000000003,
+          "dl": 16,
+          "localResidual": 6.64180106468848e-8
+        }
+      ],
+      "assumptions": [
+        "Regional teaching assumption: affected unit receives 30% of total alveolar ventilation and 50% of ventilated perfusion. Whole-lung input values are unchanged.",
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+      ]
+    },
+    {
+      "preset": "shunt",
+      "inputs": {
+        "VT": 400,
+        "VD": 150,
+        "f": 16,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0.5,
+        "DLO2": 32,
+        "preset": "shunt"
+      },
+      "VE": 6.4,
+      "VA": 4,
+      "alveolarPCO2": 52.50000017621418,
+      "alveolarPO2": 86.81504608849623,
+      "endCapillaryPCO2": 52.50000017621418,
+      "endCapillaryPO2": 86.79907675479001,
+      "arterialPCO2": 61.20931375813018,
+      "arterialPO2": 41.33717472173615,
+      "AaDifference": 35.04847205290295,
+      "oxygenBalanceResidual": 0.000022419504603021778,
+      "co2BalanceResidual": 8.053374074279418e-7,
+      "units": [
+        {
+          "r": [
+            -1.3793055586575065e-10,
+            4.661870889322017e-11
+          ],
+          "pa": 86.81504608849623,
+          "pc": 52.50000017621418,
+          "o2": 19.373045049062164,
+          "co2": 54.97686302794362,
+          "sat": 0.9556323909398896,
+          "ecPO2": 86.79907675479001,
+          "o2Flux": 300.0000224195046,
+          "co2Flux": 240.0000008053374,
+          "effectiveness": 0.9997353523074508,
+          "va": 4,
+          "q": 2.75,
+          "dl": 32,
+          "localResidual": 1.3793055586575065e-10
+        }
+      ],
+      "assumptions": [
+        "True shunt teaching preset uses 50% bypass flow. Supplemental oxygen has a reduced arterial effect, not an exactly zero effect.",
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+      ]
+    },
+    {
+      "preset": "diffusion",
+      "inputs": {
+        "VT": 500,
+        "VD": 150,
+        "f": 14,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0,
+        "DLO2": 16,
+        "preset": "diffusion"
+      },
+      "VE": 7,
+      "VA": 4.9,
+      "alveolarPCO2": 42.857142857142854,
+      "alveolarPO2": 98.36237142857142,
+      "endCapillaryPCO2": 42.857142857142854,
+      "endCapillaryPO2": 77.87928269235667,
+      "arterialPCO2": 42.857142857142826,
+      "arterialPO2": 77.87928269235422,
+      "AaDifference": 20.48308873621724,
+      "oxygenBalanceResidual": -6.699187906633597e-7,
+      "co2BalanceResidual": -5.098863482544402e-7,
+      "units": [
+        {
+          "r": [
+            -1.1362713792095747e-7,
+            9.105113463192538e-8
+          ],
+          "pa": 98.36237142857142,
+          "pc": 42.857142857142854,
+          "o2": 19.243160412776213,
+          "co2": 50.72652475694834,
+          "sat": 0.9504761282349571,
+          "ecPO2": 77.87928269235667,
+          "o2Flux": 299.9999993300812,
+          "co2Flux": 239.99999949011365,
+          "effectiveness": 0.6699204017389131,
+          "va": 4.9,
+          "q": 5.5,
+          "dl": 16,
+          "localResidual": 1.1362713792095747e-7
+        }
+      ],
+      "assumptions": [
+        "Diffusion teaching preset uses reduction of the displayed O2 diffusing capacity (16 mL/min/mmHg).",
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+      ]
+    },
+    {
+      "preset": "anemia",
+      "inputs": {
+        "VT": 500,
+        "VD": 150,
+        "f": 15,
+        "FIO2": 0.21,
+        "Altitude": 0,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 8,
+        "QT": 5.5,
+        "Shunt": 0,
+        "DLO2": 32,
+        "preset": "anemia"
+      },
+      "VE": 7.5,
+      "VA": 5.25,
+      "alveolarPCO2": 40,
+      "alveolarPO2": 101.78379999999999,
+      "endCapillaryPCO2": 40,
+      "endCapillaryPO2": 101.7837916525085,
+      "arterialPCO2": 39.99999999999998,
+      "arterialPO2": 101.78379165251172,
+      "AaDifference": 0.000008347488289928151,
+      "oxygenBalanceResidual": -1.3477813354256796e-7,
+      "co2BalanceResidual": -2.1597685417873436e-8,
+      "units": [
+        {
+          "r": [
+            -1.8501708609619527e-8,
+            3.5996094993606675e-9
+          ],
+          "pa": 101.78379999999999,
+          "pc": 40,
+          "o2": 10.735262221739607,
+          "co2": 54.97017893363782,
+          "sat": 0.9778041418858201,
+          "ecPO2": 101.7837916525085,
+          "o2Flux": 299.99999986522187,
+          "co2Flux": 239.99999997840231,
+          "effectiveness": 0.9999998889381895,
+          "va": 5.25,
+          "q": 5.5,
+          "dl": 32,
+          "localResidual": 1.8501708609619527e-8
+        }
+      ],
+      "assumptions": [
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+      ]
+    },
+    {
+      "preset": "altitude",
+      "inputs": {
+        "VT": 500,
+        "VD": 150,
+        "f": 18,
+        "FIO2": 0.21,
+        "Altitude": 3000,
+        "VO2": 300,
+        "R": 0.8,
+        "Hb": 15,
+        "QT": 5.5,
+        "Shunt": 0,
+        "DLO2": 32,
+        "preset": "altitude"
+      },
+      "VE": 9,
+      "VA": 6.3,
+      "alveolarPCO2": 33.33333314527664,
+      "alveolarPO2": 60.61136919082888,
+      "endCapillaryPCO2": 33.33333314527664,
+      "endCapillaryPO2": 47.831110149201805,
+      "arterialPCO2": 33.333333145276704,
+      "arterialPO2": 47.831110149200384,
+      "AaDifference": 12.78025789339511,
+      "oxygenBalanceResidual": -0.000013611936196866736,
+      "co2BalanceResidual": -0.0000015725011053291382,
+      "units": [
+        {
+          "r": [
+            -1.6596529661683235e-7,
+            3.034623574649231e-8
+          ],
+          "pa": 60.61136919082888,
+          "pc": 33.33333314527664,
+          "o2": 17.29780206101188,
+          "co2": 45.875342717272346,
+          "sat": 0.8577154365282138,
+          "ecPO2": 47.831110149201805,
+          "o2Flux": 299.9999863880638,
+          "co2Flux": 239.9999984274989,
+          "effectiveness": 0.5970615043969512,
+          "va": 6.3,
+          "q": 5.5,
+          "dl": 32,
+          "localResidual": 1.6596529661683235e-7
+        }
+      ],
+      "assumptions": [
+        "Steady-state educational calculation with fixed 37 C, reference buffer line, rapid CO2 equilibration and reference-calibrated Hill/Douglas curves. No ventilatory compensation is assumed."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+VQ TA v176 VERIFICATION
+
+domain_gate_1: PASS
+kb_gate_68: PASS
+active7_weights_unchanged: PASS
+active7_scoring_unchanged: PASS
+top6_retrieval_unchanged: PASS
+target_bundle_layer_present: PASS
+port_8176: PASS
+plain_text_prompt: PASS
+markdown_strip: PASS
+perfusion_target_present: PASS
+diffusion_target_present: PASS
+diffusion_core_support: PASS
+
+Perfusion vs diffusion target bundles:
+[
+  {
+    "target": "perfusion",
+    "concepts": [
+      "perfusion"
+    ]
+  },
+  {
+    "target": "diffusion",
+    "concepts": [
+      "DLO2",
+      "diffusion limitation",
+      "membrane thickness",
+      "surface area",
+      "high oxygen diffusion"
+    ]
+  }
+]

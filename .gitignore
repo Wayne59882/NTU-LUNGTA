@@ -1,0 +1,25 @@
+# Python / runtime files
+__pycache__/
+*.pyc
+*.pid
+logs/
+*.log
+backups/
+node_modules/
+.wrangler/
+.lungta_*.jsonc
+
+# Secrets: e-mail API keys and environment settings (never commit)
+.env
+*.env
+**/feedback/feedback.env
+**/feedback/feedback.sqlite3
+
+# Account database (passwords, sign-in sessions) and teachers' uploaded courses
+**/auth/
+**/course_workspaces/
+
+# Copyrighted textbook full text (kept only on the server)
+*.pdf
+**/reference_corpus/chunks.jsonl
+**/benchmark/supplemental_sources/*.jsonl

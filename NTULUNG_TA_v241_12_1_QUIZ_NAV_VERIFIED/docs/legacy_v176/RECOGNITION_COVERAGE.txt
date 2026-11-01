@@ -1,0 +1,70 @@
+VQ TA v172 — COMPREHENSIVE RECOGNITION COVERAGE
+
+v172 broadens recognition without changing the validated numeric architecture.
+
+UNCHANGED
+---------
+Domain Gate = 1
+Active-7 weights:
+- Course Base 45
+- Intent Match 8
+- Alias Hit 7 each, capped at 28
+- Concept Exact Match 18
+- Domain-Term Overlap 2 each
+- Response Variant 2
+- Detected-Course Bonus 12
+- Fuzzy matching bonus 0
+Main KB Gate = 68
+Top-6 maximum
+Top-6 -> Qwen grounded synthesis
+Browser TTS
+
+RECOGNITION SOURCES
+-------------------
+1. Curated natural-language normalization:
+   V/Q variants, Chinese/English terminology, abbreviations, spacing,
+   formula spellings, posture expressions, blood-flow/perfusion wording,
+   disease names, dead-space/shunt families, oxygenation/ABG terminology.
+
+2. Automatic KB-derived lexicon:
+   every distinctive canonical KB concept, alias, and question pattern is
+   automatically available to the recognition layer. When a distinctive
+   alias is recognized, the query is enriched with that existing concept
+   and its existing course anchor before the unchanged scoring pipeline.
+
+3. Existing detection-only fuzzy tolerance:
+   fuzzy matching remains in the original downstream detector and still
+   contributes zero fuzzy score. Automatic KB-alias expansion itself uses
+   exact/compact matching only to avoid unrelated concept injection.
+
+4. Ambiguity guard:
+   a KB alias is auto-expanded only if that exact alias maps to one unique
+   canonical concept in one course. Ambiguous aliases are left to the existing
+   scoring/retrieval logic instead of forcing a course.
+
+SAFETY
+------
+Generic intent words and very short/generic aliases are excluded.
+Posture expressions such as "站著" or "坐著" require respiratory/VQ/
+perfusion context before they add V/Q/perfusion recognition terms.
+
+Examples intended to improve
+----------------------------
+- 所以站立跟坐立的那個vq到底怎麼會怎樣？
+- 站著的時候肺血流怎麼分布？
+- 通氣灌流比在肺尖跟肺底差在哪？
+- vd vt 是什麼？
+- deadspace 跟 shunt 差別？
+- 肺泡無效腔是什麼？
+- qS/qT 怎麼算？
+- A a gradiant 為什麼變大？
+- 吸入氧濃度提高會怎樣？
+- 血紅素下降為什麼氧含量會變少？
+- 肺栓塞為什麼是 high vq？
+- 氣喘為什麼會 low v q？
+
+RESEARCH NOTE
+-------------
+Weights/gates are unchanged, but recognition coverage is broader. If v172 is
+the final thesis build, rerun the same 50Q and 200Q validation sets on v172
+to document any TP/FP/FN/TN changes caused by broader recognition.

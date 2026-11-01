@@ -1,0 +1,20 @@
+VQ TA v173 VERIFICATION
+
+active7_weights_unchanged: PASS
+domain_gate_1: PASS
+kb_gate_68: PASS
+scoring_function_unchanged: PASS
+top6_preserved: PASS
+unified_final_answer_present: PASS
+cache_busting_present: PASS
+server_no_cache: PASS
+exact_question_not_rejected: PASS
+exact_question_has_top6: PASS
+qwen_final_path_called: PASS
+build_v173: PASS
+
+Exact screenshot-style question:
+INPUT: 所以站著跟坐著，他那個影響的VQ會怎樣？
+EXPANDED: 所以站著跟坐著，他那個影響的V/Q會怎樣？ V/Q ratio perfusion apex base
+TOP6: [{"rank": 1, "score": 109, "course": "perfusion", "concept": "perfusion"}, {"rank": 2, "score": 79, "course": "perfusion", "concept": "perfusion and VQ"}, {"rank": 3, "score": 77, "course": "perfusion", "concept": "capillary blood"}, {"rank": 4, "score": 77, "course": "perfusion", "concept": "perfusion limited unit"}, {"rank": 5, "score": 77, "course": "perfusion", "concept": "venous admixture"}, {"rank": 6, "score": 71, "course": "perfusion", "concept": "QT compensation"}]
+QWEN PATH CALLED: True

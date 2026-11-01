@@ -1,0 +1,85 @@
+{
+  "initial_inputs_unchanged": true,
+  "all_normal_outputs_unchanged": true,
+  "baseline": {
+    "ok": true,
+    "s": {
+      "VT": 500,
+      "VD": 150,
+      "f": 15,
+      "FIO2": 0.21,
+      "Altitude": 0,
+      "VO2": 300,
+      "R": 0.8,
+      "Hb": 15,
+      "QT": 5.5,
+      "Shunt": 0,
+      "DLO2": 32,
+      "preset": "normal"
+    },
+    "errors": [],
+    "warnings": [
+      "Steady-state educational calculation with fixed 37 C, base excess 0, rapid CO2 equilibration and a Hill/Douglas blood-gas approximation. No ventilatory compensation is assumed."
+    ],
+    "Pb": 760,
+    "PIO2": 149.73,
+    "VE": 7.5,
+    "VA": 5.25,
+    "VCO2": 240,
+    "PACO2": 39.45142739381535,
+    "PAO2": 102.48690189071831,
+    "extraction": 5.454545454545454,
+    "oxygenSupplyLimited": false,
+    "diffusionEffectiveness": 1,
+    "mvPO2": 40.77721893464622,
+    "mvPCO2": 50.64240613706197,
+    "mvSat": 0.7129401851320781,
+    "mixedVenousO2Content": 14.456507099852175,
+    "mixedVenousCO2Content": 51.448502748977916,
+    "mvPH": 7.325090362716156,
+    "mvHCO3": 25.510909920919428,
+    "endPO2": 102.48690189071752,
+    "endPCO2": 39.45142739381548,
+    "endSat": 0.9747932800275599,
+    "endCapO2Content": 19.911054324415193,
+    "endCO2Content": 47.084866515572834,
+    "artPO2": 102.48690189071752,
+    "artPCO2": 39.45142739381548,
+    "artSat": 0.9747932800275599,
+    "arterialO2Content": 19.911054324415193,
+    "arterialCO2Content": 47.084866515572834,
+    "artPH": 7.411231133116064,
+    "artHCO3": 24.233442295888768,
+    "idealAlveolarPO2": 102.48691569590596,
+    "aaGradient": 0.000013805188444848682,
+    "units": [
+      {
+        "r": [
+          -1.639079982851399e-10,
+          -1.9839774267893517e-10
+        ],
+        "pa": 102.48690189071831,
+        "pc": 39.45142739381535,
+        "o2": 19.911054324415193,
+        "co2": 47.084866515572834,
+        "sat": 0.9747932800275606,
+        "ecPO2": 102.48690189071831,
+        "o2Flux": 300.00009735096603,
+        "co2Flux": 239.99999283727948,
+        "effectiveness": 1,
+        "va": 5.25,
+        "q": 5.5,
+        "dl": 32,
+        "localResidual": 1.9839774267893517e-10
+      }
+    ],
+    "profile": {
+      "va": 1,
+      "q": 1
+    },
+    "solverResidual": 0.00009735096602980775,
+    "oxygenBalanceResidual": 0.00009735096602980775,
+    "co2BalanceResidual": -0.000007162720521591837,
+    "modelRevision": "v241.12.5-VQ-conservation-20261009"
+  }
+}

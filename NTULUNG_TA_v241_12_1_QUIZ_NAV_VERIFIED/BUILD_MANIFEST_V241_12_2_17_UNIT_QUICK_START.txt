@@ -1,0 +1,7 @@
+Build: v241.12.2-17-unit-quick-start
+
+- Scenario Practice can draw from one selected ready unit or all ready units. The server validates requested unit IDs and never calls the model during a draw.
+- Uploaded courses keep their approved cards. Background preparation first gets 2 reviewed cards per unit, then up to 10 per unit. Larger banks up to 100 are requested for a selected unit, so 17 chapters no longer trigger 1,700 automatic questions.
+- A selected unfinished chapter becomes the next question or Chinese-lecture preparation target after the current model call. Course Q&A and available scripts remain usable while others prepare.
+- Real source facts and all four option explanations remain subject to the existing independent answer review. No PDF upload or prior quiz history is discarded.
+- Verification: full one-click preflight, two-unit HTTP integration, 17-unit staged bank/expansion/lecture-priority test, both page adapters. The Ollama deployment and its real elapsed time were not available in the sandbox.

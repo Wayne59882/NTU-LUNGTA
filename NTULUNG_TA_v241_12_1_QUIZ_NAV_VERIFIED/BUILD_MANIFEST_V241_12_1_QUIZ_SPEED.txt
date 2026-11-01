@@ -1,0 +1,7 @@
+v241.12.1 QUIZ GENERATION SPEED AND PROGRESS
+
+National-exam-style question generation now uses a first batch of three source facts to unlock a two-question draw early. Later homogeneous-language batches contain up to twelve facts. The drafting call emits the stem, four options and answer; an independent blinded call still checks the answer and writes four short option explanations. A malformed large response is retried in smaller groups. Reviewed questions are saved after each batch, so existing course banks continue without re-uploading PDFs.
+
+Progress reports approved questions and processed/available source facts separately. The progress bar counts source facts actually processed, with a maximum of 100 per unit; it shows full completion when preparation ends. The manifest records model-call count and elapsed seconds for diagnosis. The theoretical target of 100 applies only where enough usable source facts exist; the draw opens with two approved questions per unit.
+
+Verification: 25-fact mocked model completes in six serial model calls (formerly ten), with two approved questions after the first draft/review pair. Full CHECK_V241_2_ONE_CLICK_STABLE.sh preflight passes. Real local Ollama wall-clock latency depends on the deployed model/hardware and was not benchmarked in the sandbox.

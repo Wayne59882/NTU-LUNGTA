@@ -1,0 +1,66 @@
+{
+  "revision": "v241.12.5-default-VQ-only-R8-20261021",
+  "real_browser_or_public_deployment": false,
+  "checks": [
+    {
+      "mode": "reference",
+      "case": "built-in default shows V/Q",
+      "passed": true
+    },
+    {
+      "mode": "reference",
+      "case": "selected uploaded course hides V/Q before manifest loads",
+      "passed": true
+    },
+    {
+      "mode": "reference",
+      "case": "uploaded respiratory course marked vq stays hidden",
+      "passed": true
+    },
+    {
+      "mode": "reference",
+      "case": "other uploaded course hides V/Q",
+      "passed": true
+    },
+    {
+      "mode": "reference",
+      "case": "leaving active V/Q returns to Lecture/Q&A",
+      "passed": true
+    },
+    {
+      "mode": "reference",
+      "case": "returning to built-in default restores V/Q",
+      "passed": true
+    },
+    {
+      "mode": "kb",
+      "case": "built-in default shows V/Q",
+      "passed": true
+    },
+    {
+      "mode": "kb",
+      "case": "selected uploaded course hides V/Q before manifest loads",
+      "passed": true
+    },
+    {
+      "mode": "kb",
+      "case": "uploaded respiratory course marked vq stays hidden",
+      "passed": true
+    },
+    {
+      "mode": "kb",
+      "case": "other uploaded course hides V/Q",
+      "passed": true
+    },
+    {
+      "mode": "kb",
+      "case": "leaving active V/Q returns to Lecture/Q&A",
+      "passed": true
+    },
+    {
+      "mode": "kb",
+      "case": "returning to built-in default restores V/Q",
+      "passed": true
+    }
+  ]
+}

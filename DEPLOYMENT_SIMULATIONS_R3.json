@@ -1,0 +1,90 @@
+{
+  "case_count": 12,
+  "all_passed": true,
+  "cases": [
+    {
+      "case": "success_new_origin",
+      "passed": true,
+      "exit_code": 0,
+      "publish_invoked": true,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "windows_confirmation_missing",
+      "passed": true,
+      "exit_code": 2,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "unprepared_origin_rejected",
+      "passed": true,
+      "exit_code": 2,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "authentication_rejected",
+      "passed": true,
+      "exit_code": 7,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "wrong_backend_directory",
+      "passed": true,
+      "exit_code": 2,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "corrupt_archive",
+      "passed": true,
+      "exit_code": 2,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "backend_differs",
+      "passed": true,
+      "exit_code": 1,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "local_service_failed",
+      "passed": true,
+      "exit_code": 2,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "apply_failure_restores",
+      "passed": true,
+      "exit_code": 9,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "publish_failure_retains_backup",
+      "passed": true,
+      "exit_code": 9,
+      "publish_invoked": true,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "renew_tunnel_and_publish",
+      "passed": true,
+      "exit_code": 0,
+      "publish_invoked": true,
+      "protected_live_files_unchanged": true
+    },
+    {
+      "case": "renew_tunnel_failure_retains_app",
+      "passed": true,
+      "exit_code": 2,
+      "publish_invoked": false,
+      "protected_live_files_unchanged": true
+    }
+  ]
+}
