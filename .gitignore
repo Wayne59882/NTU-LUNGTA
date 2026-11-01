@@ -8,6 +8,9 @@ backups/
 node_modules/
 .wrangler/
 .lungta_*.jsonc
+.venv/
+*.sqlite3
+*.sqlite3-*
 
 # Secrets: e-mail API keys and environment settings (never commit)
 .env
