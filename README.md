@@ -412,6 +412,8 @@ account and course-access updates. Source-layout changes are tracked through Git
 commits; historical changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
 Author metadata and citation information are provided in
-[CITATION.cff](CITATION.cff). Record the commit used when citing this research
+[CITATION.cff](CITATION.cff). Editorial references, third-party components, and
+the scope of the source/data review are recorded in [Source Attribution](docs/provenance.md).
+Record the commit used when citing this research
 software. This repository currently has no LICENSE file; code, teaching
 materials, models, and third-party assets have separate licensing considerations.
