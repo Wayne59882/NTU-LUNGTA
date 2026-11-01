@@ -16,6 +16,9 @@
 | 舊版驗證工具 | `tests/legacy/` |
 | 模型、醫師題目與 V/Q 評測資料 | `research/` |
 | 舊部署／安裝鏈、未載入前端程式 | `archive/` |
+| `app/START_*.sh`、`app/PREPARE_*.sh` 與部署工具 | `scripts/runtime/`、`scripts/setup/`、`scripts/deploy/` |
+| `app/PREPARE_REFERENCE_TEXTBOOK.py` | `scripts/data/prepare_reference.py` |
+| `app/CHECK_REFERENCE_TEXTBOOK.py` | `tests/legacy/check_reference_textbook.py`；僅適用既有私有教材基準 |
 
 逐檔對照見 [migration-map.json](migration-map.json)。其中包含中間搬移步驟；若一個目的地仍有下一筆對照，繼續追蹤即可找到最終位置。Git 也保留重整前的完整內容。
 
@@ -24,6 +27,8 @@
 共用前端採用原有腳本內容與原有載入順序，僅調整檔案及資產 URL；這項關係由重整前的 SHA-256 與頁面載入契約檢查。Python 的共用資源處理讓 gateway 以及直接開啟的教材服務都能提供相同檔案，並限制路徑必須位於共用資產目錄。
 
 既有 V/Q 數值期望、測驗導覽、批次回覆與語音控制 fixtures 保留。這些測試不取代真實教材、模型、裝置及帳號隔離的操作驗收。
+
+操作工具集中到 `scripts/` 後，透過共用路徑解析設定執行位置；Python 服務與私有資料仍位於 `app/`。新增的操作腳本檢查會在獨立暫存目錄，以替代外部指令驗證啟動、設定與部署呼叫鏈，並檢查教材匯入輸出位置。完整工具清單見 [scripts/README.md](../scripts/README.md)。
 
 ## 既有伺服器需要另行遷移
 

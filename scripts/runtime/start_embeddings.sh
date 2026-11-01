@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname -- "${BASH_SOURCE[0]}")/../lib/paths.sh"
 BASE="${VQ_BASE:-/path/to/workdir}"
 OLLAMA_BIN="$BASE/ollama/bin/ollama"
 HOST="${VQ_REFERENCE_EMBED_HOST:-127.0.0.1:11438}"

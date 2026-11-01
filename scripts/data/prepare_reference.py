@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import print_function
 # Optional re-ingestion utility for a replacement reference PDF.
-# Requires PyMuPDF (fitz). The shipped v206.7 build already contains a prepared reference-textbook corpus.
+# Requires PyMuPDF (fitz); private corpus text is not shipped in this repository.
 import argparse, json, re, sys
 from pathlib import Path
 try:
@@ -18,7 +18,7 @@ def chunks(words,max_words=420,overlap=70):
         if len(part)>=60: yield ' '.join(part)
         if i+max_words>=len(words): break
 ap=argparse.ArgumentParser(); ap.add_argument('pdf'); ap.add_argument('--title',default='Reference material'); args=ap.parse_args()
-doc=fitz.open(args.pdf); out=Path(__file__).resolve().parent/'reference_corpus/chunks.jsonl'; n=0
+doc=fitz.open(args.pdf); out=Path(__file__).resolve().parents[2]/'app/reference_corpus/chunks.jsonl'; n=0
 with out.open('w',encoding='utf-8') as f:
     for p in range(doc.page_count):
         text=clean(doc[p].get_text('text') or '')

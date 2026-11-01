@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cd "$(dirname "$0")"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../lib/paths.sh"
+cd "$LUNGTA_APP_DIR"
 BASE="${VQ_BASE:-/path/to/workdir}"
 # Resolve before the TTS environment changes PATH. The installer and server
 # must import PyMuPDF with the exact same interpreter.
@@ -47,24 +48,24 @@ if [[ -f finetune/active_models.env ]]; then
 fi
 "$PYTHON_BIN" -c "import fitz, course_runtime; assert course_runtime.fitz is not None" || { echo "[ERROR] PDF parser missing in serving Python: $PYTHON_BIN. Install requirements/runtime.txt with the same PYTHON_BIN." >&2; exit 1; }
 
-if ! curl -fsS "http://$OLLAMA_HOST/api/version" >/dev/null 2>&1; then ./START_PRIVATE_OLLAMA.sh; fi
+if ! curl -fsS "http://$OLLAMA_HOST/api/version" >/dev/null 2>&1; then bash "$LUNGTA_SCRIPTS_DIR/runtime/start_ollama.sh"; fi
 if [[ ! -x "$BASE/miniforge-teacher-tts/bin/python" ]] || ! "$BASE/miniforge-teacher-tts/bin/python" -c "import faster_whisper" >/dev/null 2>&1; then
   echo '[ERROR] faster-whisper environment is unavailable; voice-question recognition is mandatory in v206.7.'
   exit 1
 fi
-./START_MULTILINGUAL_STT.sh
+bash "$LUNGTA_SCRIPTS_DIR/runtime/start_stt.sh"
 curl -fsS http://127.0.0.1:11437/health >/dev/null || { echo '[ERROR] Multilingual STT health check failed.'; exit 1; }
 echo '[OK] Multilingual STT: 127.0.0.1:11437'
 
 if [[ "${VQ_ENABLE_LOCAL_FT_ROUTER:-0}" == "1" ]]; then
-  ./finetune/START_FINETUNED_LOCAL_ROUTER.sh
+  bash "$LUNGTA_APP_DIR/finetune/START_FINETUNED_LOCAL_ROUTER.sh"
   echo "[OK] Fine-tuned local-model router: ${VQ_GRANITE_API_BASE:-${VQ_GEMMA_API_BASE:-${VQ_MISTRAL_API_BASE:-http://127.0.0.1:11439}}}"
 else
   echo '[INFO] Local models use original Ollama weights; question-type prompt engineering remains active for the two selectable local models.'
 fi
 
 # Prepare the dedicated semantic retrieval path before exposing Reference Book.
-./PREPARE_REFERENCE_VECTOR_RAG.sh
+bash "$LUNGTA_SCRIPTS_DIR/setup/prepare_reference.sh"
 
 pkill -f '[k]b_server.py.*8181' 2>/dev/null || true
 pkill -f '[r]eference_server.py.*8182' 2>/dev/null || true

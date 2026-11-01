@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cd "$(dirname "$0")"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../lib/paths.sh"
+cd "$LUNGTA_APP_DIR"
 BASE="${VQ_BASE:-/path/to/workdir}"
 PREFIX="${VQ_TEACHER_TTS_PREFIX:-$BASE/miniforge-teacher-tts}"
 PY="${VQ_STT_PYTHON:-$PREFIX/bin/python}"

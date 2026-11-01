@@ -1,18 +1,25 @@
 # NTU-LUNGTA Application
 
-這是正式教學系統的執行目錄。程式基底為 `v241.12.5-full-answer-voice`，包含 R12 帳號與課程權限更新。
+This directory contains the teaching application's runtime code, based on
+`v241.12.5-full-answer-voice` with the R12 account and course-access updates.
 
-| 位置 | 內容 |
+| Location | Responsibility |
 |---|---|
-| `gateway.py`、`lungta_auth.py` | 公開入口、帳號與課程存取 |
-| `reference_server.py`、`reference_search.py` | 教材問答 API 與檢索 |
-| `course_runtime.py`、`exam_questions.py` | PDF、章節、講稿與題庫準備 |
-| `kb_server.py`、`speech_stt_server.py` | 內建知識庫與語音路由／辨識 |
-| `web/shared/` | 按功能分組的共用前端程式、樣式及資產 |
-| `web/reference/`、`web/kb/` | 兩個頁面及各自需要的程式／資料 |
-| `cloudflare/worker/` | Worker 公開入口與雲端回答流程 |
-| `feedback/`、`reference_corpus/` | 回報工具與教材 metadata；私有內容不在 Git 中 |
+| `gateway.py`, `lungta_auth.py` | Public entry point, accounts, and course access. |
+| `reference_server.py`, `reference_search.py` | Material-based Q&A API and retrieval. |
+| `course_runtime.py`, `exam_questions.py` | PDF, chapter, lecture-script, and question-bank preparation. |
+| `kb_server.py`, `speech_stt_server.py` | Built-in knowledge base and speech routing/recognition. |
+| `web/shared/` | Shared frontend code, styles, and assets grouped by function. |
+| `web/reference/`, `web/kb/` | The two views and their view-specific code/data. |
+| `cloudflare/worker/` | Worker entry point and cloud answer route. |
+| `feedback/`, `reference_corpus/` | Reporting tools and corpus metadata; private content is excluded from Git. |
+| `finetune/` | Optional fine-tuning tools and router; separate from the default model path. |
 
-從儲存庫根目錄執行 `python3 scripts/check_offline.py`；完整環境準備完成後執行 `bash scripts/start.sh`。
+Operator tools live in [`scripts/`](../scripts/README.md), outside the runtime
+modules. Run `python3 scripts/check_offline.py` from the repository root for
+offline checks. After preparing and sourcing deployment settings, run
+`bash scripts/start.sh` from the repository root to start the service.
 
-[專案首頁](../README.md) · [安裝](../docs/getting-started.md) · [架構](../docs/architecture.md) · [程式導覽](../docs/code-map.md) · [評測](../docs/evaluation.md) · [遷移](../docs/migration.md)
+[Project home](../README.md) · [Setup](../docs/getting-started.md) · [Architecture](../docs/architecture.md) · [Code guide](../docs/code-map.md) · [Evaluation](../docs/evaluation.md) · [Migration](../docs/migration.md)
+
+The detailed setup and research guides linked above currently use Traditional Chinese.

@@ -971,6 +971,19 @@
     "app/web/kb/js/kb_data/11_integrated_disease.js": "app/web/kb/data/11_integrated_disease.js",
     "app/web/kb/js/kb_data/04_perfusion.js": "app/web/kb/data/04_perfusion.js",
     "app/web/shared/js/47_v204_2_single_qa_guard.js": "app/web/shared/js/qa/single-question-guard.js",
-    "app/web/shared/js/50_cloud_byok_selector.js": "app/web/shared/js/models/cloud-selector.js"
+    "app/web/shared/js/50_cloud_byok_selector.js": "app/web/shared/js/models/cloud-selector.js",
+    "app/START_VQ_TA_SERVER.sh": "scripts/runtime/start_services.sh",
+    "app/START_PRIVATE_OLLAMA.sh": "scripts/runtime/start_ollama.sh",
+    "app/START_REFERENCE_EMBEDDING_OLLAMA.sh": "scripts/runtime/start_embeddings.sh",
+    "app/START_MULTILINGUAL_STT.sh": "scripts/runtime/start_stt.sh",
+    "app/START_CLOUDFLARE_TUNNEL.sh": "scripts/deploy/start_tunnel.sh",
+    "app/CLOUDFLARE_LOGIN_DEVICE.sh": "scripts/deploy/cloudflare_login.sh",
+    "app/DEPLOY_CLOUDFLARE_WORKERS_DEV.sh": "scripts/deploy/deploy_worker.sh",
+    "app/PREPARE_REFERENCE_VECTOR_RAG.sh": "scripts/setup/prepare_reference.sh",
+    "app/PREPARE_3_MODELS.sh": "scripts/setup/prepare_models.sh",
+    "app/PREPARE_MULTILINGUAL_STT.sh": "scripts/setup/prepare_stt.sh",
+    "app/PREPARE_SERVER_TTS.sh": "scripts/setup/prepare_tts.sh",
+    "app/PREPARE_REFERENCE_TEXTBOOK.py": "scripts/data/prepare_reference.py",
+    "app/CHECK_REFERENCE_TEXTBOOK.py": "tests/legacy/check_reference_textbook.py"
   }
 }

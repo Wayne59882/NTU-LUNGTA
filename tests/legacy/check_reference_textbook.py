@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "app"))
 from reference_search import ReferenceSearch, index_status
 S=ReferenceSearch(); st=S.status()
 assert st['passages']==4792,st

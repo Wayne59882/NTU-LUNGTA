@@ -168,7 +168,7 @@ def generate_tts_audio(text, role, rate=1.0, pitch=1.0, language="auto"):
             raise RuntimeError("Teacher reference voice synthesis failed: %s" % exc)
 
     if not tts_available():
-        raise RuntimeError("Server TTS is not installed. Run ./PREPARE_SERVER_TTS.sh first.")
+        raise RuntimeError("Server TTS is not installed. Run bash scripts/setup/prepare_tts.sh from the repository root first.")
     fd, out_path = tempfile.mkstemp(prefix="vq_tts_", suffix=".mp3")
     os.close(fd)
     try:
@@ -1181,7 +1181,7 @@ def main():
         ok, error = start_ollama_if_needed()
         if not ok:
             print("\n[ERROR] Ollama is unavailable: %s" % error)
-            print("Install/start Ollama, then run PREPARE_3_MODELS first.")
+            print("Install/start Ollama, then run scripts/setup/prepare_models.sh from the repository root.")
             sys.exit(1)
         installed = installed_ollama_models()
         missing = [item["tag"] for key,item in MODEL_CATALOG.items() if model_api_base(key)==OLLAMA_BASE and item["tag"] not in installed]
@@ -1189,7 +1189,7 @@ def main():
             print("\n[WARN] Missing local models:")
             for tag in missing:
                 print("  - " + tag)
-            print("Run PREPARE_3_MODELS before testing those choices.\n")
+            print("Run scripts/setup/prepare_models.sh from the repository root before testing those choices.\n")
     else:
         installed = set()
 

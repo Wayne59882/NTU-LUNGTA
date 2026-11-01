@@ -20,8 +20,13 @@ python3 scripts/check_offline.py
 | 題庫品質 | `test_question_generation.py` | 原有模擬生成、審查、題數與復原行為 |
 | Pilot 自檢 | `research/three_model_10q/benchmark_3models.py --self-test` | 題目格式與三模型設定可被讀取 |
 | 資源與 HTTP | `test_static_assets.py` | 兩頁原有腳本順序／內容雜湊、CSS／圖片、直接服務與 gateway 資源、健康端點及匿名轉址 |
+| 操作腳本 | `test_operator_scripts.py` | Bash 語法、獨立暫存專案中的啟動／設定／部署呼叫鏈、缺少資源時阻止部署，以及教材輸出位置；外部指令均由替代指令模擬 |
 
-入口另檢查現行 Python／JavaScript 語法及維護中文件的本地連結。`archive/`、`tests/legacy/` 與歷史 benchmark 不納入現行通過結果。保存完整輸出可使用：
+入口另檢查現行 Python／JavaScript 語法及維護中文件的本地連結。`archive/`、`tests/legacy/` 與歷史 benchmark 不納入現行通過結果。
+
+操作腳本檢查需要 POSIX 與 Bash；沒有 Bash 或非 POSIX 環境會明確回報跳過這一組。部署工具另使用 `python3 scripts/check_web_assets.py` 檢查本地資源及宣告的 avatar URL，該檢查不連網驗證外部 URL 的可用性。
+
+保存完整輸出可使用：
 
 ```bash
 python3 scripts/check_offline.py --report /tmp/lungta-offline-report.json
