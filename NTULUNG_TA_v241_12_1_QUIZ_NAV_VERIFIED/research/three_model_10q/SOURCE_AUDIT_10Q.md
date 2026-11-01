@@ -1,8 +1,8 @@
-# 10-question five-model pilot benchmark — source audit
+# 10-question three-model pilot benchmark — source audit
 
 These are **newly written pilot questions**, not copied past exam questions. Each item is grounded in a specific passage already present in the production physiology corpus. This avoids reusing the previously reviewed regression questions and gives an auditable answer key.
 
-The benchmark runner sends the **same single question** and the **same cached RAG context** to all five models. `expected_option` is used only after the response for scoring and is not included in the model prompt.
+The three-model benchmark runner sends the **same single question** and the **same cached RAG context** to each model. `expected_option` is used only after the response for scoring and is not included in the model prompt. See the current [evaluation guide](../../../docs/evaluation.md) for model settings and metric definitions.
 
 | ID | Correct | Exact source | Corpus ID | Source-supported fact |
 |---|---|---|---|---|
