@@ -1,0 +1,14 @@
+{
+  "name": "ntu-lungta",
+  "version": "241.12.5",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cf:check": "wrangler deploy --dry-run",
+    "cf:deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.127.0"
+  },
+  "description": "Course-adaptive Virtual Human Teaching Assistant with uploaded-course RAG and chapter-aligned practice"
+}

@@ -9,7 +9,7 @@
 | 閱讀程式、重跑離線功能檢查 | Git、Python 3.12、Node.js 22 或 24 | `python3 scripts/check_offline.py` |
 | 完整教材問答與課程準備 | Python 套件、Ollama、回答模型、BGE-M3、合法教材 | 下列伺服器設定 |
 | 麥克風提問 | Faster-Whisper 環境、FFmpeg、模型檔與裝置權限 | `START_MULTILINGUAL_STT.sh` |
-| 公開網站與 R12 登入 | Cloudflare、可連線的後端、HTTPS、管理員設定 | [R12 說明](../README_ACCOUNTS_R12_20261030.md) |
+| 公開網站與 R12 登入 | Cloudflare、可連線的後端、HTTPS、管理員設定 | [R12 說明](releases/deployment/README_ACCOUNTS_R12_20261030.md) |
 
 公開儲存庫沒有教科書全文、已建好的私有向量索引、模型權重或帳號資料庫。完整服務的硬體最低需求與冷啟動時間尚未在全新環境量測；請記錄實際 CPU、RAM、GPU／VRAM、模型量化與版本。
 
@@ -28,10 +28,10 @@ python3 scripts/check_offline.py
 以下為 Linux / Bash 的環境準備範例；完整 GPU 與語音環境仍需依伺服器設定。
 
 ```bash
-cd NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED
+cd app
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install pymupdf numpy
+python -m pip install -r ../requirements/runtime.txt
 python -c "import fitz, course_runtime; assert course_runtime.fitz is not None"
 ```
 
@@ -75,7 +75,8 @@ python reference_search.py --status
 確認前述路徑與依賴完成後，設定實際 `VQ_BASE`、`PYTHON_BIN`、管理員信箱及寄信環境，再執行：
 
 ```bash
-bash START_VQ_TA_SERVER.sh
+cd ..
+bash scripts/start.sh
 ```
 
 它會啟動或檢查本地模型、語音辨識、教材向量索引、兩個後端，再以前景方式提供 gateway。它也會終止並重啟匹配既有 8181／8182 的後端程序，更新既有伺服器前應先確認使用中的工作。
@@ -95,11 +96,11 @@ curl --fail http://127.0.0.1:11437/health
 
 設定 `VQ_AUTH_ADMIN_EMAIL`、`VQ_FEEDBACK_TO_EMAIL`、`VQ_PUBLIC_URL`，以及研究者自己的 Resend 或 SMTP 寄信設定。可參考 [`config/runtime.env.example`](../config/runtime.env.example)；該檔僅為範例，不會自動載入。
 
-R12 使用 Secure cookie，瀏覽器完整登入流程應經由自己的 HTTPS 入口測試。新帳號要經管理員核准；帳號與課程權限操作見 [R12 文件](../README_ACCOUNTS_R12_20261030.md)。
+R12 使用 Secure cookie，瀏覽器完整登入流程應經由自己的 HTTPS 入口測試。新帳號要經管理員核准；帳號與課程權限操作見 [R12 文件](releases/deployment/README_ACCOUNTS_R12_20261030.md)。
 
 `feedback/CONFIGURE_FEEDBACK_RESEND.sh`、`auth_admin.py test-email` 都會真的寄送測試信，應只由部署者在確認收件設定後操作。
 
-根目錄 `DEPLOY_COMPLETE.sh` 是既有完整更新包的部署流程，需要 ZIP 摘要、封裝清單及現有服務。它不適用於直接把全新 clone 當成更新包執行。Worker 設定中的 `ORIGIN_URL` 目前是占位網址，須指向自己的可連線後端。
+歷史完整 ZIP 安裝及部署工具已移至 `archive/`，其路徑對應舊封裝。新目錄的現有伺服器資料轉移及部署方式見[遷移說明](migration.md)。Worker 的 `ORIGIN_URL` 仍需指向自己的可連線後端。
 
 ## 常見問題
 

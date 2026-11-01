@@ -19,7 +19,8 @@ node_modules/
 **/feedback/feedback.sqlite3
 
 # Account database (passwords, sign-in sessions) and teachers' uploaded courses
-**/auth/
+/app/auth/
+/NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/auth/
 **/course_workspaces/
 
 # Copyrighted textbook full text (kept only on the server)

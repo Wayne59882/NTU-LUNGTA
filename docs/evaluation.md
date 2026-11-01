@@ -13,7 +13,7 @@
 
 ## 三模型 10 題 pilot
 
-工具位於 [`research/three_model_10q/`](../NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/three_model_10q/)。Runner 對每個模型逐題呼叫，重用同一題已快取的教材證據；本地模型先做一次不計分 warm-up。
+工具位於 [`research/three_model_10q/`](../research/three_model_10q)。Runner 對每個模型逐題呼叫，重用同一題已快取的教材證據；本地模型先做一次不計分 warm-up。
 
 以下是**儲存庫中的設定字串**，不是此次實際載入或重新測得的模型清單：
 
@@ -25,12 +25,11 @@
 
 執行前需確認本地模型及雲端帳號實際可用的識別字。保留真實 model ID、量化、環境與日期；介面另保留 Granite 相關歷史設定，但目前學生端本地選項是 Gemma／Ministral。
 
-題目在 `questions_10_exact_sources.jsonl`，為教材段落支持的自編 pilot 題；來源對照見 [`SOURCE_AUDIT_10Q.md`](../NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/three_model_10q/SOURCE_AUDIT_10Q.md)。Runner 的 `expected_option` 僅供評分，不放入模型提示。
+題目在 `questions_10_exact_sources.jsonl`，為教材段落支持的自編 pilot 題；來源對照見 [`SOURCE_AUDIT_10Q.md`](../research/three_model_10q/SOURCE_AUDIT_10Q.md)。Runner 的 `expected_option` 僅供評分，不放入模型提示。
 
 僅檢查題集與 runner 設定可執行：
 
 ```bash
-cd NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED
 python3 research/three_model_10q/benchmark_3models.py --self-test
 ```
 
@@ -57,11 +56,11 @@ bash research/three_model_10q/RUN_3MODEL_10Q_BENCHMARK.sh
 
 | 路徑 | 用途 | 解讀前需要核對 |
 |---|---|---|
-| [`PHYSICIAN_BENCHMARK_DATA/`](../NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PHYSICIAN_BENCHMARK_DATA/) | 原始結果、來源與 mean/SD 摘要 | 題目、模型、單位、測試日期及版本 |
-| [`benchmark/regression/`](../NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/) | seen regression 題集與工具 | 是否已用於系統調整 |
-| [`benchmark/moex/`](../NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/) | 國考題抓取、評估與診斷工具 | 題目取得、答案鍵、去重與 seen/unseen 區分 |
-| [`VQ_CALCULATION_REPORT/`](../NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/) | V/Q 數值、守恆與參考比較 | 檔名中的日期與模型 revision |
-| [`QA_FIX_VALIDATION_R11_20261028.json`](../QA_FIX_VALIDATION_R11_20261028.json) | R11 歷史檢查範圍 | 明列尚未測試真實模型與公開部署 |
+| [`research/physician_benchmark/`](../research/physician_benchmark) | 原始結果、來源與 mean/SD 摘要 | 題目、模型、單位、測試日期及版本 |
+| [`research/legacy_benchmarks/regression/`](../research/legacy_benchmarks/regression) | seen regression 題集與工具 | 是否已用於系統調整 |
+| [`research/legacy_benchmarks/moex/`](../research/legacy_benchmarks/moex) | 國考題抓取、評估與診斷工具 | 題目取得、答案鍵、去重與 seen/unseen 區分 |
+| [`research/vq_validation/`](../research/vq_validation) | V/Q 數值、守恆與參考比較 | 檔名中的日期與模型 revision |
+| [`QA_FIX_VALIDATION_R11_20261028.json`](../research/validation_history/QA_FIX_VALIDATION_R11_20261028.json) | R11 歷史檢查範圍 | 明列尚未測試真實模型與公開部署 |
 
 本次整理沒有把不同版本結果合併，也沒有把離線通過率填入模型 accuracy 表。50／200 題 gate 分析需先找到對應原始題集、ground truth、計分規則與程式設定，再獨立核對。
 

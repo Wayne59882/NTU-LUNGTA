@@ -1,6 +1,0 @@
-/* v216 UI cleanup: one combined Avatar/Voice settings panel; no duplicate role control. */
-.v216-avatar-voice-settings{width:100% !important;box-sizing:border-box !important;}
-.v216-avatar-voice-settings .section-label{margin-bottom:8px !important;}
-.v216-avatar-voice-settings label{margin-top:8px !important;margin-bottom:4px !important;}
-.v216-avatar-voice-settings input[type="range"],.v216-avatar-voice-settings select{width:100% !important;}
-#voiceSelect{display:none !important;visibility:hidden !important;}
