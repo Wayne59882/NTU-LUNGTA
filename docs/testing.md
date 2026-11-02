@@ -29,7 +29,7 @@ python3 scripts/check_offline.py
 保存完整輸出可使用：
 
 ```bash
-python3 scripts/check_offline.py --report /tmp/lungta-offline-report.json
+python3 scripts/check_offline.py --report /tmp/mc-vhta-offline-report.json
 ```
 
 Windows 可使用自己的暫存路徑。腳本在任一檢查失敗時以非零狀態退出，完整成功後才寫入 report。

@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 source "$(dirname -- "${BASH_SOURCE[0]}")/../lib/paths.sh"
-cd "$LUNGTA_APP_DIR"
+cd "$VHTA_APP_DIR"
 BASE="${VQ_BASE:-/path/to/workdir}"
 export PATH="$BASE/ollama/bin:$PATH"
 export OLLAMA_MODELS="${OLLAMA_MODELS:-$BASE/ollama-models}"
 export VQ_REFERENCE_EMBED_HOST="${VQ_REFERENCE_EMBED_HOST:-127.0.0.1:11438}"
 export VQ_REFERENCE_EMBED_MODEL="${VQ_REFERENCE_EMBED_MODEL:-bge-m3:latest}"
 
-bash "$LUNGTA_SCRIPTS_DIR/runtime/start_embeddings.sh"
+bash "$VHTA_SCRIPTS_DIR/runtime/start_embeddings.sh"
 
 if ! OLLAMA_HOST="$VQ_REFERENCE_EMBED_HOST" ollama list 2>/dev/null | awk 'NR>1{print $1}' | grep -Fxq "$VQ_REFERENCE_EMBED_MODEL"; then
   echo "[VECTOR] Pulling multilingual embedding model: $VQ_REFERENCE_EMBED_MODEL"

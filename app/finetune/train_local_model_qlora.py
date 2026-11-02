@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Question-response behavior QLoRA for all three NTU-LUNGTA local models.
+"""Question-response behavior QLoRA for all three MC-VHTA local models.
 
 The same main SFT corpus is used for Granite 4.2 8B, Gemma 4 12B, and
 Ministral 3 8B. The training objective is answer behavior/format; physiology

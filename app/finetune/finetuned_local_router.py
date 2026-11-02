@@ -74,7 +74,7 @@ class H(BaseHTTPRequestHandler):
     def body(self):
         n=int(self.headers.get('Content-Length','0') or 0);return json.loads(self.rfile.read(n).decode()) if n else {}
     def do_GET(self):
-        if self.path in ('/health','/api/health'):self.js(200,{'ok':True,'service':'NTU-LUNGTA fine-tuned local-model router','available_models':list(available()),'active_model':STATE.get('key'),'device':STATE.get('device')});return
+        if self.path in ('/health','/api/health'):self.js(200,{'ok':True,'service':'MC-VHTA fine-tuned local-model router','available_models':list(available()),'active_model':STATE.get('key'),'device':STATE.get('device')});return
         if self.path=='/api/tags':self.js(200,{'models':[{'name':p['runtime_tag'],'model':p['runtime_tag']} for p in available().values()]});return
         self.js(404,{'error':'not found'})
     def do_POST(self):

@@ -10,7 +10,7 @@ export OLLAMA_HOST="${OLLAMA_HOST:-127.0.0.1:11435}"
 command -v ollama >/dev/null 2>&1 || { echo "ERROR: ollama is not installed or not in PATH"; exit 1; }
 mkdir -p "$OLLAMA_MODELS"
 if ! curl -fsS "http://$OLLAMA_HOST/api/version" >/dev/null 2>&1; then
-  bash "$LUNGTA_SCRIPTS_DIR/runtime/start_ollama.sh"
+  bash "$VHTA_SCRIPTS_DIR/runtime/start_ollama.sh"
 fi
 echo "Pulling Granite 4.2 8B Q5_K_M (quality-first shared-A5000 profile)..."
 ollama pull granite4.2:8b-q5_K_M

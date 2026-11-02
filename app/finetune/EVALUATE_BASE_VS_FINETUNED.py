@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare any NTU-LUNGTA base local model vs its QLoRA-adapted variant on the held-out behavior test set.
+"""Compare any MC-VHTA base local model vs its QLoRA-adapted variant on the held-out behavior test set.
 
 This evaluator intentionally measures response-contract compliance and deterministic
 MCQ/calculation correctness where an answer key is available. It does not claim to

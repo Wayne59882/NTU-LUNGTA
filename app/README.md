@@ -1,11 +1,11 @@
-# NTU-LUNGTA Application
+# Multi-Course Virtual Human Teaching Assistant — Application
 
 This directory contains the teaching application's runtime code, based on
 `v241.12.5-full-answer-voice` with the R12 account and course-access updates.
 
 | Location | Responsibility |
 |---|---|
-| `gateway.py`, `lungta_auth.py` | Public entry point, accounts, and course access. |
+| `gateway.py`, `access_control.py` | Public entry point, accounts, and course access. |
 | `reference_server.py`, `reference_search.py` | Material-based Q&A API and retrieval. |
 | `course_runtime.py`, `exam_questions.py` | PDF, chapter, lecture-script, and question-bank preparation. |
 | `kb_server.py`, `speech_stt_server.py` | Built-in knowledge base and speech routing/recognition. |

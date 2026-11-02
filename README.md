@@ -1,8 +1,10 @@
-# NTU-LUNGTA — Course-Adaptive Virtual Human Teaching Assistant
+# Multi-Course Virtual Human Teaching Assistant (MC-VHTA)
 
-A browser-based physiology teaching system that brings course-material
-retrieval, virtual-human lectures, student questions, scenario practice, and
-ventilation–perfusion (V/Q) simulation into one interface.
+A multi-course, multi-model teaching platform for physiology education. The
+system connects PDF course preparation, material-grounded question answering,
+virtual-human lectures, and chapter-based practice in one browser interface.
+Respiratory physiology simulation provides an interactive subject-specific module
+within the broader course platform.
 
 Teachers upload PDF materials, review the extracted chapters, prepare lecture
 scripts and practice questions, and share a course code with students. Students
@@ -10,12 +12,15 @@ can follow a lecture, ask questions grounded in the selected material, complete
 practice, and explore the respiratory physiology model. Local and cloud answer
 models are supported through separate execution paths.
 
-This master's research project was developed at the Graduate Institute of
-Physiology, National Taiwan University. Its evaluation focuses on software
-behavior, answer accuracy, and response time. Learning outcomes require a
-separate educational study.
+Developed as a master's research project at the Graduate Institute of Physiology,
+National Taiwan University.
 
-[Research system](https://lungta.twchu.workers.dev) (approved account required)
+**Research title:** Development and Technical Performance Evaluation of a Multi-Course, Multi-Model Virtual Human Teaching Assistant for Physiology Education.
+
+The technical evaluation focuses on software behavior, answer accuracy, and
+response time. Learning outcomes require a separate educational study.
+
+[Hosted teaching system](https://lungta.twchu.workers.dev) (approved account required)
 · [Setup guide](docs/getting-started.md)
 · [Code guide](docs/code-map.md)
 · [Evaluation guide](docs/evaluation.md)
@@ -102,8 +107,8 @@ environment.
 Clone the project and run its offline checks first:
 
 ```bash
-git clone https://github.com/Wayne59882/NTU-LUNGTA.git
-cd NTU-LUNGTA
+git clone https://github.com/Wayne59882/multi-course-virtual-human-ta.git
+cd multi-course-virtual-human-ta
 python3 scripts/check_offline.py
 ```
 
@@ -237,7 +242,7 @@ Run the main operator commands from the repository root:
 
 ```bash
 # Run offline checks and optionally write a JSON report
-python3 scripts/check_offline.py --report /tmp/ntu-lungta-offline.json
+python3 scripts/check_offline.py --report /tmp/mc-vhta-offline.json
 
 # Check local web assets without network calls
 python3 scripts/check_web_assets.py

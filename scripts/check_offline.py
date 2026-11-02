@@ -20,7 +20,7 @@ SKIP = {".git", ".venv", "node_modules", "__pycache__", "course_workspaces",
 def source_files():
     for current, dirs, names in os.walk(ROOT):
         dirs[:] = sorted(d for d in dirs if d not in SKIP and not
-                         (Path(current) in (APP, ROOT / "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED") and d == "auth"))
+                         (Path(current) == APP and d == "auth"))
         for name in sorted(names):
             yield Path(current) / name
 

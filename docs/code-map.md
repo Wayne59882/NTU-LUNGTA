@@ -11,7 +11,7 @@
 | 功能 | 程式 | 閱讀重點 |
 |---|---|---|
 | 公開入口 | [`gateway.py`](../app/gateway.py) | `_target()`、`_proxy()`、`_page_allowed()` |
-| 帳號及課程權限 | [`lungta_auth.py`](../app/lungta_auth.py) | `TEACHER_ONLY`、`authorize()`、`after_response()` |
+| 帳號及課程權限 | [`access_control.py`](../app/access_control.py) | `TEACHER_ONLY`、`authorize()`、`after_response()` |
 | 帳號管理 | [`auth_admin.py`](../app/auth_admin.py) | CLI 的查詢、核准與停用流程 |
 | 問答與 API | [`reference_server.py`](../app/reference_server.py) | context、answer、course 相關路由與模型呼叫 |
 | 教科書檢索 | [`reference_search.py`](../app/reference_search.py) | `ReferenceSearch`、`search()`、`_lexical_fallback()` |

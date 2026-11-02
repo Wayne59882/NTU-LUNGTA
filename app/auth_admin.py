@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""NTU-LUNGTA account administration from the server shell (R12).
+"""MC-VHTA account administration from the server shell (R12).
 
   python3 auth_admin.py list
   python3 auth_admin.py approve EMAIL student|teacher
@@ -12,7 +12,7 @@
 import secrets, sys, time
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import lungta_auth as A
+import access_control as A
 
 
 def _user(email):
@@ -55,7 +55,7 @@ def main(argv):
             print('%-8s %-40s %s' % (r['code'], r['course_id'], r['email']))
         return 0
     if cmd == 'test-email':
-        A.send_email(A.admin_email(), '[NTU-LUNGTA] 帳號審核功能已啟用',
+        A.send_email(A.admin_email(), '[MC-VHTA] 帳號審核功能已啟用',
                      '帳號審核功能已啟用。之後新的帳號申請（學生或老師）都會寄到這個信箱，點信中的「審核頁面」即可核准。\n'
                      '網站：%s/login/\n\n第一次使用：請先在網站「申請帳號」，用這個 Email 申請「老師」，再到這個信箱核准自己。\n' % A.PUBLIC_URL)
         print('[OK] Test e-mail sent to %s' % A.admin_email())

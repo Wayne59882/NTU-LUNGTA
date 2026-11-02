@@ -16,7 +16,7 @@
 
 執行：
 ```bash
-# 從 NTU-LUNGTA 儲存庫根目錄執行
+# 從 MC-VHTA 儲存庫根目錄執行
 bash research/three_model_10q/RUN_3MODEL_10Q_BENCHMARK.sh
 ```
 
