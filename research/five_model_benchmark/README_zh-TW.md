@@ -20,7 +20,7 @@ Local 模型逐模型跑完整題集，先做一次不計時 warm-up，避免每
 
 ## 設定 Cloud Key
 ```bash
-# 從 NTU-LUNGTA 儲存庫根目錄開始
+# 從 MC-VHTA 儲存庫根目錄開始
 cd research/five_model_benchmark
 ./CONFIGURE_CLOUD_KEYS.sh
 ```

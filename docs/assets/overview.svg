@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
-  <title id="title">NTU-LUNGTA — Course-Adaptive Virtual Human Teaching Assistant</title>
+  <title id="title">Multi-Course Virtual Human Teaching Assistant</title>
   <desc id="desc">A blue and white project banner with five modules: lecture, questions and answers, scenario practice, V/Q simulation and course management.</desc>
   <rect width="1200" height="300" rx="20" fill="#f5f9ff"/>
   <path d="M830 0H1180Q1200 0 1200 20V280Q1200 300 1180 300H970Z" fill="#e5effc"/>
   <rect x="40" y="38" width="6" height="130" rx="3" fill="#2367bd"/>
   <text x="66" y="63" fill="#476586" font-family="Arial, sans-serif" font-size="13" letter-spacing="2.2">PHYSIOLOGY · EDUCATIONAL SOFTWARE</text>
-  <text x="62" y="119" fill="#153b67" font-family="Arial, sans-serif" font-size="49" font-weight="700">NTU-LUNGTA</text>
-  <text x="66" y="153" fill="#476586" font-family="Arial, sans-serif" font-size="21">Course-Adaptive Virtual Human Teaching Assistant</text>
+  <text x="62" y="119" fill="#153b67" font-family="Arial, sans-serif" font-size="49" font-weight="700">MC-VHTA</text>
+  <text x="66" y="153" fill="#476586" font-family="Arial, sans-serif" font-size="20">Multi-Course Virtual Human Teaching Assistant</text>
   <text x="66" y="185" fill="#587493" font-family="Arial, sans-serif" font-size="16">Course material → retrieval &amp; evidence → teaching interaction</text>
   <g fill="#fff" stroke="#c9dbf1">
     <rect x="66" y="223" width="176" height="42" rx="10"/>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""NTU-LUNGTA accounts and roles (R12).
+"""Multi-Course Virtual Human Teaching Assistant accounts and roles (R12).
 
 * Everyone signs in before using the system (built-in course included).
 * New accounts are "pending" until the administrator approves them from the
@@ -52,6 +52,7 @@ _load_env_file(ROOT / 'feedback' / 'feedback.env')
 
 DB_PATH = Path(os.environ.get('VQ_AUTH_DB') or str(ROOT / 'auth' / 'auth.sqlite3'))
 PUBLIC_URL = (os.environ.get('VQ_PUBLIC_URL') or 'https://lungta.twchu.workers.dev').strip().rstrip('/')
+# Existing deployments keep their session-cookie protocol across the project rename.
 COOKIE = 'lungta_sid'
 SESSION_SEC = 30 * 86400
 REVIEW_SEC = 30 * 86400
@@ -251,7 +252,7 @@ def _cookie(handler, token, max_age):
 
 # ---------------------------------------------------------------- e-mail
 def _resend_from():
-    return os.environ.get('VQ_RESEND_FROM', '').strip() or 'NTU-LUNGTA <onboarding@resend.dev>'
+    return os.environ.get('VQ_RESEND_FROM', '').strip() or 'MC-VHTA <onboarding@resend.dev>'
 
 
 def _provider():
@@ -333,7 +334,7 @@ def _review_email(user, token):
     link = PUBLIC_URL + '/api/auth/review?t=' + quote(token)
     role = ROLE_LABEL.get(user['requested_role'], user['requested_role'])
     when = time.strftime('%Y-%m-%d %H:%M', time.localtime(user['created_at'] or time.time()))
-    subject = '[NTU-LUNGTA] 帳號申請待審核：%s（申請身分：%s）' % (user['name'], role.split(' ')[0])
+    subject = '[MC-VHTA] 帳號申請待審核：%s（申請身分：%s）' % (user['name'], role.split(' ')[0])
     text = ('有新的帳號申請需要審核 / A new account is waiting for approval.\n\n'
             '姓名 Name：%s\nEmail：%s\n申請身分 Requested role：%s\n說明 Note：%s\n申請時間 Submitted：%s\n\n'
             '開啟審核頁面，選擇「核准為學生」、「核准為老師」或「不核准」：\n%s\n\n'
@@ -357,11 +358,11 @@ def _notify_applicant(user, decision):
     if not can_email(to_addr):
         return False, 'not-supported'
     if decision == 'reject':
-        subject = '[NTU-LUNGTA] 帳號申請結果'
-        text = '%s 您好：\n\n您的 NTU-LUNGTA 帳號申請未獲核准。如有疑問，請聯絡課程老師或管理員。\n' % user['name']
+        subject = '[MC-VHTA] 帳號申請結果'
+        text = '%s 您好：\n\n您的 MC-VHTA 帳號申請未獲核准。如有疑問，請聯絡課程老師或管理員。\n' % user['name']
     else:
-        subject = '[NTU-LUNGTA] 帳號已開通'
-        text = ('%s 您好：\n\n您的 NTU-LUNGTA 帳號已核准，身分：%s。\n請到以下網址登入：\n%s/login/\n'
+        subject = '[MC-VHTA] 帳號已開通'
+        text = ('%s 您好：\n\n您的 MC-VHTA 帳號已核准，身分：%s。\n請到以下網址登入：\n%s/login/\n'
                 % (user['name'], ROLE_LABEL.get(decision, decision), PUBLIC_URL))
     try:
         send_email(to_addr, subject, text, key='auth-decision/%s/%s/%d' % (user['id'], decision, int(time.time() // 60)))
@@ -654,16 +655,16 @@ def _review_page(handler, token, done=None, notice=''):
         extra = '<p class="ok">%s</p>' % esc(msg)
         if notice:
             extra += '<p class="warn">%s</p>' % esc(notice)
-        return _page(handler, 200, '審核完成', '<h1>審核完成</h1><div class="sub">NTU-LUNGTA 帳號審核</div>' + details + extra)
+        return _page(handler, 200, '審核完成', '<h1>審核完成</h1><div class="sub">MC-VHTA 帳號審核</div>' + details + extra)
     if row['used_at'] or time.time() - (row['r_created'] or 0) > REVIEW_SEC:
         used = '<p class="warn">此審核連結已使用或已過期（30 天）。如需變更，請以管理員帳號登入網站，在「帳號審核」中處理。</p>'
-        return _page(handler, 200, '帳號審核', '<h1>帳號審核</h1><div class="sub">NTU-LUNGTA</div>' + details + used)
+        return _page(handler, 200, '帳號審核', '<h1>帳號審核</h1><div class="sub">MC-VHTA</div>' + details + used)
     form = ('<form method="post" action="/api/auth/review" class="btns">'
             '<input type="hidden" name="t" value="%s">'
             '<button class="s" name="action" value="student">核准為學生 Approve as Student</button>'
             '<button class="t" name="action" value="teacher">核准為老師 Approve as Teacher</button>'
             '<button class="r" name="action" value="reject">不核准 Reject</button></form>') % esc(token)
-    return _page(handler, 200, '帳號審核', '<h1>帳號審核</h1><div class="sub">NTU-LUNGTA · 請確認申請人身分後選擇</div>' + details + form)
+    return _page(handler, 200, '帳號審核', '<h1>帳號審核</h1><div class="sub">MC-VHTA · 請確認申請人身分後選擇</div>' + details + form)
 
 
 def handle(handler, method, path, query):

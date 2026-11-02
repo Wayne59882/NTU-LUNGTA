@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: "If you use this research software, cite this repository and the commit used."
 type: software
-title: "NTU-LUNGTA: Course-Adaptive Virtual Human Teaching Assistant"
+title: "Multi-Course Virtual Human Teaching Assistant for Physiology Education"
 authors:
   - family-names: "朱"
     given-names: "庭汶"
-repository-code: "https://github.com/Wayne59882/NTU-LUNGTA"
-url: "https://github.com/Wayne59882/NTU-LUNGTA"
-abstract: "Research software integrating course-material retrieval, virtual-human lectures, question answering, practice and ventilation-perfusion simulation."
+repository-code: "https://github.com/Wayne59882/multi-course-virtual-human-ta"
+url: "https://github.com/Wayne59882/multi-course-virtual-human-ta"
+abstract: "A multi-course, multi-model physiology teaching system integrating PDF course preparation, evidence-grounded question answering, virtual-human lectures, practice and respiratory physiology simulation."
 keywords:
   - physiology education
   - virtual teaching assistant

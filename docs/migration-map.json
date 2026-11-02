@@ -984,6 +984,7 @@
     "app/PREPARE_MULTILINGUAL_STT.sh": "scripts/setup/prepare_stt.sh",
     "app/PREPARE_SERVER_TTS.sh": "scripts/setup/prepare_tts.sh",
     "app/PREPARE_REFERENCE_TEXTBOOK.py": "scripts/data/prepare_reference.py",
-    "app/CHECK_REFERENCE_TEXTBOOK.py": "tests/legacy/check_reference_textbook.py"
+    "app/CHECK_REFERENCE_TEXTBOOK.py": "tests/legacy/check_reference_textbook.py",
+    "app/lungta_auth.py": "app/access_control.py"
   }
 }

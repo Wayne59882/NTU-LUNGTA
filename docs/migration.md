@@ -4,11 +4,11 @@
 
 ## 目前的正式入口
 
-正式程式由版本命名的目錄移至固定的 `app/`。從儲存庫根目錄執行 `python3 scripts/check_offline.py`；完成伺服器環境準備後，以 `bash scripts/start.sh` 啟動。
+專案名稱統一為 Multi-Course Virtual Human Teaching Assistant（MC-VHTA）。正式程式由版本命名的目錄移至固定的 `app/`，帳號模組改名為 `access_control.py`。從儲存庫根目錄執行 `python3 scripts/check_offline.py`；完成伺服器環境準備後，以 `bash scripts/start.sh` 啟動。
 
 | 舊位置 | 新位置 |
 |---|---|
-| `NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/` | `app/`；舊網址只保留 README 導覽 |
+| `NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/` | `app/`；舊路徑保留於逐檔對照記錄 |
 | 兩個頁面重複的前端腳本 | `app/web/shared/js/`，依功能分組 |
 | 相同的頁面樣式及圖片／音訊 | `app/web/shared/css/`、`app/web/shared/assets/` |
 | 版本 README、build manifest | `docs/releases/` |

@@ -6,7 +6,7 @@
 
 ## 已完成
 
-- 將正式程式集中到固定的 `app/`，舊版長名稱目錄只保留導覽。
+- 將正式程式集中到固定的 `app/`，移除舊版長名稱導覽目錄。
 - 將版本說明、build manifest、評測資料、現行測試與歷史工具分開分類。
 - 將 26 組相同 JavaScript 與 9 組相同 CSS 集中為共用來源，保留頁面間實際不同的檔案。
 - 集中圖片／音訊資產，保留兩個頁面原有的腳本順序與程式內容。
@@ -19,7 +19,7 @@
 |---|---|
 | 正式程式位置 | `app/` |
 | 程式 build | `app/VERSION.txt` |
-| 帳號／課程權限 | `app/lungta_auth.py` 的 R12 實作 |
+| 帳號／課程權限 | `app/access_control.py` 的 R12 實作 |
 | V/Q 子模組 | `app/web/shared/js/visual/gas-exchange.js` 的 model revision |
 | 歷史版本說明 | `docs/releases/` |
 | 實際修改歷程 | Git commit 與 Pull Request |

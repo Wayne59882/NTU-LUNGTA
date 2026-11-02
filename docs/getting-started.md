@@ -16,8 +16,8 @@
 ## 複製與先行驗證
 
 ```bash
-git clone https://github.com/Wayne59882/NTU-LUNGTA.git
-cd NTU-LUNGTA
+git clone https://github.com/Wayne59882/multi-course-virtual-human-ta.git
+cd multi-course-virtual-human-ta
 python3 scripts/check_offline.py
 ```
 

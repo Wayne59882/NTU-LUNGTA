@@ -13,7 +13,7 @@ from static_assets import SharedAssetsMixin
 from urllib.parse import urlsplit, quote
 ROOT=Path(__file__).resolve().parent; WEB=ROOT/'web'
 sys.path.insert(0,str(ROOT))
-import lungta_auth as AUTH  # R12: sign-in, teacher/student roles, per-teacher courses
+import access_control as AUTH  # R12: sign-in, teacher/student roles, per-teacher courses
 KB='http://127.0.0.1:'+os.environ.get('VQ_KB_INTERNAL_PORT','8181')
 REF='http://127.0.0.1:'+os.environ.get('VQ_REFERENCE_INTERNAL_PORT','8182')
 class H(SharedAssetsMixin, SimpleHTTPRequestHandler):

@@ -41,7 +41,7 @@ def main():
         standin = "#!" + sys.executable + "\n" + '''import json, os, pathlib, sys
 name = pathlib.Path(sys.argv[0]).name
 args = sys.argv[1:]
-with open(os.environ["LUNGTA_TEST_CALLS"], "a") as stream:
+with open(os.environ["VHTA_TEST_CALLS"], "a") as stream:
     stream.write(json.dumps({"name": name, "args": args, "cwd": os.getcwd()}) + "\\n")
 if name == "python" and args and args[0].endswith("check_web_assets.py"):
     os.execv(sys.executable, [sys.executable] + args)
@@ -67,7 +67,7 @@ elif name == "ollama" and args == ["list"]:
         env = dict(os.environ, VQ_BASE=str(base), PYTHON_BIN=str(serving),
                    PATH=str(tools) + os.pathsep + os.environ["PATH"],
                    VQ_ORIGIN_URL="https://backend.invalid", VQ_ENABLE_LOCAL_FT_ROUTER="0",
-                   LUNGTA_TEST_CALLS=str(log))
+                   VHTA_TEST_CALLS=str(log))
 
         def run(script, expected=0):
             result = subprocess.run([bash, str(project / "scripts" / script)],

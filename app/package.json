@@ -1,5 +1,5 @@
 {
-  "name": "ntu-lungta",
+  "name": "multi-course-virtual-human-ta",
   "version": "241.12.5",
   "private": true,
   "type": "module",
@@ -10,5 +10,5 @@
   "devDependencies": {
     "wrangler": "4.127.0"
   },
-  "description": "Course-adaptive Virtual Human Teaching Assistant with uploaded-course RAG and chapter-aligned practice"
+  "description": "Multi-course, multi-model virtual human teaching assistant for physiology education with PDF materials, evidence-grounded Q&A, lectures and practice"
 }
