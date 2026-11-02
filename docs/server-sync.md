@@ -52,7 +52,7 @@ bash mc-vhta-source/scripts/deploy/install_auto_sync.sh /path/to/live-applicatio
 
 若 `mc-vhta-source` 已存在，沿用該 checkout，先確認沒有本地程式修改，再執行 `git -C mc-vhta-source pull --ff-only`。不要用強制 reset 蓋掉本地修改。
 
-伺服器須已有正常運作的三個 Python 服務、相同使用者的 Cloudflare 發布權限、Git、crontab、Node.js／npx 與可連到 GitHub／Cloudflare 的網路。工具不會建立 API key，不會把密碼寫入排程，也不會自動重新登入 Cloudflare。若缺少條件，保留實際錯誤訊息供管理員處理。
+伺服器須至少有一個屬於該目錄的教學服務，供工具取得正確的 Python 與執行環境；也需要相同使用者的 Cloudflare 發布權限、Git、crontab、Node.js／npx 與可連到 GitHub／Cloudflare 的網路。工具會辨識絕對程式路徑及實際連接埠，即使程序的工作目錄不在該資料夾也能辨識。缺少的 KB／Reference／gateway 服務會在確認連接埠可用後啟動；既有且健康的共用 KB 端點保持執行，不終止其他應用程式。三個端點健康檢查通過後才發布 Worker，失敗時還原原有服務配置。工具不會建立 API key，不會把密碼寫入排程，也不會自動重新登入 Cloudflare。
 
 安裝後檢查：
 

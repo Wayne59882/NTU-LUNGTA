@@ -6,7 +6,7 @@
 
 1. 下載 `MC_VHTA_COMPLETE_R14_20261102.zip`。
 2. 上傳到原本伺服器，**解壓在舊程式旁邊**，不要直接覆蓋舊資料夾。
-3. 原本三個教學服務保持執行。由啟動服務的同一個 Linux 使用者，在新解壓的資料夾內執行：
+3. 由原本啟動服務的同一個 Linux 使用者，在新解壓的資料夾內執行（不必手動停止既有服務；缺少的服務會先檢查連接埠再啟動）：
 
 ```bash
 bash UPDATE_EXISTING_SERVER.sh /path/to/existing/live/app

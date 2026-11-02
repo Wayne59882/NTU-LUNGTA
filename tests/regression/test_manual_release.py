@@ -37,9 +37,9 @@ with tempfile.TemporaryDirectory() as temporary:
         else:raise AssertionError('corrupt release accepted')
         (source/'app/pdf_ocr.py').write_bytes(old)
         calls=[]
-        def snapshot(target,name):return {'command':[sys.executable],'name':name,'pid':1}
+        def plan(target):return [{'command':[sys.executable],'name':name,'pid':1,'was_running':True} for name in ('reference_server','kb_server','gateway')]
         argv=['apply_release.py','--target',str(target),'--publish']+(['--check-only'] if mode=='check' else [])
-        with patch.object(release,'ROOT',source),patch.object(sys,'argv',argv),patch.object(release.sync,'snapshot',side_effect=snapshot),patch.object(release.subprocess,'check_call',return_value=0),patch.object(release.sync,'restart',side_effect=lambda target,service:calls.append(service['name'])),patch.object(release.sync,'health',side_effect=RuntimeError('health fixture failed') if mode=='rollback' else None):
+        with patch.object(release,'ROOT',source),patch.object(sys,'argv',argv),patch.object(release.sync,'plan_services',side_effect=plan),patch.object(release.subprocess,'check_call',return_value=0),patch.object(release.sync,'restart',side_effect=lambda target,service:calls.append(service['name'])),patch.object(release.sync,'health',side_effect=RuntimeError('health fixture failed') if mode=='rollback' else None):
             if mode=='rollback':
                 try:release.main()
                 except RuntimeError as error:assert 'health fixture failed' in str(error)

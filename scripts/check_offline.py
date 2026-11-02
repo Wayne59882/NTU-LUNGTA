@@ -97,6 +97,7 @@ def main():
         ("Local OCR and original PDF streaming", [sys.executable,str(TESTS / "test_pdf_ocr.py")]),
         ("Automatic sync preservation and rollback", [sys.executable,str(TESTS / "test_auto_sync.py")]),
         ("Manual ZIP update and rollback", [sys.executable,str(TESTS / "test_manual_release.py")]),
+        ("Live service discovery and recovery", [sys.executable,str(TESTS / "test_deployment_services.py")]),
     ])
     results = []
     for name, command in suites:

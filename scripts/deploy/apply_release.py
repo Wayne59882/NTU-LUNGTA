@@ -48,9 +48,9 @@ def main():
     manifest,paths=validate_bundle(ROOT)
     if not (target/'reference_server.py').is_file():raise RuntimeError('Existing live application not found; no files changed')
     if target==ROOT or target==ROOT/'app':raise RuntimeError('Unzip beside the existing application, not over it')
-    services=[sync.snapshot(target,name) for name in ('reference_server','kb_server','gateway')]
+    services=sync.plan_services(target)
     python=services[0]['command'][0]
-    subprocess.check_call([python,'-c','import fitz,course_runtime,json; from pdf_ocr import LocalOCR; assert course_runtime.fitz is not None; print("LOCAL OCR: "+json.dumps(LocalOCR().report()))'],cwd=str(ROOT/'app'))
+    subprocess.check_call([python,'-c','import fitz,course_runtime,kb_server,gateway,json; from pdf_ocr import LocalOCR; assert course_runtime.fitz is not None; print("LOCAL OCR: "+json.dumps(LocalOCR().report()))'],cwd=str(ROOT/'app'))
     cfg=sync.load_config(target/'wrangler.jsonc',target) if args.publish else None
     if args.check_only:
         print('CHECK PASSED: release checksums, existing services, Python and Worker configuration; no files changed')
@@ -61,12 +61,12 @@ def main():
         except BlockingIOError:raise RuntimeError('Another update is running; no files changed')
         # Recheck PIDs under the lock so a concurrent updater cannot leave stale
         # process snapshots. The same lock is used by the optional Git updater.
-        services=[sync.snapshot(target,name) for name in ('reference_server','kb_server','gateway')]
+        services=sync.plan_services(target)
         backup=target/'backups'/('manual_R14_'+time.strftime('%Y%m%d_%H%M%S'));backup.mkdir(parents=True)
         sync.install_files(ROOT/'app',target,backup,paths)
         try:
             for service in services:sync.restart(target,service)
-            sync.health()
+            sync.health(services)
             if args.publish:
                 with tempfile.NamedTemporaryFile(mode='w',suffix='.json',dir=str(target),delete=False) as file:
                     json.dump(cfg,file);config_path=file.name
@@ -77,9 +77,7 @@ def main():
             print('UPDATE COMPLETE; commit '+str(manifest.get('source_commit'))+'; backup '+str(backup))
         except Exception:
             sync.restore_files(target,backup)
-            for service in services:
-                try:sync.restart(target,service)
-                except Exception:pass
+            sync.restore_services(target,services)
             raise
 
 
