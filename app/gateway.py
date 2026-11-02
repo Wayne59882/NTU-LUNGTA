@@ -81,6 +81,7 @@ class H(SharedAssetsMixin, SimpleHTTPRequestHandler):
         path=urlsplit(self.path).path
         if path.startswith('/api/auth/'):return AUTH.handle(self,'GET',path,urlsplit(self.path).query)
         if self._proxy():return
+        if self.path=='/api/ready':return self._json(200,{'ok':True,'content_integrity_revision':'R15','service':'Gateway'})
         if self.path=='/api/health':
             b=json.dumps({'ok':True,'build':'v241.12.5-full-answer-voice','serving_profile':'v241.12.5-full-answer-voice','auth':'r12-roles','modes':['query-knowledge-base','reference-textbook']}).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(b)));self.end_headers();self.wfile.write(b);return
         if path.startswith('/api/'):return self._json(404,{'error':'Not found'})

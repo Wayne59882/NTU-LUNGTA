@@ -44,7 +44,8 @@ with tempfile.TemporaryDirectory() as td:
     old=cr.COURSE_ROOT;cr.COURSE_ROOT=Path(td)
     try:
         manager=cr.CourseManager();cid='pde';cd=Path(td)/cid;cd.mkdir()
-        good={'id':'good-seed','source_statement':'wave','question':dict(draft,id='good-question',generation_method='exam-mcq-v5')}
+        good={'id':'good-seed','source_statement':'wave','evidence_chunk_id':'c1','question':dict(draft,id='good-question',generation_method='exam-mcq-v5',source_review={'revision':'R15','support_quote':source['context']})}
+        (cd/'chunks.jsonl').write_text(json.dumps({'id':'c1','text':source['context']})+'\n')
         badrow={'id':'bad-seed','source_statement':'broken','question':dict(bad,id='bad-question',generation_method='exam-mcq-v5')}
         bank={'u1':[good,badrow]};cr._json_dump(cd/'question_banks.json',bank)
         man={'course_id':cid,'course_name':'PDE','question_generation':'exam-mcq-v5','units':[{'id':'u1','title':'PDE','script':'Formula $u_t - abla u=0$','script_status':'ready','question_count':2}],'preparation':{}}

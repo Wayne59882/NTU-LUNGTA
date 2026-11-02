@@ -8,19 +8,19 @@
         "old": "shared/vendor/temml/temml.min.js",
         "new": "shared/vendor/temml/temml.min.js",
         "sha256": "d4fc39a4729deca1c8e12624885a7616cb661a4ab8e9cd4d6fc1fed23c653308",
-        "query": "v=R14"
+        "query": "v=R15"
       },
       {
         "old": "shared/js/course/course-content.js",
         "new": "shared/js/course/course-content.js",
         "sha256": "e60b1b8c5ad6565fa3e14b8bcea838539390cef795445b5835183bcab5ed407b",
-        "query": "v=R14"
+        "query": "v=R15"
       },
       {
         "old": "shared/js/course/course-math.js",
         "new": "shared/js/course/course-math.js",
         "sha256": "728f292a7707b013ee37eeff4ac6bbba77053c0da1c7dfd25c31fa57394a131f",
-        "query": "v=R14"
+        "query": "v=R15"
       },
       {
         "old": "js/01_original_ui_core.js",
@@ -102,7 +102,7 @@
       },
       {
         "old": "js/25_v105_resume_after_question_mouth_sync.js",
-        "query": "v=pdfR1420261102",
+        "query": "v=pdfR1520261103",
         "sha256": "ecbb7424a024d3b310e8b2ea3407e2d1a932396e866d2e3ef4d34d46a1061ddd",
         "new": "shared/js/speech/recognition-controller.js",
         "previous_sha256": "6b934fd14f275c7671a56c2b63a440fb4636d648b8197a7b1a8c6290da13d683"
@@ -121,7 +121,7 @@
       },
       {
         "old": "js/40_v199_main_3d_avatar.js",
-        "query": "v=pdfR1420261102",
+        "query": "v=pdfR1520261103",
         "sha256": "22b2084f692f77d2c3b046f7893daa1f414d12d8fc13795c868518cd665401c8",
         "new": "shared/js/avatar/avatar-controller.js",
         "previous_sha256": "af90843e965bf0ab0b08cd8e9af0df8bb2cc3db45fcfa60aa6123f4efeac4b4f"
@@ -146,7 +146,7 @@
       },
       {
         "old": "js/45_v204_final_voice_controller.js",
-        "query": "v=pdfR1420261102",
+        "query": "v=pdfR1520261103",
         "sha256": "db09c39f46ba4714fbfb2ea1c2eed80c83981f2b2224c73cd23155ade6432fd8",
         "new": "shared/js/speech/voice-controller.js",
         "previous_sha256": "f9a0c627b40a87de912ec7b0a6b4da22b40f828b55722539eb901588452ee9c8"
@@ -189,8 +189,8 @@
       },
       {
         "old": "js/55_v241_course_adaptive_ta.js",
-        "query": "v=pdfR1420261102",
-        "sha256": "76f4022e26cf284c18036c54d124e62e4885cc457a089df7a185456f392e783f",
+        "query": "v=pdfR1520261103",
+        "sha256": "0c69f7c85e787db03742476214def72cfaa16a9973044cf91d7ef526cd4fc50b",
         "new": "shared/js/course/course-controller.js",
         "previous_sha256": "b9605707736560e8beda8600aa76e865512f0c45dddba8008ccdee2032d5a610"
       },
@@ -203,8 +203,8 @@
       {
         "old": "shared/js/course/upload-diagnostics.js",
         "new": "shared/js/course/upload-diagnostics.js",
-        "sha256": "0319cdea3f40ce29e0f7d7b6d76ca9060fcf7ad904a7b4eb40eeba3110a19182",
-        "query": "v=R14"
+        "sha256": "3c3673f47f0fc8c13186df560222dffb085f9682e676428814891429087ba6c0",
+        "query": "v=R15"
       }
     ],
     "kb": [
@@ -212,19 +212,19 @@
         "old": "shared/vendor/temml/temml.min.js",
         "new": "shared/vendor/temml/temml.min.js",
         "sha256": "d4fc39a4729deca1c8e12624885a7616cb661a4ab8e9cd4d6fc1fed23c653308",
-        "query": "v=R14"
+        "query": "v=R15"
       },
       {
         "old": "shared/js/course/course-content.js",
         "new": "shared/js/course/course-content.js",
         "sha256": "e60b1b8c5ad6565fa3e14b8bcea838539390cef795445b5835183bcab5ed407b",
-        "query": "v=R14"
+        "query": "v=R15"
       },
       {
         "old": "shared/js/course/course-math.js",
         "new": "shared/js/course/course-math.js",
         "sha256": "728f292a7707b013ee37eeff4ac6bbba77053c0da1c7dfd25c31fa57394a131f",
-        "query": "v=R14"
+        "query": "v=R15"
       },
       {
         "old": "js/01_original_ui_core.js",
@@ -390,7 +390,7 @@
       },
       {
         "old": "js/25_v105_resume_after_question_mouth_sync.js",
-        "query": "v=pdfR1420261102",
+        "query": "v=pdfR1520261103",
         "sha256": "ecbb7424a024d3b310e8b2ea3407e2d1a932396e866d2e3ef4d34d46a1061ddd",
         "new": "shared/js/speech/recognition-controller.js",
         "previous_sha256": "6b934fd14f275c7671a56c2b63a440fb4636d648b8197a7b1a8c6290da13d683"
@@ -409,7 +409,7 @@
       },
       {
         "old": "js/40_v199_main_3d_avatar.js",
-        "query": "v=pdfR1420261102",
+        "query": "v=pdfR1520261103",
         "sha256": "22b2084f692f77d2c3b046f7893daa1f414d12d8fc13795c868518cd665401c8",
         "new": "shared/js/avatar/avatar-controller.js",
         "previous_sha256": "af90843e965bf0ab0b08cd8e9af0df8bb2cc3db45fcfa60aa6123f4efeac4b4f"
@@ -434,7 +434,7 @@
       },
       {
         "old": "js/45_v204_final_voice_controller.js",
-        "query": "v=pdfR1420261102",
+        "query": "v=pdfR1520261103",
         "sha256": "db09c39f46ba4714fbfb2ea1c2eed80c83981f2b2224c73cd23155ade6432fd8",
         "new": "shared/js/speech/voice-controller.js",
         "previous_sha256": "f9a0c627b40a87de912ec7b0a6b4da22b40f828b55722539eb901588452ee9c8"
@@ -471,8 +471,8 @@
       },
       {
         "old": "js/55_v241_course_adaptive_ta.js",
-        "query": "v=pdfR1420261102",
-        "sha256": "76f4022e26cf284c18036c54d124e62e4885cc457a089df7a185456f392e783f",
+        "query": "v=pdfR1520261103",
+        "sha256": "0c69f7c85e787db03742476214def72cfaa16a9973044cf91d7ef526cd4fc50b",
         "new": "shared/js/course/course-controller.js",
         "previous_sha256": "b9605707736560e8beda8600aa76e865512f0c45dddba8008ccdee2032d5a610"
       },
@@ -485,10 +485,10 @@
       {
         "old": "shared/js/course/upload-diagnostics.js",
         "new": "shared/js/course/upload-diagnostics.js",
-        "sha256": "0319cdea3f40ce29e0f7d7b6d76ca9060fcf7ad904a7b4eb40eeba3110a19182",
-        "query": "v=R14"
+        "sha256": "3c3673f47f0fc8c13186df560222dffb085f9682e676428814891429087ba6c0",
+        "query": "v=R15"
       }
     ]
   },
-  "revision": "R14 approved ingestion, content and audio changes; original module order retained"
+  "revision": "R15 approved source reviews and local visual reading; original module order retained"
 }

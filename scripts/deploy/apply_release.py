@@ -35,7 +35,7 @@ def validate_bundle(root):
         paths.append(relative[4:])
     if len(set(paths))!=len(paths):raise ValueError('Duplicate release files')
     if not {'reference_server.py','kb_server.py','gateway.py','pdf_ocr.py'}.issubset(set(paths)):
-        raise ValueError('This is not a complete R14 application release')
+        raise ValueError('This is not a complete R15 application release')
     return manifest,paths
 
 
@@ -50,7 +50,7 @@ def main():
     if target==ROOT or target==ROOT/'app':raise RuntimeError('Unzip beside the existing application, not over it')
     services=sync.plan_services(target)
     python=services[0]['command'][0]
-    subprocess.check_call([python,'-c','import fitz,course_runtime,kb_server,gateway,json; from pdf_ocr import LocalOCR; assert course_runtime.fitz is not None; print("LOCAL OCR: "+json.dumps(LocalOCR().report()))'],cwd=str(ROOT/'app'))
+    subprocess.check_call([python,'-c','import fitz,course_runtime,kb_server,reference_server,gateway,json; from model_lock import SharedModelLock; from pdf_ocr import LocalOCR; from pdf_vision import LocalVision; assert course_runtime.fitz is not None; assert kb_server.SharedModelLock is reference_server.SharedModelLock is SharedModelLock; print("LOCAL OCR: "+json.dumps(LocalOCR().report())); print("LOCAL VISION: "+json.dumps(LocalVision().report()))'],cwd=str(ROOT/'app'))
     cfg=sync.load_config(target/'wrangler.jsonc',target) if args.publish else None
     if args.check_only:
         print('CHECK PASSED: release checksums, existing services, Python and Worker configuration; no files changed')
@@ -62,7 +62,7 @@ def main():
         # Recheck PIDs under the lock so a concurrent updater cannot leave stale
         # process snapshots. The same lock is used by the optional Git updater.
         services=sync.plan_services(target)
-        backup=target/'backups'/('manual_R14_'+time.strftime('%Y%m%d_%H%M%S'));backup.mkdir(parents=True)
+        backup=target/'backups'/('manual_R15_'+time.strftime('%Y%m%d_%H%M%S'));backup.mkdir(parents=True)
         sync.install_files(ROOT/'app',target,backup,paths)
         try:
             for service in services:sync.restart(target,service)

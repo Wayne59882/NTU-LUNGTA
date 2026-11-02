@@ -175,11 +175,13 @@ def restart(target,service):
     (target/'logs'/(name+'.pid')).write_text(str(process.pid)+'\n')
 
 def restore_services(target,services):
+    errors=[]
     for service in services:
         try:
             if service.get('was_running',True):restart(target,service)
             else:stop(service)
-        except Exception:pass
+        except Exception as error:errors.append(service['name']+': '+str(error))
+    return errors
 
 def install_files(source,target,backup,relative_paths):
     plan=[]
@@ -211,16 +213,20 @@ def restore_files(target,backup):
         elif dest.exists():dest.unlink()
 
 def health(services=None):
-    checks=[(service_port(row),'/api/reference/health' if row['name']=='reference_server' else '/api/health',row['name']=='reference_server') for row in services] if services else [(8182,'/api/reference/health',True)]
+    checks=[(service_port(row),'/api/reference/ready' if row['name']=='reference_server' else '/api/health' if row.get('external') else '/api/ready',not row.get('external'),row['name']) for row in services] if services else [(8182,'/api/reference/ready',True,'reference_server')]
+    errors={}
     for _ in range(20):
         try:
-            for port,path,reference in checks:
-                with urllib.request.urlopen('http://127.0.0.1:%s%s'%(port,path),timeout=3) as response:data=json.loads(response.read().decode())
-                if not data.get('ok') or (reference and data.get('content_integrity_revision')!='R14'):raise RuntimeError('Service not ready')
-            return
-        except Exception:pass
+            for port,path,require_revision,name in checks:
+                try:
+                    with urllib.request.urlopen('http://127.0.0.1:%s%s'%(port,path),timeout=3) as response:data=json.loads(response.read().decode())
+                    if not data.get('ok') or (require_revision and data.get('content_integrity_revision')!='R15'):raise RuntimeError('Ready response has incorrect revision')
+                    errors.pop(name,None)
+                except Exception as error:errors[name]='%s %s: %s'%(port,path,str(error)[:180])
+            if not errors:return
+        except Exception as error:errors['health']=str(error)[:180]
         time.sleep(.5)
-    raise RuntimeError('R14 backend health did not pass; keep the backup.')
+    raise RuntimeError('Readiness checks failed: '+'; '.join(name+' '+reason for name,reason in errors.items()))
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--target',required=True);parser.add_argument('--apply',action='store_true');parser.add_argument('--publish',action='store_true')
@@ -241,7 +247,7 @@ def main():
         services=plan_services(target)
         print('SERVICE PLAN: '+', '.join(row['name']+(' keep existing endpoint' if row.get('external') else ' restart' if row['was_running'] else ' start missing service') for row in services),flush=True)
         python=services[0]['command'][0]
-        subprocess.check_call([python,'-c','import fitz,course_runtime,kb_server,gateway,json; from pdf_ocr import LocalOCR; assert course_runtime.fitz is not None; print("LOCAL OCR: "+json.dumps(LocalOCR().report()))'],cwd=str(ROOT/'app'),env=services[0]['env'])
+        subprocess.check_call([python,'-c','import fitz,course_runtime,kb_server,reference_server,gateway,json; from model_lock import SharedModelLock; from pdf_ocr import LocalOCR; from pdf_vision import LocalVision; assert course_runtime.fitz is not None; assert kb_server.SharedModelLock is reference_server.SharedModelLock is SharedModelLock; print("LOCAL OCR: "+json.dumps(LocalOCR().report())); print("LOCAL VISION: "+json.dumps(LocalVision().report()))'],cwd=str(ROOT/'app'),env=services[0]['env'])
         if args.publish and not shutil.which('npx'):raise RuntimeError('Node.js/npx is unavailable; no application files changed')
         paths=[path[4:] for path in run(['git','ls-files','app']).splitlines() if path.startswith('app/')]
         cfg=load_config(target/'wrangler.jsonc',target) if args.publish else None
@@ -260,7 +266,8 @@ def main():
             print('SYNC COMPLETE '+sha+'; backup '+str(backup))
         except Exception:
             restore_files(target,backup)
-            restore_services(target,services)
+            errors=restore_services(target,services)
+            if errors:print('ROLLBACK REQUIRES ATTENTION: '+'; '.join(errors),flush=True)
             raise
 
 if __name__=='__main__':

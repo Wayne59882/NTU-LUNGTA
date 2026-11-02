@@ -43,7 +43,7 @@ def model(_key,system,user,_tokens):
             out.append(q)
         return json.dumps({'questions':out})
     rows=json.loads(user.split('QUESTIONS_AND_EVIDENCE_JSON:\n',1)[1])
-    return json.dumps({'reviews':[{'evidence_id':x['evidence_id'],'valid':True,'best_choice':0} for x in rows]})
+    return json.dumps({'reviews':[{'evidence_id':x['evidence_id'],'valid':True,'best_choice':0,'support_quote':x['anchor']} for x in rows]})
 progress=[];start=time.monotonic()
 bank=exam.build(unit,chunks,cr._question_sentences,[],'gemma',model,lambda cards,total,processed:progress.append((len(cards),total,processed)),100)
 assert len(bank)==91 and progress[-1]==(91,91,91) and time.monotonic()-start<3
@@ -72,7 +72,7 @@ def compact_model(key,system,user,tokens):
         return json.dumps({'questions':items})
     rows=json.loads(user.split('QUESTIONS_AND_EVIDENCE_JSON:\n',1)[1])
     assert all('answer' not in r for r in rows)
-    return json.dumps({'reviews':[{'evidence_id':r['evidence_id'],'valid':True,'best_choice':0,
+    return json.dumps({'reviews':[{'evidence_id':r['evidence_id'],'valid':True,'best_choice':0,'support_quote':r['anchor'],
                                    'choice_explanations':valid['choice_explanations']} for r in rows]})
 fast_bank=exam.build(unit,chunks[:25],cr._question_sentences,[],'gemma',compact_model,
                      lambda cards,total,processed:quick_progress.append((len(cards),total,processed,len(calls))),100)
@@ -99,14 +99,14 @@ partial_calls=[]
 def partial_review(key,system,user,tokens):
     rows=json.loads(user.split('QUESTIONS_AND_EVIDENCE_JSON:\n',1)[1]);partial_calls.append(len(rows))
     if len(partial_calls)==1:rows=rows[:5]
-    return json.dumps({'reviews':[{'evidence_id':r['evidence_id'],'valid':True,'best_choice':0,
+    return json.dumps({'reviews':[{'evidence_id':r['evidence_id'],'valid':True,'best_choice':0,'support_quote':r['anchor'],
                                    'choice_explanations':valid['choice_explanations']} for r in rows]})
 assert len(exam._review(review_rows,'gemma',partial_review))==12 and partial_calls==[12,7]
 
 def bad_explanations(key,system,user,tokens):
     if 'EXAM_MCQ_GENERATE' in system:return compact_model(key,system,user,tokens)
     rows=json.loads(user.split('QUESTIONS_AND_EVIDENCE_JSON:\n',1)[1])
-    return json.dumps({'reviews':[{'evidence_id':r['evidence_id'],'valid':True,'best_choice':0,
+    return json.dumps({'reviews':[{'evidence_id':r['evidence_id'],'valid':True,'best_choice':0,'support_quote':r['anchor'],
                                    'choice_explanations':['vague']*4} for r in rows]})
 assert not exam.build(unit,chunks[:3],cr._question_sentences,[],'gemma',bad_explanations,lambda *_:None,100)
 

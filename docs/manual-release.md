@@ -1,10 +1,10 @@
-# R14 完整檔案更新方式
+# R15 完整檔案更新方式
 
 這個 ZIP 是可由你自行上傳伺服器的完整程式。保留原本公開網址，不需要讓外部助理連進內網；也不必設定 GitHub 自動同步。套用更新時會短暫重啟服務，請選擇沒有正在上傳或建課的時段。
 
 ## 既有網站更新
 
-1. 下載 `MC_VHTA_COMPLETE_R14_20261102.zip`。
+1. 下載 `MC_VHTA_COMPLETE_R15_20261103.zip`。
 2. 上傳到原本伺服器，**解壓在舊程式旁邊**，不要直接覆蓋舊資料夾。
 3. 由原本啟動服務的同一個 Linux 使用者，在新解壓的資料夾內執行（不必手動停止既有服務；缺少的服務會先檢查連接埠再啟動）：
 
@@ -24,7 +24,7 @@ python3 scripts/deploy/apply_release.py --target /path/to/existing/live/app --pu
 
 ## OCR 套件（伺服器只需準備一次）
 
-掃描頁與亂碼頁會使用本機 Tesseract，不會呼叫付費雲端 OCR。預設需要 `eng`、`chi_tra` 語言資料。在 Ubuntu／Debian 伺服器上：
+圖片頁及亂碼頁先嘗試已安裝且支援影像的本機 Ollama 模型，並以原頁再次核對；Tesseract 作為文字 OCR 備援。不會自動呼叫付費雲端或下載模型。詳見[本機辨識與來源核對](server-sync.md)。預設需要 `eng`、`chi_tra` 語言資料。在 Ubuntu／Debian 伺服器上：
 
 ```bash
 sudo apt-get update
@@ -39,8 +39,8 @@ tesseract --list-langs
 - 終端機出現 `UPDATE COMPLETE`，並記錄備份位置。
 - 原本網址重新整理；管理員登入後可看到「所有教材上傳紀錄」。
 - 用一份小型 PDF 試上傳，再測試講稿播放與問答；之後再測老師的大型教材。
-- 本機可查 `http://127.0.0.1:8182/api/reference/health`，其中 `content_integrity_revision` 應為 `R14`。
-- 更新紀錄在舊程式目錄的 `logs/manual_release_state.json`；備份在 `backups/manual_R14_時間/`。
+- 本機可查 `http://127.0.0.1:8182/api/reference/health`，其中 `content_integrity_revision` 應為 `R15`。
+- 更新紀錄在舊程式目錄的 `logs/manual_release_state.json`；備份在 `backups/manual_R15_時間/`。
 
 若更新或發布失敗，工具會嘗試還原本地程式並重啟原服務，請保留完整錯誤訊息。若 Cloudflare 發布在中途失敗，需再確認公開網址；本地還原不等於已還原雲端發布。
 

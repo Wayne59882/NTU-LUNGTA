@@ -12,8 +12,9 @@ import re
 import time
 from content_integrity import extract_page, text_issues
 from pdf_ocr import LocalOCR
+from pdf_vision import LocalVision,teaching_images
 
-REVISION='R14'
+REVISION='R15'
 
 def atomic_json(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
@@ -27,19 +28,26 @@ def digest_file(path):
         for block in iter(lambda:stream.read(1024*1024),b''):digest.update(block)
     return digest.hexdigest()
 
-def inspect_page(page,number,ocr=None,activity=None):
+def inspect_page(page,number,ocr=None,activity=None,vision=None):
     ocr=ocr if ocr is not None else LocalOCR()
+    vision=vision if vision is not None else LocalVision()
+    native=False
     try:
         row=extract_page(page,number)
         row.update({'status':'readable' if row['text'] else 'blank','issues':[]})
         # Some slide PDFs have a searchable title over a scanned body.
         outlined=False
-        if not row['text']:
-            drawings=getattr(page,'get_drawings',None) or getattr(page,'getDrawings',None)
-            if drawings:
-                try:outlined=bool(drawings())
-                except Exception:pass
-        if not outlined and (not row.get('has_images') or sum(c.isalnum() for c in row['text'])>=160):return row
+        drawings=getattr(page,'get_drawings',None) or getattr(page,'getDrawings',None)
+        if drawings:
+            try:
+                paths=drawings()
+                area=max(1,float(page.rect.width)*float(page.rect.height))
+                # A vector chart can contain labels in the text layer but no
+                # embedded raster images. Borders/underlines alone are ignored.
+                outlined=bool(paths) if not row['text'] else len(paths)>=3 and any(float(path['rect'].width)*float(path['rect'].height)/area>=.12 for path in paths if path.get('rect'))
+            except Exception:pass
+        if not outlined and not teaching_images(page,row) and (not row.get('has_images') or sum(c.isalnum() for c in row['text'])>=160):return row
+        native=bool(row['text'])
         row['status']='partial' if row['text'] else 'needs_review';row['issues']=['Sparse searchable text over image or outlined content; visual text requires OCR.']
     except Exception as error:
         # One symbol in a caption must not destroy all independent paragraphs.
@@ -56,6 +64,17 @@ def inspect_page(page,number,ocr=None,activity=None):
         if sum(c.isalpha() for c in text)<40:text=''
         row={'page':int(number),'text':text,'status':'partial' if text else 'needs_review',
                 'issues':[str(error)[:600]],'image_content_read':False}
+    if activity:activity({'page':int(number),'status':'vision_running'},False)
+    visual=vision.read(page);row['vision_config']=vision.fingerprint
+    row['vision']={key:value for key,value in visual.items() if key!='text'}
+    if visual.get('ok'):
+        row.update({'text':(row['text']+'\n\n' if native else '')+visual['text'],'status':'partial','extraction_method':'local_vision','image_content_read':True,'ocr_config':ocr.fingerprint})
+        row['issues'].append('Local visual transcription reviewed against page pixels; retain original page for verification.')
+        return row
+    if native and sum(c.isalnum() for c in row['text'])>=160:
+        row['extraction_method']='native_text';row['ocr_config']=ocr.fingerprint
+        row['issues'].append('Native text preserved; image relationships remain unread until local vision is available.')
+        return row
     if activity:activity({'page':int(number),'status':'ocr_running'},False)
     recovered=ocr.read(page);row['ocr_config']=ocr.fingerprint
     row['ocr']={key:value for key,value in recovered.items() if key!='text'}
@@ -66,8 +85,9 @@ def inspect_page(page,number,ocr=None,activity=None):
     else:row['issues'].append(recovered.get('error','Local OCR unavailable.'))
     return row
 
-def iter_pages(doc,start,end,cache_directory,source_identity,progress=None,ocr=None):
+def iter_pages(doc,start,end,cache_directory,source_identity,progress=None,ocr=None,vision=None):
     ocr=ocr if ocr is not None else LocalOCR()
+    vision=vision if vision is not None else LocalVision()
     directory=Path(cache_directory)/hashlib.sha256((REVISION+'|'+source_identity).encode()).hexdigest()[:24]
     directory.mkdir(parents=True,exist_ok=True)
     for number in range(max(1,int(start)),min(int(end),doc.page_count)+1):
@@ -76,16 +96,16 @@ def iter_pages(doc,start,end,cache_directory,source_identity,progress=None,ocr=N
             try:
                 row=json.loads(path.read_text(encoding='utf-8'))
                 cached=row.get('page')==number and row.get('status') in ('readable','blank','partial')
-                if row.get('status')=='partial':cached=cached and row.get('ocr_config')==ocr.fingerprint
+                if row.get('status')=='partial':cached=cached and row.get('ocr_config')==ocr.fingerprint and row.get('vision_config')==vision.fingerprint
             except Exception:pass
         if not cached:
-            row=inspect_page(doc[number-1],number,ocr,progress)
+            row=inspect_page(doc[number-1],number,ocr,progress,vision)
             atomic_json(path,row)
         if progress:progress(row,cached)
         yield row
 
 def unit_quality(rows):
-    warnings=[{'page':r['page'],'status':r['status'],'issues':r.get('issues',[]),'ocr':r.get('ocr')} for r in rows if r['status'] in ('partial','needs_review')]
+    warnings=[{'page':r['page'],'status':r['status'],'issues':r.get('issues',[]),'ocr':r.get('ocr'),'vision':r.get('vision')} for r in rows if r['status'] in ('partial','needs_review')]
     usable=sum(bool(r.get('text')) for r in rows)
     return {'revision':REVISION,'pages':len(rows),'usable_pages':usable,'warnings':warnings,
             'complete':not warnings,'status':'partial' if warnings and usable else 'needs_review' if not usable else 'readable'}
@@ -97,7 +117,7 @@ def write_receipt(stage_directory,file_path,display_name):
     atomic_json(Path(stage_directory)/'receipts'/(path.name+'.json'),receipt)
     return receipt
 
-def upload_diagnostics(stage_directory,ocr_report=None):
+def upload_diagnostics(stage_directory,ocr_report=None,vision_report=None):
     directory=Path(stage_directory)
     receipts=[]
     for path in sorted((directory/'receipts').glob('*.json')):
@@ -120,4 +140,4 @@ def upload_diagnostics(stage_directory,ocr_report=None):
     if (directory/'build_job.json').exists():
         try:job=json.loads((directory/'build_job.json').read_text(encoding='utf-8'))
         except Exception:pass
-    return {'stage_id':directory.name,'received_files':receipts,'transfers':transfers,'build_job':job,'local_ocr':ocr_report if ocr_report is not None else LocalOCR().report()}
+    return {'stage_id':directory.name,'received_files':receipts,'transfers':transfers,'build_job':job,'local_ocr':ocr_report if ocr_report is not None else LocalOCR().report(),'local_vision':vision_report if vision_report is not None else LocalVision().report()}

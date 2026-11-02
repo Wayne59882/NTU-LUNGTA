@@ -5,10 +5,11 @@ from array import array
 from collections import Counter
 from contextlib import closing
 from pathlib import Path
-from exam_questions import build as build_exam_questions
+from exam_questions import build as build_exam_questions,reviewed_card
 from math_integrity import math_issues, question_math_ok
 from content_integrity import text_issues, clean_course_text, question_text_ok, extract_page, ContentIntegrityError, SOURCE_RULE
 from pdf_ingestion import iter_pages, unit_quality, write_receipt, atomic_json, upload_diagnostics
+from course_grounding import review_text,REVISION as REVIEW_REVISION
 
 try:
     import fitz
@@ -587,7 +588,7 @@ def _lecture_evidence(unit,chunks,max_chars=6200):
 def _chinese_lecture(unit,chunks,model_key,model_call,course_name=''):
     evidence=_lecture_evidence(unit,chunks)
     if len(evidence)<180:raise RuntimeError('This chapter has too little readable text to make a Chinese lecture. Run OCR or choose a complete chapter.')
-    system=('你是'+(_clean_text(course_name) or '生理學與藥理學')+'課程的教學助理。以繁體中文撰寫可直接朗讀的課堂講稿。'
+    system=('你是'+(_clean_text(course_name) or '目前上傳課程')+'課程的教學助理。以繁體中文撰寫可直接朗讀的課堂講稿。'
             '所有事實只能來自提供的教材，保留藥名、數值、公式與重要英文專有名詞。'
             '不要引用圖號、頁碼、書名、章節號或作者；不要寫題目；不要輸出英文段落或來源標記。'
             '若教材沒有支持某一因果關係，就不要自行補充。'
@@ -601,6 +602,7 @@ def _chinese_lecture(unit,chunks,model_key,model_call,course_name=''):
     han=len(re.findall(r'[\u3400-\u9fff]',script));latin=len(re.findall(r'[A-Za-z]',script))
     if _PDF_PRIVATE.search(script) or han<150 or han<latin//2:
         raise RuntimeError('The local model did not produce a readable Traditional Chinese lecture. Retry with another available model.')
+    script,_=review_text('teacher script',script,evidence,model_key,model_call)
     return '單元：%s。\n\n%s'%(unit['title'],script)
 
 _SEARCH_STOP={'the','and','what','how','does','is','are','of','in','to','for','a','an','on','with','why','can','from','this','that','about','which','when','where','explain','describe','影響','什麼','如何','請問','課程'}
@@ -784,7 +786,7 @@ class CourseManager(object):
                 try:
                     job=json.loads(p.read_text(encoding='utf-8'))
                     if job.get('status') not in ('queued','running'):
-                        recoverable=job.get('status')=='error' and job.get('phase')=='extracting chapter text' and job.get('ingestion_revision')!='R14'
+                        recoverable=job.get('status')=='error' and job.get('phase')=='extracting chapter text' and job.get('ingestion_revision')!='R15'
                         if not recoverable:continue
                     stage=json.loads((self._stage_dir(job['stage_id'])/'stage.json').read_text(encoding='utf-8'))
                     cid=job['course_id'];jid=job['id']
@@ -813,27 +815,30 @@ class CourseManager(object):
     def _quarantine_damaged_math(self,man):
         cid=man['course_id'];cd=self._course_dir(cid);qp=cd/'question_banks.json'
         banks=json.loads(qp.read_text(encoding='utf-8')) if qp.exists() else {}
+        cp=cd/'chunks.jsonl'
+        current={str(row['id']):row.get('text','') for row in (json.loads(line) for line in cp.read_text(encoding='utf-8').splitlines() if line)} if cp.exists() else {}
+        def valid(row):return reviewed_card(row,current.get(str(row.get('evidence_chunk_id')),''))
         damaged_units=[];removed=0
         for unit in man.get('units') or []:
             uid=unit['id'];bank=banks.get(uid) or []
-            good=[row for row in bank if question_text_ok(row.get('question'))]
+            good=[row for row in bank if valid(row)]
             if len(good)!=len(bank):removed+=len(bank)-len(good);damaged_units.append(uid)
-        bad_scripts=[u['id'] for u in man.get('units') or [] if text_issues(u.get('script',''))]
+        bad_scripts=[u['id'] for u in man.get('units') or [] if u.get('script') and (text_issues(u.get('script','')) or u.get('script_review_revision')!=REVIEW_REVISION)]
         if not damaged_units and not bad_scripts:return man
-        backup=cd/'backups'/('content_R13_'+uuid.uuid4().hex)
+        backup=cd/'backups'/('content_R15_'+uuid.uuid4().hex)
         backup.mkdir(parents=True,exist_ok=True)
         for name in ('course_manifest.json','question_banks.json'):
             if (cd/name).exists():shutil.copy2(str(cd/name),str(backup/name))
         for unit in man.get('units') or []:
             uid=unit['id']
             if uid in damaged_units:
-                banks[uid]=[row for row in banks[uid] if question_text_ok(row.get('question'))]
+                banks[uid]=[row for row in banks[uid] if valid(row)]
                 unit['question_count']=len(banks[uid])
             if uid in bad_scripts:unit.update({'script':'','script_status':'preparing'})
         prep=man.setdefault('preparation',{})
         for kind,affected in (('questions',damaged_units),('lectures',bad_scripts)):
-            if affected:prep.setdefault(kind,{}).update({'status':'preparing','message':'Regenerating content with damaged text or symbols'})
-        man.update({'status':'preparing','math_integrity_revision':'R12','content_integrity_revision':'R13'})
+            if affected:prep.setdefault(kind,{}).update({'status':'preparing','message':'Reviewing saved content against current course sources'})
+        man.update({'status':'preparing','math_integrity_revision':'R12','content_integrity_revision':REVIEW_REVISION})
         man['math_repair']={'removed_questions':removed,'lecture_units':bad_scripts,'backup':str(backup)}
         _json_dump(qp,banks);_json_dump(cd/'course_manifest.json',man)
         return man
@@ -883,7 +888,7 @@ class CourseManager(object):
             if owned:doc.close()
 
     def _build(self,jid,stage,units,course_id,course_name,visual_model,model_key,model_call):
-        self._set_job(jid,status='queued',message='PDF received; waiting for the extraction worker',ingestion_revision='R14')
+        self._set_job(jid,status='queued',message='PDF received; waiting for the extraction worker',ingestion_revision='R15')
         with self.build_slots:
             return self._build_impl(jid,stage,units,course_id,course_name,visual_model,model_key,model_call)
 
@@ -912,8 +917,8 @@ class CourseManager(object):
                     source=next((src for src in stage.get('sources',[]) if src['file_name']==u['source_file']),{})
                     identity=source.get('sha256') or (u['source_file']+'|'+str((cd/'source'/u['source_file']).stat().st_size))
                     def page_done(row,cached):
-                        if row['status']=='ocr_running':
-                            self._set_job(jid,status='running',message='Local OCR: PDF page %s (%s / %s selected pages complete)'%(row['page'],page_progress[0],total_pages),current_page=row['page'],current_source=source.get('display_name') or u['source_file'])
+                        if row['status'] in ('ocr_running','vision_running'):
+                            self._set_job(jid,status='running',message=('%s: PDF page %s (%s / %s selected pages complete)'%('Local visual reading' if row['status']=='vision_running' else 'Local OCR',row['page'],page_progress[0],total_pages)),current_page=row['page'],current_source=source.get('display_name') or u['source_file'])
                             return
                         page_progress[0]+=1
                         if page_progress[0]%5==0 or row['status']=='needs_review' or page_progress[0]==total_pages:
@@ -951,7 +956,7 @@ class CourseManager(object):
                 course_title,course_name_source=_resolve_course_name(course_name,stage,units,unit_texts,model_key,model_call,
                     lambda message:self._set_job(jid,status='running',progress=15,message=message))
             else:course_title,course_name_source=(_clean_text(course_name) or stage.get('course_name') or 'Uploaded Course'),'pdf_metadata'
-            manifest={'stage_id':stage['stage_id'],'ingestion_revision':'R14','source_review':{'required':any(q['status']!='readable' for q in source_quality.values()),'units':source_quality},'course_id':course_id,'course_name':course_title,'course_name_source':course_name_source,'visual_model':'vq' if visual_model=='vq' else 'none','visual_model_label':'V/Q Visual Model' if visual_model=='vq' else 'No Specialized Visual Model','sources':stage.get('sources',[]),'units':lecture_units,'content_version':'v241.9','question_target_per_unit':QUESTION_TARGET,'quiz_questions_per_unit':2,'question_generation':QUESTION_GENERATION,'rag':{'embedding_model':EMBED_MODEL,'dimension':1024,'top_candidates':TOP_CANDIDATES,'final_top_k':FINAL_TOP_K,'search_method':'course text ready immediately; semantic passage index follows'},'model_key':model_key,'created_at':time.time(),'status':'preparing','preparation':{'lectures':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing Traditional Chinese teacher scripts'},'questions':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing reviewed exam-style questions from available evidence'},'index':{'status':'preparing','message':'Course text Q&A ready; enhancing semantic search'}}}
+            manifest={'stage_id':stage['stage_id'],'ingestion_revision':'R15','source_review':{'required':any(q['status']!='readable' for q in source_quality.values()),'units':source_quality},'course_id':course_id,'course_name':course_title,'course_name_source':course_name_source,'visual_model':'vq' if visual_model=='vq' else 'none','visual_model_label':'V/Q Visual Model' if visual_model=='vq' else 'No Specialized Visual Model','sources':stage.get('sources',[]),'units':lecture_units,'content_version':'v241.9','question_target_per_unit':QUESTION_TARGET,'quiz_questions_per_unit':2,'question_generation':QUESTION_GENERATION,'rag':{'embedding_model':EMBED_MODEL,'dimension':1024,'top_candidates':TOP_CANDIDATES,'final_top_k':FINAL_TOP_K,'search_method':'course text ready immediately; semantic passage index follows'},'model_key':model_key,'created_at':time.time(),'status':'preparing','preparation':{'lectures':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing Traditional Chinese teacher scripts'},'questions':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing reviewed exam-style questions from available evidence'},'index':{'status':'preparing','message':'Course text Q&A ready; enhancing semantic search'}}}
             _json_dump(cd/'question_banks.json',{});_json_dump(cd/'scenario_cache.json',{})
             if not chunks:
                 manifest['status']='source_review'
@@ -1137,7 +1142,7 @@ class CourseManager(object):
                 i=next((index for index in pending if units[index]['id']==priority),pending[0])
                 pending.remove(i);unit=units[i]
                 if unit.get('source_blocked'):continue
-                if unit.get('script_status')=='ready' and unit.get('script'):
+                if unit.get('script_status')=='ready' and unit.get('script') and unit.get('script_review_revision')==REVIEW_REVISION:
                     completed+=1;continue
                 self._update_manifest(cid,lambda m,n=i:m['preparation']['lectures'].update({'status':'preparing','message':'Writing Chinese lecture %s / %s'%(n+1,len(units)),'error':''}))
                 try:script=_chinese_lecture(unit,grouped.get(unit['id'],[]),model_key,model_call,(self.manifest(cid) or {}).get('course_name',''))
@@ -1146,7 +1151,7 @@ class CourseManager(object):
                     self._update_manifest(cid,lambda m,n=i,err=str(e):m['units'][n].update({'script':'','script_status':'error','script_error':err}))
                 else:
                     completed+=1
-                    self._update_manifest(cid,lambda m,n=i,value=script:m['units'][n].update({'script':value,'script_status':'ready','script_error':''}))
+                    self._update_manifest(cid,lambda m,n=i,value=script:m['units'][n].update({'script':value,'script_status':'ready','script_error':'','script_review_revision':REVIEW_REVISION}))
                 self._update_manifest(cid,lambda m:m['preparation']['lectures'].update({'completed_units':completed,'total_units':len(units),'message':'Chinese lectures ready: %s / %s'%(completed,len(units))}))
             state='error' if errors else 'ready'
             self._update_manifest(cid,lambda m:m['preparation']['lectures'].update({'status':state,'error':'; '.join(errors)[:1000]}))
@@ -1265,7 +1270,8 @@ class CourseManager(object):
         # Keep the all-user listing bounded to receipts and job summaries.
         # Load a book's thousand-page quality report only when requested.
         from pdf_ocr import LocalOCR
-        ocr=LocalOCR().report();jobs={};reports=[]
+        from pdf_vision import LocalVision
+        ocr=LocalOCR().report();vision=LocalVision().report();jobs={};reports=[]
         for path in (COURSE_ROOT/'_jobs').glob('*.json'):
             try:
                 job=json.loads(path.read_text(encoding='utf-8'))
@@ -1273,7 +1279,7 @@ class CourseManager(object):
             except (ValueError,OSError):pass
         for directory in sorted(STAGING_ROOT.iterdir()) if STAGING_ROOT.exists() else []:
             if not directory.is_dir():continue
-            report=upload_diagnostics(directory,ocr_report=ocr);report['jobs']=jobs.get(directory.name,[])
+            report=upload_diagnostics(directory,ocr_report=ocr,vision_report=vision);report['jobs']=jobs.get(directory.name,[])
             stage=directory/'stage.json'
             try:report['course_name']=json.loads(stage.read_text(encoding='utf-8')).get('course_name','')
             except (ValueError,OSError):report['course_name']=''
@@ -1399,10 +1405,10 @@ class CourseManager(object):
         context_parts=[];used=0;sources=[]
         if in_scope:
             for i,r in enumerate(final,1):
-                block='[Evidence %d | %s | %s]\n%s'%(i,r['source'],r['unit_id'],r['window_text'])
+                block='[Evidence %d | %s | %s | PDF page %s]\n%s'%(i,r['source'],r['unit_id'],r.get('page') or '?',r['window_text'])
                 if used+len(block)>CONTEXT_BUDGET:break
                 context_parts.append(block);used+=len(block)+2
-                sources.append({'chunk_id':r['chunk_id'],'source':r['source'],'unit_id':r['unit_id'],'score':round(r['score'],5)})
+                sources.append({'chunk_id':r['chunk_id'],'source':r['source'],'unit_id':r['unit_id'],'pdf_page':r.get('page'),'score':round(r['score'],5)})
         retrieval={'embedding_model':EMBED_MODEL if qv is not None else None,'stage1_candidate_count':len(cands),'selected_count':len(sources),'top_matches':[{'chunk_id':r['chunk_id'],'source':r['source'],'unit_id':r['unit_id'],'score':round(r['score'],5)} for r in rer[:8]],'source_balanced':len(srcs)>1,'source_candidate_quota':SOURCE_CANDIDATES,'source_max_final':SOURCE_MAX_FINAL if len(srcs)>1 else None,'rerank_mode':'precomputed semantic windows' if qv is not None and data['windows'] else 'passage vector and lexical windows' if qv is not None else 'course text lexical fallback','final_top_k':FINAL_TOP_K}
         return {'ok':bool(context_parts),'in_scope':in_scope,'reason':'ok' if in_scope else 'outside-uploaded-course-scope','context':'\n\n'.join(context_parts),'sources':sources,'retrieval':retrieval,'course':man,'top_similarity':round(top_score,5)}
 
@@ -1425,7 +1431,7 @@ class CourseManager(object):
                 raise ValueError('The selected course unit is invalid.')
             units=[u for u in units if u['id'] in requested]
         for index,u in enumerate(units):
-            bank=[row for row in (banks.get(u['id']) or []) if question_text_ok(row.get('question'))]
+            bank=[row for row in (banks.get(u['id']) or []) if reviewed_card(row)]
             if len(bank)<per:
                 raise ValueError('Unit "%s" has %s reviewed questions; select %s or fewer per unit.'%(u['title'],len(bank),len(bank)))
             if any(not isinstance(row.get('question'),dict) for row in bank):

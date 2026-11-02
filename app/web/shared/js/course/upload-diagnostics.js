@@ -24,6 +24,8 @@
         if(admin){const owner=report.owner;section.insertAdjacentHTML('beforeend','<p>上傳者：'+(owner?esc(owner.name||'未填姓名')+' · '+esc(owner.email)+' · ID '+esc(owner.id):'舊資料，尚無可核對的帳號紀錄')+'</p>');}
         const ocr=report.local_ocr||{};
         section.insertAdjacentHTML('beforeend','<p>本機 OCR：'+(ocr.available?'可用 · '+esc(ocr.languages):'尚未就緒 · '+esc(ocr.error||'請檢查伺服器設定'))+'</p>');
+        const vision=report.local_vision||{};
+        section.insertAdjacentHTML('beforeend','<p>本機圖片與公式辨識：'+(vision.available?'可用 · '+esc(vision.model):'尚未就緒 · '+esc(vision.error||'請檢查本機模型'))+'</p>');
         for(const file of report.received_files||[]){
           const url='/api/reference/course-upload-source?stage_id='+encodeURIComponent(report.stage_id)+'&file='+encodeURIComponent(file.file_name);
           section.insertAdjacentHTML('beforeend','<p><a href="'+esc(url)+'">'+esc(file.display_name)+'</a> · '+mb(file.size_bytes)+' · 接收時間 '+esc(when(file.received_at))+' · '+esc(file.inspection_status)+(file.error?' · '+esc(file.error):'')+'</p>');

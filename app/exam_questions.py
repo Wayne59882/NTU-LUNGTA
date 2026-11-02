@@ -9,9 +9,19 @@ import json
 import re
 from math_integrity import loads_model_json, math_issues, question_math_ok, JSON_MATH_RULE
 from content_integrity import text_issues, question_text_ok, SOURCE_RULE
+from course_grounding import normalize
 
 FIRST_BATCH_SIZE=3  # Unlock a two-question draw after the first review.
 BATCH_SIZE=12
+
+def reviewed_card(card,source=None):
+    if not isinstance(card,dict) or not question_text_ok(card.get('question')):return False
+    review=card['question'].get('source_review') or {}
+    quote=normalize(review.get('support_quote'))
+    if review.get('revision')!='R15' or len(quote)<12:return False
+    if source is None:return True
+    anchor=normalize(card.get('source_statement'));source=normalize(source)
+    return bool(anchor and anchor in source and quote in source)
 
 
 def _parse_object(raw):
@@ -138,10 +148,11 @@ def _review(batch,model_key,model_call):
             'Independently solve each question from the uploaded evidence. You do not see the proposed answer. '
             'Set valid=true only if the complete stem is clear, all four choices address the same task, '
             'exactly one answer is supported, the source contains enough facts, and the language matches. '
-            'Reject invented physiology, ambiguous choices, fragmentary wording and fill-in-the-blank questions. '
+            'Reject facts outside the supplied course evidence, ambiguous choices, fragmentary wording and fill-in-the-blank questions. '
             'For valid questions write four short, source-grounded explanations, one for each option; '
             'for rejected questions omit explanations. '
             'Schema: {"reviews":[{"evidence_id":"...","valid":true,"best_choice":0,'
+            '"support_quote":"exact supporting source quote",'
             '"choice_explanations":["why A is right/wrong","why B...","why C...","why D..."]}]}')
     user='QUESTIONS_AND_EVIDENCE_JSON:\n'+json.dumps(batch,ensure_ascii=False)
     raw=model_call(model_key,system+JSON_MATH_RULE+SOURCE_RULE,user,max(1100,min(3400,280*len(batch))))
@@ -160,6 +171,8 @@ def _review(batch,model_key,model_call):
 def build(unit,chunks,sentences,existing,model_key,model_call,progress,target=100,max_new_facts=None):
     evidence=evidence_rows(chunks,sentences)
     cards=[r for r in existing if isinstance(r,dict) and (r.get('question') or {}).get('generation_method')=='exam-mcq-v5']
+    current={str(row['id']):normalize(row.get('text')) for row in chunks}
+    cards=[row for row in cards if reviewed_card(row,current.get(str(row.get('evidence_chunk_id')),''))]
     # A short readiness pass must never discard questions already saved by a
     # previous release or an earlier background pass.
     cards=[r for r in cards if question_text_ok(r.get('question'))][:100]
@@ -194,6 +207,8 @@ def build(unit,chunks,sentences,existing,model_key,model_call,progress,target=10
             for source,card in candidates:
                 verdict=verdicts.get(source['id']) or {}
                 if verdict.get('valid') is not True or verdict.get('best_choice')!=card['answer']:continue
+                quote=normalize(verdict.get('support_quote'))
+                if len(quote)<12 or quote not in normalize(source['context']):continue
                 if source['anchor'] in used_anchors or card['normalized'] in used_stems:continue
                 reasons=(_valid_reasons(verdict['choice_explanations'],source['language'])
                          if 'choice_explanations' in verdict else card['choice_explanations'])
@@ -202,7 +217,7 @@ def build(unit,chunks,sentences,existing,model_key,model_call,progress,target=10
                 explanation='\n'.join('%s. %s'%(letter,reason) for letter,reason in zip('ABCD',reasons))
                 question={'id':qid,'source_seed_id':seed_id,'stem':card['stem'],'choices':card['choices'],
                           'answer':card['answer'],'explanation':explanation,'evidence_statement':source['anchor'],
-                          'evidence_chunk_id':source['chunk_id'],'generation_method':'exam-mcq-v5'}
+                          'evidence_chunk_id':source['chunk_id'],'generation_method':'exam-mcq-v5','source_review':{'revision':'R15','support_quote':quote}}
                 cards.append({'id':seed_id,'source_concept':card['choices'][card['answer']],
                               'source_statement':source['anchor'],'evidence_chunk_id':source['chunk_id'],
                               'generation_method':'exam-mcq-v5','question':question})

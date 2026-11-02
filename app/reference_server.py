@@ -23,30 +23,9 @@ from feedback.feedback_service import (save_feedback, status as feedback_status,
     pending_corrections, resume_pending_emails)
 from site_metrics import heartbeat as metrics_heartbeat, snapshot as metrics_snapshot
 from course_runtime import COURSES
+from model_lock import SharedModelLock
+from course_grounding import review_text,GroundingError
 
-
-class SharedModelLock(object):
-    """Serialize answer-model swaps/calls across KB and Reference server processes."""
-    def __init__(self,path=None):
-        self.path=path or os.environ.get('VQ_SHARED_MODEL_LOCK','/tmp/vq_ollama_answer.lock')
-        self.thread_lock=threading.Lock();self.fp=None
-    def __enter__(self):
-        self.thread_lock.acquire()
-        try:
-            self.fp=open(self.path,'a+')
-            if fcntl is not None: fcntl.flock(self.fp.fileno(),fcntl.LOCK_EX)
-        except Exception:
-            self.fp=None
-        return self
-    def __exit__(self,exc_type,exc,tb):
-        try:
-            if self.fp is not None and fcntl is not None: fcntl.flock(self.fp.fileno(),fcntl.LOCK_UN)
-        finally:
-            try:
-                if self.fp is not None:self.fp.close()
-            finally:
-                self.fp=None;self.thread_lock.release()
-        return False
 
 ROOT=Path(__file__).resolve().parent
 WEB_DIR=ROOT/'web'/'reference'
@@ -103,7 +82,7 @@ def course_model_call(server,model_key,system,user,max_tokens=1200):
     payload={'model':tag,'messages':[{'role':'system','content':str(system or '')},{'role':'user','content':str(user or '')}],
              'think':False,'stream':False,'keep_alive':MODEL_KEEP_ALIVE,
              'options':{'temperature':0.15,'top_p':0.75,'num_ctx':max(MODEL_NUM_CTX,8192),'num_predict':int(max_tokens),'repeat_penalty':1.02}}
-    if '大學課程情境題出題者' in str(system or ''):
+    if '大學課程情境題出題者' in str(system or '') or 'COURSE_GROUNDING_REVIEW' in str(system or ''):
         payload['format']='json'
         payload['options']['temperature']=0.0
     with server.model_lock:
@@ -129,7 +108,9 @@ def course_local_answer(server,model_key,question,context,course_name,language_t
     user+='\n\nGive the grounded student-facing answer now.'
     draft=course_model_call(server,model_key,system+SOURCE_RULE,user,850)
     if not draft:return 'The uploaded course material is insufficient to answer this question reliably.'
-    return clean_course_text(draft,'Uploaded course answer')
+    answer,_=review_text('student answer',draft,context,model_key,
+        lambda key,sys,user,limit:course_model_call(server,key,sys,user,limit),question)
+    return answer
 def review_course_answer(server,model_key,question,context,language_tag,draft,report):
     system=('Review an uploaded-course answer using only its supplied source material. '
             'This course can belong to any subject. '+SOURCE_RULE+
@@ -139,9 +120,12 @@ def review_course_answer(server,model_key,question,context,language_tag,draft,re
     raw=course_model_call(server,model_key,system,user,1000)
     result=_extract_json_object(raw) or {}
     verdict=str(result.get('verdict') or '').lower()
-    if verdict=='pass':return clean_course_text(draft),{'verdict':'pass'}
+    if verdict=='pass':
+        answer,proof=review_text('corrected student answer',draft,context,model_key,lambda key,sys,user,limit:course_model_call(server,key,sys,user,limit),question)
+        return answer,dict(proof,verdict='pass')
     if verdict=='correct' and result.get('corrected_answer'):
-        return clean_course_text(result['corrected_answer']),{'verdict':'correct'}
+        answer,proof=review_text('corrected student answer',result['corrected_answer'],context,model_key,lambda key,sys,user,limit:course_model_call(server,key,sys,user,limit),question)
+        return answer,dict(proof,verdict='correct')
     raise RuntimeError('Course correction review did not approve a source-supported answer.')
 
 
@@ -1544,8 +1528,10 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
             elif name: fields[name]=data.decode(part.get_content_charset() or 'utf-8',errors='replace')
         return fields,files
     def do_GET(self):
+        if self.path=='/api/reference/ready':
+            self.send_json(200,{'ok':True,'content_integrity_revision':'R15','service':'Reference'});return
         if self.path in ('/api/health','/api/reference/health'):
-            self.send_json(200,{'ok':True,'service':'MC-VHTA Reference Textbook','build':BUILD,'content_integrity_revision':'R14','mode':self.server.mode,'reference_textbook':SEARCH.status(),
+            self.send_json(200,{'ok':True,'service':'MC-VHTA Reference Textbook','build':BUILD,'content_integrity_revision':'R15','mode':self.server.mode,'reference_textbook':SEARCH.status(),
                                 'answer_language':'same as detected student question','v231_default_profile':V231_DEFAULT_PROFILE,'serving_profile':'v241.12.5-full-answer-voice','cloud_mode':'Confirmed BYOK key sends answers directly to the cloud; no server-stored cloud API key',
                                 'scope_policy':{'locked':False,'scope':'active uploaded course materials; built-in physiology profile retained','cloud_bypass_allowed':False},
                                 'multilingual_stt':{'available':stt_available(),'engine':'faster-whisper auto language detection'},
@@ -1688,8 +1674,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                 req=self.read_json();cid=str(req.get('course_id') or '');q=str(req.get('question') or '').strip()
                 if not cid or not q:self.send_json(400,{'error':'course_id and question are required'});return
                 found=COURSES.search(cid,q);lang=detect_question_language(q,req.get('language_tag'));man=found.get('course') or {}
-                correction=find_correction(q,cid)
-                self.send_json(200,{'ok':found.get('ok',False),'in_scope':found.get('in_scope',False),'scope':{'in_scope':found.get('in_scope',False),'course_id':cid,'course_name':man.get('course_name'),'reason':found.get('reason'),'top_similarity':found.get('top_similarity')},'reason':found.get('reason'),'question':q,'context':found.get('context',''),'sources':found.get('sources',[]),'retrieval':found.get('retrieval',{}),'language_tag':lang,'search_method':'course-adaptive semantic vector RAG','course':man,'verified_correction':{'id':correction['id'],'answer':correction['correction_answer']} if correction else None})
+                self.send_json(200,{'ok':found.get('ok',False),'in_scope':found.get('in_scope',False),'scope':{'in_scope':found.get('in_scope',False),'course_id':cid,'course_name':man.get('course_name'),'reason':found.get('reason'),'top_similarity':found.get('top_similarity')},'reason':found.get('reason'),'question':q,'context':found.get('context',''),'sources':found.get('sources',[]),'retrieval':found.get('retrieval',{}),'language_tag':lang,'search_method':'course-adaptive semantic vector RAG','course':man,'verified_correction':None})
             except Exception as e:self.send_json(500,{'error':'Course retrieval failed','detail':str(e)})
             return
         if self.path=='/api/reference/course-answer':
@@ -1699,9 +1684,6 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                     self.send_json(400,{'error':'Cloud course answers require the Cloudflare Worker BYOK gateway','code':'cloud_gateway_required'});return
                 cid=str(req.get('course_id') or '');q=str(req.get('question') or '').strip();model_key=key_of(req.get('model_key'));lang=detect_question_language(q,req.get('language_tag'));man=COURSES.manifest(cid)
                 if not man or not q:self.send_json(400,{'error':'valid course_id and question are required'});return
-                correction=find_correction(q,cid)
-                if correction:
-                    self.send_json(200,{'answer':clean_course_text(correction['correction_answer']),'answer_language':lang,'engine':'auto-corrected-course-memory','model_key':correction.get('correction_model_key') or model_key,'course_id':cid,'course_name':man.get('course_name'),'sources':correction.get('sources') or [],'correction_id':correction['id']});return
                 found=COURSES.search(cid,q)
                 if not found.get('in_scope'):
                     msg='This question is outside the current uploaded course scope: '+str(man.get('course_name') or 'Uploaded Course')+'.'
@@ -1709,18 +1691,18 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                     self.send_json(200,{'answer':msg,'answer_language':lang,'engine':'course-scope-rejected','course_id':cid});return
                 ans=course_local_answer(self.server,model_key,q,found.get('context',''),man.get('course_name'),lang,correction_guidance(q,cid))
                 self.send_json(200,{'answer':ans,'answer_language':lang,'engine':'local-course-rag','model_key':model_key,'course_id':cid,'course_name':man.get('course_name'),'sources':found.get('sources',[]),'retrieval':found.get('retrieval',{})});return
-            except Exception as e:self.send_json(503,{'error':'Course answer unavailable','detail':str(e)});return
+            except GroundingError:
+                self.send_json(200,{'answer':'教材尚未提供足以核對此題答案的內容，請查看來源頁面或改問教材明確涵蓋的內容。' if lang.startswith('zh') else 'The current course evidence does not support a verifiable answer to this question.','engine':'course-no-evidence','course_id':cid})
+            except Exception as e:self.send_json(503,{'error':'Course answer unavailable','detail':str(e)})
+            return
         if self.path=='/api/reference/course-answer-local':
             try:
                 req=self.read_json();cid=str(req.get('course_id') or '');q=str(req.get('question') or '').strip();model_key=key_of(req.get('model_key'));lang=detect_question_language(q,req.get('language_tag'));context=str(req.get('context') or '')
                 man=COURSES.manifest(cid)
                 if not man or not q:self.send_json(400,{'error':'valid course_id and question are required'});return
-                correction=find_correction(q,cid)
-                if correction:
-                    self.send_json(200,{'answer':clean_course_text(correction['correction_answer']),'answer_language':lang,'engine':'auto-corrected-course-memory','model_key':correction.get('correction_model_key') or model_key,'course_id':cid,'course_name':man.get('course_name'),'sources':correction.get('sources') or [],'correction_id':correction['id'],'latency_ms':0});return
-                found=None
-                if not context:found=COURSES.search(cid,q);context=str(found.get('context') or '')
-                if found is not None and not found.get('in_scope'):
+                # Never treat browser-supplied context as course authority.
+                found=COURSES.search(cid,q);context=str(found.get('context') or '')
+                if not found.get('in_scope'):
                     msg='This question is outside the current uploaded course scope: '+str(man.get('course_name') or 'Uploaded Course')+'.'
                     if str(lang).startswith('zh'):msg='此問題超出目前上傳課程「'+str(man.get('course_name') or 'Uploaded Course')+'」的教材範圍，請改問該課程內容。'
                     self.send_json(200,{'answer':msg,'answer_language':lang,'engine':'course-scope-rejected','course_id':cid,'scope':{'in_scope':False}});return
@@ -1728,6 +1710,8 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                     self.send_json(200,{'answer':'The uploaded course material did not provide enough evidence to answer this question reliably.','answer_language':lang,'engine':'course-no-evidence','course_id':cid});return
                 t=time.time();ans=course_local_answer(self.server,model_key,q,context,man.get('course_name'),lang,correction_guidance(q,cid))
                 self.send_json(200,{'answer':ans,'answer_language':lang,'engine':'local-course-rag','model_key':model_key,'course_id':cid,'course_name':man.get('course_name'),'sources':(found or {}).get('sources',[]),'retrieval':(found or {}).get('retrieval',{}),'latency_ms':round((time.time()-t)*1000,1)})
+            except GroundingError:
+                self.send_json(200,{'answer':'教材尚未提供足以核對此題答案的內容，請查看來源頁面或改問教材明確涵蓋的內容。' if lang.startswith('zh') else 'The current course evidence does not support a verifiable answer to this question.','engine':'course-no-evidence','course_id':cid})
             except Exception as e:self.send_json(503,{'error':'Local course answer unavailable','detail':str(e),'engine':'local-course-error'})
             return
         if self.path=='/api/reference/course-quiz':
@@ -1878,7 +1862,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--host',default=DEFAULT_HOST);ap.add_argument('--port',type=int,default=DEFAULT_PORT);ap.add_argument('--mode',choices=['ollama','mock'],default='ollama');ap.add_argument('--open',choices=['auto','yes','none'],default='none');args=ap.parse_args()
     os.chdir(str(WEB_DIR));srv=ThreadingHTTPServer((args.host,args.port),Handler);srv.mode=args.mode;srv.model_lock=SharedModelLock();srv.local_job_semaphore=threading.Semaphore(1);srv.jobs={};srv.jobs_lock=threading.Lock();srv.active_model_key=None;srv.active_model_tag=None;srv.active_model_base=None;srv.installed_models=installed_models()
-    COURSES.resume_pending(lambda mk,sys,user,max_tokens:course_model_call(srv,mk,sys,user,max_tokens))
+    threading.Thread(target=lambda:COURSES.resume_pending(lambda mk,sys,user,max_tokens:course_model_call(srv,mk,sys,user,max_tokens)),daemon=True).start()
     for feedback_id in pending_corrections():
         threading.Thread(target=_auto_correct_feedback,args=(srv,feedback_id),daemon=True).start()
     resume_pending_emails()

@@ -98,6 +98,9 @@ def main():
         ("Automatic sync preservation and rollback", [sys.executable,str(TESTS / "test_auto_sync.py")]),
         ("Manual ZIP update and rollback", [sys.executable,str(TESTS / "test_manual_release.py")]),
         ("Live service discovery and recovery", [sys.executable,str(TESTS / "test_deployment_services.py")]),
+        ("Actual production server entrypoints", [sys.executable,str(TESTS / "test_server_startup.py")]),
+        ("All-course source grounding and scope", [sys.executable,str(TESTS / "test_course_grounding.py")]),
+        ("Local visual PDF reading", [sys.executable,str(TESTS / "test_pdf_vision.py")]),
     ])
     results = []
     for name, command in suites:

@@ -37,13 +37,17 @@ print('[OK] Biology, chemistry, physics, economics, Chinese, code and table text
 
 # Actual shared local-answer route must never apply the physiology sanitizer.
 old=rs.course_model_call
+def approved_review(user):
+    payload=json.loads(user)
+    return json.dumps({'approved':True,'task_in_scope':True,'paragraphs':[
+        {'index':p['index'],'supported':True,'quote':payload['source']} for p in payload['paragraphs']]})
 try:
     for subject,text in samples.items():
-        rs.course_model_call=lambda *args,value=text:value
-        assert rs.course_local_answer(None,'gemma','Explain this concept.','source',subject)==text
+        rs.course_model_call=lambda srv,key,system,user,tokens,value=text:approved_review(user) if 'COURSE_GROUNDING_REVIEW' in system else value
+        assert rs.course_local_answer(None,'gemma','Explain this concept.',text,subject)==text
     text=samples['physics']
-    rs.course_model_call=lambda *args:json.dumps({'verdict':'correct','corrected_answer':text})
-    assert rs.review_course_answer(None,'gemma','Explain','evidence','en-US','draft','report')[0]==text
+    rs.course_model_call=lambda srv,key,system,user,tokens:approved_review(user) if 'COURSE_GROUNDING_REVIEW' in system else json.dumps({'verdict':'correct','corrected_answer':text})
+    assert rs.review_course_answer(None,'gemma','Explain',text,'en-US','draft','report')[0]==text
 finally:rs.course_model_call=old
 print('[OK] Generic local Q&A preserves table references, variables, subscripts, unit symbols and programming identifiers')
 
@@ -68,13 +72,14 @@ with tempfile.TemporaryDirectory() as td:
     original=cr.COURSE_ROOT;cr.COURSE_ROOT=Path(td)
     try:
         manager=cr.CourseManager();cd=Path(td)/'chemistry';cd.mkdir()
-        goodcard={'id':'good','source_statement':'chemistry','question':dict(good,id='q1',generation_method='exam-mcq-v5')}
+        goodcard={'id':'good','source_statement':'chemistry','evidence_chunk_id':'c1','question':dict(good,id='q1',generation_method='exam-mcq-v5',source_review={'revision':'R15','support_quote':'chemistry concentration experiment'})}
+        (cd/'chunks.jsonl').write_text(json.dumps({'id':'c1','text':'chemistry concentration experiment'})+'\n')
         badcard={'id':'bad','source_statement':'broken','question':dict(good,id='q2',stem='Encoding error: cafÃ©',generation_method='exam-mcq-v5')}
         cr._json_dump(cd/'question_banks.json',{'u1':[goodcard,badcard]})
         man={'course_id':'chemistry','question_generation':'exam-mcq-v5','units':[{'id':'u1','title':'Chemistry','script':'cafÃ©','script_status':'ready','question_count':2}],'preparation':{}}
         cr._json_dump(cd/'course_manifest.json',man)
         repaired=manager._quarantine_damaged_math(man)
-        assert repaired['content_integrity_revision']=='R13'
+        assert repaired['content_integrity_revision']=='R15'
         assert repaired['units'][0]['question_count']==1
         assert repaired['units'][0]['script_status']=='preparing'
         assert Path(repaired['math_repair']['backup']).joinpath('question_banks.json').exists()

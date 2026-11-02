@@ -1,5 +1,12 @@
 # Change Log
 
+## R15 — 2026-11-03
+
+- 修正 KB 啟動缺少 SharedModelLock；共用模型鎖與背景預熱，新增不依賴模型暖機的版本 ready 檢查。
+- PDF 圖片／損壞文字／重要圖像改先使用已安裝的本機視覺模型，再以原始像素核對；保持逐頁快取及 OCR 備援，未讀內容明確列示。
+- 講稿、本機／雲端問答逐段核對教材引文，情境題增加引文檢查；封住傳入 context 及舊更正快取繞過課程範圍的路徑。
+- 舊生成內容備份後重新核對，保留上傳原檔、帳號與作答紀錄；新增實際三服務啟動與跨學科來源測試。
+
 ## R14 — 2026-11-02
 
 - Isolate unreadable PDF pages/units and retain durable page checkpoints for large-material retries.

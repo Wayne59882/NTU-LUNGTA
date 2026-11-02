@@ -16,6 +16,7 @@ import pdf_ingestion as ingestion
 from pdf_ocr import LocalOCR,parse_tsv
 
 os.environ['VQ_PDF_OCR']='auto'
+os.environ['VQ_PDF_VISION']='off'
 engine=LocalOCR(languages='eng')
 assert not engine.error,engine.report()
 with tempfile.TemporaryDirectory() as temporary:
@@ -37,7 +38,7 @@ with tempfile.TemporaryDirectory() as temporary:
         assert recovered['extraction_method']=='local_ocr' and 'Transcriptome' in recovered['text'],recovered
         assert recovered['ocr']['accepted_paragraphs']>=1 and recovered['ocr']['mean_confidence']>=80
         assert recovered['status']=='partial' and not recovered['image_content_read']
-        assert events[0][0]=='ocr_running'
+        assert events[0][0]=='vision_running' and any(event[0]=='ocr_running' for event in events)
         # A restart uses saved OCR, not another rasterization/subprocess.
         engine.read=lambda page:(_ for _ in ()).throw(AssertionError('OCR cache was not reused'))
         cached=list(ingestion.iter_pages(document,1,1,directory/'cache','scan-test',ocr=engine))

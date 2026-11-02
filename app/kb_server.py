@@ -22,6 +22,7 @@ from datetime import datetime
 from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
 from static_assets import SharedAssetsMixin
+from model_lock import SharedModelLock
 from feedback.feedback_service import find_correction
 try:
     from http.server import ThreadingHTTPServer
@@ -495,6 +496,7 @@ def ollama_ready(base=None):
 
 
 def start_ollama_if_needed():
+    if ollama_ready():return True,""
     exe = shutil.which("ollama")
     if not exe:
         return False, "Ollama executable not found"
@@ -513,6 +515,10 @@ def start_ollama_if_needed():
 
 
 def installed_ollama_models():
+    try:
+        data=url_json(OLLAMA_BASE+'/api/tags',timeout=4)
+        return set(row.get('name') or row.get('model') for row in data.get('models',[]) if row.get('name') or row.get('model'))
+    except Exception:pass
     exe = shutil.which("ollama")
     if not exe:
         return set()
@@ -690,6 +696,8 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
         return json.loads(self.rfile.read(length).decode("utf-8"))
 
     def do_GET(self):
+        if self.path=="/api/ready":
+            self.send_json(200,{'ok':True,'content_integrity_revision':'R15','service':'KB','warmup':getattr(self.server,'warmup_status','not_requested')});return
         if self.path == "/api/health":
             self.send_json(200, {
                 "ok": True,
@@ -1207,21 +1215,26 @@ def main():
     httpd.active_model_base = None
     httpd.model_lock = SharedModelLock()
 
-    # Pre-warm the default selected model before accepting student questions.
-    # This moves the cold-load penalty to server startup instead of the first QA turn.
-    if args.mode == "ollama" and model_meta(DEFAULT_MODEL_KEY)["tag"] in installed_models_for_base(model_api_base(DEFAULT_MODEL_KEY)):
-        try:
-            print("[v204.2] Pre-warming default model: %s" % model_meta(DEFAULT_MODEL_KEY)["tag"])
-            run_selected_chat(
-                httpd, DEFAULT_MODEL_KEY,
-                [{"role":"system","content":"Reply with OK only."},
-                 {"role":"user","content":"OK"}],
-                {"temperature":0.0,"num_ctx":256,"num_predict":1},
-                timeout=30, json_format=False
-            )
-            print("[v204.2] Default model is warm and will stay resident for %s." % MODEL_KEEP_ALIVE)
-        except Exception as exc:
-            print("[WARN] Model pre-warm failed: %s" % exc)
+    # Warm the default model in the background so loading cannot block HTTP readiness.
+    def warm_default():
+        if args.mode == "ollama" and model_meta(DEFAULT_MODEL_KEY)["tag"] in installed_models_for_base(model_api_base(DEFAULT_MODEL_KEY)):
+            try:
+                httpd.warmup_status='preparing'
+                print("[v204.2] Pre-warming default model: %s" % model_meta(DEFAULT_MODEL_KEY)["tag"])
+                run_selected_chat(
+                    httpd, DEFAULT_MODEL_KEY,
+                    [{"role":"system","content":"Reply with OK only."},
+                     {"role":"user","content":"OK"}],
+                    {"temperature":0.0,"num_ctx":256,"num_predict":1},
+                    timeout=30, json_format=False
+                )
+                print("[v204.2] Default model is warm and will stay resident for %s." % MODEL_KEEP_ALIVE)
+                httpd.warmup_status='ready'
+            except Exception as exc:
+                httpd.warmup_status='error'
+                print("[WARN] Model pre-warm failed: %s" % exc)
+    httpd.warmup_status='not_requested'
+    threading.Thread(target=warm_default,daemon=True).start()
 
     if args.open != "none":
         def open_browser():
