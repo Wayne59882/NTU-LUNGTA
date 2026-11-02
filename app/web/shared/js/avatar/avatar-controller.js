@@ -25,6 +25,10 @@ const ROLE = {
 };
 
 let head = null;
+let loadedRole = null;
+let desiredRole = null;
+let loadPromise = null;
+let morphNodes = [];
 let role = 'zhiwei';
 let loadSerial = 0;
 let gestureTimer = null;
@@ -127,6 +131,7 @@ function buildRoleControl(){
 }
 
 function disposeHead(){
+  loadedRole=null; morphNodes=[];
   if(gestureTimer){ clearTimeout(gestureTimer); gestureTimer = null; }
   if(idleTimer){ clearTimeout(idleTimer); idleTimer = null; }
   if(head){
@@ -160,8 +165,8 @@ async function loadRole(next, greeting){
   try{
     head = new TalkingHead(stage, {
       cameraView: 'upper',
-      modelFPS: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 24 : 30,
-      modelPixelRatio: Math.min(1.5, window.devicePixelRatio || 1),
+      modelFPS: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 18 : 30,
+      modelPixelRatio: Math.min(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)?1:1.5, window.devicePixelRatio || 1),
       modelMovementFactor: 0.82,
       lipsyncModules: [],
       ttsEndpoint: null,
@@ -179,6 +184,9 @@ async function loadRole(next, greeting){
     }, progressText);
     if(serial !== loadSerial) return;
     try{ head.setView('upper', {cameraDistance:0.02, cameraY:(cfg.view && Number(cfg.view.cameraY)) || 0}); }catch(_){ }
+    loadedRole=next;
+    const root=morphRoot();morphNodes=[];
+    if(root&&typeof root.traverse==='function')root.traverse(obj=>{if(obj&&obj.morphTargetDictionary&&obj.morphTargetInfluences)morphNodes.push(obj);});
     host.classList.add('vq-3d-ready');
     if(loading){ loading.textContent = cfg.label; setTimeout(()=>loading && loading.classList.add('vq-hidden'),450); }
     closeMouth();
@@ -208,7 +216,7 @@ const MOUTH_KEYS = [
 function applyMorphValues(values){
   const root = morphRoot();
   if(!root || typeof root.traverse !== 'function') return;
-  root.traverse(obj => {
+  morphNodes.forEach(obj => {
     const dict = obj && obj.morphTargetDictionary;
     const infl = obj && obj.morphTargetInfluences;
     if(!dict || !infl) return;
@@ -280,6 +288,18 @@ function scheduleIdleGesture(){
   }, 7000 + Math.round(Math.random()*5000));
 }
 
+function requestRole(next,greeting){
+  desiredRole=next;
+  if(head&&loadedRole===next)return Promise.resolve();
+  if(loadPromise)return loadPromise.then(()=>{
+    if(desiredRole!==role)return requestRole(desiredRole,greeting);
+  });
+  // One GLB/WebGL allocation at a time. Speech startup and repeated init calls
+  // must reuse the same avatar, not dispose and re-download it on every speak.
+  loadPromise=loadRole(next,greeting).finally(()=>{loadPromise=null;});
+  return loadPromise;
+}
+
 async function applyRole(next, userInitiated){
   next = next === 'yating' ? 'yating' : 'zhiwei';
   try{ localStorage.setItem('VQ_REAL_AVATAR_ROLE',next); }catch(_){ }
@@ -290,8 +310,9 @@ async function applyRole(next, userInitiated){
   }
   const sel = $('avatarRoleSelect');
   if(sel && sel.value !== next) sel.value = next;
-  setStatus('Switching to “' + ROLE[next].label + '”…');
-  await loadRole(next, !!userInitiated);
+  if(head&&loadedRole===next)return;
+  if(!loadPromise)setStatus('Switching to “' + ROLE[next].label + '”…');
+  await requestRole(next, !!userInitiated);
 }
 
 function observeSpeaking(){
@@ -319,7 +340,7 @@ async function init(){
   buildRoleControl();
   observeSpeaking();
   document.addEventListener('visibilitychange',onVisibility);
-  await loadRole(role,true);
+  await requestRole(role,true);
 }
 
 const api = {

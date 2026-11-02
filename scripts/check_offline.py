@@ -88,6 +88,15 @@ def main():
         ("Static resources and HTTP routes", [sys.executable, str(TESTS / "test_static_assets.py")]),
         ("Operator script routing", [sys.executable, str(TESTS / "test_operator_scripts.py")]),
     ]
+    suites.extend([
+        ("All-course text integrity", [sys.executable,str(TESTS / "test_content_integrity.py")]),
+        ("Math integrity", [sys.executable,str(TESTS / "test_math_integrity.py")]),
+        ("All-course display", [node,str(TESTS / "test_content_display.cjs")]),
+        ("Math and audio lifecycle", [node,str(TESTS / "test_math_audio.cjs")]),
+        ("Large PDF and private upload diagnostics", [sys.executable,str(TESTS / "test_large_pdf.py")]),
+        ("Local OCR and original PDF streaming", [sys.executable,str(TESTS / "test_pdf_ocr.py")]),
+        ("Automatic sync preservation and rollback", [sys.executable,str(TESTS / "test_auto_sync.py")]),
+    ])
     results = []
     for name, command in suites:
         result = subprocess.run(command, cwd=APP, text=True, capture_output=True, timeout=120)

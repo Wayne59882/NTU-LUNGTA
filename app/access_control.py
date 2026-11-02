@@ -482,7 +482,10 @@ def authorize(user, path, query, body, ctype):
     qs = parse_qs(query or '')
     data = _json_body(body, ctype)
     ctx = {'seg': seg, 'json': data, 'course_id': '', 'stage_id': ''}
-    teacher_only = seg in TEACHER_ONLY or seg.startswith('course-ai-')
+    diagnostic_ops={'course-upload-diagnostics','course-upload-source','course-admin-uploads'}
+    if seg=='course-admin-uploads' and not user.get('is_admin'):
+        return _deny(403,'admin_only','Only the administrator can inspect all uploads.'),ctx
+    teacher_only = seg in diagnostic_ops or seg in TEACHER_ONLY or seg.startswith('course-ai-')
     if teacher_only and user['role'] != 'teacher':
         return _deny(403, 'teacher_only', 'Only teachers can upload or manage course materials.'), ctx
 
@@ -496,9 +499,11 @@ def authorize(user, path, query, body, ctype):
     if stage_id:
         ctx['stage_id'] = stage_id
         row = _one('SELECT owner_id FROM stages WHERE stage_id=?', (stage_id,))
-        if row and row['owner_id'] != user['id']:
+        if seg in diagnostic_ops and not row and not user.get('is_admin'):
+            return _deny(403,'stage_forbidden','Upload ownership could not be verified.'),ctx
+        if row and row['owner_id'] != user['id'] and not (seg in diagnostic_ops and user.get('is_admin')):
             return _deny(403, 'stage_forbidden', 'This upload belongs to another teacher.'), ctx
-        if not row and teacher_only:
+        if not row and teacher_only and seg not in diagnostic_ops:
             _exec('INSERT OR IGNORE INTO stages(stage_id,owner_id,created_at) VALUES(?,?,?)',
                   (stage_id, user['id'], time.time()))
     if seg == 'course-job-status':
@@ -526,6 +531,13 @@ def after_response(user, ctx, status, data, ctype):
         return data
     if not isinstance(payload, dict):
         return data
+    if seg=='course-admin-uploads' and user.get('is_admin'):
+        owners={row['stage_id']:{'id':row['owner_id'],'name':row['name'] or '',
+                'email':row['email'] or '','role':row['role'] or ''} for row in _all(
+            'SELECT s.stage_id,s.owner_id,u.name,u.email,u.role FROM stages s LEFT JOIN users u ON u.id=s.owner_id')}
+        for report in payload.get('uploads') or []:
+            report['owner']=owners.get(report.get('stage_id'))
+        return json.dumps(payload,ensure_ascii=False).encode('utf-8')
     if seg == 'course-list':
         courses = payload.get('courses') if isinstance(payload.get('courses'), list) else []
         kept = []

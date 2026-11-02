@@ -7,6 +7,8 @@ recover from the same uploaded evidence enter the student question bank.
 import hashlib
 import json
 import re
+from math_integrity import loads_model_json, math_issues, question_math_ok, JSON_MATH_RULE
+from content_integrity import text_issues, question_text_ok, SOURCE_RULE
 
 FIRST_BATCH_SIZE=3  # Unlock a two-question draw after the first review.
 BATCH_SIZE=12
@@ -17,7 +19,7 @@ def _parse_object(raw):
     start=text.find('{');end=text.rfind('}')
     if start<0 or end<=start:return {}
     try:
-        value=json.loads(text[start:end+1])
+        value=loads_model_json(text[start:end+1])
         return value if isinstance(value,dict) else {}
     except (ValueError,TypeError):return {}
 
@@ -49,9 +51,11 @@ def evidence_rows(chunks,sentences):
     # while the same structural and blinded-answer review still applies.
     if len(rows)<10:
         for chunk in chunks:
-            words=str(chunk.get('text') or '').split()
-            for start in range(0,len(words),90):
-                passage=' '.join(words[start:start+90]).strip()
+            text=str(chunk.get('text') or '')
+            # Course chunks already carry bounded page-local text. Do not flatten
+            # their tables into an unordered sequence of words.
+            for passage in [text.strip()]:
+                if text_issues(passage):continue
                 if len(passage)<100 or re.search(r'[\ue000-\uf8ff\ufffd]|\.indd\b|copyright|isbn',passage,re.I):continue
                 key=' '.join(passage.casefold().split())
                 if key in seen:continue
@@ -64,6 +68,7 @@ def evidence_rows(chunks,sentences):
 
 def _valid_reasons(raw,language):
     if not isinstance(raw,list) or len(raw)!=4 or not all(isinstance(x,str) for x in raw):return None
+    if any(text_issues(x) for x in raw):return None
     reasons=[' '.join(x.split()) for x in raw]
     if any(len(x)<12 or len(x)>300 for x in reasons):return None
     if re.search(r'[\ue000-\uf8ff\ufffd]',' '.join(reasons)):return None
@@ -73,6 +78,7 @@ def _valid_reasons(raw,language):
 
 def _draft_valid(raw,evidence,used_stems):
     if not isinstance(raw,dict) or str(raw.get('evidence_id') or '')!=evidence['id']:return None
+    if not question_text_ok(raw):return None
     stem=' '.join(str(raw.get('stem') or '').split())
     choices=raw.get('choices');reasons=raw.get('choice_explanations')
     answer=raw.get('answer')
@@ -118,7 +124,7 @@ def _generate(batch,unit_title,model_key,model_call):
           'Make one question per evidence_id. Ground the keyed option in its anchor and context. '
           'If the evidence cannot support a unique answer, omit that evidence_id.\nEVIDENCE_JSON:\n'+
           json.dumps(batch,ensure_ascii=False))
-    raw=model_call(model_key,system,user,max(1800,min(4600,390*len(batch))))
+    raw=model_call(model_key,system+JSON_MATH_RULE+SOURCE_RULE,user,max(1800,min(4600,390*len(batch))))
     drafts=_parse_object(raw).get('questions')
     if not isinstance(drafts,list) or (not drafts and len(batch)>FIRST_BATCH_SIZE):
         if len(batch)<=FIRST_BATCH_SIZE:return []
@@ -138,7 +144,7 @@ def _review(batch,model_key,model_call):
             'Schema: {"reviews":[{"evidence_id":"...","valid":true,"best_choice":0,'
             '"choice_explanations":["why A is right/wrong","why B...","why C...","why D..."]}]}')
     user='QUESTIONS_AND_EVIDENCE_JSON:\n'+json.dumps(batch,ensure_ascii=False)
-    raw=model_call(model_key,system,user,max(1100,min(3400,280*len(batch))))
+    raw=model_call(model_key,system+JSON_MATH_RULE+SOURCE_RULE,user,max(1100,min(3400,280*len(batch))))
     reviews=_parse_object(raw).get('reviews') or []
     verdicts={str(r.get('evidence_id')):r for r in reviews if isinstance(r,dict)}
     missing=[r for r in batch if r['evidence_id'] not in verdicts]
@@ -156,7 +162,7 @@ def build(unit,chunks,sentences,existing,model_key,model_call,progress,target=10
     cards=[r for r in existing if isinstance(r,dict) and (r.get('question') or {}).get('generation_method')=='exam-mcq-v5']
     # A short readiness pass must never discard questions already saved by a
     # previous release or an earlier background pass.
-    cards=cards[:100]
+    cards=[r for r in cards if question_text_ok(r.get('question'))][:100]
     used_anchors={r.get('source_statement') for r in cards}
     used_stems={re.sub(r'\W+','',r['question']['stem'].casefold()) for r in cards}
     remaining=[r for r in evidence if r['anchor'] not in used_anchors]
@@ -192,7 +198,7 @@ def build(unit,chunks,sentences,existing,model_key,model_call,progress,target=10
                 reasons=(_valid_reasons(verdict['choice_explanations'],source['language'])
                          if 'choice_explanations' in verdict else card['choice_explanations'])
                 if reasons is None:continue
-                qid='%s_exam%03d'%(unit['id'],len(cards)+1);seed_id=qid+'_seed'
+                qid=unit['id']+'_examR13_'+hashlib.sha1((source['id']+'|'+card['normalized']).encode('utf-8')).hexdigest()[:16];seed_id=qid+'_seed'
                 explanation='\n'.join('%s. %s'%(letter,reason) for letter,reason in zip('ABCD',reasons))
                 question={'id':qid,'source_seed_id':seed_id,'stem':card['stem'],'choices':card['choices'],
                           'answer':card['answer'],'explanation':explanation,'evidence_statement':source['anchor'],

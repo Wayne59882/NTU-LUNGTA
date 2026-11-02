@@ -38,7 +38,9 @@
   // emit TeX/LaTeX even when asked not to; normalize common medical notation and
   // remove residual math delimiters/backslash commands before display and TTS.
   function plainStudentAnswer(value){
-    let t=String(value||'').trim();
+    if(window.VQ_UPLOADED_COURSE_ACTIVE&&window.CourseContent)return window.CourseContent.display(value);
+    const math=window.CourseMath?window.CourseMath.protect(value):null;
+    let t=String(math?math.text:value||'').trim();
     t=t.replace(/```[a-z0-9_-]*\s*/gi,'').replace(/```/g,'').replace(/`/g,'');
     t=t.replace(/\\dot\s*\{\s*V\s*\}\s*_\s*\{?\s*A\s*\}?/gi,'VA');
     t=t.replace(/\\dot\s*V\s*_\s*\{?\s*A\s*\}?/gi,'VA');
@@ -78,7 +80,7 @@
        .replace(/\bV\s*_\s*\{?D\}?\b/gi,'VD');
     t=t.replace(/^(?:和|與|及)?\s*(?:段落|內容|說明|文字)?\s*(?:指出|說明|顯示|显示)\s*[,，:：]?\s*/,'');
     t=t.replace(/[ \t]+/g,' ').replace(/\s+([.,;:!?，。；：！？])/g,'$1').replace(/\n[ \t]+/g,'\n').trim();
-    return t;
+    return math?window.CourseMath.restore(t,math.saved):t;
   }
 
   function setStatus(msg){
@@ -183,7 +185,11 @@
   function buildSegments(text){
     const out = [];
     let start = 0;
+    const mathRanges=window.CourseMath?window.CourseMath.ranges(text):[];
+    let mathCursor=0;
     for(let i=0;i<text.length;i++){
+      while(mathCursor<mathRanges.length&&i>=mathRanges[mathCursor][1])mathCursor++;
+      if(mathCursor<mathRanges.length&&i>=mathRanges[mathCursor][0])continue;
       const ch = text[i];
       if(ch === '\n'){
         if(i > start) out.push({start, end:i, text:text.slice(start,i)});
@@ -219,7 +225,7 @@
         span.dataset.i = String(i);
         span.dataset.start = String(seg.start);
         span.dataset.end = String(seg.end);
-        span.textContent = seg.text;
+        if(window.CourseMath)window.CourseMath.render(span,seg.text);else span.textContent = seg.text;
         box.appendChild(span);
       }
     }
@@ -281,6 +287,8 @@
   function setBtn(id, disabled){
     const b = $(id);
     if(!b) return;
+    if(b.dataset.r12Disabled===String(!!disabled)&&b.disabled===!!disabled)return;
+    b.dataset.r12Disabled=String(!!disabled);
     b.disabled = !!disabled;
     b.setAttribute('aria-disabled', disabled ? 'true' : 'false');
     b.classList.toggle('vq-control-muted', !!disabled);
@@ -403,6 +411,7 @@
   function startLectureFromBeginning(){
     const lesson = getLessonScript();
     lessonText = lesson.script || '';
+    if(window.VQ_UPLOADED_COURSE_ACTIVE&&window.CourseContent&&window.CourseContent.issues(lessonText)){setStatus('Content needs source review. Retry preparation.');setLectureControls(false,false);return;}
     lessonIndex = 0;
     currentSegment = -1;
     lectureRunning = true;
@@ -415,7 +424,7 @@
     }
     cancelSpeech();
     stopMouthLoop(true);
-    renderScript(lessonText);
+    const scriptBox=$('lessonText');if(scriptBox)delete scriptBox.dataset.vq109Text;
     renderLessonAt(0);
     setLectureControls(true, false);
     startFallbackTimer(0);
@@ -586,8 +595,8 @@
     }catch(e){
       ans = 'An error occurred while processing the question. Please submit it again.';
     }
-    ans = plainStudentAnswer(window.VQ_cleanStudentAnswer ? window.VQ_cleanStudentAnswer(ans) : ans);
-    if(aBox){ aBox.textContent = ans; aBox.scrollTop = 0; }
+    ans = window.VQ_UPLOADED_COURSE_ACTIVE&&window.CourseContent ? window.CourseContent.display(ans) : plainStudentAnswer(window.VQ_cleanStudentAnswer ? window.VQ_cleanStudentAnswer(ans) : ans);
+    if(aBox){ if(window.CourseMath)window.CourseMath.render(aBox,ans);else aBox.textContent=ans; aBox.scrollTop = 0; }
     speakAnswer(ans);
   }
 
@@ -1208,7 +1217,11 @@
       stopAskBtn: stopRecognitionAndSubmit,
       submitTypedQuestionBtn: submitQuestion
     };
-    if(!map[t.id]) return;
+    if(!map[t.id]||t.disabled) return;
+    if(t.id==='startLessonBtn'||t.id==='repeatBtn'){
+      const now=Date.now();if(now-(window.__R12_LAST_LECTURE_START__||0)<650){e.preventDefault();e.stopImmediatePropagation();return;}
+      window.__R12_LAST_LECTURE_START__=now;
+    }
     e.preventDefault();
     e.stopImmediatePropagation();
     map[t.id]();

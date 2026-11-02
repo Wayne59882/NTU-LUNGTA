@@ -1,5 +1,14 @@
 # Change Log
 
+## R14 — 2026-11-02
+
+- Isolate unreadable PDF pages/units and retain durable page checkpoints for large-material retries.
+- Accept scanned PDFs and add page-local Tesseract fallback with confidence gates, bounded resources, progress and cached OCR retries from retained originals.
+- Retain private upload receipts and expose original-file diagnostics only to the owning teacher and administrator.
+- Preserve cross-subject text/symbols and mathematical notation; reuse avatar resources during speech playback.
+- Add a CI-gated private-server pull updater with backups, private-data preservation and rollback.
+- Add controlled 1,001-page PDF, content, playback, upload-access and updater regressions.
+
 ## Operator layout and English README — 2026-11-01
 
 - Separate setup, runtime, deployment, and corpus-ingestion tools under `scripts/`.

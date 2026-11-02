@@ -69,7 +69,7 @@ def main():
             path, url = asset(src, mode)
             assert path == (WEB / previous['new']).resolve(), (mode, src)
             assert urlsplit(url).query == previous['query'], (mode, src)
-            # Asset URLs are the only permitted runtime JS text change.
+            # Hashes record the approved R14 runtime; behavior changes have dedicated regression tests.
             normalized = path.read_text(encoding='utf-8').replace('/shared/assets/', 'assets/').encode()
             assert hashlib.sha256(normalized).hexdigest() == previous['sha256'], (mode, src)
             urls.append((path, url))
@@ -101,7 +101,7 @@ def main():
                 assert status == 302 and headers['Location'].startswith('/login/'), url
         finally:
             server.shutdown(); server.server_close(); thread.join(timeout=5)
-    print('PASS original script order/content, both page asset sets, direct shared routes, gateway health and anonymous redirects')
+    print('PASS approved script order/content, both page asset sets, direct shared routes, gateway health and anonymous redirects')
 
 
 if __name__ == '__main__':

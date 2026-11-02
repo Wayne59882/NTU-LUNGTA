@@ -104,6 +104,7 @@
     const spokenChoice=letter=>isZh?'正確答案是選項 '+letter.normalize('NFKC').toUpperCase()+'。':'The correct answer is option '+letter.normalize('NFKC').toUpperCase()+'.';
     t=t.replace(/(?:正確答案|正确答案)\s*(?:[:：]|為|为|是)?\s*(?:選項|选项)?\s*[(（]?([A-EＡ-Ｅ])[)）]?(?=$|[^A-Za-zＡ-Ｚａ-ｚ])(?:\s*[.．、])?/g,(_,letter)=>spokenChoice(letter));
     t=t.replace(/\bcorrect\s+answer\s*(?:[:：]|is)?\s*(?:option\s*)?[(（]?([A-EＡ-Ｅ])[)）]?(?=$|[^A-Za-zＡ-Ｚａ-ｚ])(?:\s*[.．、])?/gi,(_,letter)=>spokenChoice(letter));
+    if(window.VQ_UPLOADED_COURSE_ACTIVE)return t;
     const full={
       VA:isZh?'肺泡通氣量':'alveolar ventilation',
       VE:isZh?'每分鐘通氣量':'minute ventilation',
@@ -210,12 +211,22 @@
     const avatar=$('avatar');
     if(avatar && avatar.getAttribute('data-avatar-role')!==role) avatar.setAttribute('data-avatar-role',role);
     try{
-      if(window.VQ_REAL_AVATAR && typeof window.VQ_REAL_AVATAR.applyRole==='function') window.VQ_REAL_AVATAR.applyRole(role,true);
+      if(window.VQ_REAL_AVATAR && window.VQ_REAL_AVATAR.role!==role && typeof window.VQ_REAL_AVATAR.applyRole==='function') window.VQ_REAL_AVATAR.applyRole(role,true);
     }catch(_){ }
     renderVoiceUI();
   }
 
+  let pendingSpeechTimer=null;
+  function scheduleSpeech(fn,delay){
+    if(pendingSpeechTimer!==null)clearTimeout(pendingSpeechTimer);
+    const source=state.source,seq=state.seq;
+    pendingSpeechTimer=setTimeout(()=>{
+      pendingSpeechTimer=null;
+      if(state.source===source&&state.seq===seq&&source)fn();
+    },delay);
+  }
   function cancelInternal(){
+    if(pendingSpeechTimer!==null){clearTimeout(pendingSpeechTimer);pendingSpeechTimer=null;}
     state.seq++;
     if(state.internal){
       try{state.internal.onstart=state.internal.onboundary=state.internal.onend=state.internal.onerror=null;}catch(_){ }
@@ -278,7 +289,7 @@
     const speechLang=normalizedSpeechLang((source&&source.lang)||window.VQ_LAST_TTS_LANGUAGE||window.VQ_LAST_DETECTED_LANGUAGE||'zh-TW');
     const voice=targetVoice(role,speechLang);
     if(!voice){
-      if(!allVoices().length && state.voiceWaits++<8){setStatus('Loading browser voices…');setTimeout(()=>{if(state.source===source)speakCurrent(fireStart);},350);return;}
+      if(!allVoices().length && state.voiceWaits++<8){setStatus('Loading browser voices…');scheduleSpeech(()=>speakCurrent(fireStart),350);return;}
       setStatus((role==='yating'?'Yating (female)':'Zhiwei (male)')+' '+speechLang+' voice is unavailable on this device. Add a matching browser/system voice.');
       const failure={error:'voice-unavailable',role:role,language:speechLang};
       finalCancel();
@@ -331,7 +342,7 @@
       state.lastBoundaryOffset=0;
       state.segmentStartedAt=0;
       if(state.segmentIndex>=state.segments.length){finishSource(e);return;}
-      if(!state.paused) setTimeout(()=>speakCurrent(false),10);
+      if(!state.paused) scheduleSpeech(()=>speakCurrent(false),10);
     };
     try{nativeSpeak.call(synth,u);}catch(err){console.error('[VQ v204 voice]',err);}
   }
@@ -387,7 +398,7 @@
     state.role=next;
     state.paused=wasPaused;
     if(wasPaused){setStatus('Paused — '+(next==='zhiwei'?'Zhiwei':'Yating')+' selected');return;}
-    setTimeout(()=>speakCurrent(false),20);
+    scheduleSpeech(()=>speakCurrent(false),20);
   }
 
   function lockMethod(name,fn){
@@ -450,7 +461,7 @@
     const wasPaused=state.paused;
     const seg=currentSegment(); if(seg) state.segmentOffset=estimateCurrentOffset();
     cancelInternal(); state.paused=wasPaused;
-    if(!wasPaused) setTimeout(function(){speakCurrent(false);setStatus('Speaking · Rate '+currentRate().toFixed(2)+'× · Pitch '+currentPitch().toFixed(2));restoreDocumentPosition(savedX,savedY);},25);
+    if(!wasPaused) scheduleSpeech(function(){speakCurrent(false);setStatus('Speaking · Rate '+currentRate().toFixed(2)+'× · Pitch '+currentPitch().toFixed(2));restoreDocumentPosition(savedX,savedY);},25);
     else{
       setStatus('Paused · rate '+currentRate().toFixed(2)+' · pitch '+currentPitch().toFixed(2));
       restoreDocumentPosition(savedX,savedY);

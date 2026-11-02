@@ -139,24 +139,24 @@ async function deleteSelectedCourse(){
   catch(e){setBuildStatus('Course deletion failed: '+String(e&&e.message||e),'error');btn.disabled=false;}
 }
 async function loadManifest(cid){
-  if(!cid){manifest=null;applyVisualModule();return;}
+  if(!cid){manifest=null;window.VQ_UPLOADED_COURSE_ACTIVE=false;applyVisualModule();return;}
   try{/* R11: servers that prepare one course at a time resume the selected course; older servers fall back to the status read. */let r=await fetch('/api/reference/course-activate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({course_id:cid,model_key:modelKey()}),cache:'no-store'}).catch(()=>null);if(!r||[404,405,501].includes(r.status))r=await fetch('/api/reference/course-status?course_id='+encodeURIComponent(cid),{cache:'no-store'});const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||'course unavailable');manifest=d.manifest;applyManifest();}catch(e){setActiveId('');manifest=null;applyVisualModule();setBuildStatus('Could not load selected course: '+String(e&&e.message||e)+'. Built-in course is active.','error');}
 }
 function applyManifest(){
-  if(!manifest)return;setActiveId(manifest.course_id);const title=$('appTitle')||document.querySelector('.app .title');if(title)title.textContent=manifest.course_name+' Virtual Human TA';const badge=$('v241ActiveBadge');if(badge)badge.textContent=manifest.course_name;
+  if(!manifest)return;window.VQ_UPLOADED_COURSE_ACTIVE=true;setActiveId(manifest.course_id);const title=$('appTitle')||document.querySelector('.app .title');if(title)title.textContent=manifest.course_name+' Virtual Human TA';const badge=$('v241ActiveBadge');if(badge)badge.textContent=manifest.course_name;
   // The existing lecture/voice controller owns the capture-phase click event.
   // Feed it the selected uploaded unit so highlighting, pause and resume all
   // use the same script as the current course.
   window.VQ_getActiveCourseLecture=id=>(manifest.units||[]).find(u=>u.id===id)||null;
   const sel=$('v241ExistingCourses');if(sel)sel.value=manifest.course_id;
-  const lesson=$('lessonSelect');if(lesson){lesson.innerHTML=(manifest.units||[]).map((u,i)=>`<option value="${esc(u.id)}">Unit ${i+1}: ${esc(u.title)}</option>`).join('');lesson.onchange=()=>{showSelectedLectureIntro();const u=currentUnit();if(u&&u.script_status!=='ready')prioritizeUnit('lectures',u.id);};showSelectedLectureIntro();}
+  const lesson=$('lessonSelect');if(lesson){lesson.innerHTML=(manifest.units||[]).map((u,i)=>`<option value="${esc(u.id)}">Unit ${i+1}: ${esc(u.title)} · pp. ${u.start_page||'?'}–${u.end_page||'?'}</option>`).join('');lesson.onchange=()=>{showSelectedLectureIntro();const u=currentUnit();if(u&&u.script_status!=='ready')prioritizeUnit('lectures',u.id);};showSelectedLectureIntro();}
   applyVisualModule();installDynamicCase();installAnswerAdapter();
   showPreparation();
 }
 function quizUnits(){if(!manifest)return [];const scope=String(($('v241QuizUnit')||{}).value||'ready'),per=quizCount();return (manifest.units||[]).filter(u=>Number(u.question_count||0)>=per&&(scope==='ready'||u.id===scope));}
 function quizReady(){return !!manifest&&manifest.question_generation==='exam-mcq-v5'&&quizUnits().length>0;}
 function showPreparation(){
-  if(!manifest)return;const prep=manifest.preparation||{},q=prep.questions||{},lecture=prep.lectures||{},idx=prep.index||{},retry=$('v241RetryPrep');if(retry)retry.hidden=q.status!=='error'&&lecture.status!=='error'&&idx.status!=='error';
+  if(!manifest)return;const prep=manifest.preparation||{},q=prep.questions||{},lecture=prep.lectures||{},idx=prep.index||{},retry=$('v241RetryPrep');if(retry)retry.hidden=!(manifest.source_review&&manifest.source_review.required)&&q.status!=='error'&&lecture.status!=='error'&&idx.status!=='error';
   const count=$('v241QuizCount');if(count){const available=Math.max(0,...(manifest.units||[]).map(u=>Number(u.question_count||0)));[...count.options].forEach(o=>o.disabled=Number(o.value)>available);}
   const scope=$('v241QuizUnit');if(scope){const selected=scope.value||'ready',ready=(manifest.units||[]).filter(u=>Number(u.question_count||0)>=quizCount()).length;scope.innerHTML=`<option value="ready">All ready units (${ready})</option>`+(manifest.units||[]).map((u,i)=>`<option value="${esc(u.id)}">${i+1}. ${esc(u.title)} (${Number(u.question_count||0)} questions)</option>`).join('');scope.value=selected;}
   const btn=$('v241StartQuiz');if(btn&&!btn.dataset.loading){btn.disabled=!quizReady();btn.textContent=quizReady()?'Start '+(quizCount()*quizUnits().length)+'-Question Quiz':'Waiting for reviewed questions';}
@@ -170,13 +170,15 @@ function showPreparation(){
   if(draft&&(draft.phase==='uploading'||draft.phase==='building'))return;
   if(q.status!=='ready'||lecture.status!=='ready'||idx.status!=='ready')setBuildStatus('Course Q&A active. '+(quizReady()?'Practice ready. ':'Preparing practice questions. ')+(lecture.status==='ready'?'Chinese scripts ready. ':lecture.status==='error'?'Chinese script needs a retry. ':'Chinese scripts preparing. ')+(idx.status==='ready'?'Semantic search ready.':idx.status==='error'?'Course text search active; semantic search needs a retry.':'Course text search active; semantic enhancement running.'),q.status==='error'||lecture.status==='error'?'error':'ok');
   else setBuildStatus('Course ready. Chinese scripts, question bank, and semantic search are available.','ok');
+  if(manifest.source_review&&manifest.source_review.required){const pending=Object.values(manifest.source_review.units||{}).flatMap(q=>q.warnings||[]),gaps=pending.some(page=>!page.ocr||!page.ocr.ok||Number(page.ocr.excluded_paragraphs||0)>0)||(manifest.units||[]).some(u=>u.source_blocked);setBuildStatus(gaps?'PDF 已接收。可讀取的單元會繼續準備；部分來源需檢查（'+pending.length+' 頁）。請查看教材上傳紀錄。':'已透過本機 OCR 讀取 '+pending.length+' 頁。可用內容會繼續準備；公式、數值及圖表仍需核對。',gaps?'error':'ok');}
+  if(prep.sources&&prep.sources.status==='preparing'){setBuildStatus(String(prep.sources.message||'正在重試本機 OCR…'),'ok');if(retry)retry.disabled=true;}else if(retry)retry.disabled=false;
 }
 async function retryPreparation(){if(!manifest)return;const b=$('v241RetryPrep');b.disabled=true;try{const r=await fetch('/api/reference/course-retry-preparation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({course_id:manifest.course_id,model_key:modelKey()}),cache:'no-store'}),d=await r.json();if(!r.ok||!d.ok)throw new Error(d.detail||d.error||'Retry failed');manifest=d.manifest;showPreparation();}catch(e){setBuildStatus('Could not restart preparation: '+String(e&&e.message||e),'error');}finally{b.disabled=false;}}
 async function expandQuizUnit(){const selected=$('v241QuizUnit'),id=selected&&selected.value,btn=$('v241ExpandQuiz');if(!manifest||!id||id==='ready'||!btn)return;btn.disabled=true;try{const r=await fetch('/api/reference/course-expand-questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({course_id:manifest.course_id,unit_ids:[id],model_key:modelKey()}),cache:'no-store'}),d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||d.detail||'Could not request more questions');manifest=d.manifest;showPreparation();}catch(e){setBuildStatus('Could not expand this unit: '+String(e&&e.message||e),'error');}finally{showPreparation();}}
 async function prioritizeUnit(kind,unitId){if(!manifest||!unitId)return;try{const r=await fetch('/api/reference/course-prioritize-unit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({course_id:manifest.course_id,unit_id:unitId,kind,model_key:modelKey()}),cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);}catch(e){setBuildStatus('Could not prioritize this unit: '+String(e&&e.message||e),'error');}}
 async function refreshPreparation(){if(!manifest)return;try{const r=await fetch('/api/reference/course-status?course_id='+encodeURIComponent(manifest.course_id),{cache:'no-store'}),d=await r.json();if(!r.ok||!d.ok)return;manifest=d.manifest;showPreparation();}catch(_){} }
 function currentUnit(){if(!manifest)return null;const id=String(($('lessonSelect')||{}).value||'');return (manifest.units||[]).find(u=>u.id===id)||manifest.units[0]||null;}
-function showSelectedLectureIntro(){const u=currentUnit(),box=$('lessonText'),start=$('startLessonBtn');if(!u)return;const ready=u.script_status==='ready'&&!!u.script;if(start)start.disabled=!ready;const master=window.__VQ105_INPLACE_LECTURE_MASTER__;if(box&&!(master&&master.running))box.textContent=ready?'Selected: '+u.title+'. Select “Start Lecture”.':u.script_status==='error'?'The Chinese script for '+u.title+' could not be prepared. Use Retry Background Preparation.':'Preparing the Traditional Chinese script for '+u.title+'…';}
+function showSelectedLectureIntro(){const u=currentUnit(),box=$('lessonText'),start=$('startLessonBtn');if(!u)return;const damaged=!!(window.CourseContent&&window.CourseContent.issues(u.script));const sourceBlocked=!!u.source_blocked;const ready=!sourceBlocked&&u.script_status==='ready'&&!!u.script&&!damaged;if(start)start.disabled=!ready;const master=window.__VQ105_INPLACE_LECTURE_MASTER__;if(box&&!(master&&master.running))box.textContent=sourceBlocked?'This unit needs source text repair or OCR. Other units remain available.':damaged?'Content needs source review. Use Retry Background Preparation.':ready?'Selected: '+u.title+'. Select “Start Lecture”.':u.script_status==='error'?'The Chinese script for '+u.title+' could not be prepared. Use Retry Background Preparation.':'Preparing the Traditional Chinese script for '+u.title+'…';}
 function speechLang(text){return /[\u3400-\u9fff]/.test(String(text||''))?'zh-TW':'en-US';}
 function speak(text){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text||''));u.lang=speechLang(text);u.rate=parseFloat(($('rateRange')||{}).value||'1')||1;u.pitch=parseFloat(($('pitchRange')||{}).value||'1')||1;speechSynthesis.speak(u);}catch(_){}}
 function installDynamicLecture(){
@@ -214,7 +216,7 @@ function quizCount(){return Math.max(1,Math.min(10,Number(($('v241QuizCount')||{
 function updateQuizCount(){showPreparation();}
 async function startDynamicQuiz(){
   const btn=$('v241StartQuiz');if(btn.dataset.loading||!quizReady())return;const selected=quizUnits().map(u=>u.id);btn.disabled=true;btn.dataset.loading='1';const body=$('v241QuizBody'),per=quizCount();quizState=null;delete body.dataset.error;body.textContent='Drawing '+per+' ready questions per selected unit…';
-  try{const r=await fetch('/api/reference/course-quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({course_id:manifest.course_id,per_unit:per,unit_ids:selected}),cache:'no-store'}),result=await r.json();if(!r.ok||!result.ok||!result.quiz_id)throw new Error(result.detail||result.error||'quiz unavailable');quizState={quizId:result.quiz_id,items:result.questions||[],index:0,answers:{},submitted:{},generation:result.generation||{}};renderDynamicQuestion();}
+  try{const r=await fetch('/api/reference/course-quiz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({course_id:manifest.course_id,per_unit:per,unit_ids:selected}),cache:'no-store'}),result=await r.json();if(!r.ok||!result.ok||!result.quiz_id)throw new Error(result.detail||result.error||'quiz unavailable');if(window.CourseContent&&(result.questions||[]).some(q=>!window.CourseContent.questionOk(q)))throw new Error('Question text needs source review. Retry preparation.');quizState={quizId:result.quiz_id,items:result.questions||[],index:0,answers:{},submitted:{},generation:result.generation||{}};renderDynamicQuestion();}
   catch(e){body.dataset.error='1';body.textContent='Scenario Practice could not start: '+String(e&&e.message||e);}
   finally{delete btn.dataset.loading;btn.disabled=!quizReady();}
 }
@@ -230,6 +232,7 @@ function renderDynamicQuestion(){
   $('v241QuestionJump').onchange=e=>jumpDynamicQuestion(Number(e.target.value));
   [...body.querySelectorAll('input[name="v241Choice"]')].forEach(x=>x.addEventListener('change',()=>{quizState.answers[i]=Number(x.value);updateDynamicNavigation();}));
   $('v241Prev').onclick=()=>jumpDynamicQuestion(i-1);$('v241Next').onclick=()=>jumpDynamicQuestion(i+1);$('v241Submit').onclick=()=>submitDynamicAnswer();$('v241Finish').onclick=finishDynamicQuiz;
+  if(window.CourseMath)window.CourseMath.typeset(body);
   updateDynamicNavigation();if(done)showDynamicFeedback();
 }
 function jumpDynamicQuestion(index){if(!quizState||!Number.isInteger(index)||index<0||index>=quizState.items.length)return;quizState.index=index;renderDynamicQuestion();}
@@ -241,7 +244,7 @@ function updateDynamicNavigation(){
   const option=$('v241QuestionJump')&&$('v241QuestionJump').options[quizState.index];if(option)option.text=(quizState.index+1)+'. '+String(quizState.items[quizState.index].unit_title||'')+(quizState.submitted[quizState.index]?' · answered':quizState.answers[quizState.index]!==undefined?' · selected':'');
 }
 function submitDynamicAnswer(){const i=quizState.index;if(quizState.answers[i]===undefined){$('v241Feedback').hidden=false;$('v241Feedback').textContent='Select one answer first.';return;}quizState.submitted[i]=true;renderDynamicQuestion();}
-function showDynamicFeedback(){const i=quizState.index,q=quizState.items[i],chosen=Number(quizState.answers[i]),correct=Number(q.answer),fb=$('v241Feedback'),letters=['A','B','C','D'];if(!fb)return;fb.hidden=false;fb.textContent=(chosen===correct?'Correct.':'Incorrect.')+'\nCorrect answer: '+letters[correct]+'. '+String((q.choices||[])[correct]||'')+(q.explanation?'\n'+q.explanation:'');}
+function showDynamicFeedback(){const i=quizState.index,q=quizState.items[i],chosen=Number(quizState.answers[i]),correct=Number(q.answer),fb=$('v241Feedback'),letters=['A','B','C','D'];if(!fb)return;fb.hidden=false;fb.textContent=(chosen===correct?'Correct.':'Incorrect.')+'\nCorrect answer: '+letters[correct]+'. '+String((q.choices||[])[correct]||'')+(q.explanation?'\n'+q.explanation:'');if(window.CourseMath)window.CourseMath.typeset(fb);}
 async function finishDynamicQuiz(){
   if(!quizState||quizState.finished)return;const state=quizState,missing=state.items.filter((_,i)=>state.answers[i]===undefined).length;
   if(missing&&!window.confirm(missing+' question(s) are unanswered. Submit this quiz anyway?'))return;
@@ -255,13 +258,13 @@ function renderQuizSummary(report,aggregate){
   const unitNames=Object.fromEntries(items.map(q=>[q.unit_id,q.unit_title]));
   const byUnit=(report.units||[]).map(u=>`<li>${esc(unitNames[u.unit_id]||u.unit_id)}: ${u.correct} / ${u.total} correct</li>`).join('');
   $('v241QuizBody').innerHTML=`<div class="v241-summary"><h4>Quiz Results</h4><p>${report.correct} / ${report.total} correct (${report.accuracy}%) · ${report.answered} answered</p>${totals}${byUnit?'<ul class="v241-unit-results">'+byUnit+'</ul>':''}<p>Random draw from the prepared bank: ${quizState.generation.prebuilt_questions||items.length} questions · ${quizState.generation.model_calls||0} model calls · ${quizState.generation.elapsed_ms||0} ms.</p>${rows}<button type="button" id="v241NewQuiz">Start another quiz</button></div>`;
-  $('v241NewQuiz').onclick=()=>startDynamicQuiz();
+  if(window.CourseMath)window.CourseMath.typeset($('v241QuizBody'));$('v241NewQuiz').onclick=()=>startDynamicQuiz();
 }
 
 async function courseAnswerOne(q){
   const cloud=cloudCfg(),lang=qLang(q);window.VQ_LAST_DETECTED_LANGUAGE=lang;if(cloud.provider!=='off'&&!cloud.apiKey)return 'Please enter the API Key and press Enter or “Confirm API Key” before using the selected cloud model.';
   const path=cloud.provider==='off'?'/api/reference/course-answer-local':'/api/reference/course-answer';const payload={course_id:manifest.course_id,question:String(q||''),model_key:modelKey(),language_tag:lang,cloud_provider:cloud.provider};if(cloud.provider!=='off')payload.cloud_api_key=cloud.apiKey;
-  const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'}),d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));window.VQ_LAST_COURSE_ANSWER_META={course_id:manifest.course_id,engine:d.engine||'local-course-rag',sources:Array.isArray(d.sources)?d.sources:[],correction_id:d.correction_id||''};const answer=String(d.answer||'').trim();if(!answer)throw new Error('The course answer service returned no answer.');return answer;
+  const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'}),d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));window.VQ_LAST_COURSE_ANSWER_META={course_id:manifest.course_id,engine:d.engine||'local-course-rag',sources:Array.isArray(d.sources)?d.sources:[],correction_id:d.correction_id||''};const answer=window.CourseContent?window.CourseContent.clean(d.answer):String(d.answer||'').trim();if(!answer)throw new Error('The course answer service returned no answer.');return answer;
 }
 function installAnswerAdapter(){
   if(!manifest)return;const current=window.VQ_generateFinalAnswer;if(!legacyAnswer&&typeof current==='function')legacyAnswer=current;if(current&&current.__v241CourseAdapter)return;

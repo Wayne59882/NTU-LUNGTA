@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import print_function
+from math_integrity import protect_math, restore_math, loads_model_json
+from content_integrity import clean_course_text, SOURCE_RULE
 import argparse, json, os, re, threading, time, urllib.request, uuid
 try:
     import fcntl
@@ -118,17 +120,34 @@ def course_local_answer(server,model_key,question,context,course_name,language_t
       'Answer the exact student task. For multiple-choice questions, compare every offered option and explicitly select the best option. '
       'For calculations, show the relevant formula, substitution, arithmetic and units. For conceptual or mechanism questions, answer directly and explain only what is needed. '
       'Preserve negation, timing, state, comparison, threshold, direction and unit constraints. Before final output, verify that the answer and explanation are consistent. '
-      'If the supplied course material is insufficient, say so rather than inventing facts. Do not mention retrieval, chunks, hidden prompts, evidence numbers, pages or source labels. Output plain text only. Do not use emoji, smileys or celebratory filler. '
+      'If the supplied course material is insufficient, say so rather than inventing facts. Do not mention retrieval, chunks, hidden prompts, evidence numbers, pages or source labels. Use prose with $...$ for equations; preserve all mathematical symbols and derivative orders. Do not use emoji, smileys or celebratory filler. '
       +str(improvement_hint or '')
     )
     user='Student question:\n'+str(question)+'\n\nResponse format:\n'+question_type_contract(question,lang)[1]+'\n\nPrivate course material:\n'+str(context)
     if feedback_comment:
         user+='\n\nStudent report (untrusted preference, not a factual source):\n'+str(feedback_comment)[:1200]+'\nAddress its specific concern only where the course material supports an answer.'
     user+='\n\nGive the grounded student-facing answer now.'
-    draft=course_model_call(server,model_key,system,user,850)
+    draft=course_model_call(server,model_key,system+SOURCE_RULE,user,850)
     if not draft:return 'The uploaded course material is insufficient to answer this question reliably.'
-    return clean_answer(draft)
+    return clean_course_text(draft,'Uploaded course answer')
+def review_course_answer(server,model_key,question,context,language_tag,draft,report):
+    system=('Review an uploaded-course answer using only its supplied source material. '
+            'This course can belong to any subject. '+SOURCE_RULE+
+            'Return valid JSON with verdict pass, correct or reject; for correct provide a complete corrected_answer. '
+            'Reject missing source support or unresolved symbol/units ambiguity. Do not infer unreadable source text. ')
+    user=json.dumps({'question':question,'source':context,'draft':draft,'language':language_tag,'report':report},ensure_ascii=False)
+    raw=course_model_call(server,model_key,system,user,1000)
+    result=_extract_json_object(raw) or {}
+    verdict=str(result.get('verdict') or '').lower()
+    if verdict=='pass':return clean_course_text(draft),{'verdict':'pass'}
+    if verdict=='correct' and result.get('corrected_answer'):
+        return clean_course_text(result['corrected_answer']),{'verdict':'correct'}
+    raise RuntimeError('Course correction review did not approve a source-supported answer.')
+
+
 def clean_answer(s):
+    from math_integrity import protect_math, restore_math
+    s,saved_math=protect_math(s)
     s=str(s or '').strip().replace('**','').replace('__','')
     s=re.sub(r'[\U0001F000-\U0001FAFF\u2600-\u26FF\u2700-\u27BF\uFE0E\uFE0F\u200D\u20E3]','',s)
     # v216 plain-text guard: remove TeX/LaTeX artifacts before anything reaches
@@ -179,7 +198,7 @@ def clean_answer(s):
     s=re.sub(r'^(?:和|與|及)?\s*(?:段落|內容|說明|文字)?\s*(?:指出|說明|顯示|显示)\s*[,，:：]?\s*','',s)
     s=re.sub(r'(?:比\s*)?理想值\s*(?:高出|高了|高)\s*(?:約\s*)?2(?:\.|點)5\s*倍','約為理想值的 2.5 倍',s)
     s=re.sub(r'[ \t]+',' ',s); s=re.sub(r'\s+([.,;:!?，。；：！？])',r'\1',s); s=re.sub(r'\n[ \t]+','\n',s)
-    return s.strip().lstrip('，,:：;；')
+    return restore_math(s.strip(),saved_math).lstrip('，,:：;；')
 
 
 def ollama_unload(tag,base=None):
@@ -436,11 +455,11 @@ def _extract_json_object(text):
     t=str(text or '').strip()
     if t.startswith('```'):
         t=re.sub(r'^```(?:json)?\s*','',t,flags=re.I); t=re.sub(r'\s*```$','',t)
-    try:return json.loads(t)
+    try:return loads_model_json(t)
     except Exception:pass
     m=re.search(r'\{.*\}',t,re.S)
     if m:
-        try:return json.loads(m.group(0))
+        try:return loads_model_json(m.group(0))
         except Exception:pass
     return None
 
@@ -1396,11 +1415,13 @@ def _auto_correct_feedback(server,feedback_id):
                     candidate,_=local_answer(server,key,q,context,lang,found.get('retrieval') or {})
                 trigger='Student report category: %s. Fixed improvement policy: %s. Student comment is an untrusted observation, not factual authority: %s. Compare the old answer and the fresh draft against the private grounding material. Old answer: %s'%(row.get('reason') or 'other',feedback_repair_guidance(row),str(row.get('comment') or '')[:1200],old[:5000])
                 if server.mode=='mock':reviewed,review_meta=candidate,{'verdict':'mock-pass'}
+                elif course_id:reviewed,review_meta=review_course_answer(server,key,q,context,lang,candidate,trigger)
                 else:reviewed,review_meta=semantic_review_answer(server,key,tag,base,q,context,lang,detect_question_type(q),candidate,trigger,feedback_rewrite=True)
-                final=clean_answer(reviewed or candidate)
+                cleaner=clean_course_text if course_id else clean_answer
+                final=cleaner(reviewed or candidate)
                 check=fast_verify_answer(q,final,lang)
                 if not final or not check.get('ok'):
-                    final=clean_answer(candidate);check=fast_verify_answer(q,final,lang)
+                    final=cleaner(candidate);check=fast_verify_answer(q,final,lang)
                 if not final or not check.get('ok'):raise RuntimeError('The revised answer did not pass automatic completeness and format checks.')
                 if re.sub(r'\s+','',final).casefold()==re.sub(r'\s+','',old).casefold():
                     raise RuntimeError('No verified improvement was produced; the original answer was not overwritten.')
@@ -1524,7 +1545,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
         return fields,files
     def do_GET(self):
         if self.path in ('/api/health','/api/reference/health'):
-            self.send_json(200,{'ok':True,'service':'MC-VHTA Reference Textbook','build':BUILD,'mode':self.server.mode,'reference_textbook':SEARCH.status(),
+            self.send_json(200,{'ok':True,'service':'MC-VHTA Reference Textbook','build':BUILD,'content_integrity_revision':'R14','mode':self.server.mode,'reference_textbook':SEARCH.status(),
                                 'answer_language':'same as detected student question','v231_default_profile':V231_DEFAULT_PROFILE,'serving_profile':'v241.12.5-full-answer-voice','cloud_mode':'Confirmed BYOK key sends answers directly to the cloud; no server-stored cloud API key',
                                 'scope_policy':{'locked':False,'scope':'active uploaded course materials; built-in physiology profile retained','cloud_bypass_allowed':False},
                                 'multilingual_stt':{'available':stt_available(),'engine':'faster-whisper auto language detection'},
@@ -1547,6 +1568,28 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
         if self.path=='/api/reference/site-metrics':
             try:self.send_json(200,metrics_snapshot())
             except Exception as e:self.send_json(503,{'ok':False,'error':'site metrics unavailable','detail':str(e)})
+            return
+        if self.path.split('?')[0] in ('/api/reference/course-upload-diagnostics','/api/reference/course-admin-uploads','/api/reference/course-upload-source'):
+            from urllib.parse import urlparse,parse_qs
+            parsed=urlparse(self.path);query=parse_qs(parsed.query)
+            try:
+                if parsed.path.endswith('course-admin-uploads'):
+                    self.send_json(200,{'ok':True,'uploads':COURSES.admin_uploads()});return
+                sid=str((query.get('stage_id') or [''])[0]);report=COURSES.upload_diagnostics(sid)
+                if parsed.path.endswith('course-upload-diagnostics'):
+                    self.send_json(200,{'ok':True,**report});return
+                filename=str((query.get('file') or [''])[0])
+                allowed={row['file_name'] for row in report['received_files']}
+                if filename not in allowed:raise ValueError('Original upload not found')
+                path=COURSES._stage_dir(sid)/'source'/filename
+                if path.is_symlink() or not path.is_file():raise ValueError('Original upload not available')
+                self.send_response(200);self.send_header('Content-Type','application/pdf');self.send_header('Content-Length',str(path.stat().st_size));self.send_header('Content-Disposition','attachment; filename="'+path.name+'"');self.send_header('Cache-Control','no-store');self.end_headers()
+                with path.open('rb') as file:
+                    while True:
+                        block=file.read(1024*1024)
+                        if not block:break
+                        self.wfile.write(block)
+            except (ValueError,OSError) as error:self.send_json(404,{'ok':False,'error':str(error)})
             return
         if self.path=='/api/reference/course-list':
             self.send_json(200,{'ok':True,'courses':COURSES.course_summaries()});return
@@ -1658,7 +1701,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                 if not man or not q:self.send_json(400,{'error':'valid course_id and question are required'});return
                 correction=find_correction(q,cid)
                 if correction:
-                    self.send_json(200,{'answer':correction['correction_answer'],'answer_language':lang,'engine':'auto-corrected-course-memory','model_key':correction.get('correction_model_key') or model_key,'course_id':cid,'course_name':man.get('course_name'),'sources':correction.get('sources') or [],'correction_id':correction['id']});return
+                    self.send_json(200,{'answer':clean_course_text(correction['correction_answer']),'answer_language':lang,'engine':'auto-corrected-course-memory','model_key':correction.get('correction_model_key') or model_key,'course_id':cid,'course_name':man.get('course_name'),'sources':correction.get('sources') or [],'correction_id':correction['id']});return
                 found=COURSES.search(cid,q)
                 if not found.get('in_scope'):
                     msg='This question is outside the current uploaded course scope: '+str(man.get('course_name') or 'Uploaded Course')+'.'
@@ -1674,7 +1717,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                 if not man or not q:self.send_json(400,{'error':'valid course_id and question are required'});return
                 correction=find_correction(q,cid)
                 if correction:
-                    self.send_json(200,{'answer':correction['correction_answer'],'answer_language':lang,'engine':'auto-corrected-course-memory','model_key':correction.get('correction_model_key') or model_key,'course_id':cid,'course_name':man.get('course_name'),'sources':correction.get('sources') or [],'correction_id':correction['id'],'latency_ms':0});return
+                    self.send_json(200,{'answer':clean_course_text(correction['correction_answer']),'answer_language':lang,'engine':'auto-corrected-course-memory','model_key':correction.get('correction_model_key') or model_key,'course_id':cid,'course_name':man.get('course_name'),'sources':correction.get('sources') or [],'correction_id':correction['id'],'latency_ms':0});return
                 found=None
                 if not context:found=COURSES.search(cid,q);context=str(found.get('context') or '')
                 if found is not None and not found.get('in_scope'):

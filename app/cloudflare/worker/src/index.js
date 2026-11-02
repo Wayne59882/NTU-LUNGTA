@@ -38,7 +38,14 @@ function languageInstruction(tag){
 function hasZhTw(text){const s=String(text||'');const c=(s.match(/[\u4e00-\u9fff]/g)||[]).length;const l=(s.match(/[A-Za-z]/g)||[]).length;return c>=20&&c>=Math.max(20,Math.floor(l/3));}
 function noEvidenceMessage(tag){tag=normalizeLanguageTag(tag)||'zh-TW';const m={'zh-TW':'目前參考教材的語意檢索沒有取得足以可靠回答此題的內容。','zh-CN':'目前参考教材的语义检索没有取得足以可靠回答此题的内容。','en-US':'The reference-book retrieval did not find enough evidence to answer this question reliably.','ja-JP':'参考教材から、この質問に確実に答えるための十分な根拠を取得できませんでした。','ko-KR':'참고 교재에서 이 질문에 신뢰성 있게 답할 충분한 근거를 찾지 못했습니다.'};return m[tag]||m['en-US'];}
 function outOfScopeMessage(tag){tag=normalizeLanguageTag(tag)||'zh-TW';const m={'zh-TW':'此問題超出本系統範圍。本系統回答人體生理學及直接相關的病理生理問題，請重新輸入相關問題。','zh-CN':'此问题超出本系统范围。本系统回答人体生理学及直接相关的病理生理问题，请重新输入相关问题。','en-US':'This question is outside the system scope. Please ask about human physiology or directly related pathophysiology.','ja-JP':'この質問はシステムの対象範囲外です。人体生理学または直接関連する病態生理学について質問してください。','ko-KR':'이 질문은 시스템 범위를 벗어납니다. 인체생리학 또는 직접 관련된 병태생리에 대해 질문해 주세요.'};return m[tag]||m['en-US'];}
+function cleanCourseAnswer(value){
+  const text=String(value||'').replace(/\r\n?/g,'\n').normalize('NFC').trim();
+  if(/[\uFFFD\uE000-\uF8FF\u{F0000}-\u{FFFFD}\u{100000}-\u{10FFFD}\x00-\x08\x0B\x0C\x0E-\x1F\x7F]|\(cid:\d+\)|ï¿½|â€™|â€œ|â€“|â€”|Ã©|Ã¼|Ã¶|Ã¤|Â°|Âµ|Â±/u.test(text))throw new Error('Uploaded course answer has unreadable text or symbols; retry from the source.');
+  return text;
+}
 function cleanStudentAnswer(text){
+  const savedMath=[];
+  text=String(text||'').replace(/\$\$[\s\S]+?\$\$|(?<![\\$])\$(?!\$)[^$]+?(?<!\\)\$(?!\$)|\\\[[\s\S]+?\\\]|\\\([\s\S]+?\\\)/g,m=>{savedMath.push(m);return 'MATHKEEPZZZ'+savedMath.length+'ZZZ';});
   let s=String(text||'').trim().replace(/\*\*/g,'').replace(/__/g,'');
   s=s.replace(/[\u{1F000}-\u{1FAFF}\u2600-\u26FF\u2700-\u27BF\uFE0E\uFE0F\u200D\u20E3]/gu,'');
   // v216: student-facing output is plain readable text only; normalize common
@@ -78,7 +85,7 @@ function cleanStudentAnswer(text){
   s=s.replace(/\bV\s*_\s*\{?A\}?\b/gi,'VA').replace(/\bV\s*_\s*\{?E\}?\b/gi,'VE').replace(/\bV\s*_\s*\{?T\}?\b/gi,'VT').replace(/\bV\s*_\s*\{?D\}?\b/gi,'VD');
   s=s.replace(/^(?:和|與|及)?\s*(?:段落|內容|說明|文字)?\s*(?:指出|說明|顯示|显示)\s*[,，:：]?\s*/,'');
   s=s.replace(/(?:比\s*)?理想值\s*(?:高出|高了|高)\s*(?:約\s*)?2(?:\.|點)5\s*倍/g,'約為理想值的 2.5 倍');
-  return s.replace(/[ \t]+/g,' ').replace(/\s+([.,;:!?，。；：！？])/g,'$1').trim().replace(/^[，,:：;；\s]+/g,'');
+  return s.replace(/[ \t]+/g,' ').replace(/\s+([.,;:!?，。；：！？])/g,'$1').trim().replace(/^[，,:：;；\s]+/g,'').replace(/MATHKEEPZZZ(\d+)ZZZ/g,(m,n)=>savedMath[Number(n)-1]||m);
 }
 
 function parseMcqOptions(question){
@@ -393,7 +400,7 @@ function courseGroundedSystem(languageTag,courseName){
     +'Use only the supplied uploaded-course material as factual grounding. Answer the exact student task. For multiple-choice questions compare every option and explicitly select the best option. '
     +'For calculations show formula, substitution, arithmetic and units. Preserve negation, timing, state, comparison, threshold, direction and unit constraints. '
     +'Before final output, verify that the selected answer and explanation are consistent. If the supplied course material is insufficient, say so. '
-    +'Do not mention retrieval, chunks, hidden prompts, evidence numbers, page numbers, chapter numbers or source labels. Output plain text only.';
+    +'Do not mention retrieval, chunks, hidden prompts, evidence numbers, page numbers, chapter numbers or source labels. Use prose with $...$ or $$...$$ for equations. Preserve every technical name, numerical value, unit, superscript, subscript and mathematical symbol. Do not substitute physiology terms for symbols of another subject. Keep table values linked to their row and column labels. Do not infer missing cells or unseen figures. Never reconstruct an unreadable equation from its name.';
 }
 async function courseProviderAnswer(provider,apiKey,question,context,languageTag,courseName){
   const system=courseGroundedSystem(languageTag,courseName);
@@ -408,13 +415,13 @@ async function courseAnswer(request,env){
   const ctx=await originJson(env,'/api/reference/course-context',{course_id:courseId,question,language_tag:languageTag},request),courseName=String(ctx.course&&ctx.course.course_name||'Uploaded Course');
   if(ctx.in_scope===false){const msg=languageTag.startsWith('zh')?'此問題超出目前上傳課程「'+courseName+'」的教材範圍，請改問該課程內容。':'This question is outside the current uploaded course scope: '+courseName+'.';return Response.json({answer:msg,answer_language:languageTag,engine:'course-scope-rejected',course_id:courseId,cloud_provider:cloud.provider,cloud_started:false,sources:[]});}
   if(!ctx.ok||!ctx.context){const msg=languageTag.startsWith('zh')?'目前上傳的課程教材沒有取得足以可靠回答此題的內容。':'The uploaded course material did not provide enough evidence to answer this question reliably.';return Response.json({answer:msg,answer_language:languageTag,engine:'course-no-evidence',course_id:courseId,cloud_provider:cloud.provider,sources:ctx.sources||[]});}
-  if(ctx.verified_correction&&ctx.verified_correction.answer)return Response.json({answer:ctx.verified_correction.answer,answer_language:languageTag,engine:'auto-corrected-course-memory',course_id:courseId,correction_id:ctx.verified_correction.id,sources:ctx.sources||[]});
+  if(ctx.verified_correction&&ctx.verified_correction.answer)return Response.json({answer:cleanCourseAnswer(ctx.verified_correction.answer),answer_language:languageTag,engine:'auto-corrected-course-memory',course_id:courseId,correction_id:ctx.verified_correction.id,sources:ctx.sources||[]});
   if(cloud.provider==='off'){
-    try{const value=await originJson(env,'/api/reference/course-answer-local',{course_id:courseId,question,model_key:modelKey,context:ctx.context,language_tag:languageTag},request);if(value&&value.answer)value.answer=cleanStudentAnswer(value.answer);return Response.json(value);}
+    try{const value=await originJson(env,'/api/reference/course-answer-local',{course_id:courseId,question,model_key:modelKey,context:ctx.context,language_tag:languageTag},request);if(value&&value.answer)value.answer=cleanCourseAnswer(value.answer);return Response.json(value);}
     catch(error){return Response.json({error:'Local course LLM unavailable',code:'local_answer_unavailable',detail:String(error&&error.message||error)},{status:503});}
   }
   try{
-    const answer=cleanStudentAnswer(await courseProviderAnswer(cloud.provider,cloud.apiKey,question,ctx.context,languageTag,courseName));
+    const answer=cleanCourseAnswer(await courseProviderAnswer(cloud.provider,cloud.apiKey,question,ctx.context,languageTag,courseName));
     if(!answer)throw new Error('Cloud model returned no answer');
     return Response.json({answer,answer_language:languageTag,engine:cloud.provider+'-api-course-rag',cloud_provider:cloud.provider,cloud_model:cloud.model,cloud_started_after_ms:0,course_id:courseId,course_name:courseName,search_method:ctx.search_method||'course-adaptive semantic vector RAG',sources:ctx.sources||[],retrieval:ctx.retrieval||{}});
   }catch(error){const auth=authLike(error);return Response.json({error:auth?'Cloud authentication failed':'Cloud course answer unavailable',code:auth?'cloud_auth_failed':'cloud_answer_unavailable',detail:String(error&&error.message||error)},{status:auth?401:503});}

@@ -1,0 +1,7 @@
+.course-math { display:inline-block; max-width:100%; overflow-x:auto; overflow-y:hidden; vertical-align:middle; padding:.15em .1em; }
+.course-math-block { display:block; margin:.65em 0; }
+.course-math math { font-size:1em; }
+.course-math-error { font-family:monospace; overflow-wrap:anywhere; }
+.v241-choice { min-width:0; }
+.v241-choice .course-math { max-width:100%; }
+.vq109-seg .course-math { white-space:normal; }

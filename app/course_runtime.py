@@ -6,6 +6,9 @@ from collections import Counter
 from contextlib import closing
 from pathlib import Path
 from exam_questions import build as build_exam_questions
+from math_integrity import math_issues, question_math_ok
+from content_integrity import text_issues, clean_course_text, question_text_ok, extract_page, ContentIntegrityError, SOURCE_RULE
+from pdf_ingestion import iter_pages, unit_quality, write_receipt, atomic_json, upload_diagnostics
 
 try:
     import fitz
@@ -78,33 +81,19 @@ def _safe_id(s):
     s=re.sub(r'[^A-Za-z0-9._-]+','-',str(s or '').strip()).strip('-_.').lower()
     return s[:72] or 'course'
 
-_PDF_GLYPHS={
-    '\ue00b':'fl','\ue00c':'ff','\ue00d':'fi','\ue00e':'Th',
-    '\ue010':'a','\ue011':'b','\ue012':'c','\ue013':'d','\ue014':'l',
-    '\ue015':'m','\ue016':'o','\ue017':'p','\ue018':'t',
-    '\ue01d':'fl','\ue01e':'fi'
-}
 _PDF_PRIVATE=re.compile(r'[\ue000-\uf8ff\ufffd]')
 
 def _clean_text(t):
-    t=str(t or '').replace('\u200b','').replace('\xad','').replace('\x08','').replace('\ufeff','')
-    if _PDF_PRIVATE.search(t):
-        # Verified against the subset font used in Respiratory Care Pharmacology.
-        # Other unknown glyphs stay visible to the quality gate and cannot enter
-        # a student answer, lecture or generated question unnoticed.
-        t=re.sub(r'(?<=\d)\ue018(?=(?:mg|mcg|g|mL|ml|L)\b)',' ',t)
-        for glyph,value in _PDF_GLYPHS.items():t=t.replace(glyph,value)
-    t=re.sub(r'-\n(?=[a-z])','',t)
+    t=str(t or '').replace('\u200b','').replace('\xad','').replace('\ufeff','')
+    # Never guess letters from a font's private-use glyph codes.
+    # Preserve source hyphens, Unicode superscripts and unit symbols.
     t=re.sub(r'[ \t]+',' ',t)
     t=re.sub(r'\n{3,}','\n\n',t)
     return t.strip()
 
 def _safe_source_text(t):
-    """Omit sentences with font glyphs whose meaning we cannot verify."""
-    clean=_clean_text(t)
-    if not _PDF_PRIVATE.search(clean):return clean
-    parts=re.split(r'(?<=[.!?。！？])\s+',clean.replace('\n',' '))
-    return '\n'.join(part.strip() for part in parts if part.strip() and not _PDF_PRIVATE.search(part))
+    return clean_course_text(_clean_text(t),'PDF source text',check_math=False)
+
 
 def _readable_source(text):
     text=str(text or '')
@@ -220,15 +209,34 @@ def _course_chapters(doc):
     return unique or [('Entire PDF — review or upload separate chapter PDFs',1)]
 
 def _word_chunks(text,max_words=420,overlap=70):
-    words=_clean_text(text).split()
-    if not words:return []
-    out=[];step=max(1,max_words-overlap)
-    for i in range(0,len(words),step):
-        part=words[i:i+max_words]
-        if len(part)>=45:out.append(' '.join(part))
-        elif not out and part:out.append(' '.join(part))
-        if i+max_words>=len(words):break
+    from math_integrity import MATH_PATTERN
+    text=_clean_text(text)
+    if not text:return []
+    out=[];start=0;cap=MAX_EMBED_CHARS
+    math_ranges=[(m.start(),m.end()) for m in MATH_PATTERN.finditer(text)]
+    while start<len(text):
+        stop=min(len(text),start+cap)
+        words=list(re.finditer(r'\S+',text[start:stop]))
+        if len(words)>max_words:stop=start+words[max_words].start()
+        if stop<len(text):
+            bounds=[m.end() for m in re.finditer(r'\n\n|[。！？.!?]\s|\n|\s',text[start:stop]) if m.end()>max(100,(stop-start)//2)]
+            if bounds:stop=start+bounds[-1]
+            for left,right in math_ranges:
+                if left<stop<right:stop=left if left>start else right
+        value=text[start:stop].strip()
+        if value:out.append(value)
+        if stop>=len(text):break
+        # Overlap a complete trailing line/paragraph when it fits; never drop
+        # the end of a short page or insert artificial word spaces into CJK.
+        shared=min(350,max(0,int(overlap))*4,(stop-start)//4)
+        next_start=max(start+1,stop-shared)
+        newline=text.find('\n',next_start,stop)
+        if newline>=0:next_start=newline+1
+        for left,right in math_ranges:
+            if left<next_start<right:next_start=right
+        start=min(next_start,stop)
     return out
+
 
 def _sentence_windows(text,target_chars=900,max_chars=1350):
     raw=' '.join(str(text or '').split())
@@ -564,18 +572,17 @@ def _relationship_cards(statement,unit_title):
     return [(kind,stem,answer) for kind,stem,answer in cards if len(stem)<=210 and answer.casefold() not in stem.casefold() and not _PDF_PRIVATE.search(stem)]
 
 def _lecture_evidence(unit,chunks,max_chars=6200):
-    rows=_question_sentences(chunks)
-    if not rows:return ''
-    limit=min(18,len(rows));indexes=[]
-    if limit==1:indexes=[0]
-    else:
-        indexes=[int(round(i*(len(rows)-1)/float(limit-1))) for i in range(limit)]
-    body=[];used=0
-    for i in indexes:
-        sent=rows[i]['text']
-        if used+len(sent)+2>max_chars:break
-        body.append(sent);used+=len(sent)+2
-    return '\n'.join(body).strip()
+    rows=[str(c.get('text') or '').strip() for c in chunks if str(c.get('text') or '').strip() and not text_issues(c.get('text'))]
+    if sum(len(x)+2 for x in rows)<=max_chars:return '\n\n'.join(rows)
+    # Balanced chapter coverage using complete bounded passages.
+    picked=[];used=0
+    order=list(range(len(rows)))
+    if len(order)>8:order=sorted(set(int(round(i*(len(rows)-1)/7.0)) for i in range(8)))
+    for i in order:
+        value=rows[i]
+        if used+len(value)+2<=max_chars:picked.append(value);used+=len(value)+2
+    return '\n\n'.join(picked)
+
 
 def _chinese_lecture(unit,chunks,model_key,model_call,course_name=''):
     evidence=_lecture_evidence(unit,chunks)
@@ -583,10 +590,14 @@ def _chinese_lecture(unit,chunks,model_key,model_call,course_name=''):
     system=('你是'+(_clean_text(course_name) or '生理學與藥理學')+'課程的教學助理。以繁體中文撰寫可直接朗讀的課堂講稿。'
             '所有事實只能來自提供的教材，保留藥名、數值、公式與重要英文專有名詞。'
             '不要引用圖號、頁碼、書名、章節號或作者；不要寫題目；不要輸出英文段落或來源標記。'
-            '若教材沒有支持某一因果關係，就不要自行補充。')
+            '若教材沒有支持某一因果關係，就不要自行補充。'
+            '數學式使用 $...$ 或 $$...$$，逐字保留上下標、微分階數、括號、正負號及向量符號。'
+            '若文字擷取沒有保留完整公式，省略該式，僅解釋可確認的概念，不得憑方程式名稱補寫公式。')
     user=('單元：'+str(unit['title'])+'\n請寫 5 至 7 段繁體中文講稿，先定義核心概念，再用教材中的例子解釋機轉，最後歸納。'
           '僅使用下面的乾淨教材摘錄；其餘頁面仍由學生問答檢索。\n\n'+evidence)
-    script=_clean_text(model_call(model_key,system,user,1250))
+    raw_script=model_call(model_key,system+SOURCE_RULE,user,1250)
+    if text_issues(raw_script):raise RuntimeError('Lecture contains unreadable text or symbols. Retry preparation from the source PDF.')
+    script=_clean_text(raw_script)
     han=len(re.findall(r'[\u3400-\u9fff]',script));latin=len(re.findall(r'[A-Za-z]',script))
     if _PDF_PRIVATE.search(script) or han<150 or han<latin//2:
         raise RuntimeError('The local model did not produce a readable Traditional Chinese lecture. Retry with another available model.')
@@ -606,7 +617,7 @@ def _lex_score(terms,value):
 
 class CourseManager(object):
     def __init__(self):
-        self.jobs={};self.jobs_lock=threading.RLock();self.cache={};self.cache_lock=threading.Lock()
+        self.build_slots=threading.Semaphore(1);self.jobs={};self.jobs_lock=threading.RLock();self.cache={};self.cache_lock=threading.Lock()
         self.upload_lock=threading.RLock();self.manifest_lock=threading.RLock();self.scenario_lock=threading.RLock();self.quiz_result_lock=threading.RLock();self.running=set();self.deleted=set();self.running_lock=threading.Lock()
 
     def _stage_dir(self,stage_id):return STAGING_ROOT/_safe_id(stage_id)
@@ -624,7 +635,7 @@ class CourseManager(object):
                 stage_path=sd/'stage.json'
                 count=len(json.loads(stage_path.read_text(encoding='utf-8')).get('sources',[])) if stage_path.exists() else 0
                 if count<=state.get('source_count',0):
-                    self.inspect([(state['name'],part.read_bytes())],course_name=state.get('course_name',''),stage_id=stage_id)
+                    self.inspect([(state['name'],part)],course_name=state.get('course_name',''),stage_id=stage_id)
                 state['complete']=True;_json_dump(meta,state);part.unlink()
         result={'offset':state['offset'],'complete':bool(state.get('complete')),'stage_id':_safe_id(stage_id)}
         if result['complete'] and (sd/'stage.json').exists():
@@ -640,7 +651,7 @@ class CourseManager(object):
         sd=self._stage_dir(stage_id);ud=sd/'_uploads';ud.mkdir(parents=True,exist_ok=True)
         uid=_safe_id(upload_id);mp=ud/(uid+'.json');part=ud/(uid+'.part')
         with self.upload_lock:
-            state=json.loads(mp.read_text(encoding='utf-8')) if mp.exists() else {'name':str(name),'size':total_size,'offset':0,'complete':False,'course_name':course_name}
+            state=json.loads(mp.read_text(encoding='utf-8')) if mp.exists() else {'name':str(name),'size':total_size,'offset':0,'complete':False,'course_name':course_name,'created_at':time.time()}
             if state['name']!=name or state['size']!=total_size:raise ValueError('The resumed PDF does not match the original file.')
             if state.get('complete'):return self.upload_status(stage_id,upload_id)
             if offset!=state['offset']:
@@ -649,6 +660,7 @@ class CourseManager(object):
             with part.open('r+b' if part.exists() else 'wb') as f:
                 f.seek(offset);f.write(data);f.flush();os.fsync(f.fileno())
             state['offset']=offset+len(data)
+            state['updated_at']=time.time()
             if state['offset']==total_size:
                 stage_path=sd/'stage.json'
                 state['source_count']=len(json.loads(stage_path.read_text(encoding='utf-8')).get('sources',[])) if stage_path.exists() else 0
@@ -656,7 +668,7 @@ class CourseManager(object):
             if state['offset']==total_size:
                 # The completed file is durably staged before inspection; a lost
                 # response can be recovered through upload_status on refresh.
-                inspection=self.inspect([(name,part.read_bytes())],course_name=course_name,stage_id=stage_id)
+                inspection=self.inspect([(name,part)],course_name=course_name,stage_id=stage_id)
                 state['complete']=True;_json_dump(mp,state);part.unlink()
                 return {'offset':total_size,'complete':True,'stage_id':_safe_id(stage_id),'inspection':inspection}
             return {'offset':state['offset'],'complete':False,'stage_id':_safe_id(stage_id)}
@@ -678,7 +690,11 @@ class CourseManager(object):
             if not str(name).lower().endswith('.pdf'):continue
             fi=source_index+offset
             safe='%02d_%s'%(fi,re.sub(r'[^A-Za-z0-9._-]+','_',Path(name).name))
-            p=sd/'source'/safe;p.write_bytes(data)
+            p=sd/'source'/safe
+            if isinstance(data,Path):
+                if data.resolve()!=p.resolve():shutil.copy2(str(data),str(p))
+            else:p.write_bytes(data)
+            receipt=write_receipt(sd,p,name)
             try:
                 with closing(fitz.open(str(p))) as doc:
                     if doc.page_count<1:raise ValueError('Not a readable PDF: '+str(name))
@@ -691,16 +707,19 @@ class CourseManager(object):
                     for pi in range(0,doc.page_count,stride):
                         s=_clean_text(doc[pi].get_text('text') or '')
                         if s:readable+=len(s);samples.append(s[:3500])
-                    if readable<40:raise ValueError('No searchable text found in '+str(name)+'. Run OCR on this scanned PDF, then upload it again.')
+                    # Scanned uploads are valid inputs. Defer page OCR to the
+                    # background worker instead of rejecting the original here.
+                    requires_ocr=readable<40
                     if not auto_name:auto_name=title
                     for ci,(ctitle,start) in enumerate(chapter_rows,1):
                         end=(chapter_rows[ci][1]-1) if ci<len(chapter_rows) else doc.page_count
                         if end<start:end=start
                         units.append({'id':'u%03d'%len(units),'title':title if ctitle.startswith('Entire PDF —') else ctitle,'source_file':safe,'source_title':title,'start_page':start,'end_page':end,'enabled':True,'needs_review':ctitle.startswith('Entire PDF —')})
                     respiratory=_is_respiratory_physiology(' '.join([x[0] for x in chapter_rows]+samples))
-                    sources.append({'file_name':safe,'display_name':Path(name).name,'title':title,'pages':doc.page_count,'chapter_count':len(chapter_rows),'respiratory_physiology':respiratory})
-            except Exception:
-                if p.exists():p.unlink()
+                    receipt.update({'inspection_status':'ready','pages':doc.page_count,'ocr_recommended':requires_ocr});atomic_json(sd/'receipts'/(safe+'.json'),receipt)
+                    sources.append({'sha256':receipt['sha256'],'size_bytes':receipt['size_bytes'],'file_name':safe,'display_name':Path(name).name,'title':title,'pages':doc.page_count,'chapter_count':len(chapter_rows),'ocr_recommended':requires_ocr,'respiratory_physiology':respiratory})
+            except Exception as error:
+                receipt.update({'inspection_status':'error','error':str(error)[:1000]});atomic_json(sd/'receipts'/(safe+'.json'),receipt)
                 raise
         if not sources:raise ValueError('No valid PDF was uploaded.')
         meta={'stage_id':stage_id,'course_name':_clean_text(course_name) or auto_name or 'Uploaded Course','visual_model':'vq' if any(s.get('respiratory_physiology') for s in sources) else 'none','sources':sources,'units':units,'created_at':meta.get('created_at',time.time()) if stage_path.exists() else time.time(),'updated_at':time.time()}
@@ -764,7 +783,9 @@ class CourseManager(object):
             for p in jobs_dir.glob('*.json'):
                 try:
                     job=json.loads(p.read_text(encoding='utf-8'))
-                    if job.get('status') not in ('queued','running'):continue
+                    if job.get('status') not in ('queued','running'):
+                        recoverable=job.get('status')=='error' and job.get('phase')=='extracting chapter text' and job.get('ingestion_revision')!='R14'
+                        if not recoverable:continue
                     stage=json.loads((self._stage_dir(job['stage_id'])/'stage.json').read_text(encoding='utf-8'))
                     cid=job['course_id'];jid=job['id']
                     if self.manifest(cid):
@@ -784,9 +805,38 @@ class CourseManager(object):
                     current.setdefault('preparation',{})['questions']={'status':'preparing','completed_units':0,'total_units':len(current.get('units') or []),'message':'Preparing reviewed exam-style questions from available evidence'}
                     for u in current.get('units') or []:u['question_count']=0
                 man=self._update_manifest(man['course_id'],prepare_bank) or man
+            man=self._quarantine_damaged_math(man)
             prep=man.get('preparation') or {}
             if man.get('status') in ('preparing','error') or any((prep.get(k) or {}).get('status') in ('preparing','error') for k in ('questions','index','lectures')):
                 self._start_preparation(man['course_id'],man.get('model_key') or 'gemma',model_call)
+
+    def _quarantine_damaged_math(self,man):
+        cid=man['course_id'];cd=self._course_dir(cid);qp=cd/'question_banks.json'
+        banks=json.loads(qp.read_text(encoding='utf-8')) if qp.exists() else {}
+        damaged_units=[];removed=0
+        for unit in man.get('units') or []:
+            uid=unit['id'];bank=banks.get(uid) or []
+            good=[row for row in bank if question_text_ok(row.get('question'))]
+            if len(good)!=len(bank):removed+=len(bank)-len(good);damaged_units.append(uid)
+        bad_scripts=[u['id'] for u in man.get('units') or [] if text_issues(u.get('script',''))]
+        if not damaged_units and not bad_scripts:return man
+        backup=cd/'backups'/('content_R13_'+uuid.uuid4().hex)
+        backup.mkdir(parents=True,exist_ok=True)
+        for name in ('course_manifest.json','question_banks.json'):
+            if (cd/name).exists():shutil.copy2(str(cd/name),str(backup/name))
+        for unit in man.get('units') or []:
+            uid=unit['id']
+            if uid in damaged_units:
+                banks[uid]=[row for row in banks[uid] if question_text_ok(row.get('question'))]
+                unit['question_count']=len(banks[uid])
+            if uid in bad_scripts:unit.update({'script':'','script_status':'preparing'})
+        prep=man.setdefault('preparation',{})
+        for kind,affected in (('questions',damaged_units),('lectures',bad_scripts)):
+            if affected:prep.setdefault(kind,{}).update({'status':'preparing','message':'Regenerating content with damaged text or symbols'})
+        man.update({'status':'preparing','math_integrity_revision':'R12','content_integrity_revision':'R13'})
+        man['math_repair']={'removed_questions':removed,'lecture_units':bad_scripts,'backup':str(backup)}
+        _json_dump(qp,banks);_json_dump(cd/'course_manifest.json',man)
+        return man
 
     def _upgrade_course_text(self,man):
         """Replace v241.8 glyph-contaminated scripts, questions and indexes."""
@@ -822,18 +872,22 @@ class CourseManager(object):
         with self.cache_lock:self.cache.pop(cid,None)
         return man
 
+    def _unit_pages(self,doc,start_page,end_page):
+        return [extract_page(doc[p-1],p) for p in range(max(1,int(start_page)),min(doc.page_count,int(end_page))+1)]
+
     def _unit_text(self,source_path,start_page,end_page,doc=None):
         owned=doc is None
         if owned:doc=fitz.open(str(source_path))
-        try:
-            parts=[]
-            for p in range(max(1,int(start_page)),min(doc.page_count,int(end_page))+1):
-                parts.append(_clean_text(doc[p-1].get_text('text') or ''))
-            return '\n\n'.join(x for x in parts if x)
+        try:return '\n\n'.join(row['text'] for row in self._unit_pages(doc,start_page,end_page) if row['text'])
         finally:
             if owned:doc.close()
 
     def _build(self,jid,stage,units,course_id,course_name,visual_model,model_key,model_call):
+        self._set_job(jid,status='queued',message='PDF received; waiting for the extraction worker',ingestion_revision='R14')
+        with self.build_slots:
+            return self._build_impl(jid,stage,units,course_id,course_name,visual_model,model_key,model_call)
+
+    def _build_impl(self,jid,stage,units,course_id,course_name,visual_model,model_key,model_call):
         phase='initializing the course workspace'
         try:
             if self.manifest(course_id):
@@ -848,22 +902,41 @@ class CourseManager(object):
                     except OSError:shutil.copyfile(str(src),str(dst))
             phase='extracting chapter text'
             self._set_job(jid,status='running',progress=4,message='Extracting chapter text')
-            chunks=[];unit_texts={};doc=None;last_file=None
+            chunks=[];unit_texts={};source_quality={};doc=None;last_file=None
+            total_pages=sum(int(u['end_page'])-int(u['start_page'])+1 for u in units);page_progress=[0]
             try:
                 for ui,u in enumerate(units,1):
                     if u['source_file']!=last_file:
                         if doc:doc.close()
                         doc=fitz.open(str(cd/'source'/u['source_file']));last_file=u['source_file']
-                    txt=_safe_source_text(self._unit_text(None,u['start_page'],u['end_page'],doc=doc))
-                    if not _readable_source(txt):raise RuntimeError('Chapter "%s" has unreadable PDF glyphs. Please upload an OCR-readable PDF instead.'%u['title'])
+                    source=next((src for src in stage.get('sources',[]) if src['file_name']==u['source_file']),{})
+                    identity=source.get('sha256') or (u['source_file']+'|'+str((cd/'source'/u['source_file']).stat().st_size))
+                    def page_done(row,cached):
+                        if row['status']=='ocr_running':
+                            self._set_job(jid,status='running',message='Local OCR: PDF page %s (%s / %s selected pages complete)'%(row['page'],page_progress[0],total_pages),current_page=row['page'],current_source=source.get('display_name') or u['source_file'])
+                            return
+                        page_progress[0]+=1
+                        if page_progress[0]%5==0 or row['status']=='needs_review' or page_progress[0]==total_pages:
+                            self._set_job(jid,status='running',progress=4+int(10*page_progress[0]/max(1,total_pages)),message='Reading PDF page %s (%s / %s selected pages)'%(row['page'],page_progress[0],total_pages),processed_pages=page_progress[0],total_pages=total_pages,current_page=row['page'],current_source=source.get('display_name') or u['source_file'])
+                    pages=list(iter_pages(doc,u['start_page'],u['end_page'],sd/'page_cache',identity,page_done))
+                    source_quality[u['id']]=unit_quality(pages)
+                    atomic_json(cd/'source_quality.json',source_quality)
+                    txt=_safe_source_text('\n\n'.join(row['text'] for row in pages if row['text']))
+                    if sum(c.isalpha() for c in txt)<40:
+                        source_quality[u['id']]['status']='needs_review';source_quality[u['id']]['reason']='insufficient readable teaching text';txt=''
+                    atomic_json(cd/'source_quality.json',source_quality)
                     unit_texts[u['id']]=txt
                     (cd/'units'/(u['id']+'.txt')).write_text(txt,encoding='utf-8')
-                    for ci,c in enumerate(_word_chunks(txt),1):
-                        chunks.append({'id':'%s_c%03d'%(u['id'],ci),'unit_id':u['id'],'unit_title':u['title'],'source':u['source_title'],'source_file':u['source_file'],'pdf_page':u['start_page'],'text':c})
+                    ci=0
+                    for page in (pages if txt else []):
+                        for c in _word_chunks(page['text']):
+                            ci+=1
+                            chunks.append({'id':'%s_c%03d'%(u['id'],ci),'unit_id':u['id'],'unit_title':u['title'],'source':u['source_title'],'source_file':u['source_file'],'pdf_page':page['page'],'extraction_method':page.get('extraction_method','native_text'),'text':c})
                     self._set_job(jid,progress=4+int(10*ui/max(1,len(units))),message='Extracted %s / %s chapters'%(ui,len(units)))
             finally:
                 if doc:doc.close()
-            if not chunks:raise RuntimeError('No readable text was extracted from the selected chapters.')
+            # Keep a course receipt even when every selected unit needs source repair.
+            # Other usable units continue; missing pages never become invented content.
             with (cd/'chunks.jsonl').open('w',encoding='utf-8') as f:
                 for c in chunks:f.write(json.dumps(c,ensure_ascii=False)+'\n')
             phase='activating lecture and course Q&A'
@@ -871,16 +944,22 @@ class CourseManager(object):
             for c in chunks:by_unit[c['unit_id']].append(c)
             for u in units:
                 txt=unit_texts.get(u['id'],'')
-                lecture_units.append({'id':u['id'],'title':u['title'],'script':'','script_status':'preparing','source_title':u['source_title'],'start_page':u['start_page'],'end_page':u['end_page'],'question_count':0,'question_source_count':0,'question_processed_count':0})
+                quality=source_quality[u['id']];blocked=quality['status']=='needs_review'
+                lecture_units.append({'source_quality':quality,'source_blocked':blocked,'id':u['id'],'title':u['title'],'script':'','script_status':'source_review' if blocked else 'preparing','source_title':u['source_title'],'start_page':u['start_page'],'end_page':u['end_page'],'question_count':0,'question_source_count':0,'question_processed_count':0})
             phase='identifying the course subject'
-            course_title,course_name_source=_resolve_course_name(course_name,stage,units,unit_texts,model_key,model_call,
-                lambda message:self._set_job(jid,status='running',progress=15,message=message))
-            manifest={'course_id':course_id,'course_name':course_title,'course_name_source':course_name_source,'visual_model':'vq' if visual_model=='vq' else 'none','visual_model_label':'V/Q Visual Model' if visual_model=='vq' else 'No Specialized Visual Model','sources':stage.get('sources',[]),'units':lecture_units,'content_version':'v241.9','question_target_per_unit':QUESTION_TARGET,'quiz_questions_per_unit':2,'question_generation':QUESTION_GENERATION,'rag':{'embedding_model':EMBED_MODEL,'dimension':1024,'top_candidates':TOP_CANDIDATES,'final_top_k':FINAL_TOP_K,'search_method':'course text ready immediately; semantic passage index follows'},'model_key':model_key,'created_at':time.time(),'status':'preparing','preparation':{'lectures':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing Traditional Chinese teacher scripts'},'questions':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing reviewed exam-style questions from available evidence'},'index':{'status':'preparing','message':'Course text Q&A ready; enhancing semantic search'}}}
+            if chunks:
+                course_title,course_name_source=_resolve_course_name(course_name,stage,units,unit_texts,model_key,model_call,
+                    lambda message:self._set_job(jid,status='running',progress=15,message=message))
+            else:course_title,course_name_source=(_clean_text(course_name) or stage.get('course_name') or 'Uploaded Course'),'pdf_metadata'
+            manifest={'stage_id':stage['stage_id'],'ingestion_revision':'R14','source_review':{'required':any(q['status']!='readable' for q in source_quality.values()),'units':source_quality},'course_id':course_id,'course_name':course_title,'course_name_source':course_name_source,'visual_model':'vq' if visual_model=='vq' else 'none','visual_model_label':'V/Q Visual Model' if visual_model=='vq' else 'No Specialized Visual Model','sources':stage.get('sources',[]),'units':lecture_units,'content_version':'v241.9','question_target_per_unit':QUESTION_TARGET,'quiz_questions_per_unit':2,'question_generation':QUESTION_GENERATION,'rag':{'embedding_model':EMBED_MODEL,'dimension':1024,'top_candidates':TOP_CANDIDATES,'final_top_k':FINAL_TOP_K,'search_method':'course text ready immediately; semantic passage index follows'},'model_key':model_key,'created_at':time.time(),'status':'preparing','preparation':{'lectures':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing Traditional Chinese teacher scripts'},'questions':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing reviewed exam-style questions from available evidence'},'index':{'status':'preparing','message':'Course text Q&A ready; enhancing semantic search'}}}
             _json_dump(cd/'question_banks.json',{});_json_dump(cd/'scenario_cache.json',{})
+            if not chunks:
+                manifest['status']='source_review'
+                for kind in ('lectures','questions','index'):manifest['preparation'][kind].update({'status':'source_review','message':'Original PDF received; source pages need OCR or text repair before generation'})
             _json_dump(cd/'course_manifest.json',manifest)
-            self._set_job(jid,status='done',progress=100,message='Course Q&A active; Chinese lectures and scenario concepts are being prepared',result={'course_id':course_id})
+            self._set_job(jid,status='done',progress=100,message='Course Q&A active; Chinese lectures and scenario concepts are being prepared' if chunks else 'PDF received; no usable text yet. Open upload diagnostics to check OCR setup and problem pages.',result={'course_id':course_id})
             with self.cache_lock:self.cache.pop(course_id,None)
-            self._start_preparation(course_id,model_key,model_call)
+            if chunks:self._start_preparation(course_id,model_key,model_call)
         except Exception as e:
             self._set_job(jid,status='error',message='Course build failed during '+phase,error=str(e),phase=phase)
 
@@ -913,6 +992,9 @@ class CourseManager(object):
     def _start_preparation(self,cid,model_key,model_call,force=False,only=None):
         m=self.manifest(cid)
         if not m:return
+        with self.running_lock:
+            if (cid,'sources') in self.running:return
+        if m.get('units') and all(u.get('source_blocked') for u in m['units']):return
         prep=m.get('preparation') or {}
         for kind,fn in (('questions',self._prepare_questions),('lectures',self._prepare_lectures),('index',self._prepare_index)):
             if only is not None and kind not in only:continue
@@ -920,6 +1002,7 @@ class CourseManager(object):
             key=(cid,kind)
             with self.running_lock:
                 if cid in self.deleted:continue
+                if (cid,'sources') in self.running:return
                 if key in self.running:continue
                 self.running.add(key)
             def work(task=key,task_fn=fn):
@@ -934,9 +1017,75 @@ class CourseManager(object):
             threading.Thread(target=work,daemon=True).start()
 
     def retry_preparation(self,cid,model_key,model_call):
-        if not self.manifest(cid):raise ValueError('course not found')
+        manifest=self.manifest(cid)
+        if not manifest:raise ValueError('course not found')
+        if (manifest.get('source_review') or {}).get('required'):
+            key=(cid,'sources')
+            with self.running_lock:
+                if key in self.running:return manifest
+                if any(item[0]==cid for item in self.running):raise ValueError('Background preparation is still running. Retry source OCR after it finishes; ready units remain available.')
+                self.running.add(key)
+            self._update_manifest(cid,lambda m:m.setdefault('preparation',{}).update({'sources':{'status':'preparing','message':'Retrying source OCR from the saved original PDF'}}))
+            def repair():
+                try:
+                    with self.build_slots:self._repair_sources(cid)
+                except Exception as error:
+                    self._update_manifest(cid,lambda m:m['preparation']['sources'].update({'status':'error','error':str(error)}))
+                finally:
+                    with self.running_lock:self.running.discard(key)
+                self._start_preparation(cid,model_key,model_call)
+            threading.Thread(target=repair,daemon=True).start()
+            return self.manifest(cid)
         self._start_preparation(cid,model_key,model_call,force=True)
         return self.manifest(cid)
+
+    def _repair_sources(self,cid):
+        """Retry problem pages from retained originals; preserve unchanged banks."""
+        m=self.manifest(cid);cd=self._course_dir(cid);sd=self._stage_dir(m['stage_id'])
+        stage=json.loads((sd/'stage.json').read_text(encoding='utf-8'))
+        selected={unit['id']:unit for unit in stage['units']}
+        chunks=[];texts={};qualities={};changed=set()
+        for unit in m['units']:
+            spec=selected[unit['id']];uid=unit['id']
+            source=next(row for row in stage['sources'] if row['file_name']==spec['source_file'])
+            def progress(row,cached):
+                self._update_manifest(cid,lambda current:current['preparation']['sources'].update({'current_page':row['page'],'message':('Local OCR' if row['status']=='ocr_running' else 'Reading saved PDF')+': page '+str(row['page'])}))
+            with closing(fitz.open(str(cd/'source'/spec['source_file']))) as doc:
+                pages=list(iter_pages(doc,spec['start_page'],spec['end_page'],sd/'page_cache',source.get('sha256') or spec['source_file'],progress))
+            quality=unit_quality(pages);text=_safe_source_text('\n\n'.join(row['text'] for row in pages if row['text']))
+            if sum(c.isalpha() for c in text)<40:text='';quality['status']='needs_review'
+            previous=cd/'units'/(uid+'.txt')
+            if not previous.exists() or previous.read_text(encoding='utf-8')!=text:changed.add(uid)
+            texts[uid]=text;qualities[uid]=quality
+            unit.update({'source_quality':quality,'source_blocked':quality['status']=='needs_review'})
+            if uid in changed:unit.update({'script':'','script_status':'source_review' if unit['source_blocked'] else 'preparing','question_count':0,'question_source_count':0,'question_processed_count':0})
+            ci=0
+            for page in (pages if text else []):
+                for value in _word_chunks(page['text']):
+                    ci+=1
+                    chunks.append({'id':'%s_c%03d'%(uid,ci),'unit_id':uid,'unit_title':unit['title'],'source':spec['source_title'],'source_file':spec['source_file'],'pdf_page':page['page'],'extraction_method':page.get('extraction_method','native_text'),'text':value})
+        if changed:
+            backup=cd/'backups'/('source_ocr_'+uuid.uuid4().hex);backup.mkdir(parents=True)
+            for name in ('course_manifest.json','chunks.jsonl','question_banks.json','scenario_cache.json'):
+                if (cd/name).exists():shutil.copy2(str(cd/name),str(backup/name))
+            for uid,text in texts.items():(cd/'units'/(uid+'.txt')).write_text(text,encoding='utf-8')
+            banks=json.loads((cd/'question_banks.json').read_text(encoding='utf-8'))
+            _json_dump(cd/'question_banks.json',{uid:cards for uid,cards in banks.items() if uid not in changed})
+            _json_dump(cd/'scenario_cache.json',{})
+            for name in ('vector_index.sqlite3','window_index.sqlite3'):
+                if (cd/name).exists():(cd/name).unlink()
+            temporary=cd/'chunks.repair.jsonl'
+            temporary.write_text(''.join(json.dumps(row,ensure_ascii=False)+'\n' for row in chunks),encoding='utf-8')
+            os.replace(str(temporary),str(cd/'chunks.jsonl'))
+            for kind in ('lectures','questions','index'):m['preparation'].setdefault(kind,{}).update({'status':'preparing','error':''})
+        atomic_json(cd/'source_quality.json',qualities)
+        m['source_review']={'required':any(q['status']!='readable' for q in qualities.values()),'units':qualities}
+        if changed:m['status']='preparing' if chunks else 'source_review'
+        m['preparation']['sources']={'status':'ready','message':'Source OCR retry finished; remaining gaps are listed in upload diagnostics'}
+        # Retain concurrently updated source-progress metadata only until this
+        # completed snapshot is installed; other preparation is locked out.
+        _json_dump(cd/'course_manifest.json',m)
+        with self.cache_lock:self.cache.pop(cid,None)
 
     def prioritize_unit(self,cid,unit_id,kind,model_key,model_call):
         man=self.manifest(cid)
@@ -987,6 +1136,7 @@ class CourseManager(object):
                 priority=(current.get('preparation',{}).get('lectures') or {}).get('priority_unit_id')
                 i=next((index for index in pending if units[index]['id']==priority),pending[0])
                 pending.remove(i);unit=units[i]
+                if unit.get('source_blocked'):continue
                 if unit.get('script_status')=='ready' and unit.get('script'):
                     completed+=1;continue
                 self._update_manifest(cid,lambda m,n=i:m['preparation']['lectures'].update({'status':'preparing','message':'Writing Chinese lecture %s / %s'%(n+1,len(units)),'error':''}))
@@ -1043,6 +1193,7 @@ class CourseManager(object):
                     position=next((n for n,(_,unit) in enumerate(pending) if unit['id']==priority),0)
                     idx,u=pending.pop(position)
                     unit_id=u['id']
+                    if u.get('source_blocked'):continue
                     if len(banks.get(unit_id) or [])>=target:continue
                     def save_progress(cards,available,processed,unit_index=idx,unit_id=unit_id,unit_title=u['title'],phase=phase):
                         banks[unit_id]=cards;_json_dump(cd/'question_banks.json',banks)
@@ -1084,13 +1235,50 @@ class CourseManager(object):
                         model_key,timed_model_call,save_expansion,QUESTION_TARGET)
                 self._update_manifest(cid,lambda current,uid=unit_id:current['preparation']['questions'].update({
                     'expansion_requests':[x for x in current['preparation']['questions'].get('expansion_requests',[]) if x!=uid]}))
-            missing=[u['title'] for u in m['units'] if len(banks.get(u['id']) or [])<2]
+            missing=[u['title'] for u in m['units'] if not u.get('source_blocked') and len(banks.get(u['id']) or [])<2]
             if missing:
                 raise RuntimeError('Fewer than two reviewed questions in: '+', '.join(missing[:4])+'. Ready units can still be practised; review the PDF text or retry with another model.')
+            usable=sum(not u.get('source_blocked') for u in m['units'])
             self._update_manifest(cid,lambda current:(current.update({'status':'ready','question_generation':QUESTION_GENERATION}),
-                current['preparation']['questions'].update({'status':'ready','completed_units':len(m['units']),
-                    'ready_units':len(m['units']),'message':'Quick question banks ready; choose a unit to expand toward 100 if needed'})))
+                current['preparation']['questions'].update({'status':'ready','completed_units':usable,'total_units':usable,
+                    'ready_units':usable,'source_blocked_units':len(m['units'])-usable,'message':'Quick question banks ready; source-blocked units remain listed for review'})))
         except Exception as e:self._update_manifest(cid,lambda m:(m.update({'status':'error'}),m['preparation']['questions'].update({'status':'error','error':str(e),'message':'Question review stopped; saved approved questions remain available'})))
+
+    def upload_diagnostics(self,stage_id):
+        sid=str(stage_id or '')
+        if not re.fullmatch(r'[A-Za-z0-9._-]{1,100}',sid):raise ValueError('Invalid upload identifier')
+        directory=self._stage_dir(sid)
+        if not directory.is_dir():raise ValueError('Upload not found')
+        report=upload_diagnostics(directory)
+        report['jobs']=[]
+        for path in (COURSE_ROOT/'_jobs').glob('*.json'):
+            try:
+                job=json.loads(path.read_text(encoding='utf-8'))
+                if job.get('stage_id')==sid:report['jobs'].append(job)
+            except (ValueError,OSError):pass
+        for job in report['jobs']:
+            cid=job.get('course_id');quality=self._course_dir(cid)/'source_quality.json' if cid else None
+            if quality and quality.exists():report['source_quality']=json.loads(quality.read_text(encoding='utf-8'))
+        return report
+
+    def admin_uploads(self):
+        # Keep the all-user listing bounded to receipts and job summaries.
+        # Load a book's thousand-page quality report only when requested.
+        from pdf_ocr import LocalOCR
+        ocr=LocalOCR().report();jobs={};reports=[]
+        for path in (COURSE_ROOT/'_jobs').glob('*.json'):
+            try:
+                job=json.loads(path.read_text(encoding='utf-8'))
+                jobs.setdefault(job.get('stage_id'),[]).append({key:job.get(key) for key in ('id','course_id','course_name','status','progress','phase','message','error','updated_at')})
+            except (ValueError,OSError):pass
+        for directory in sorted(STAGING_ROOT.iterdir()) if STAGING_ROOT.exists() else []:
+            if not directory.is_dir():continue
+            report=upload_diagnostics(directory,ocr_report=ocr);report['jobs']=jobs.get(directory.name,[])
+            stage=directory/'stage.json'
+            try:report['course_name']=json.loads(stage.read_text(encoding='utf-8')).get('course_name','')
+            except (ValueError,OSError):report['course_name']=''
+            reports.append(report)
+        return sorted(reports,key=lambda row:max([x.get('received_at',0) for x in row['received_files']]+[x.get('updated_at',0) for x in row['transfers']]+[0]),reverse=True)
 
     def list_courses(self):
         out=[]
@@ -1148,7 +1336,10 @@ class CourseManager(object):
         if wp.exists():
             conn=sqlite3.connect(str(wp));raw=conn.execute('SELECT chunk_id,unit_id,source,window_idx,text,vec FROM windows ORDER BY idx').fetchall();conn.close()
             wins=[{'chunk_id':r[0],'unit_id':r[1],'source':r[2],'window_idx':r[3],'text':r[4],'vec':_unpack(r[5])} for r in raw]
-        data={'stamp':stamp,'rows':passages,'windows':wins,'semantic':vp.exists()}
+        rejected=sum(bool(text_issues(r['text'])) for r in passages)
+        passages=[r for r in passages if not text_issues(r['text'])]
+        wins=[r for r in wins if not text_issues(r['text'])]
+        data={'rejected_passages':rejected,'stamp':stamp,'rows':passages,'windows':wins,'semantic':vp.exists()}
         with self.cache_lock:self.cache[course_id]=data
         return data
 
@@ -1234,7 +1425,7 @@ class CourseManager(object):
                 raise ValueError('The selected course unit is invalid.')
             units=[u for u in units if u['id'] in requested]
         for index,u in enumerate(units):
-            bank=list(banks.get(u['id']) or [])
+            bank=[row for row in (banks.get(u['id']) or []) if question_text_ok(row.get('question'))]
             if len(bank)<per:
                 raise ValueError('Unit "%s" has %s reviewed questions; select %s or fewer per unit.'%(u['title'],len(bank),len(bank)))
             if any(not isinstance(row.get('question'),dict) for row in bank):

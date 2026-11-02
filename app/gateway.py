@@ -49,7 +49,17 @@ class H(SharedAssetsMixin, SimpleHTTPRequestHandler):
         try:
             req=urllib.request.Request(target,data=body,headers=headers,method=self.command)
             with urllib.request.urlopen(req,timeout=300) as r:
-                status=getattr(r,'status',200);ctype=r.headers.get('Content-Type','application/octet-stream');data=r.read()
+                status=getattr(r,'status',200);ctype=r.headers.get('Content-Type','application/octet-stream')
+                if path=='/api/reference/course-upload-source' and status==200 and ctype.split(';')[0]=='application/pdf':
+                    self.send_response(status);self.send_header('Content-Type',ctype)
+                    for header in ('Content-Length','Content-Disposition'):
+                        if r.headers.get(header):self.send_header(header,r.headers[header])
+                    self.end_headers()
+                    try:
+                        for block in iter(lambda:r.read(1024*1024),b''):self.wfile.write(block)
+                    except (BrokenPipeError,ConnectionResetError):pass
+                    return True
+                data=r.read()
         except urllib.error.HTTPError as e:
             status=e.code;ctype=e.headers.get('Content-Type','application/json');data=e.read()
         except Exception as e:

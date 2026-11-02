@@ -5,6 +5,24 @@
   "pages": {
     "reference": [
       {
+        "old": "shared/vendor/temml/temml.min.js",
+        "new": "shared/vendor/temml/temml.min.js",
+        "sha256": "d4fc39a4729deca1c8e12624885a7616cb661a4ab8e9cd4d6fc1fed23c653308",
+        "query": "v=R14"
+      },
+      {
+        "old": "shared/js/course/course-content.js",
+        "new": "shared/js/course/course-content.js",
+        "sha256": "e60b1b8c5ad6565fa3e14b8bcea838539390cef795445b5835183bcab5ed407b",
+        "query": "v=R14"
+      },
+      {
+        "old": "shared/js/course/course-math.js",
+        "new": "shared/js/course/course-math.js",
+        "sha256": "728f292a7707b013ee37eeff4ac6bbba77053c0da1c7dfd25c31fa57394a131f",
+        "query": "v=R14"
+      },
+      {
         "old": "js/01_original_ui_core.js",
         "query": "v=179",
         "sha256": "bfafbcb6aa07c154788fb70eb1d7525e45f002132290014d8aaff0f9e32a2dd9",
@@ -84,9 +102,10 @@
       },
       {
         "old": "js/25_v105_resume_after_question_mouth_sync.js",
-        "query": "v=241125voiceR920261021",
-        "sha256": "6b934fd14f275c7671a56c2b63a440fb4636d648b8197a7b1a8c6290da13d683",
-        "new": "shared/js/speech/recognition-controller.js"
+        "query": "v=pdfR1420261102",
+        "sha256": "ecbb7424a024d3b310e8b2ea3407e2d1a932396e866d2e3ef4d34d46a1061ddd",
+        "new": "shared/js/speech/recognition-controller.js",
+        "previous_sha256": "6b934fd14f275c7671a56c2b63a440fb4636d648b8197a7b1a8c6290da13d683"
       },
       {
         "old": "js/29_v153_course_aligned_student_results.js",
@@ -102,9 +121,10 @@
       },
       {
         "old": "js/40_v199_main_3d_avatar.js",
-        "query": "v=216mergedvoice",
-        "sha256": "af90843e965bf0ab0b08cd8e9af0df8bb2cc3db45fcfa60aa6123f4efeac4b4f",
-        "new": "shared/js/avatar/avatar-controller.js"
+        "query": "v=pdfR1420261102",
+        "sha256": "22b2084f692f77d2c3b046f7893daa1f414d12d8fc13795c868518cd665401c8",
+        "new": "shared/js/avatar/avatar-controller.js",
+        "previous_sha256": "af90843e965bf0ab0b08cd8e9af0df8bb2cc3db45fcfa60aa6123f4efeac4b4f"
       },
       {
         "old": "js/41_v200_english_ui_bilingual.js",
@@ -126,9 +146,10 @@
       },
       {
         "old": "js/45_v204_final_voice_controller.js",
-        "query": "v=241125answerletter",
-        "sha256": "f9a0c627b40a87de912ec7b0a6b4da22b40f828b55722539eb901588452ee9c8",
-        "new": "shared/js/speech/voice-controller.js"
+        "query": "v=pdfR1420261102",
+        "sha256": "db09c39f46ba4714fbfb2ea1c2eed80c83981f2b2224c73cd23155ade6432fd8",
+        "new": "shared/js/speech/voice-controller.js",
+        "previous_sha256": "f9a0c627b40a87de912ec7b0a6b4da22b40f828b55722539eb901588452ee9c8"
       },
       {
         "old": "js/49_v206_knowledge_source_nav.js",
@@ -168,18 +189,43 @@
       },
       {
         "old": "js/55_v241_course_adaptive_ta.js",
-        "query": "v=courseNameR1020261022",
-        "sha256": "b9605707736560e8beda8600aa76e865512f0c45dddba8008ccdee2032d5a610",
-        "new": "shared/js/course/course-controller.js"
+        "query": "v=pdfR1420261102",
+        "sha256": "76f4022e26cf284c18036c54d124e62e4885cc457a089df7a185456f392e783f",
+        "new": "shared/js/course/course-controller.js",
+        "previous_sha256": "b9605707736560e8beda8600aa76e865512f0c45dddba8008ccdee2032d5a610"
       },
       {
         "old": "js/57_role_access.js",
         "query": "v=rolesR1220261030",
         "sha256": "ea1153e1981ca7b59ca416902f0aafffc6ae22d7c77390ef53477dc2d91a1ac2",
         "new": "shared/js/auth/role-access.js"
+      },
+      {
+        "old": "shared/js/course/upload-diagnostics.js",
+        "new": "shared/js/course/upload-diagnostics.js",
+        "sha256": "0319cdea3f40ce29e0f7d7b6d76ca9060fcf7ad904a7b4eb40eeba3110a19182",
+        "query": "v=R14"
       }
     ],
     "kb": [
+      {
+        "old": "shared/vendor/temml/temml.min.js",
+        "new": "shared/vendor/temml/temml.min.js",
+        "sha256": "d4fc39a4729deca1c8e12624885a7616cb661a4ab8e9cd4d6fc1fed23c653308",
+        "query": "v=R14"
+      },
+      {
+        "old": "shared/js/course/course-content.js",
+        "new": "shared/js/course/course-content.js",
+        "sha256": "e60b1b8c5ad6565fa3e14b8bcea838539390cef795445b5835183bcab5ed407b",
+        "query": "v=R14"
+      },
+      {
+        "old": "shared/js/course/course-math.js",
+        "new": "shared/js/course/course-math.js",
+        "sha256": "728f292a7707b013ee37eeff4ac6bbba77053c0da1c7dfd25c31fa57394a131f",
+        "query": "v=R14"
+      },
       {
         "old": "js/01_original_ui_core.js",
         "query": "v=179",
@@ -344,9 +390,10 @@
       },
       {
         "old": "js/25_v105_resume_after_question_mouth_sync.js",
-        "query": "v=241125voiceR920261021",
-        "sha256": "6b934fd14f275c7671a56c2b63a440fb4636d648b8197a7b1a8c6290da13d683",
-        "new": "shared/js/speech/recognition-controller.js"
+        "query": "v=pdfR1420261102",
+        "sha256": "ecbb7424a024d3b310e8b2ea3407e2d1a932396e866d2e3ef4d34d46a1061ddd",
+        "new": "shared/js/speech/recognition-controller.js",
+        "previous_sha256": "6b934fd14f275c7671a56c2b63a440fb4636d648b8197a7b1a8c6290da13d683"
       },
       {
         "old": "js/29_v153_course_aligned_student_results.js",
@@ -362,9 +409,10 @@
       },
       {
         "old": "js/40_v199_main_3d_avatar.js",
-        "query": "v=216mergedvoice",
-        "sha256": "af90843e965bf0ab0b08cd8e9af0df8bb2cc3db45fcfa60aa6123f4efeac4b4f",
-        "new": "shared/js/avatar/avatar-controller.js"
+        "query": "v=pdfR1420261102",
+        "sha256": "22b2084f692f77d2c3b046f7893daa1f414d12d8fc13795c868518cd665401c8",
+        "new": "shared/js/avatar/avatar-controller.js",
+        "previous_sha256": "af90843e965bf0ab0b08cd8e9af0df8bb2cc3db45fcfa60aa6123f4efeac4b4f"
       },
       {
         "old": "js/41_v200_english_ui_bilingual.js",
@@ -386,9 +434,10 @@
       },
       {
         "old": "js/45_v204_final_voice_controller.js",
-        "query": "v=241125answerletter",
-        "sha256": "f9a0c627b40a87de912ec7b0a6b4da22b40f828b55722539eb901588452ee9c8",
-        "new": "shared/js/speech/voice-controller.js"
+        "query": "v=pdfR1420261102",
+        "sha256": "db09c39f46ba4714fbfb2ea1c2eed80c83981f2b2224c73cd23155ade6432fd8",
+        "new": "shared/js/speech/voice-controller.js",
+        "previous_sha256": "f9a0c627b40a87de912ec7b0a6b4da22b40f828b55722539eb901588452ee9c8"
       },
       {
         "old": "js/49_v206_knowledge_source_nav.js",
@@ -422,16 +471,24 @@
       },
       {
         "old": "js/55_v241_course_adaptive_ta.js",
-        "query": "v=courseNameR1020261022",
-        "sha256": "b9605707736560e8beda8600aa76e865512f0c45dddba8008ccdee2032d5a610",
-        "new": "shared/js/course/course-controller.js"
+        "query": "v=pdfR1420261102",
+        "sha256": "76f4022e26cf284c18036c54d124e62e4885cc457a089df7a185456f392e783f",
+        "new": "shared/js/course/course-controller.js",
+        "previous_sha256": "b9605707736560e8beda8600aa76e865512f0c45dddba8008ccdee2032d5a610"
       },
       {
         "old": "js/57_role_access.js",
         "query": "v=rolesR1220261030",
         "sha256": "ea1153e1981ca7b59ca416902f0aafffc6ae22d7c77390ef53477dc2d91a1ac2",
         "new": "shared/js/auth/role-access.js"
+      },
+      {
+        "old": "shared/js/course/upload-diagnostics.js",
+        "new": "shared/js/course/upload-diagnostics.js",
+        "sha256": "0319cdea3f40ce29e0f7d7b6d76ca9060fcf7ad904a7b4eb40eeba3110a19182",
+        "query": "v=R14"
       }
     ]
-  }
+  },
+  "revision": "R14 approved ingestion, content and audio changes; original module order retained"
 }
