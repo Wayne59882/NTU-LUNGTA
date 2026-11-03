@@ -57,9 +57,9 @@
       {
         "old": "js/48_reference_textbook.js",
         "query": "v=237selective1",
-        "sha256": "e8271de6aac6c80a18c01b720f681ed0680baf2472bb3208086642032afcfe64",
+        "sha256": "bffbc1db75eb40fa81cec6b4022fe590ea1c80e4f54c4a8ab352fc52494e7ba6",
         "new": "reference/js/reference-textbook.js",
-        "previous_sha256": "99bf21de6ec66d0fdba9b81a5511a4f179ad9801c3907ffb067b9570b83463c8"
+        "previous_sha256": "e8271de6aac6c80a18c01b720f681ed0680baf2472bb3208086642032afcfe64"
       },
       {
         "old": "js/04_global_speech_stop_patch.js",
@@ -183,9 +183,9 @@
       {
         "old": "js/52_v229_semantic_microbatch.js",
         "query": "v=241125complete",
-        "sha256": "b320c526f3340e99011ccb54a6a126a9180a82e6ea30949fd5486b203ace02f1",
+        "sha256": "8fe0d7918d494d0bc7e6f9dbca157d51ccf22e8796d907371c9774bfc688488e",
         "new": "reference/js/semantic-microbatch.js",
-        "previous_sha256": "10c5f7ecabb1b1a82d7eacd1128101ccb0a4de4ab4f8dc9dc1171bb30c6001ba"
+        "previous_sha256": "b320c526f3340e99011ccb54a6a126a9180a82e6ea30949fd5486b203ace02f1"
       },
       {
         "old": "js/53_local_answer_feedback.js",
@@ -202,9 +202,9 @@
       {
         "old": "js/55_v241_course_adaptive_ta.js",
         "query": "v=pdfR1520261103",
-        "sha256": "bad39c56c62505ca5ce92bf96ef77b6ac7a941f8f3468cdb21ee85d13de8102f",
+        "sha256": "bc0133b51b6e8f715f9c31200665cf8a35a1ac52d2dae9a456aedc08d7234270",
         "new": "shared/js/course/course-controller.js",
-        "previous_sha256": "0c69f7c85e787db03742476214def72cfaa16a9973044cf91d7ef526cd4fc50b"
+        "previous_sha256": "bad39c56c62505ca5ce92bf96ef77b6ac7a941f8f3468cdb21ee85d13de8102f"
       },
       {
         "old": "js/57_role_access.js",
@@ -486,9 +486,9 @@
       {
         "old": "js/55_v241_course_adaptive_ta.js",
         "query": "v=pdfR1520261103",
-        "sha256": "bad39c56c62505ca5ce92bf96ef77b6ac7a941f8f3468cdb21ee85d13de8102f",
+        "sha256": "bc0133b51b6e8f715f9c31200665cf8a35a1ac52d2dae9a456aedc08d7234270",
         "new": "shared/js/course/course-controller.js",
-        "previous_sha256": "0c69f7c85e787db03742476214def72cfaa16a9973044cf91d7ef526cd4fc50b"
+        "previous_sha256": "bad39c56c62505ca5ce92bf96ef77b6ac7a941f8f3468cdb21ee85d13de8102f"
       },
       {
         "old": "js/57_role_access.js",
