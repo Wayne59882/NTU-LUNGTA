@@ -1,6 +1,8 @@
 """Shared answer/vision-model lock for KB and uploaded courses (Python 3.6)."""
 import os
 import threading
+import time
+from ollama_cancel import current_scope
 try:
     import fcntl
 except ImportError:
@@ -13,10 +15,26 @@ class SharedModelLock:
         self.thread_lock=threading.Lock();self.fp=None
 
     def __enter__(self):
-        self.thread_lock.acquire()
+        scope=current_scope()
+        if scope is None:
+            self.thread_lock.acquire()
+        else:
+            while not self.thread_lock.acquire(timeout=0.05):
+                scope.check()
+            scope.check()
         try:
             self.fp=open(self.path,'a+')
-            if fcntl is not None:fcntl.flock(self.fp.fileno(),fcntl.LOCK_EX)
+            if fcntl is not None:
+                if scope is None:
+                    fcntl.flock(self.fp.fileno(),fcntl.LOCK_EX)
+                else:
+                    while True:
+                        scope.check()
+                        try:
+                            fcntl.flock(self.fp.fileno(),fcntl.LOCK_EX | fcntl.LOCK_NB)
+                            break
+                        except BlockingIOError:
+                            time.sleep(0.05)
         except Exception:
             if self.fp:self.fp.close()
             self.fp=None;self.thread_lock.release();raise
