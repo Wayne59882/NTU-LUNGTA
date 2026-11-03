@@ -220,7 +220,7 @@ def health(services=None):
             for port,path,require_revision,name in checks:
                 try:
                     with urllib.request.urlopen('http://127.0.0.1:%s%s'%(port,path),timeout=3) as response:data=json.loads(response.read().decode())
-                    if not data.get('ok') or (require_revision and data.get('content_integrity_revision')!='R15'):raise RuntimeError('Ready response has incorrect revision')
+                    if not data.get('ok') or (require_revision and (data.get('content_integrity_revision')!='R15' or data.get('release_revision')!='R16')):raise RuntimeError('Ready response has incorrect revision')
                     errors.pop(name,None)
                 except Exception as error:errors[name]='%s %s: %s'%(port,path,str(error)[:180])
             if not errors:return

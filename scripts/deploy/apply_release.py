@@ -35,7 +35,7 @@ def validate_bundle(root):
         paths.append(relative[4:])
     if len(set(paths))!=len(paths):raise ValueError('Duplicate release files')
     if not {'reference_server.py','kb_server.py','gateway.py','pdf_ocr.py'}.issubset(set(paths)):
-        raise ValueError('This is not a complete R15 application release')
+        raise ValueError('This is not a complete R16 application release')
     return manifest,paths
 
 
@@ -62,7 +62,7 @@ def main():
         # Recheck PIDs under the lock so a concurrent updater cannot leave stale
         # process snapshots. The same lock is used by the optional Git updater.
         services=sync.plan_services(target)
-        backup=target/'backups'/('manual_R15_'+time.strftime('%Y%m%d_%H%M%S'));backup.mkdir(parents=True)
+        backup=target/'backups'/('manual_R16_'+time.strftime('%Y%m%d_%H%M%S'));backup.mkdir(parents=True)
         sync.install_files(ROOT/'app',target,backup,paths)
         try:
             for service in services:sync.restart(target,service)

@@ -19,7 +19,7 @@ parser=argparse.ArgumentParser();parser.add_argument('--port',type=int);args,ext
 class Handler(BaseHTTPRequestHandler):
  def log_message(self,*args):pass
  def do_GET(self):
-  data=json.dumps({'ok':True,'content_integrity_revision':'R15'}).encode()
+  data=json.dumps({'ok':True,'content_integrity_revision':'R15','release_revision':'R16'}).encode()
   self.send_response(200);self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data)
 HTTPServer(('127.0.0.1',args.port),Handler).serve_forever()
 '''

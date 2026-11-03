@@ -17,6 +17,7 @@ PRIORITY = tempfile.mkdtemp(prefix='vq-priority-')
 os.environ['VQ_MODEL_PRIORITY_DIR'] = PRIORITY
 os.environ['VQ_PDF_OCR'] = 'off'
 os.environ['VQ_PDF_VISION'] = 'off'
+os.environ['VQ_PDF_VISION_FIGURES'] = 'background'  # exercise the optional deferred mode
 import ollama_cancel as oc
 from model_lock import SharedModelLock
 
@@ -127,6 +128,7 @@ def check_courses():
         with fitz.open(str(original)) as doc:
             row = ingestion.inspect_page(doc[1], 2, vision=Vision())
         assert row.get('figure_pending') and row['status'] == 'readable' and not calls, row
+        assert ingestion.FIGURES_MODE == 'background'
         previous = ingestion.FIGURES_MODE;ingestion.FIGURES_MODE = 'inline'
         try:
             with fitz.open(str(original)) as doc:

@@ -38,7 +38,7 @@ with tempfile.TemporaryDirectory() as temporary:
                         with urllib.request.urlopen('http://127.0.0.1:%s%s'%(number,path),timeout=.5) as stream:response=json.loads(stream.read().decode())
                         break
                     except Exception:time.sleep(.05)
-                assert response and response['ok'] and response['content_integrity_revision']=='R15',(role,response)
+                assert response and response['ok'] and response['content_integrity_revision']=='R15' and response.get('release_revision')=='R16',(role,response)
                 assert time.monotonic()-started<10,'readiness was blocked by model warm-up/job resume'
             finally:
                 child.terminate();child.wait(timeout=5)

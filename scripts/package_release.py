@@ -18,7 +18,7 @@ def package(output,report=None):
         raise RuntimeError('Commit source changes before packaging; the ZIP must match GitHub source')
     commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT).decode().strip()
     output=Path(output).resolve();output.parent.mkdir(parents=True,exist_ok=True)
-    prefix=output.stem+'/';manifest={'revision':'R15','source_commit':commit,'files':[]}
+    prefix=output.stem+'/';manifest={'revision':'R16','source_commit':commit,'files':[]}
     with tempfile.TemporaryDirectory(prefix='mc-vhta-release-') as temporary:
         archive=Path(temporary)/'source.tar'
         subprocess.check_call(['git','archive','--format=tar','--output',str(archive),'HEAD'],cwd=ROOT)
@@ -38,7 +38,7 @@ def package(output,report=None):
                     manifest['files'].append({'path':member.name,'sha256':digest.hexdigest(),'size_bytes':member.size})
             bundle.writestr(prefix+'RELEASE_FILES.json',json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
             bundle.writestr(prefix+'START_HERE_ZH_TW.md',
-                '# R15 完整更新包\n\n'
+                '# R16 完整更新包\n\n'
                 '完整程式在 app/；既有伺服器更新使用根目錄 UPDATE_EXISTING_SERVER.sh。\n\n'
                 '1. 解壓在舊程式旁邊，不要直接覆蓋舊資料夾。\n'
                 '2. 由原本啟動服務的使用者登入伺服器，在這個新資料夾執行：\n\n'

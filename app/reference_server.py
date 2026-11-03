@@ -1598,9 +1598,9 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
         return fields,files
     def do_GET(self):
         if self.path=='/api/reference/ready':
-            self.send_json(200,{'ok':True,'content_integrity_revision':'R15','service':'Reference'});return
+            self.send_json(200,{'ok':True,'content_integrity_revision':'R15','release_revision':'R16','service':'Reference'});return
         if self.path in ('/api/health','/api/reference/health'):
-            self.send_json(200,{'ok':True,'service':'MC-VHTA Reference Textbook','build':BUILD,'content_integrity_revision':'R15','mode':self.server.mode,'reference_textbook':SEARCH.status(),
+            self.send_json(200,{'ok':True,'service':'MC-VHTA Reference Textbook','build':BUILD,'content_integrity_revision':'R15','release_revision':'R16','mode':self.server.mode,'reference_textbook':SEARCH.status(),
                                 'answer_language':'same as detected student question','v231_default_profile':V231_DEFAULT_PROFILE,'serving_profile':'v241.12.5-full-answer-voice','cloud_mode':'Confirmed BYOK key sends answers directly to the cloud; no server-stored cloud API key',
                                 'scope_policy':{'locked':False,'scope':'active uploaded course materials; built-in physiology profile retained','cloud_bypass_allowed':False},
                                 'multilingual_stt':{'available':stt_available(),'engine':'faster-whisper auto language detection'},

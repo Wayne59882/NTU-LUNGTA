@@ -698,7 +698,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
 
     def do_GET(self):
         if self.path=="/api/ready":
-            self.send_json(200,{'ok':True,'content_integrity_revision':'R15','service':'KB','warmup':getattr(self.server,'warmup_status','not_requested')});return
+            self.send_json(200,{'ok':True,'content_integrity_revision':'R15','release_revision':'R16','service':'KB','warmup':getattr(self.server,'warmup_status','not_requested')});return
         if self.path == "/api/health":
             self.send_json(200, {
                 "ok": True,

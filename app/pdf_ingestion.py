@@ -15,10 +15,10 @@ from pdf_ocr import LocalOCR
 from pdf_vision import LocalVision,teaching_images
 
 REVISION='R15'
-# Text-rich pages with a figure are usable at once; their figures are read by
-# the background course task after lectures (background), during the build
-# (inline, slow), or never (off).
-FIGURES_MODE=os.environ.get('VQ_PDF_VISION_FIGURES','background').strip().lower()
+# Figures on text-rich pages: read during the build (inline, the R15 method and
+# default), or after lectures by a background task (background, faster course
+# availability), or never (off). The default keeps the documented R15 method.
+FIGURES_MODE=os.environ.get('VQ_PDF_VISION_FIGURES','inline').strip().lower()
 
 def atomic_json(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
