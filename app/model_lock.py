@@ -21,8 +21,8 @@ class SharedModelLock:
         else:
             while not self.thread_lock.acquire(timeout=0.05):
                 scope.check()
-            scope.check()
         try:
+            if scope is not None:scope.check()
             self.fp=open(self.path,'a+')
             if fcntl is not None:
                 if scope is None:
