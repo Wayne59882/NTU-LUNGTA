@@ -58,7 +58,13 @@
       const key=selectedKey();
       try{ localStorage.setItem(STORAGE_KEY,key); }catch(_){}
       updateNote();
-      warmSelectedModel(key);
+      // Selecting a local model leaves Cloud mode and reanswers the last submitted question.
+      const cloud=document.getElementById('cloudModelSelect');
+      if(cloud&&cloud.value!=='off'){
+        cloud.value='off';cloud.dispatchEvent(new Event('change'));
+      }else if(window.VQ_QA_REQUESTS&&window.VQ_QA_REQUESTS.lastQuestion()){
+        window.VQ_QA_REQUESTS.switchModel();
+      }else warmSelectedModel(key);
     });
   }
   window.VQ_getSelectedModelKey=selectedKey;
