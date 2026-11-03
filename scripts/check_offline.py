@@ -80,6 +80,7 @@ def main():
         ("Quiz navigation", [node, str(TESTS / "test_quiz_navigation.cjs")]),
         ("Batch recovery fixtures", [node, str(TESTS / "test_batch_recovery.cjs")]),
         ("Speech pronunciation fixtures", [node, str(TESTS / "test_speech_pronunciation.cjs")]),
+        ("Q&A model handoff", [node, str(TESTS / "test_qa_handoff.cjs")]),
         ("Manual stop", [node, str(TESTS / "test_manual_stop.cjs"),
                          "web/shared/js/speech/recognition-controller.js"]),
         ("Question-generation fixtures", [sys.executable, str(TESTS / "test_question_generation.py")]),
