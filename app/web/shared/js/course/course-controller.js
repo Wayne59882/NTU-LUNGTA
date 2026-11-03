@@ -261,38 +261,43 @@ function renderQuizSummary(report,aggregate){
   if(window.CourseMath)window.CourseMath.typeset($('v241QuizBody'));$('v241NewQuiz').onclick=()=>startDynamicQuiz();
 }
 
-async function courseAnswerOne(q){
+async function courseAnswerOne(q,request){
   const cloud=cloudCfg(),lang=qLang(q);window.VQ_LAST_DETECTED_LANGUAGE=lang;if(cloud.provider!=='off'&&!cloud.apiKey)return 'Please enter the API Key and press Enter or “Confirm API Key” before using the selected cloud model.';
   const path=cloud.provider==='off'?'/api/reference/course-answer-local':'/api/reference/course-answer';const payload={course_id:manifest.course_id,question:String(q||''),model_key:modelKey(),language_tag:lang,cloud_provider:cloud.provider};if(cloud.provider!=='off')payload.cloud_api_key=cloud.apiKey;
-  const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'}),d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));window.VQ_LAST_COURSE_ANSWER_META={course_id:manifest.course_id,engine:d.engine||'local-course-rag',sources:Array.isArray(d.sources)?d.sources:[],correction_id:d.correction_id||''};const answer=window.CourseContent?window.CourseContent.clean(d.answer):String(d.answer||'').trim();if(!answer)throw new Error('The course answer service returned no answer.');return answer;
+  const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store',signal:request&&request.controller?request.controller.signal:undefined}),d=await r.json().catch(()=>({}));if(request&&window.VQ_QA_REQUESTS&&!window.VQ_QA_REQUESTS.isCurrent(request))throw new Error('Superseded question');if(!r.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));window.VQ_LAST_COURSE_ANSWER_META={course_id:manifest.course_id,engine:d.engine||'local-course-rag',sources:Array.isArray(d.sources)?d.sources:[],correction_id:d.correction_id||''};const answer=window.CourseContent?window.CourseContent.clean(d.answer):String(d.answer||'').trim();if(!answer)throw new Error('The course answer service returned no answer.');return answer;
 }
 function installAnswerAdapter(){
   if(!manifest)return;const current=window.VQ_generateFinalAnswer;if(!legacyAnswer&&typeof current==='function')legacyAnswer=current;if(current&&current.__v241CourseAdapter)return;
-  async function checkedAnswer(question){
+  async function checkedAnswer(question,request){
     let response='';
     for(let attempt=0;attempt<2;attempt++){
+      if(request&&window.VQ_QA_REQUESTS&&!window.VQ_QA_REQUESTS.isCurrent(request))return {answer:'',ok:false,obsolete:true};
       window.VQ_LAST_COURSE_ANSWER_META=null;
       try{
-        response=await courseAnswerOne(question);
+        response=await courseAnswerOne(question,request);
         if(window.VQ_cleanStudentAnswer)response=window.VQ_cleanStudentAnswer(response);
         const engine=String(window.VQ_LAST_COURSE_ANSWER_META&&window.VQ_LAST_COURSE_ANSWER_META.engine||'');
         const terminal=/^(?:course-scope-rejected|course-no-evidence)$/.test(engine);
         if(String(response||'').trim()&&(terminal||!window.VQ_validateStudentAnswer||window.VQ_validateStudentAnswer(question,response).ok))return {answer:response,ok:true};
-      }catch(e){response='';}
+      }catch(e){if(request&&window.VQ_QA_REQUESTS&&!window.VQ_QA_REQUESTS.isCurrent(request))return {answer:'',ok:false,obsolete:true};response='';}
     }
     return {answer:/^zh/i.test(qLang(question))?'此題尚未完成：未取得完整且格式有效的答案，請重試此題。':'This question is unfinished. Please retry this question.',ok:false};
   }
   const fn=async function(raw){
     if(!manifest&&legacyAnswer)return legacyAnswer.call(window,raw);
     const started=performance.now(),question=String(raw||'').trim();let items=[];
+    const request=window.VQ_QA_REQUESTS&&window.VQ_QA_REQUESTS.current();
+    const current=()=>!request||!window.VQ_QA_REQUESTS||window.VQ_QA_REQUESTS.isCurrent(request);
     try{items=(window.VQ_splitQuestionBatch&&window.VQ_splitQuestionBatch(question))||[question];}catch(_){items=[question];}
     if(!Array.isArray(items)||!items.length)items=[question];
     const out=[],rows=[],batch=items.length>=2;
     for(let i=0;i<items.length;i++){
+      if(!current())return '';
       const box=$('teacherAnswer');if(batch&&box)box.textContent=out.concat('Processing uploaded-course batch: '+(i+1)+' / '+items.length+'…').join('\n\n');
-      const result=await checkedAnswer(items[i]);rows.push({id:i+1,question:items[i],answer:result.answer,status:result.ok?'ok':'error'});
-      out.push(batch?'Question '+(i+1)+'\n'+result.answer:result.answer);if(box)box.textContent=out.join('\n\n');
+      const result=await checkedAnswer(items[i],request);if(!current())return '';rows.push({id:i+1,question:items[i],answer:result.answer,status:result.ok?'ok':'error'});
+      out.push(batch?'Question '+(i+1)+'\n'+result.answer:result.answer);if(box&&current())box.textContent=out.join('\n\n');
     }
+    if(!current())return '';
     const completed=rows.filter(row=>row.status==='ok').length;
     window.VQ_LAST_BATCH_META={requested:items.length,completed,failed:items.length-completed,answers:rows};
     const answer=out.join('\n\n'),elapsed=performance.now()-started;
