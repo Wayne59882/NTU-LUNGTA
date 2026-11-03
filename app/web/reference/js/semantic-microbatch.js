@@ -108,10 +108,11 @@ function questionLanguage(q){
 }
 function updateProgress(text){try{const box=$('teacherAnswer');if(box)box.textContent=text;}catch(_){ }}
 function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
-async function pollBatchJob(jobId,maxMs){
+async function pollBatchJob(jobId,maxMs,request){
   const started=Date.now();
   while(Date.now()-started<maxMs){
-    const r=await fetch('/api/reference/job-status?id='+encodeURIComponent(jobId),{cache:'no-store'});
+    if(request&&window.VQ_QA_REQUESTS&&!window.VQ_QA_REQUESTS.isCurrent(request))throw Error('Superseded question');
+    const r=await fetch('/api/reference/job-status?id='+encodeURIComponent(jobId),{cache:'no-store',signal:request&&request.controller?request.controller.signal:undefined});
     const d=await r.json().catch(()=>({error:'Invalid job response'}));
     if(!r.ok)throw new Error(friendlyError(d,r.status));
     if(d.status==='done')return d.result||{};
@@ -145,6 +146,8 @@ function install(){
   if(typeof current!=='function'||current.__vqBatch229)return false;
   const original=current;
   const wrapped=async function(raw){
+    const request=window.VQ_QA_REQUESTS&&window.VQ_QA_REQUESTS.current();
+    const current=()=>!request||!window.VQ_QA_REQUESTS||window.VQ_QA_REQUESTS.isCurrent(request);
     const text=String(raw||'').trim();
     const splitter=window.VQ_splitQuestionBatch;
     let items=typeof splitter==='function'?splitter(text):[text];
@@ -164,6 +167,7 @@ function install(){
     const chunkSize=cloud.provider==='off'?40:4;
     window.VQ_LAST_BATCH_META={active:true,total:items.length,completed:0,version:'v241.12.4'};
     for(let offset=0;offset<items.length;offset+=chunkSize){
+      if(!current())return '';
       const group=items.slice(offset,offset+chunkSize);
       updateProgress('正在處理第 '+(offset+1)+'–'+(offset+group.length)+' 題 / '+items.length+' 題…'+(all.length?'\n\n'+formatAnswers({answers:all},all.length):''));
       let data={answers:[]},batchError='';
@@ -171,12 +175,16 @@ function install(){
         if(group.length===1){
           data={answers:[{id:1,answer:await original.call(window,group[0]),answer_language:questionLanguage(group[0])}]};
         }else if(cloud.provider==='off'){
-          const sr=await fetch('/api/reference/batch-job-start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({questions:group,model_key:modelKey()}),cache:'no-store'});
+          const sr=await fetch('/api/reference/batch-job-start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({questions:group,model_key:modelKey()}),cache:'no-store',signal:request&&request.controller?request.controller.signal:undefined});
           const sd=await sr.json().catch(()=>({error:'Invalid server response'}));
           if(!sr.ok||!sd.job_id)throw new Error(friendlyError(sd,sr.status));
-          data=await pollBatchJob(sd.job_id,Math.max(1800000,group.length*120000));
+          if(request&&window.VQ_QA_REQUESTS)window.VQ_QA_REQUESTS.rememberJob(request,sd.job_id);
+          data=await pollBatchJob(sd.job_id,Math.max(1800000,group.length*120000),request);
         }else{
-          const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),300000);
+          const controller=new AbortController();
+          const signal=request&&request.controller?request.controller.signal:null;
+          if(signal){if(signal.aborted)controller.abort();else signal.addEventListener('abort',()=>controller.abort(),{once:true});}
+          const timer=setTimeout(()=>controller.abort(),300000);
           try{
             const body={questions:group,model_key:modelKey(),cloud_provider:cloud.provider,cloud_api_key:cloud.apiKey,language_tags:group.map(questionLanguage)};
             const r=await fetch('/api/reference/answer-batch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store',signal:controller.signal});
@@ -184,9 +192,11 @@ function install(){
             if(!r.ok)throw new Error(friendlyError(data,r.status));
           }finally{clearTimeout(timer);}
         }
-      }catch(e){batchError=String(e&&e.message||e);console.error('[VQ batch]',e);}
+      }catch(e){if(!current())return '';batchError=String(e&&e.message||e);console.error('[VQ batch]',e);}
       const byId=new Map((Array.isArray(data.answers)?data.answers:[]).map(x=>[Number(x&&x.id),x]));
+      if(!current())return '';
       for(let i=0;i<group.length;i++){
+        if(!current())return '';
         let row=byId.get(i+1),lang=String(row&&row.answer_language||questionLanguage(group[i]));
         // The server already tried malformed answers once. Retry only a missing
         // result or a legacy server's incomplete response, never a known error.
@@ -197,9 +207,11 @@ function install(){
         row={...row,id:offset+i+1,answer:clean(row.answer),answer_language:lang};
         all.push(row);
       }
+      if(!current())return '';
       window.VQ_LAST_BATCH_META.completed=all.filter(x=>x.status!=='error').length;
       updateProgress(formatAnswers({answers:all},all.length));
     }
+    if(!current())return '';
     const data={answers:all,batch_size:items.length,engine:cloud.provider==='off'?'local-microbatch':cloud.provider+'-api-microbatch'};
     window.VQ_REFERENCE_BATCH_LAST_META=data;
     window.VQ_LAST_BATCH_META={...window.VQ_LAST_BATCH_META,active:false,failed:all.filter(x=>x.status==='error').length,cloud_started:cloud.provider!=='off'};
