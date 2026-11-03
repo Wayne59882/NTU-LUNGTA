@@ -113,7 +113,7 @@
       {
         "old": "js/25_v105_resume_after_question_mouth_sync.js",
         "query": "v=pdfR1520261103",
-        "sha256": "1e6ec83219a7eb8d9b084fd4a3638b3cce082f2c7e52caa404389ff55f922040",
+        "sha256": "783aa7dd5da86bd30aa8a8e02b742f5d7fc3dde67460bce18e30f6225cf0c1cc",
         "new": "shared/js/speech/recognition-controller.js",
         "previous_sha256": "ecbb7424a024d3b310e8b2ea3407e2d1a932396e866d2e3ef4d34d46a1061ddd"
       },
