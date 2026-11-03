@@ -29,9 +29,10 @@ class CancellationScope:
         self._previous = None
 
     def __enter__(self):
+        # Never install a cancelled scope in thread-local state if entry fails.
+        self.check()
         self._previous = current_scope()
         _LOCAL.scope = self
-        self.check()
         return self
 
     def __exit__(self, *args):
