@@ -15,7 +15,7 @@
     try{sessionStorage.setItem(PROVIDER_KEY,provider);}catch(_){ }
     if(provider!=='off'){
       const key=confirmedKey();
-      if(key)setStatus('✓ API key confirmed. Answers use the selected cloud model directly in this browser session.','ok');
+      if(key)setStatus('API key saved. The cloud model will be verified by its answer request.','pending');
       else setStatus('Press Enter or select “Confirm API Key” after pasting the key.','');
     }
   }
@@ -24,13 +24,14 @@
     if(provider==='off'){setStatus('Cloud model is off.','');return;}
     if(!value){try{sessionStorage.removeItem(API_KEY_KEY);}catch(_){ }setStatus('Enter an API key before confirming.','pending');if(input)input.focus();return;}
     try{sessionStorage.setItem(API_KEY_KEY,value);}catch(_){ }
-    setStatus('✓ API key confirmed. Answers use the selected cloud model directly in this browser session.','ok');
+    setStatus('API key saved. Checking the cloud model with the current question…','pending');
+    if(window.VQ_QA_REQUESTS)window.VQ_QA_REQUESTS.switchModel();
   }
   function init(){
     const select=$('cloudModelSelect'),input=$('cloudApiKeyInput'),clear=$('cloudApiKeyClearBtn'),confirmBtn=$('cloudApiKeyConfirmBtn');if(!select)return;
     try{select.value=normalize(sessionStorage.getItem(PROVIDER_KEY)||'off');}catch(_){select.value='off';}
     try{if(input)input.value=sessionStorage.getItem(API_KEY_KEY)||'';}catch(_){ }
-    sync();select.addEventListener('change',sync);
+    sync();select.addEventListener('change',function(){sync();if((selectedProvider()==='off'||confirmedKey())&&window.VQ_QA_REQUESTS)window.VQ_QA_REQUESTS.switchModel();});
     if(input){
       input.addEventListener('input',function(){
         const confirmed=confirmedKey();if(String(input.value||'').trim()!==confirmed){try{sessionStorage.removeItem(API_KEY_KEY);}catch(_){ }setStatus('New key detected. Press Enter or select “Confirm API Key” to apply it.','pending');}
