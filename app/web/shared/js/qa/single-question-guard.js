@@ -11,6 +11,7 @@
 
 let pendingQuestion = '';
 let pendingPromise = null;
+let pendingToken = null;
 
 function install(){
   if(typeof window.VQ_generateFinalAnswer === 'function' &&
@@ -21,7 +22,8 @@ function install(){
     const guarded = function(raw){
       const q = String(raw || '').trim();
 
-      if(pendingPromise && q === pendingQuestion){
+      const token = window.VQ_QA_ACTIVE_REQUEST_TOKEN || 0;
+      if(pendingPromise && q === pendingQuestion && token === pendingToken){
         console.log('[VQ single-QA] duplicate submission merged:', q);
         return pendingPromise;
       }
@@ -32,11 +34,13 @@ function install(){
 
       pendingQuestion = q;
       pendingPromise = p;
+    pendingToken = token;
 
       p.finally(function(){
         if(pendingPromise === p){
           pendingPromise = null;
           pendingQuestion = '';
+          pendingToken = null;
         }
       }).catch(function(){});
 
