@@ -1425,12 +1425,25 @@ def _job_cleanup(server):
 def _job_set(server,jid,**updates):
     with server.jobs_lock:
         job=server.jobs.get(jid)
-        if not job:return
+        if not job or job.get('status')=='cancelled':return
         job.update(updates);job['updated_at']=time.time()
+
+def _job_cancelled(server,jid):
+    with server.jobs_lock:
+        return (server.jobs.get(jid) or {}).get('status')=='cancelled'
+
+def _job_cancel(server,jid):
+    with server.jobs_lock:
+        job=server.jobs.get(jid)
+        if not job:return False
+        if job.get('status') not in ('done','error','cancelled'):
+            job.update({'status':'cancelled','message':'Question superseded by another model','updated_at':time.time()})
+        return True
 
 def _single_local_job(server,jid,q,model_key,language_tag,profile):
     try:
         with server.local_job_semaphore:
+            if _job_cancelled(server,jid):return
             _job_set(server,jid,status='retrieving',progress=10,message='Retrieving textbook evidence')
             if server.mode=='mock':
                 result={'answer':'[MOCK] Grounded reference answer.','answer_language':language_tag,'engine':'mock-local','model_key':model_key,'search_method':'source-balanced semantic vector RAG','sources':[],'search_ms':0,'retrieval':{},'verification':{'fast_verified':True,'semantic_review_used':False},'serving_profile':'v238-accuracy-first-robust-batch'}
@@ -1447,6 +1460,7 @@ def _single_local_job(server,jid,q,model_key,language_tag,profile):
             if not found.get('ok'):
                 result={'answer':no_evidence_message(language_tag),'answer_language':language_tag,'engine':'reference-search-no-evidence','search_method':'source-balanced semantic vector RAG','sources':[],'search_ms':search_ms,'retrieval':found.get('retrieval',{}),'reason':found.get('reason'),'scope':scope}
                 _job_set(server,jid,status='done',progress=100,message='Done',result=result);return
+            if _job_cancelled(server,jid):return
             _job_set(server,jid,status='answering',progress=35,message='Local model answering')
             t0=time.time();ans,verification=local_answer(server,model_key,q,found.get('context',''),language_tag,found.get('retrieval') or {})
             result={'answer':ans,'answer_language':language_tag,'engine':'local','model_key':model_key,'search_method':'source-balanced semantic vector RAG','sources':found.get('sources') or [],'search_ms':search_ms,'retrieval':found.get('retrieval') or {},'verification':verification,'local_elapsed_sec':round(time.time()-t0,2),'latency_ms':round((time.time()-t0)*1000,1),'serving_profile':'v238-accuracy-first-robust-batch'}
@@ -1457,6 +1471,7 @@ def _single_local_job(server,jid,q,model_key,language_tag,profile):
 def _batch_local_job(server,jid,questions,model_key,profile):
     try:
         with server.local_job_semaphore:
+            if _job_cancelled(server,jid):return
             if server.mode=='mock':
                 answers=[{'id':i+1,'answer':'[MOCK] Batch answer %d'%(i+1),'answer_language':detect_question_language(str(q or ''),''),'engine':'mock-local','verification':{'mandatory_verification':True,'fast_verified':True,'semantic_verification_used':True,'verification_mode':'mock'}} for i,q in enumerate(questions)]
                 _job_set(server,jid,status='done',progress=100,message='Done',result={'answers':answers,'engine':'mock-local','model_key':model_key,'batch_size':len(questions),'mandatory_verification':True,'profile':profile,'serving_profile':'v238-accuracy-first-robust-batch'});return
@@ -1769,6 +1784,15 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                     self.server.active_model_key=key;self.server.active_model_tag=tag;self.server.active_model_base=base
                 self.send_json(200,{'ok':True,'model_key':key,'model':tag})
             except Exception as e:self.send_json(503,{'ok':False,'error':str(e),'model_key':key,'model':tag})
+            return
+        if self.path=='/api/reference/job-cancel':
+            try:
+                req=self.read_json();jid=str(req.get('job_id') or '')
+                if not re.fullmatch(r'[0-9a-f]{32}',jid):
+                    self.send_json(400,{'ok':False,'error':'Invalid job ID'});return
+                ok=_job_cancel(self.server,jid)
+                self.send_json(200 if ok else 404,{'ok':ok,'job_id':jid,'status':'cancelled' if ok else 'not_found'})
+            except Exception as e:self.send_json(400,{'ok':False,'error':str(e)[:120]})
             return
         if self.path in ('/api/reference/answer-job-start','/api/reference/batch-job-start'):
             try:req=self.read_json()
