@@ -28,10 +28,11 @@
     return String(d&&d.detail||d&&d.error||('HTTP '+status));
   }
   function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
-  async function pollLocalJob(jobId,maxMs){
+  async function pollLocalJob(jobId,maxMs,request){
     const started=Date.now();
     while(Date.now()-started<maxMs){
-      const r=await fetch('/api/reference/job-status?id='+encodeURIComponent(jobId),{cache:'no-store'});
+      if(request&&window.VQ_QA_REQUESTS&&!window.VQ_QA_REQUESTS.isCurrent(request))throw new Error('Superseded question');
+      const r=await fetch('/api/reference/job-status?id='+encodeURIComponent(jobId),{cache:'no-store',signal:request&&request.controller?request.controller.signal:undefined});
       const d=await r.json().catch(()=>({error:'Invalid job response'}));
       if(!r.ok)throw new Error(friendlyError(d,r.status));
       if(d.status==='done')return d.result||{};
@@ -41,6 +42,9 @@
     throw new Error('Local answer job timed out.');
   }
   async function answer(q){
+    const request=window.VQ_QA_REQUESTS&&window.VQ_QA_REQUESTS.current();
+    const signal=request&&request.controller?request.controller.signal:undefined;
+    const current=()=>!request||!window.VQ_QA_REQUESTS||window.VQ_QA_REQUESTS.isCurrent(request);
     const cloud=cloudConfig();
     const language=questionLanguage(q);
     window.VQ_LAST_DETECTED_LANGUAGE=language;
@@ -51,28 +55,35 @@
     if(cloud.provider==='off'){
       try{
         const payload={question:String(q||''),model_key:modelKey(),language_tag:language};
-        const r=await fetch('/api/reference/answer-job-start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});
+        const r=await fetch('/api/reference/answer-job-start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store',signal:signal});
         const started=await r.json().catch(()=>({error:'Invalid server response'}));
         if(!r.ok||!started.job_id)throw new Error(friendlyError(started,r.status));
-        const d=await pollLocalJob(started.job_id,900000);
+        if(request&&window.VQ_QA_REQUESTS)window.VQ_QA_REQUESTS.rememberJob(request,started.job_id);
+        const d=await pollLocalJob(started.job_id,900000,request);
+        if(!current())return '';
         renderMeta(d);window.VQ_LAST_DETECTED_LANGUAGE=String(d.answer_language||language||'zh-TW');
         return String(d.answer||'The answer service could not produce a response.');
       }catch(e){
+        if(!current())return '';
         console.error('[VQ Reference Textbook local job]',e);renderMeta({engine:'error',sources:[]});
         const msg=String(e&&e.message||'').trim();return msg&&msg!=='Failed to fetch'?msg:'The Q&A service is temporarily unreachable. Please check the server/network and try again.';
       }
     }
-    const controller=new AbortController(); const timer=setTimeout(()=>controller.abort(),300000);
+    const controller=new AbortController();
+    if(signal){if(signal.aborted)controller.abort();else signal.addEventListener('abort',()=>controller.abort(),{once:true});}
+    const timer=setTimeout(()=>controller.abort(),300000);
     try{
       const payload={question:String(q||''),model_key:modelKey(),cloud_provider:cloud.provider,language_tag:language};
       if(cloud.provider!=='off')payload.cloud_api_key=cloud.apiKey;
       const r=await fetch('/api/reference/answer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store',signal:controller.signal});
       const d=await r.json().catch(()=>({error:'Invalid server response'}));
       if(!r.ok) throw new Error(friendlyError(d,r.status));
+      if(!current())return '';
       renderMeta(d);
       window.VQ_LAST_DETECTED_LANGUAGE=String(d.answer_language||d.language_tag||language||'zh-TW');
       return String(d.answer||'The answer service could not produce a response.');
     }catch(e){
+      if(!current())return '';
       console.error('[VQ Reference Textbook]',e); renderMeta({engine:'error',sources:[]});
       const msg=String(e&&e.message||'').trim();
       return msg&&msg!=='Failed to fetch' ? msg : 'The Q&A service is temporarily unreachable. Please check the server/network and try again.';
