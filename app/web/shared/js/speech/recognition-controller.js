@@ -571,35 +571,54 @@
     setStatus('Lecture completed.');
   }
 
-  async function submitQuestion(){
+  async function submitQuestion(options){
+    const opts=options||{};
     const capture=window.__v105_active_recognition;
-    if(voiceStartPending || (capture && !capture.__vqManualStopRequested && !capture.__vqCancelled)){
+    if(!opts.force&&(voiceStartPending || (capture && !capture.__vqManualStopRequested && !capture.__vqCancelled))){
       setStatus('Select Stop Recording & Answer to finish your voice question.');return;
     }
-    pauseLectureForQuestion();
-    const qBox = $('studentQuestion');
-    const aBox = $('teacherAnswer');
-    const q = window.VQ_readQuestionText ? window.VQ_readQuestionText(qBox) : clean(qBox ? qBox.innerText : '');
-    window.VQ_LAST_INPUT_SOURCE = (window.VQ_NEXT_INPUT_SOURCE === 'voice') ? 'voice' : 'text';
-    window.VQ_NEXT_INPUT_SOURCE = null;
-    if(!q || q === 'Listening...'){
-      if(aBox) aBox.textContent = 'Please type or record a question first.';
+    const qBox=$('studentQuestion'),aBox=$('teacherAnswer');
+    const q=opts.force?clean(opts.question):
+      (window.VQ_readQuestionText?window.VQ_readQuestionText(qBox):clean(qBox?qBox.innerText:''));
+    if(!q||q==='Listening...'){
+      if(aBox)aBox.textContent='Please type or record a question first.';
       return;
     }
-    if(aBox) aBox.textContent = 'The AI teacher is retrieving relevant reference material and preparing the answer...';
-    let ans = '';
-    try{
-      if(window.VQ_generateFinalAnswer) ans = await window.VQ_generateFinalAnswer(q);
-      else if(window.VQ_V55_answerQuestion) ans = await window.VQ_V55_answerQuestion(q);
-      else ans = 'The Q&A engine is not loaded. Please refresh the page.';
-    }catch(e){
-      ans = 'An error occurred while processing the question. Please submit it again.';
-    }
-    ans = window.VQ_UPLOADED_COURSE_ACTIVE&&window.CourseContent ? window.CourseContent.display(ans) : plainStudentAnswer(window.VQ_cleanStudentAnswer ? window.VQ_cleanStudentAnswer(ans) : ans);
-    if(aBox){ if(window.CourseMath)window.CourseMath.render(aBox,ans);else aBox.textContent=ans; aBox.scrollTop = 0; }
-    speakAnswer(ans);
+    const source=opts.force?(opts.source||'text'):
+      (window.VQ_NEXT_INPUT_SOURCE==='voice'?'voice':'text');
+    if(!opts.force)window.VQ_NEXT_INPUT_SOURCE=null;
+    const manager=window.VQ_QA_REQUESTS;
+    const entry=manager&&manager.begin(q,{force:!!opts.force,source:source});
+    if(entry&&entry.joined)return entry.request.promise;
+    const request=entry&&entry.request;
+    window.VQ_LAST_INPUT_SOURCE=source;
+    pauseLectureForQuestion();
+    if(aBox)aBox.textContent='The AI teacher is retrieving relevant reference material and preparing the answer...';
+    const task=(async function(){
+      let ans='';
+      try{
+        if(window.VQ_generateFinalAnswer)ans=await window.VQ_generateFinalAnswer(q);
+        else if(window.VQ_V55_answerQuestion)ans=await window.VQ_V55_answerQuestion(q);
+        else ans='The Q&A engine is not loaded. Please refresh the page.';
+      }catch(error){
+        if(request&&(!manager.isCurrent(request)||request.controller&&request.controller.signal.aborted))return;
+        ans='An error occurred while processing the question. Please submit it again.';
+      }
+      if(request&&!manager.isCurrent(request))return;
+      ans=window.VQ_UPLOADED_COURSE_ACTIVE&&window.CourseContent?
+        window.CourseContent.display(ans):plainStudentAnswer(window.VQ_cleanStudentAnswer?
+        window.VQ_cleanStudentAnswer(ans):ans);
+      if(aBox){if(window.CourseMath)window.CourseMath.render(aBox,ans);else aBox.textContent=ans;aBox.scrollTop=0;}
+      if(request)manager.finish(request);
+      speakAnswer(ans);
+    })();
+    if(request)manager.bind(request,task);
+    return task;
   }
-
+  // Model selection reuses the last *submitted* question, never a partial live transcript.
+  window.VQ_QA_REASK_CURRENT=function(question,source){
+    return submitQuestion({force:true,question:question,source:source});
+  };
   function speakAnswer(ans){
     try{ if(synth) synth.cancel(); }catch(_){ }
     stopMouthLoop(true);
