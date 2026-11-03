@@ -10,6 +10,12 @@ from math_integrity import math_issues, question_math_ok
 from content_integrity import text_issues, clean_course_text, question_text_ok, extract_page, ContentIntegrityError, SOURCE_RULE
 from pdf_ingestion import iter_pages, unit_quality, write_receipt, atomic_json, upload_diagnostics
 from course_grounding import review_text,REVISION as REVIEW_REVISION
+from ollama_cancel import BackgroundWork
+from pdf_vision import LocalVision
+
+
+class CourseDeleted(Exception):
+    """The teacher deleted the course or cancelled its build; stop its background work."""
 
 try:
     import fitz
@@ -747,6 +753,9 @@ class CourseManager(object):
         with self.jobs_lock:
             if prior.exists():
                 existing=json.loads(prior.read_text(encoding='utf-8'))
+                if self.job_status(existing['id']).get('status')=='cancelled':
+                    prior.unlink();existing=None
+            if prior.exists() and existing:
                 if existing.get('selected')!=selected:raise ValueError('This upload is already building. Continue the existing job or start a new upload for different units.')
                 current=self.job_status(existing['id'])
                 if current.get('status')=='error':
@@ -809,7 +818,7 @@ class CourseManager(object):
                 man=self._update_manifest(man['course_id'],prepare_bank) or man
             man=self._quarantine_damaged_math(man)
             prep=man.get('preparation') or {}
-            if man.get('status') in ('preparing','error') or any((prep.get(k) or {}).get('status') in ('preparing','error') for k in ('questions','index','lectures')):
+            if man.get('status') in ('preparing','error') or any((prep.get(k) or {}).get('status') in ('preparing','error','waiting') for k in ('questions','index','lectures','figures')):
                 self._start_preparation(man['course_id'],man.get('model_key') or 'gemma',model_call)
 
     def _quarantine_damaged_math(self,man):
@@ -887,10 +896,28 @@ class CourseManager(object):
         finally:
             if owned:doc.close()
 
+    def _alive(self,cid):
+        if cid in self.deleted:raise CourseDeleted('This course was deleted or its build was cancelled.')
+
+    def _background(self,cid):
+        """Course work yields the model to student questions and stops when the course is deleted."""
+        return BackgroundWork(lambda:self._alive(cid))
+
+    def _discard_deleted(self,cid):
+        """Remove files a stopped worker may have written after deletion."""
+        if cid not in self.deleted:return
+        cd=self._course_dir(cid)
+        if cd.is_dir() and not cd.is_symlink():shutil.rmtree(str(cd),ignore_errors=True)
+        with self.cache_lock:self.cache.pop(cid,None)
+
     def _build(self,jid,stage,units,course_id,course_name,visual_model,model_key,model_call):
         self._set_job(jid,status='queued',message='PDF received; waiting for the extraction worker',ingestion_revision='R15')
-        with self.build_slots:
-            return self._build_impl(jid,stage,units,course_id,course_name,visual_model,model_key,model_call)
+        try:
+            with self.build_slots:
+                if course_id in self.deleted:raise CourseDeleted('Build cancelled')
+                with self._background(course_id):
+                    return self._build_impl(jid,stage,units,course_id,course_name,visual_model,model_key,model_call)
+        finally:self._discard_deleted(course_id)
 
     def _build_impl(self,jid,stage,units,course_id,course_name,visual_model,model_key,model_call):
         phase='initializing the course workspace'
@@ -907,7 +934,7 @@ class CourseManager(object):
                     except OSError:shutil.copyfile(str(src),str(dst))
             phase='extracting chapter text'
             self._set_job(jid,status='running',progress=4,message='Extracting chapter text')
-            chunks=[];unit_texts={};source_quality={};doc=None;last_file=None
+            chunks=[];unit_texts={};source_quality={};doc=None;last_file=None;figure_pages=[]
             total_pages=sum(int(u['end_page'])-int(u['start_page'])+1 for u in units);page_progress=[0]
             try:
                 for ui,u in enumerate(units,1):
@@ -917,6 +944,7 @@ class CourseManager(object):
                     source=next((src for src in stage.get('sources',[]) if src['file_name']==u['source_file']),{})
                     identity=source.get('sha256') or (u['source_file']+'|'+str((cd/'source'/u['source_file']).stat().st_size))
                     def page_done(row,cached):
+                        self._alive(course_id)
                         if row['status'] in ('ocr_running','vision_running'):
                             self._set_job(jid,status='running',message=('%s: PDF page %s (%s / %s selected pages complete)'%('Local visual reading' if row['status']=='vision_running' else 'Local OCR',row['page'],page_progress[0],total_pages)),current_page=row['page'],current_source=source.get('display_name') or u['source_file'])
                             return
@@ -924,6 +952,7 @@ class CourseManager(object):
                         if page_progress[0]%5==0 or row['status']=='needs_review' or page_progress[0]==total_pages:
                             self._set_job(jid,status='running',progress=4+int(10*page_progress[0]/max(1,total_pages)),message='Reading PDF page %s (%s / %s selected pages)'%(row['page'],page_progress[0],total_pages),processed_pages=page_progress[0],total_pages=total_pages,current_page=row['page'],current_source=source.get('display_name') or u['source_file'])
                     pages=list(iter_pages(doc,u['start_page'],u['end_page'],sd/'page_cache',identity,page_done))
+                    figure_pages.extend({'unit_id':u['id'],'source_file':u['source_file'],'page':row['page']} for row in pages if row.get('figure_pending'))
                     source_quality[u['id']]=unit_quality(pages)
                     atomic_json(cd/'source_quality.json',source_quality)
                     txt=_safe_source_text('\n\n'.join(row['text'] for row in pages if row['text']))
@@ -957,6 +986,9 @@ class CourseManager(object):
                     lambda message:self._set_job(jid,status='running',progress=15,message=message))
             else:course_title,course_name_source=(_clean_text(course_name) or stage.get('course_name') or 'Uploaded Course'),'pdf_metadata'
             manifest={'stage_id':stage['stage_id'],'ingestion_revision':'R15','source_review':{'required':any(q['status']!='readable' for q in source_quality.values()),'units':source_quality},'course_id':course_id,'course_name':course_title,'course_name_source':course_name_source,'visual_model':'vq' if visual_model=='vq' else 'none','visual_model_label':'V/Q Visual Model' if visual_model=='vq' else 'No Specialized Visual Model','sources':stage.get('sources',[]),'units':lecture_units,'content_version':'v241.9','question_target_per_unit':QUESTION_TARGET,'quiz_questions_per_unit':2,'question_generation':QUESTION_GENERATION,'rag':{'embedding_model':EMBED_MODEL,'dimension':1024,'top_candidates':TOP_CANDIDATES,'final_top_k':FINAL_TOP_K,'search_method':'course text ready immediately; semantic passage index follows'},'model_key':model_key,'created_at':time.time(),'status':'preparing','preparation':{'lectures':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing Traditional Chinese teacher scripts'},'questions':{'status':'preparing','completed_units':0,'total_units':len(units),'message':'Preparing reviewed exam-style questions from available evidence'},'index':{'status':'preparing','message':'Course text Q&A ready; enhancing semantic search'}}}
+            manifest['figure_pages']=figure_pages
+            if figure_pages:manifest['preparation']['figures']={'status':'waiting','completed':0,'total':len(figure_pages),'message':'Figures on text pages are read after lectures are ready'}
+            self._alive(course_id)
             _json_dump(cd/'question_banks.json',{});_json_dump(cd/'scenario_cache.json',{})
             if not chunks:
                 manifest['status']='source_review'
@@ -965,7 +997,11 @@ class CourseManager(object):
             self._set_job(jid,status='done',progress=100,message='Course Q&A active; Chinese lectures and scenario concepts are being prepared' if chunks else 'PDF received; no usable text yet. Open upload diagnostics to check OCR setup and problem pages.',result={'course_id':course_id})
             with self.cache_lock:self.cache.pop(course_id,None)
             if chunks:self._start_preparation(course_id,model_key,model_call)
+        except CourseDeleted:
+            self._set_job(jid,status='cancelled',progress=100,message='Course build cancelled by the teacher')
         except Exception as e:
+            if course_id in self.deleted:
+                self._set_job(jid,status='cancelled',progress=100,message='Course build cancelled by the teacher');return
             self._set_job(jid,status='error',message='Course build failed during '+phase,error=str(e),phase=phase)
 
     def _build_vectors(self,cd,chunks,jid):
@@ -1001,7 +1037,9 @@ class CourseManager(object):
             if (cid,'sources') in self.running:return
         if m.get('units') and all(u.get('source_blocked') for u in m['units']):return
         prep=m.get('preparation') or {}
-        for kind,fn in (('questions',self._prepare_questions),('lectures',self._prepare_lectures),('index',self._prepare_index)):
+        tasks=(('questions',self._prepare_questions),('lectures',self._prepare_lectures),('index',self._prepare_index),('figures',self._prepare_figures))
+        for kind,fn in tasks:
+            if kind=='figures' and not m.get('figure_pages'):continue
             if only is not None and kind not in only:continue
             if not force and (prep.get(kind) or {}).get('status')=='ready':continue
             key=(cid,kind)
@@ -1011,9 +1049,15 @@ class CourseManager(object):
                 if key in self.running:continue
                 self.running.add(key)
             def work(task=key,task_fn=fn):
-                try:task_fn(cid,model_key,model_call)
+                try:
+                    with self._background(cid):task_fn(cid,model_key,model_call)
+                except CourseDeleted:pass
                 finally:
                     with self.running_lock:self.running.discard(task)
+                    if cid in self.deleted:
+                        with self.running_lock:busy=any(item[0]==cid for item in self.running)
+                        if not busy:self._discard_deleted(cid)
+                        return
                     if task[1]=='questions':
                         latest=self.manifest(cid) or {}
                         questions=(latest.get('preparation') or {}).get('questions') or {}
@@ -1033,7 +1077,7 @@ class CourseManager(object):
             self._update_manifest(cid,lambda m:m.setdefault('preparation',{}).update({'sources':{'status':'preparing','message':'Retrying source OCR from the saved original PDF'}}))
             def repair():
                 try:
-                    with self.build_slots:self._repair_sources(cid)
+                    with self.build_slots,self._background(cid):self._repair_sources(cid)
                 except Exception as error:
                     self._update_manifest(cid,lambda m:m['preparation']['sources'].update({'status':'error','error':str(error)}))
                 finally:
@@ -1137,6 +1181,7 @@ class CourseManager(object):
             units=self.manifest(cid)['units'];completed=0;errors=[]
             pending=list(range(len(units)))
             while pending:
+                self._alive(cid)
                 current=self.manifest(cid) or {}
                 priority=(current.get('preparation',{}).get('lectures') or {}).get('priority_unit_id')
                 i=next((index for index in pending if units[index]['id']==priority),pending[0])
@@ -1157,6 +1202,82 @@ class CourseManager(object):
             self._update_manifest(cid,lambda m:m['preparation']['lectures'].update({'status':state,'error':'; '.join(errors)[:1000]}))
         except Exception as e:
             self._update_manifest(cid,lambda m:m['preparation']['lectures'].update({'status':'error','error':str(e),'message':'Chinese lecture preparation stopped'}))
+
+    def _prepare_figures(self,cid,model_key,model_call):
+        """Read figures of text-rich pages after the lectures, then add them to course search."""
+        cd=self._course_dir(cid)
+        def status(**values):
+            self._update_manifest(cid,lambda m:m.setdefault('preparation',{}).setdefault('figures',{}).update(values))
+        try:
+            self._wait_for_lectures(cid);self._alive(cid)
+            m=self.manifest(cid) or {};pages=m.get('figure_pages') or []
+            if not pages:return
+            vision=LocalVision()
+            if not vision.probe():
+                status(status='unavailable',message='Figures on text pages were not read: '+vision.error);return
+            cache_path=cd/'figure_cache.json'
+            done=json.loads(cache_path.read_text(encoding='utf-8')) if cache_path.exists() else {}
+            units={u['id']:u for u in m.get('units') or []};docs={}
+            try:
+                for n,row in enumerate(pages,1):
+                    self._alive(cid)
+                    key='%s|%s'%(row['source_file'],row['page'])
+                    if key not in done:
+                        status(status='preparing',completed=n-1,total=len(pages),message='Reading figures: page %s (%s / %s)'%(row['page'],n,len(pages)))
+                        if row['source_file'] not in docs:docs[row['source_file']]=fitz.open(str(cd/'source'/row['source_file']))
+                        result=vision.read(docs[row['source_file']][int(row['page'])-1])
+                        done[key]={'ok':bool(result.get('ok')),'text':result.get('text','') if result.get('ok') else '','error':result.get('error','')[:240]}
+                        self._alive(cid);_json_dump(cache_path,done)
+            finally:
+                for doc in docs.values():doc.close()
+            added=[]
+            for row in pages:
+                entry=done.get('%s|%s'%(row['source_file'],row['page'])) or {}
+                text=_safe_source_text(entry.get('text') or '') if entry.get('ok') else ''
+                unit=units.get(row['unit_id'])
+                if not text or not unit or text_issues(text):continue
+                for k,value in enumerate(_word_chunks(text),1):
+                    added.append({'id':'%s_p%04d_fig%02d'%(unit['id'],int(row['page']),k),'unit_id':unit['id'],'unit_title':unit['title'],
+                        'source':unit.get('source_title') or 'Uploaded PDF','source_file':row['source_file'],'pdf_page':int(row['page']),
+                        'extraction_method':'local_vision_figure','text':value})
+            self._alive(cid)
+            with self.manifest_lock:
+                cp=cd/'chunks.jsonl';have={json.loads(x)['id'] for x in cp.read_text(encoding='utf-8').splitlines() if x}
+                fresh=[c for c in added if c['id'] not in have]
+                if fresh:
+                    with cp.open('a',encoding='utf-8') as f:
+                        for c in fresh:f.write(json.dumps(c,ensure_ascii=False)+'\n')
+            while True:  # the full index may still be embedding the original passages
+                with self.running_lock:indexing=(cid,'index') in self.running
+                if not indexing:break
+                self._alive(cid);time.sleep(5)
+            indexed=self._index_missing_chunks(cid)
+            read=sum(bool((done.get('%s|%s'%(r['source_file'],r['page'])) or {}).get('ok')) for r in pages)
+            status(status='ready',completed=len(pages),total=len(pages),pages_read=read,passages_added=len(fresh),passages_indexed=indexed,
+                   message='Figures read on %s / %s pages; %s figure passages added to course Q&A'%(read,len(pages),len(fresh)))
+        except CourseDeleted:raise
+        except Exception as e:status(status='error',error=str(e)[:400],message='Figure reading stopped; text-based course content remains available')
+
+    def _index_missing_chunks(self,cid):
+        """Embed passages appended after the semantic index was built."""
+        cd=self._course_dir(cid);vp=cd/'vector_index.sqlite3'
+        if not vp.exists():return 0  # the full index (or text search) reads chunks.jsonl directly
+        chunks=[json.loads(x) for x in (cd/'chunks.jsonl').read_text(encoding='utf-8').splitlines() if x]
+        conn=sqlite3.connect(str(vp))
+        try:
+            have={r[0] for r in conn.execute('SELECT chunk_id FROM vectors')}
+            missing=[c for c in chunks if c['id'] not in have]
+            start=conn.execute('SELECT MAX(idx) FROM vectors').fetchone()[0] or 0
+            for i in range(0,len(missing),8):
+                self._alive(cid)
+                rows=missing[i:i+8];emb=_embed_resilient([r['text'] for r in rows])
+                conn.executemany('INSERT INTO vectors VALUES (?,?,?,?,?,?,?,?)',[(start+i+j+1,r['id'],r['unit_id'],r['source'],int(r.get('pdf_page') or 0),r['text'],len(v),_pack(v)) for j,(r,v) in enumerate(zip(rows,emb))])
+                conn.commit()
+            if missing:
+                conn.execute("UPDATE meta SET value=? WHERE key='count'",(str(len(have)+len(missing)),));conn.commit()
+        finally:conn.close()
+        with self.cache_lock:self.cache.pop(cid,None)
+        return len(missing)
 
     def _wait_for_lectures(self,cid,limit=3*3600):
         """R10: larger question banks start after every unit has its lecture."""
@@ -1194,6 +1315,7 @@ class CourseManager(object):
                 if phase=='small banks':self._wait_for_lectures(cid)
                 pending=list(enumerate(m['units']))
                 while pending:
+                    self._alive(cid)
                     priority=((self.manifest(cid) or {}).get('preparation',{}).get('questions') or {}).get('priority_unit_id')
                     position=next((n for n,(_,unit) in enumerate(pending) if unit['id']==priority),0)
                     idx,u=pending.pop(position)
@@ -1201,7 +1323,7 @@ class CourseManager(object):
                     if u.get('source_blocked'):continue
                     if len(banks.get(unit_id) or [])>=target:continue
                     def save_progress(cards,available,processed,unit_index=idx,unit_id=unit_id,unit_title=u['title'],phase=phase):
-                        banks[unit_id]=cards;_json_dump(cd/'question_banks.json',banks)
+                        self._alive(cid);banks[unit_id]=cards;_json_dump(cd/'question_banks.json',banks)
                         def update(current):
                             current['units'][unit_index].update({'question_count':len(cards),'question_source_count':available,
                                 'question_processed_count':processed})
@@ -1227,7 +1349,7 @@ class CourseManager(object):
                 if index is not None and len(banks.get(unit_id) or [])<QUESTION_TARGET:
                     unit=m['units'][index]
                     def save_expansion(cards,available,processed,unit_index=index,unit_id=unit_id,unit_title=unit['title']):
-                        banks[unit_id]=cards;_json_dump(cd/'question_banks.json',banks)
+                        self._alive(cid);banks[unit_id]=cards;_json_dump(cd/'question_banks.json',banks)
                         def update(current):
                             current['units'][unit_index].update({'question_count':len(cards),'question_source_count':available,
                                 'question_processed_count':processed})
@@ -1305,26 +1427,47 @@ class CourseManager(object):
         return json.loads(p.read_text(encoding='utf-8'))
 
     def delete_course(self,course_id):
+        """Delete at any time; running preparation stops at its next model step."""
         cid=str(course_id or '').strip()
         if not cid or cid!=_safe_id(cid) or cid.startswith('_'):
             raise ValueError('Select a valid uploaded course')
-        with self.running_lock:
-            if any(item[0]==cid for item in self.running):
-                raise RuntimeError('This course is still preparing. Wait for preparation to finish before deleting it.')
-            self.deleted.add(cid)
-        try:
-            with self.manifest_lock:
-                cd=self._course_dir(cid)
-                if cd.is_symlink() or not cd.is_dir() or not self.manifest(cid):raise ValueError('Uploaded course not found')
-                shutil.rmtree(str(cd))
+        with self.manifest_lock:
+            cd=self._course_dir(cid)
+            if cd.is_symlink() or not cd.is_dir() or not self.manifest(cid):raise ValueError('Uploaded course not found')
+            with self.running_lock:self.deleted.add(cid)
+            try:
+                trash=COURSE_ROOT/'_trash';trash.mkdir(parents=True,exist_ok=True)
+                target=trash/('%s-%s'%(cid,uuid.uuid4().hex[:8]))
+                os.rename(str(cd),str(target))  # disappears from the course list at once
                 deleted_path=COURSE_ROOT/'_deleted_courses.json'
                 previously=json.loads(deleted_path.read_text(encoding='utf-8')) if deleted_path.exists() else []
                 _json_dump(deleted_path,sorted(set(previously+[cid])))
-            with self.cache_lock:self.cache.pop(cid,None)
-        except Exception:
-            with self.running_lock:self.deleted.discard(cid)
-            raise
-        return {'ok':True,'course_id':cid,'deleted':True}
+            except Exception:
+                with self.running_lock:self.deleted.discard(cid)
+                raise
+        with self.cache_lock:self.cache.pop(cid,None)
+        threading.Thread(target=shutil.rmtree,args=(str(target),),kwargs={'ignore_errors':True},daemon=True).start()
+        with self.running_lock:stopping=sorted(kind for item_cid,kind in self.running if item_cid==cid)
+        return {'ok':True,'course_id':cid,'deleted':True,'stopped_background':stopping}
+
+    def cancel_build(self,job_id):
+        """Stop a course that is still being extracted; finished builds are deleted instead."""
+        job=self.job_status(job_id)
+        if not job:raise ValueError('Course build not found')
+        cid=str(job.get('course_id') or '')
+        if not cid or cid!=_safe_id(cid):raise ValueError('Course build not found')
+        if self.manifest(cid):
+            result=self.delete_course(cid);self._set_job(job_id,status='cancelled',message='Course deleted by the teacher')
+            return dict(result,job_id=job_id,status='cancelled')
+        if job.get('status') in ('cancelled',):return {'ok':True,'job_id':job_id,'course_id':cid,'status':'cancelled'}
+        with self.running_lock:self.deleted.add(cid)
+        self._set_job(job_id,status='cancelled',progress=100,message='Course build cancelled by the teacher')
+        stage_job=self._stage_dir(job.get('stage_id') or '')/'build_job.json'
+        try:
+            if stage_job.exists():stage_job.unlink()  # the same upload can be built again
+        except OSError:pass
+        self._discard_deleted(cid)
+        return {'ok':True,'job_id':job_id,'course_id':cid,'status':'cancelled'}
 
     def _load_index(self,course_id):
         cd=self._course_dir(course_id);vp=cd/'vector_index.sqlite3';wp=cd/'window_index.sqlite3'

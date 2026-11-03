@@ -459,6 +459,25 @@ async function signedIn(request,env){
   SESSION_CACHE.set(token,{ok,exp:now+(ok?30000:5000)});
   return ok;
 }
+// Confirm API Key: one minimal request on the same Responses endpoint and model
+// that answers questions. The key is used only for this request, never stored.
+async function verifyCloudKey(request,env){
+  if(!await signedIn(request,env))return Response.json({ok:false,error:'Sign in again to verify the API key.'},{status:401});
+  const body=await request.json().catch(()=>({})),cloud=providerConfig(body);
+  if(cloud.provider==='off'||!cloud.apiKey)return Response.json({ok:false,code:'cloud_api_key_required',error:'Enter an API key first.'},{status:400});
+  const label=String(CLOUD_MODELS[cloud.provider].label).split(' · ')[0];
+  try{
+    await fetchJsonWithTimeout('https://api.openai.com/v1/responses',{method:'POST',
+      headers:{'content-type':'application/json','authorization':'Bearer '+cloud.apiKey},
+      body:JSON.stringify({model:cloud.model,input:'Reply OK.',max_output_tokens:16,reasoning:{effort:'none'},store:false})},20000);
+    return Response.json({ok:true,provider:cloud.provider,model:cloud.model});
+  }catch(error){
+    const status=Number(error&&error.status||0),auth=authLike(error);
+    const code=auth?'cloud_auth_failed':status===404?'cloud_model_unavailable':status===429?'cloud_quota':'cloud_unreachable';
+    const reason=auth?'OpenAI rejected this API key.':status===404?'This API key cannot use '+label+'.':status===429?'This API key has no remaining quota or is rate limited.':'OpenAI could not be reached ('+String(error&&error.message||error).slice(0,120)+').';
+    return Response.json({ok:false,code,error:reason});
+  }
+}
 async function appPage(request,env,u){
   if(!(await signedIn(request,env))){
     const next=(u.pathname==='/'||u.pathname==='/index.html')?'/reference/':u.pathname+u.search;
@@ -472,6 +491,7 @@ export default {
     const u=new URL(request.url);
     if(!u.pathname.startsWith('/api/'))return GATED_PAGES.has(u.pathname)?await appPage(request,env,u):env.ASSETS.fetch(request);
     try{
+      if(request.method==='POST'&&u.pathname==='/api/cloud/verify-key')return await verifyCloudKey(request,env);
       if(request.method==='POST'&&u.pathname==='/api/reference/course-answer')return await courseAnswer(request,env);
       if(request.method==='POST'&&u.pathname==='/api/reference/answer-batch')return await referenceBatchAnswer(request,env);
       if(request.method==='POST'&&u.pathname==='/api/reference/answer')return await referenceAnswer(request,env);

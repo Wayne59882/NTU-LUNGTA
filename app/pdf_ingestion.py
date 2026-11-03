@@ -15,6 +15,10 @@ from pdf_ocr import LocalOCR
 from pdf_vision import LocalVision,teaching_images
 
 REVISION='R15'
+# Text-rich pages with a figure are usable at once; their figures are read by
+# the background course task after lectures (background), during the build
+# (inline, slow), or never (off).
+FIGURES_MODE=os.environ.get('VQ_PDF_VISION_FIGURES','background').strip().lower()
 
 def atomic_json(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
@@ -46,7 +50,13 @@ def inspect_page(page,number,ocr=None,activity=None,vision=None):
                 # embedded raster images. Borders/underlines alone are ignored.
                 outlined=bool(paths) if not row['text'] else len(paths)>=3 and any(float(path['rect'].width)*float(path['rect'].height)/area>=.12 for path in paths if path.get('rect'))
             except Exception:pass
-        if not outlined and not teaching_images(page,row) and (not row.get('has_images') or sum(c.isalnum() for c in row['text'])>=160):return row
+        rich=sum(c.isalnum() for c in row['text'])>=160
+        if not outlined and not teaching_images(page,row) and (not row.get('has_images') or rich):return row
+        if rich and FIGURES_MODE!='inline':
+            # Enough native text to teach from now; do not hold the whole
+            # course build for a slow two-pass vision reading of this figure.
+            if FIGURES_MODE!='off':row['figure_pending']=True
+            return row
         native=bool(row['text'])
         row['status']='partial' if row['text'] else 'needs_review';row['issues']=['Sparse searchable text over image or outlined content; visual text requires OCR.']
     except Exception as error:

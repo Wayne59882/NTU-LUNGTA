@@ -571,6 +571,12 @@
     setStatus('Lecture completed.');
   }
 
+  function answeringLabel(model){
+    const m=String(model||'');
+    if(m.indexOf('cloud:')===0){const labels=window.VQ_CLOUD_MODEL_LABELS||{};return String(labels[m.slice(6)]||'the cloud model').split(' · ')[0];}
+    try{const label=window.VQ_getSelectedModelLabel&&window.VQ_getSelectedModelLabel();if(label)return String(label).split(' · ')[0]+' (local)';}catch(_){}
+    return m.replace('local:','')+' (local)';
+  }
   async function submitQuestion(options){
     const opts=options||{};
     const capture=window.__v105_active_recognition;
@@ -594,8 +600,7 @@
     window.VQ_LAST_INPUT_SOURCE=source;
     pauseLectureForQuestion();
     if(aBox)aBox.textContent='The AI teacher is retrieving relevant reference material and preparing the answer...';
-    setStatus(request&&request.model==='cloud:openai'?'Answering with selected cloud model…':
-      request?'Answering with '+request.model.replace('local:','')+'…':'Preparing answer…');
+    setStatus(request?'Answering with '+answeringLabel(request.model)+'…':'Preparing answer…');
     const task=(async function(){
       let ans='';
       try{
@@ -1181,7 +1186,11 @@
         // Prefer the full recording, but allow an available live transcript as a bounded fallback.
         const STTAbort=window.AbortController||(typeof AbortController!=='undefined'?AbortController:null);
         const sttController=STTAbort?new STTAbort():null;
-        const sttDeadline=setTimeout(()=>{if(sttController)sttController.abort();},previewText?15000:45000);
+        const sttLimit=previewText?10000:40000,sttStarted=Date.now();
+        const sttDeadline=setTimeout(()=>{if(sttController)sttController.abort();},sttLimit);
+        // Show progress so a slow transcription never looks like a frozen button.
+        const sttTicker=setInterval(()=>{if(!currentCapture())return;const s=Math.round((Date.now()-sttStarted)/1000);
+          setStatus('Transcribing your recording… '+s+' s — the answer starts automatically'+(previewText?' (at most '+Math.round(sttLimit/1000)+' s, then the live transcript is used).':'.'));},1000);
         try{
           const d=await postVoiceStt(blob,blob.type||'audio/webm',sttController?sttController.signal:undefined); const text=clean(d.text||'');
           if(!currentCapture())return;
@@ -1205,7 +1214,7 @@
           if(!currentCapture())return;
           if(qBox)qBox.textContent='Server speech recognition is temporarily unavailable. Please try again or type the question.';
           setStatus('Server speech recognition failed and no usable live transcript was available.');
-        }finally{clearTimeout(sttDeadline);}
+        }finally{clearTimeout(sttDeadline);clearInterval(sttTicker);}
       };
       rec.start(250);
     }catch(_){

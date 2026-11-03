@@ -44,7 +44,8 @@ if OLLAMA_HOST.startswith("http://") or OLLAMA_HOST.startswith("https://"):
     OLLAMA_BASE = OLLAMA_HOST.rstrip("/")
 else:
     OLLAMA_BASE = ("http://" + OLLAMA_HOST).rstrip("/")
-MODEL_NUM_CTX = int(os.environ.get("VQ_NUM_CTX", "4096"))
+from ollama_cancel import OLLAMA_NUM_CTX
+MODEL_NUM_CTX = OLLAMA_NUM_CTX  # shared with Reference/course calls: no runner reload
 # v204.2: restore the v199 response-generation profile. Language routing is
 # handled without a separate LLM call: Whisper metadata for voice, a lightweight
 # natural-language router for typed text, and the semantic-recognition LLM's
@@ -795,7 +796,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                     self.server, model_key,
                     [{"role":"system","content":"Reply with OK only."},
                      {"role":"user","content":"OK"}],
-                    {"temperature":0.0,"num_ctx":256,"num_predict":1},
+                    {"temperature":0.0,"num_ctx":MODEL_NUM_CTX,"num_predict":1},
                     timeout=30, json_format=False
                 )
                 self.send_json(200, {
@@ -1225,7 +1226,7 @@ def main():
                     httpd, DEFAULT_MODEL_KEY,
                     [{"role":"system","content":"Reply with OK only."},
                      {"role":"user","content":"OK"}],
-                    {"temperature":0.0,"num_ctx":256,"num_predict":1},
+                    {"temperature":0.0,"num_ctx":MODEL_NUM_CTX,"num_predict":1},
                     timeout=30, json_format=False
                 )
                 print("[v204.2] Default model is warm and will stay resident for %s." % MODEL_KEEP_ALIVE)

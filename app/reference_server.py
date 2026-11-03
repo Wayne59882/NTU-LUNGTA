@@ -24,7 +24,8 @@ from feedback.feedback_service import (save_feedback, status as feedback_status,
 from site_metrics import heartbeat as metrics_heartbeat, snapshot as metrics_snapshot
 from course_runtime import COURSES
 from model_lock import SharedModelLock
-from ollama_cancel import CancellationScope, AnswerCancelled, current_scope, stream_chat_json
+from ollama_cancel import (CancellationScope, AnswerCancelled, BackgroundPreempted, current_scope,
+    background_active, stream_chat_json, OLLAMA_NUM_CTX)
 from course_grounding import review_text,GroundingError
 
 
@@ -35,10 +36,10 @@ DEFAULT_HOST='127.0.0.1'; DEFAULT_PORT=8182
 OLLAMA_HOST=os.environ.get('OLLAMA_HOST','127.0.0.1:11435').strip()
 OLLAMA_BASE=OLLAMA_HOST.rstrip('/') if OLLAMA_HOST.startswith(('http://','https://')) else ('http://'+OLLAMA_HOST).rstrip('/')
 MODEL_KEEP_ALIVE=os.environ.get('VQ_MODEL_KEEP_ALIVE','30m')
-MODEL_NUM_CTX=int(os.environ.get('VQ_NUM_CTX','4096'))
+MODEL_NUM_CTX=OLLAMA_NUM_CTX
 LOCAL_MAX_WAIT=float(os.environ.get('VQ_LOCAL_MAX_WAIT_SEC','240'))
 BATCH_MAX_ITEMS=max(2,min(6,int(os.environ.get('VQ_BATCH_MAX_ITEMS','4'))))
-BATCH_NUM_CTX=max(MODEL_NUM_CTX,int(os.environ.get('VQ_BATCH_NUM_CTX','4096')))
+BATCH_NUM_CTX=MODEL_NUM_CTX  # same runner size as single answers and course work
 BATCH_CHAR_BUDGET=max(5500,int(os.environ.get('VQ_BATCH_CHAR_BUDGET','9000')))
 BATCH_EVIDENCE_CHARS=max(800,int(os.environ.get('VQ_BATCH_EVIDENCE_CHARS','1250')))
 V231_DEFAULT_PROFILE=os.environ.get('VQ_V231_PROFILE','optimized').strip().lower() or 'optimized'
@@ -68,7 +69,7 @@ def url_json(url,payload=None,timeout=60):
     data=None; headers={}
     if payload is not None: data=json.dumps(payload).encode('utf-8'); headers['Content-Type']='application/json'
     req=urllib.request.Request(url,data=data,headers=headers,method='POST' if data is not None else 'GET')
-    if current_scope() is not None and url.rstrip('/').endswith('/api/chat'):
+    if (current_scope() is not None or background_active()) and url.rstrip('/').endswith('/api/chat'):
         return stream_chat_json(url,payload,timeout)
     with urllib.request.urlopen(req,timeout=float(timeout)) as r:return json.loads(r.read().decode('utf-8'))
 def installed_models(base=None):
@@ -84,14 +85,20 @@ def course_model_call(server,model_key,system,user,max_tokens=1200):
     key=key_of(model_key);meta=MODEL_CATALOG[key];tag=meta['tag'];base=model_base(key)
     payload={'model':tag,'messages':[{'role':'system','content':str(system or '')},{'role':'user','content':str(user or '')}],
              'think':False,'stream':False,'keep_alive':MODEL_KEEP_ALIVE,
-             'options':{'temperature':0.15,'top_p':0.75,'num_ctx':max(MODEL_NUM_CTX,8192),'num_predict':int(max_tokens),'repeat_penalty':1.02}}
+             'options':{'temperature':0.15,'top_p':0.75,'num_ctx':MODEL_NUM_CTX,'num_predict':int(max_tokens),'repeat_penalty':1.02}}
     if '大學課程情境題出題者' in str(system or '') or 'COURSE_GROUNDING_REVIEW' in str(system or ''):
         payload['format']='json'
         payload['options']['temperature']=0.0
-    with server.model_lock:
-        ensure_single_active_model(server,key,tag,base)
-        d=url_json(base+'/api/chat',payload=payload,timeout=max(LOCAL_MAX_WAIT,360))
-        server.active_model_key=key;server.active_model_tag=tag;server.active_model_base=base
+    while True:
+        try:
+            with server.model_lock:
+                ensure_single_active_model(server,key,tag,base)
+                d=url_json(base+'/api/chat',payload=payload,timeout=max(LOCAL_MAX_WAIT,360))
+                server.active_model_key=key;server.active_model_tag=tag;server.active_model_base=base
+            break
+        except BackgroundPreempted:
+            # A student question took the model; retry this course step afterwards.
+            continue
     return str(((d.get('message') or {}).get('content') or '')).strip()
 
 def course_local_answer(server,model_key,question,context,course_name,language_tag='en-US',improvement_hint='',feedback_comment=''):
@@ -1797,6 +1804,12 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                 self.send_json(200,COURSES.delete_course(str(req.get('course_id') or '')))
             except ValueError as e:self.send_json(400,{'ok':False,'error':str(e)})
             except RuntimeError as e:self.send_json(409,{'ok':False,'error':str(e)})
+            return
+        if self.path=='/api/reference/course-build-cancel':
+            try:
+                req=self.read_json()
+                self.send_json(200,COURSES.cancel_build(str(req.get('id') or req.get('job_id') or '')))
+            except ValueError as e:self.send_json(400,{'ok':False,'error':str(e)})
             return
         if self.path=='/api/reference/site-metrics':
             try:

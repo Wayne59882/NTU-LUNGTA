@@ -34,7 +34,7 @@ function injectBuilder(){
     <div class="v241-field"><label for="v241CourseName">Course Name (optional)</label><input id="v241CourseName" type="text" placeholder="Leave blank to detect from the PDF content"></div>
     <div class="v241-field v241-pdf-field"><label for="v241PdfFiles">Course Materials (PDF)</label><input id="v241PdfFiles" type="file" accept="application/pdf,.pdf" multiple></div>
   </div>
-  <div class="v241-actions"><button type="button" class="v241-primary" id="v241InspectBtn">Upload &amp; Inspect Course Materials</button><button type="button" id="v241BuildBtn" disabled>Build Teaching Assistant</button><button type="button" id="v241RetryPrep" hidden>Retry Background Preparation</button></div>
+  <div class="v241-actions"><button type="button" class="v241-primary" id="v241InspectBtn">Upload &amp; Inspect Course Materials</button><button type="button" id="v241BuildBtn" disabled>Build Teaching Assistant</button><button type="button" id="v241RetryPrep" hidden>Retry Background Preparation</button><button type="button" id="v241CancelBuild" hidden>Cancel Build</button></div>
   <div class="v241-status" id="v241BuildStatus" role="status" aria-live="polite">Select searchable PDFs, inspect the teaching units, then build. Course Q&amp;A opens after extraction; reviewed exam-style questions become playable as soon as two per unit are ready.</div>
   <div class="v241-meters" id="v241WorkProgress" hidden><div id="v241MeterUpload" hidden><span>PDF upload</span><span id="v241LabelUpload"></span><progress id="v241BarUpload" max="100" value="0"></progress></div><div id="v241MeterActivate" hidden><span>Course activation</span><span id="v241LabelActivate"></span><progress id="v241BarActivate" max="100" value="0"></progress></div><div id="v241MeterLectures" hidden><span>Traditional Chinese scripts</span><span id="v241LabelLectures"></span><progress id="v241BarLectures" max="100" value="0"></progress></div><div id="v241MeterQuestions" hidden><span>Practice readiness</span><span id="v241LabelQuestions"></span><progress id="v241BarQuestions" max="100" value="0"></progress></div><div id="v241MeterIndex" hidden><span>Semantic search</span><span id="v241LabelIndex"></span><progress id="v241BarIndex" max="100" value="0"></progress></div></div>
   <div class="v241-unit-wrap" id="v241UnitWrap" hidden><div class="v241-unit-title">Teaching units found — confirm or rename them before building</div><div class="v241-unit-toolbar"><div class="v241-unit-summary" id="v241UnitSummary"></div><div class="v241-unit-buttons"><button type="button" id="v241SelectAll">Select all</button><button type="button" id="v241ClearAll">Clear all</button></div></div><div class="v241-unit-list" id="v241UnitList"></div></div>
@@ -42,6 +42,7 @@ function injectBuilder(){
   title.insertAdjacentElement('afterend',wrap);
   $('v241InspectBtn').addEventListener('click',inspectCourse);
   $('v241BuildBtn').addEventListener('click',buildCourse);
+  $('v241CancelBuild').addEventListener('click',cancelBuild);
   $('v241DeleteCourse').addEventListener('click',deleteSelectedCourse);
   $('v241RetryPrep').addEventListener('click',retryPreparation);
   $('v241SelectAll').addEventListener('click',()=>selectAllUnits(true));
@@ -105,25 +106,45 @@ async function buildCourse(){
     await pollBuild(d.job.id);
   }catch(e){setBuildStatus('Could not reconnect to the course build: '+String(e&&e.message||e)+'. Refresh to reconnect.','error');$('v241BuildBtn').disabled=false;}
 }
+let buildJobId='';
+function showCancel(jid){buildJobId=jid||'';const b=$('v241CancelBuild');if(b){b.hidden=!jid;b.disabled=false;}}
+async function buildCancelled(){
+  setPending('');if(draft){draft.phase='inspected';delete draft.buildBody;await saveDraft();}
+  showCancel('');$('v241BuildBtn').disabled=!inspection;
+  setBuildStatus('Course build cancelled. Nothing was added to your courses. You can build again or upload different PDFs.','ok');
+}
+async function cancelBuild(){
+  const jid=buildJobId;if(!jid)return;
+  if(!window.confirm('Stop building this course now?\nThe course will not be created. You can build it again later.'))return;
+  const b=$('v241CancelBuild');if(b)b.disabled=true;setBuildStatus('Cancelling the course build…');
+  try{const r=await fetch('/api/reference/course-build-cancel',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:jid}),cache:'no-store'}),d=await r.json().catch(()=>({}));
+    if(!r.ok||!d.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));
+    if(d.deleted){if(activeId()===d.course_id)setActiveId('');await buildCancelled();await loadCourseList();return;}
+    await buildCancelled();}
+  catch(e){setBuildStatus('Could not cancel the build: '+String(e&&e.message||e),'error');if(b)b.disabled=false;}
+}
 async function pollBuild(jid){
-  if(polling)return;polling=true;
+  if(polling)return;polling=true;showCancel(jid);
   try{
   for(;;){
+    if(buildJobId!==jid)return;
     const r=await fetch('/api/reference/course-job-status?id='+encodeURIComponent(jid),{cache:'no-store'}),d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||('HTTP '+r.status));
     setBuildStatus('Building course: '+String(d.progress||0)+'%\n'+String(d.message||'Working…'));
     setMeter('Activate',d.progress||0,String(d.message||'Extracting material'));
     if(d.status==='done'){
       const cid=d.result&&d.result.course_id;if(!cid)throw new Error('Build completed without a course ID.');
-      setActiveId(cid);setPending('');if(draft){draft.phase='active';draft.files=[];await saveDraft();}try{sessionStorage.setItem(READY_NOTICE,'Course Q&A is active. Exam-style questions can be drawn as soon as two per unit pass review.');}catch(_){}
+      showCancel('');setActiveId(cid);setPending('');if(draft){draft.phase='active';draft.files=[];await saveDraft();}try{sessionStorage.setItem(READY_NOTICE,'Course Q&A is active. Exam-style questions can be drawn as soon as two per unit pass review.');}catch(_){}
       location.reload();return;
     }
+    if(d.status==='cancelled'){await buildCancelled();return;}
     if(d.status==='error'){
+      showCancel('');
       setBuildStatus('Course build stopped at '+String(d.progress||0)+'% ('+String(d.phase||'processing')+').\n'+String(d.error||d.message||'Unknown backend error')+'\nThe uploaded PDFs remain selected; you can retry after correcting this cause.','error');
       $('v241BuildBtn').disabled=false;return;
     }
     await new Promise(res=>setTimeout(res,2000));
   }
-  }finally{polling=false;}
+  }finally{polling=false;if(buildJobId===jid)showCancel('');}
 }
 
 async function loadCourseList(){
@@ -135,7 +156,7 @@ async function deleteSelectedCourse(){
   const label=sel.options[sel.selectedIndex].text;
   if(!window.confirm('Permanently delete this uploaded course and its PDFs, question bank and quiz statistics?\n'+label))return;
   const btn=$('v241DeleteCourse');btn.disabled=true;
-  try{const r=await fetch('/api/reference/course-delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({course_id:cid}),cache:'no-store'}),d=await r.json().catch(()=>({}));if(!r.ok||!d.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));if(activeId()===cid){setActiveId('');location.reload();return;}await loadCourseList();setBuildStatus('Deleted '+label+'.','ok');}
+  try{const r=await fetch('/api/reference/course-delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({course_id:cid}),cache:'no-store'}),d=await r.json().catch(()=>({}));if(!r.ok||!d.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));if(activeId()===cid){setActiveId('');location.reload();return;}await loadCourseList();setBuildStatus('Deleted '+label+'.'+(d.stopped_background&&d.stopped_background.length?' Its background preparation was stopped.':''),'ok');}
   catch(e){setBuildStatus('Course deletion failed: '+String(e&&e.message||e),'error');btn.disabled=false;}
 }
 async function loadManifest(cid){

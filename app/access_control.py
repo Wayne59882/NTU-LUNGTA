@@ -64,7 +64,7 @@ STATUS_LABEL = {'pending': '審核中 Pending', 'approved': '已核准 Approved'
 
 # Course functions only teachers may call (upload, build, delete, regenerate).
 TEACHER_ONLY = {'course-upload-chunk', 'course-upload-status', 'course-inspect', 'course-stage-status',
-                'course-build', 'course-job-status', 'course-delete', 'course-retry-preparation',
+                'course-build', 'course-job-status', 'course-build-cancel', 'course-delete', 'course-retry-preparation',
                 'course-expand-questions'}
 PUBLIC_API = {'/api/health', '/api/reference/health', '/api/kb/health'}
 # Pages that open the application; everything else under web/ is a static asset.
@@ -506,11 +506,13 @@ def authorize(user, path, query, body, ctype):
         if not row and teacher_only and seg not in diagnostic_ops:
             _exec('INSERT OR IGNORE INTO stages(stage_id,owner_id,created_at) VALUES(?,?,?)',
                   (stage_id, user['id'], time.time()))
-    if seg == 'course-job-status':
-        job_id = first('id')
+    if seg in ('course-job-status', 'course-build-cancel'):
+        job_id = first('id') or first('job_id')
         row = _one('SELECT owner_id FROM jobs WHERE job_id=?', (job_id,)) if job_id else None
         if row and row['owner_id'] != user['id']:
             return _deny(403, 'job_forbidden', 'This course build belongs to another teacher.'), ctx
+        if seg == 'course-build-cancel' and not row and not user.get('is_admin'):
+            return _deny(403, 'job_forbidden', 'Only the teacher who started this build can cancel it.'), ctx
     course_id = first('course_id') or (first('id') if seg == 'course-status' else '')
     if course_id:
         ctx['course_id'] = course_id
