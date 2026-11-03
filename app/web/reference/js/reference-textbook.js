@@ -36,6 +36,7 @@
       const d=await r.json().catch(()=>({error:'Invalid job response'}));
       if(!r.ok)throw new Error(friendlyError(d,r.status));
       if(d.status==='done')return d.result||{};
+      if(d.status==='cancelled')throw new Error('Question cancelled after model switch');
       if(d.status==='error')throw new Error(String(d.error||d.message||'Local answer failed'));
       await sleep(1500);
     }
@@ -55,7 +56,7 @@
     if(cloud.provider==='off'){
       try{
         const payload={question:String(q||''),model_key:modelKey(),language_tag:language};
-        const r=await fetch('/api/reference/answer-job-start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store',signal:signal});
+        const r=await fetch('/api/reference/answer-job-start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});
         const started=await r.json().catch(()=>({error:'Invalid server response'}));
         if(!r.ok||!started.job_id)throw new Error(friendlyError(started,r.status));
         if(request&&window.VQ_QA_REQUESTS)window.VQ_QA_REQUESTS.rememberJob(request,started.job_id);
