@@ -116,6 +116,7 @@ async function pollBatchJob(jobId,maxMs,request){
     const d=await r.json().catch(()=>({error:'Invalid job response'}));
     if(!r.ok)throw new Error(friendlyError(d,r.status));
     if(d.status==='done')return d.result||{};
+    if(d.status==='cancelled')throw new Error('Question cancelled after model switch');
     if(d.status==='error')throw new Error(String(d.error||d.message||'Local batch failed'));
     updateProgress('正在處理 '+String(d.progress||0)+'% · '+String(d.message||'Local model working')+'…');
     await sleep(1800);
@@ -175,7 +176,7 @@ function install(){
         if(group.length===1){
           data={answers:[{id:1,answer:await original.call(window,group[0]),answer_language:questionLanguage(group[0])}]};
         }else if(cloud.provider==='off'){
-          const sr=await fetch('/api/reference/batch-job-start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({questions:group,model_key:modelKey()}),cache:'no-store',signal:request&&request.controller?request.controller.signal:undefined});
+          const sr=await fetch('/api/reference/batch-job-start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({questions:group,model_key:modelKey()}),cache:'no-store'});
           const sd=await sr.json().catch(()=>({error:'Invalid server response'}));
           if(!sr.ok||!sd.job_id)throw new Error(friendlyError(sd,sr.status));
           if(request&&window.VQ_QA_REQUESTS)window.VQ_QA_REQUESTS.rememberJob(request,sd.job_id);
