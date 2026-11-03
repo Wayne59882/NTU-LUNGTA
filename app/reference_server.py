@@ -1479,6 +1479,42 @@ def _single_local_job(server,jid,q,model_key,language_tag,profile):
     except Exception as e:
         _job_set(server,jid,status='error',progress=100,message='Local answer failed',error=str(e))
 
+def _course_local_job(server,jid,cid,q,model_key,language_tag):
+    """Uploaded-course Q&A uses the same cancellable worker as reference Q&A."""
+    try:
+        with server.local_job_semaphore, _job_scope(server,jid):
+            if _job_cancelled(server,jid):return
+            _job_set(server,jid,status='retrieving',progress=10,message='Searching uploaded course')
+            man=COURSES.manifest(cid)
+            if not man:raise ValueError('Course no longer exists')
+            found=COURSES.search(cid,q)
+            if _job_cancelled(server,jid):return
+            if not found.get('in_scope'):
+                msg='This question is outside the current uploaded course scope: '+str(man.get('course_name') or 'Uploaded Course')+'.'
+                if language_tag.startswith('zh'):
+                    msg='此問題超出目前上傳課程「'+str(man.get('course_name') or 'Uploaded Course')+'」的教材範圍，請改問該課程內容。'
+                result={'answer':msg,'answer_language':language_tag,'engine':'course-scope-rejected','course_id':cid}
+            elif not found.get('context'):
+                result={'answer':'教材尚未提供足以核對此題答案的內容，請查看來源頁面或改問教材明確涵蓋的內容。' if language_tag.startswith('zh') else 'The uploaded course material does not contain enough evidence to answer reliably.','answer_language':language_tag,'engine':'course-no-evidence','course_id':cid}
+            else:
+                _job_set(server,jid,status='answering',progress=35,message='Answering with local model')
+                t=time.time()
+                answer=course_local_answer(server,model_key,q,str(found.get('context') or ''),man.get('course_name'),language_tag,correction_guidance(q,cid))
+                result={'answer':answer,'answer_language':language_tag,'engine':'local-course-rag',
+                    'model_key':model_key,'course_id':cid,'course_name':man.get('course_name'),
+                    'sources':found.get('sources',[]),'retrieval':found.get('retrieval',{}),
+                    'latency_ms':round((time.time()-t)*1000,1)}
+            _job_set(server,jid,status='done',progress=100,message='Done',result=result)
+    except AnswerCancelled:
+        _job_cancel(server,jid)
+    except GroundingError:
+        _job_set(server,jid,status='done',progress=100,message='Insufficient evidence',result={
+            'answer':'教材尚未提供足以核對此題答案的內容，請查看來源頁面或改問教材明確涵蓋的內容。' if language_tag.startswith('zh') else 'The current course evidence does not support a verifiable answer to this question.',
+            'engine':'course-no-evidence','course_id':cid})
+    except Exception as e:
+        _job_set(server,jid,status='error',progress=100,message='Local course answer failed',error=str(e))
+
+
 def _batch_local_job(server,jid,questions,model_key,profile):
     try:
         with server.local_job_semaphore, _job_scope(server,jid):
@@ -1805,12 +1841,21 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
                 self.send_json(200 if ok else 404,{'ok':ok,'job_id':jid,'status':'cancelled' if ok else 'not_found'})
             except Exception as e:self.send_json(400,{'ok':False,'error':str(e)[:120]})
             return
-        if self.path in ('/api/reference/answer-job-start','/api/reference/batch-job-start'):
+        if self.path in ('/api/reference/answer-job-start','/api/reference/batch-job-start','/api/reference/course-answer-job-start'):
             try:req=self.read_json()
             except Exception:self.send_json(400,{'error':'Invalid JSON'});return
             _job_cleanup(self.server);jid=uuid.uuid4().hex
             model_key=key_of(req.get('model_key'));profile=str(req.get('profile') or V231_DEFAULT_PROFILE).strip().lower()
-            if self.path=='/api/reference/answer-job-start':
+            if self.path=='/api/reference/course-answer-job-start':
+                cid=str(req.get('course_id') or '');q=str(req.get('question') or '').strip()
+                man=COURSES.manifest(cid)
+                if not man or not q:self.send_json(400,{'error':'Valid course_id and question are required'});return
+                lang=detect_question_language(q,req.get('language_tag'))
+                with self.server.jobs_lock:
+                    self.server.jobs[jid]={'id':jid,'status':'queued','progress':0,'message':'Queued',
+                        'created_at':time.time(),'updated_at':time.time(),'_cancel_scope':CancellationScope()}
+                threading.Thread(target=_course_local_job,args=(self.server,jid,cid,q,model_key,lang),daemon=True).start()
+            elif self.path=='/api/reference/answer-job-start':
                 q=str(req.get('question','') or '').strip();lang=detect_question_language(q,req.get('language_tag'))
                 if not q:self.send_json(400,{'error':'question is required'});return
                 with self.server.jobs_lock:self.server.jobs[jid]={'id':jid,'status':'queued','progress':0,'message':'Queued','created_at':time.time(),'updated_at':time.time(),'_cancel_scope':CancellationScope()}
