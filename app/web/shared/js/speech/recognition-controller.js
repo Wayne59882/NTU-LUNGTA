@@ -1139,7 +1139,7 @@
         const previewText=clean(rec.__vqPreviewTranscript || '');
         const blob=new Blob(rec.__vqChunks,{type:rec.mimeType||'audio/webm'});
         if(qBox && previewText) qBox.textContent=previewText;
-        setStatus('Automatically detecting the spoken language and preparing the answer...');
+        setStatus('Transcribing recorded audio; the question will be submitted automatically...');
 
         const submitCapturedPreview=async(reason)=>{
           if(!currentCapture())return false;
@@ -1162,8 +1162,12 @@
           if(qBox)qBox.textContent='No speech was recorded. Please try again.';
           return;
         }
+        // A stalled transcription must not leave Stop Recording & Answer waiting indefinitely.
+        // Prefer the full recording, but allow an available live transcript as a bounded fallback.
+        const sttController=new AbortController();
+        const sttDeadline=setTimeout(()=>sttController.abort(),previewText?15000:45000);
         try{
-          const d=await postVoiceStt(blob,blob.type||'audio/webm'); const text=clean(d.text||'');
+          const d=await postVoiceStt(blob,blob.type||'audio/webm',sttController.signal); const text=clean(d.text||'');
           if(!currentCapture())return;
           if(text){
             if(qBox)qBox.textContent=text;
@@ -1185,7 +1189,7 @@
           if(!currentCapture())return;
           if(qBox)qBox.textContent='Server speech recognition is temporarily unavailable. Please try again or type the question.';
           setStatus('Server speech recognition failed and no usable live transcript was available.');
-        }
+        }finally{clearTimeout(sttDeadline);}
       };
       rec.start(250);
     }catch(_){
