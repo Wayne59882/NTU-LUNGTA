@@ -24,6 +24,7 @@ from feedback.feedback_service import (save_feedback, status as feedback_status,
 from site_metrics import heartbeat as metrics_heartbeat, snapshot as metrics_snapshot
 from course_runtime import COURSES
 from model_lock import SharedModelLock
+from ollama_cancel import CancellationScope, AnswerCancelled, current_scope, stream_chat_json
 from course_grounding import review_text,GroundingError
 
 
@@ -67,6 +68,8 @@ def url_json(url,payload=None,timeout=60):
     data=None; headers={}
     if payload is not None: data=json.dumps(payload).encode('utf-8'); headers['Content-Type']='application/json'
     req=urllib.request.Request(url,data=data,headers=headers,method='POST' if data is not None else 'GET')
+    if current_scope() is not None and url.rstrip('/').endswith('/api/chat'):
+        return stream_chat_json(url,payload,timeout)
     with urllib.request.urlopen(req,timeout=float(timeout)) as r:return json.loads(r.read().decode('utf-8'))
 def installed_models(base=None):
     base=(base or OLLAMA_BASE).rstrip('/')
@@ -1428,6 +1431,10 @@ def _job_set(server,jid,**updates):
         if not job or job.get('status')=='cancelled':return
         job.update(updates);job['updated_at']=time.time()
 
+def _job_scope(server,jid):
+    with server.jobs_lock:
+        return (server.jobs.get(jid) or {}).get('_cancel_scope')
+
 def _job_cancelled(server,jid):
     with server.jobs_lock:
         return (server.jobs.get(jid) or {}).get('status')=='cancelled'
@@ -1438,11 +1445,15 @@ def _job_cancel(server,jid):
         if not job:return False
         if job.get('status') not in ('done','error','cancelled'):
             job.update({'status':'cancelled','message':'Question superseded by another model','updated_at':time.time()})
-        return True
+            scope=job.get('_cancel_scope')
+        else:
+            scope=None
+    if scope is not None:scope.cancel()
+    return True
 
 def _single_local_job(server,jid,q,model_key,language_tag,profile):
     try:
-        with server.local_job_semaphore:
+        with server.local_job_semaphore, _job_scope(server,jid):
             if _job_cancelled(server,jid):return
             _job_set(server,jid,status='retrieving',progress=10,message='Retrieving textbook evidence')
             if server.mode=='mock':
@@ -1470,7 +1481,7 @@ def _single_local_job(server,jid,q,model_key,language_tag,profile):
 
 def _batch_local_job(server,jid,questions,model_key,profile):
     try:
-        with server.local_job_semaphore:
+        with server.local_job_semaphore, _job_scope(server,jid):
             if _job_cancelled(server,jid):return
             if server.mode=='mock':
                 answers=[{'id':i+1,'answer':'[MOCK] Batch answer %d'%(i+1),'answer_language':detect_question_language(str(q or ''),''),'engine':'mock-local','verification':{'mandatory_verification':True,'fast_verified':True,'semantic_verification_used':True,'verification_mode':'mock'}} for i,q in enumerate(questions)]
@@ -1625,7 +1636,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
             from urllib.parse import urlparse,parse_qs
             qs=parse_qs(urlparse(self.path).query);jid=str((qs.get('id') or [''])[0]);job=COURSES.job_status(jid)
             if not job:self.send_json(404,{'error':'course build job not found'});return
-            self.send_json(200,{k:v for k,v in job.items() if k not in ('created_at','updated_at')});return
+            self.send_json(200,{k:v for k,v in job.items() if k not in ('created_at','updated_at','_cancel_scope')});return
         if self.path.startswith('/api/reference/job-status'):
             from urllib.parse import urlparse,parse_qs
             _job_cleanup(self.server);qs=parse_qs(urlparse(self.path).query);jid=str((qs.get('id') or [''])[0])
@@ -1802,12 +1813,12 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
             if self.path=='/api/reference/answer-job-start':
                 q=str(req.get('question','') or '').strip();lang=detect_question_language(q,req.get('language_tag'))
                 if not q:self.send_json(400,{'error':'question is required'});return
-                with self.server.jobs_lock:self.server.jobs[jid]={'id':jid,'status':'queued','progress':0,'message':'Queued','created_at':time.time(),'updated_at':time.time()}
+                with self.server.jobs_lock:self.server.jobs[jid]={'id':jid,'status':'queued','progress':0,'message':'Queued','created_at':time.time(),'updated_at':time.time(),'_cancel_scope':CancellationScope()}
                 threading.Thread(target=_single_local_job,args=(self.server,jid,q,model_key,lang,profile),daemon=True).start()
             else:
                 questions=req.get('questions') or []
                 if not isinstance(questions,list) or len(questions)<2 or len(questions)>40:self.send_json(400,{'error':'questions must contain 2-40 items'});return
-                with self.server.jobs_lock:self.server.jobs[jid]={'id':jid,'status':'queued','progress':0,'message':'Queued','created_at':time.time(),'updated_at':time.time()}
+                with self.server.jobs_lock:self.server.jobs[jid]={'id':jid,'status':'queued','progress':0,'message':'Queued','created_at':time.time(),'updated_at':time.time(),'_cancel_scope':CancellationScope()}
                 threading.Thread(target=_batch_local_job,args=(self.server,jid,questions,model_key,profile),daemon=True).start()
             self.send_json(202,{'ok':True,'job_id':jid,'status':'queued','serving_profile':'v238-accuracy-first-robust-batch'});return
         if self.path not in ('/api/reference/context','/api/reference/answer-local','/api/reference/answer','/api/reference/context-batch','/api/reference/answer-batch-local'):
