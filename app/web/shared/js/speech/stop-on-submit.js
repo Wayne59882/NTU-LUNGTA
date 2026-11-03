@@ -69,7 +69,7 @@
     // If the user sends a typed question, recording must end immediately.
     bindStopBefore($('submitTypedQuestionBtn'), 'click', 'Recording stopped; submitting typed question');
     // If the user finishes voice input, stop recording first; existing handler may then submit the recognized text.
-    bindStopBefore($('stopAskBtn'), 'click', 'Recording stopped; submitting the voice question');
+    // Stop Recording & Answer is owned by recognition-controller.js. A capture-phase\n    // pre-stop here raced with __vqManualStopRequested and suppressed auto-submit.
     bindStopBefore($('submitTypedCaseBtn'), 'click', 'Recording stopped; submitting the scenario answer');
     bindStopBefore($('stopCaseBtn'), 'click', 'Recording stopped; submitting the voice answer');
     // Switching content should also end recording.
