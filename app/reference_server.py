@@ -1685,7 +1685,8 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
             _job_cleanup(self.server);qs=parse_qs(urlparse(self.path).query);jid=str((qs.get('id') or [''])[0])
             with self.server.jobs_lock: job=dict(self.server.jobs.get(jid) or {})
             if not job:self.send_json(404,{'error':'job not found'});return
-            self.send_json(200,{k:v for k,v in job.items() if k not in ('created_at','updated_at')});return
+            # Internal fields (leading underscore, e.g. the cancellation handle) are not JSON data.
+            self.send_json(200,{k:v for k,v in job.items() if k not in ('created_at','updated_at') and not k.startswith('_')});return
         if self.path=='/': self.path='/index.html?v=207vectorrag'
         return super().do_GET()
     def do_POST(self):

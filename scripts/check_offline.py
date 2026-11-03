@@ -83,6 +83,7 @@ def main():
         ("Q&A model handoff", [node, str(TESTS / "test_qa_handoff.cjs")]),
         ("Ollama cancellation", [sys.executable, str(TESTS / "test_ollama_cancel.py")]),
         ("Student priority, delete and cancel", [sys.executable, str(TESTS / "test_course_priority_delete.py")]),
+        ("Answer job HTTP responses", [sys.executable, str(TESTS / "test_answer_jobs_http.py")]),
         ("Manual stop", [node, str(TESTS / "test_manual_stop.cjs"),
                          "web/shared/js/speech/recognition-controller.js"]),
         ("Question-generation fixtures", [sys.executable, str(TESTS / "test_question_generation.py")]),
