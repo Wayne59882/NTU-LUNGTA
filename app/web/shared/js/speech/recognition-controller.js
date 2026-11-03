@@ -1179,10 +1179,11 @@
         }
         // A stalled transcription must not leave Stop Recording & Answer waiting indefinitely.
         // Prefer the full recording, but allow an available live transcript as a bounded fallback.
-        const sttController=new AbortController();
-        const sttDeadline=setTimeout(()=>sttController.abort(),previewText?15000:45000);
+        const STTAbort=window.AbortController||(typeof AbortController!=='undefined'?AbortController:null);
+        const sttController=STTAbort?new STTAbort():null;
+        const sttDeadline=setTimeout(()=>{if(sttController)sttController.abort();},previewText?15000:45000);
         try{
-          const d=await postVoiceStt(blob,blob.type||'audio/webm',sttController.signal); const text=clean(d.text||'');
+          const d=await postVoiceStt(blob,blob.type||'audio/webm',sttController?sttController.signal:undefined); const text=clean(d.text||'');
           if(!currentCapture())return;
           if(text){
             if(qBox)qBox.textContent=text;
