@@ -404,9 +404,9 @@
       {
         "old": "js/25_v105_resume_after_question_mouth_sync.js",
         "query": "v=pdfR1520261103",
-        "sha256": "6a4c87062a768339c317eb4af48d6356c8f93b3b3c00e00604e9c8e1cf9d95e7",
+        "sha256": "783aa7dd5da86bd30aa8a8e02b742f5d7fc3dde67460bce18e30f6225cf0c1cc",
         "new": "shared/js/speech/recognition-controller.js",
-        "previous_sha256": "ecbb7424a024d3b310e8b2ea3407e2d1a932396e866d2e3ef4d34d46a1061ddd"
+        "previous_sha256": "6a4c87062a768339c317eb4af48d6356c8f93b3b3c00e00604e9c8e1cf9d95e7"
       },
       {
         "old": "js/29_v153_course_aligned_student_results.js",
