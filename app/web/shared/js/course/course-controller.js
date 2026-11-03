@@ -261,10 +261,42 @@ function renderQuizSummary(report,aggregate){
   if(window.CourseMath)window.CourseMath.typeset($('v241QuizBody'));$('v241NewQuiz').onclick=()=>startDynamicQuiz();
 }
 
+async function pollCourseAnswerJob(id,request){
+  const began=Date.now(),manager=window.VQ_QA_REQUESTS;
+  while(Date.now()-began<900000){
+    if(request&&manager&&!manager.isCurrent(request))throw new Error('Superseded question');
+    const r=await fetch('/api/reference/job-status?id='+encodeURIComponent(id),{
+      cache:'no-store',signal:request&&request.controller?request.controller.signal:undefined});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(d.error||('HTTP '+r.status));
+    if(d.status==='done')return d.result||{};
+    if(d.status==='cancelled')throw new Error('Question cancelled after model switch');
+    if(d.status==='error')throw new Error(d.error||'Local answer failed');
+    await new Promise(resolve=>setTimeout(resolve,1500));
+  }
+  throw new Error('The local course answer timed out.');
+}
 async function courseAnswerOne(q,request){
   const cloud=cloudCfg(),lang=qLang(q);window.VQ_LAST_DETECTED_LANGUAGE=lang;if(cloud.provider!=='off'&&!cloud.apiKey)return 'Please enter the API Key and press Enter or “Confirm API Key” before using the selected cloud model.';
-  const path=cloud.provider==='off'?'/api/reference/course-answer-local':'/api/reference/course-answer';const payload={course_id:manifest.course_id,question:String(q||''),model_key:modelKey(),language_tag:lang,cloud_provider:cloud.provider};if(cloud.provider!=='off')payload.cloud_api_key=cloud.apiKey;
-  const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store',signal:request&&request.controller?request.controller.signal:undefined}),d=await r.json().catch(()=>({}));if(request&&window.VQ_QA_REQUESTS&&!window.VQ_QA_REQUESTS.isCurrent(request))throw new Error('Superseded question');if(!r.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));window.VQ_LAST_COURSE_ANSWER_META={course_id:manifest.course_id,engine:d.engine||'local-course-rag',sources:Array.isArray(d.sources)?d.sources:[],correction_id:d.correction_id||''};const answer=window.CourseContent?window.CourseContent.clean(d.answer):String(d.answer||'').trim();if(!answer)throw new Error('The course answer service returned no answer.');return answer;
+  const path=cloud.provider==='off'?'/api/reference/course-answer-job-start':'/api/reference/course-answer';
+  const payload={course_id:manifest.course_id,question:String(q||''),model_key:modelKey(),language_tag:lang,cloud_provider:cloud.provider};if(cloud.provider!=='off')payload.cloud_api_key=cloud.apiKey;
+  // Keep the small job-start request alive long enough to learn its ID even if the user switches models.
+  // This closes the race where aborting job-start creates a job that cannot later be cancelled.
+  const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store',
+    signal:cloud.provider==='off'?undefined:(request&&request.controller?request.controller.signal:undefined)});
+  let d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.detail||d.error||('HTTP '+r.status));
+  if(cloud.provider==='off'){
+    if(!d.job_id)throw new Error('Local course answer job was not created.');
+    if(request&&window.VQ_QA_REQUESTS)window.VQ_QA_REQUESTS.rememberJob(request,d.job_id);
+    if(request&&window.VQ_QA_REQUESTS&&!window.VQ_QA_REQUESTS.isCurrent(request))throw new Error('Superseded question');
+    d=await pollCourseAnswerJob(d.job_id,request);
+  }
+  if(request&&window.VQ_QA_REQUESTS&&!window.VQ_QA_REQUESTS.isCurrent(request))throw new Error('Superseded question');
+  window.VQ_LAST_COURSE_ANSWER_META={course_id:manifest.course_id,engine:d.engine||'local-course-rag',
+    sources:Array.isArray(d.sources)?d.sources:[],correction_id:d.correction_id||''};
+  const answer=window.CourseContent?window.CourseContent.clean(d.answer):String(d.answer||'').trim();
+  if(!answer)throw new Error('The course answer service returned no answer.');return answer;
 }
 function installAnswerAdapter(){
   if(!manifest)return;const current=window.VQ_generateFinalAnswer;if(!legacyAnswer&&typeof current==='function')legacyAnswer=current;if(current&&current.__v241CourseAdapter)return;
