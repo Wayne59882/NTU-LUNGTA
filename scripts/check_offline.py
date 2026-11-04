@@ -81,6 +81,7 @@ def main():
         ("Batch recovery fixtures", [node, str(TESTS / "test_batch_recovery.cjs")]),
         ("Speech pronunciation fixtures", [node, str(TESTS / "test_speech_pronunciation.cjs")]),
         ("Q&A model handoff", [node, str(TESTS / "test_qa_handoff.cjs")]),
+        ("Gemini Live natural conversation", [node, str(TESTS / "test_gemini_live.cjs")]),
         ("Ollama cancellation", [sys.executable, str(TESTS / "test_ollama_cancel.py")]),
         ("Student priority, delete and cancel", [sys.executable, str(TESTS / "test_course_priority_delete.py")]),
         ("Answer job HTTP responses", [sys.executable, str(TESTS / "test_answer_jobs_http.py")]),

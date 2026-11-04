@@ -213,6 +213,12 @@
         "new": "shared/js/auth/role-access.js"
       },
       {
+        "old": "shared/js/qa/gemini-live.js",
+        "new": "shared/js/qa/gemini-live.js",
+        "sha256": "ae42ec55093a3ffc1d8c28f5aeb03ce97c8c530554935ad22ca2e8271cae8ccf",
+        "query": "v=R17-20261104"
+      },
+      {
         "old": "shared/js/course/upload-diagnostics.js",
         "new": "shared/js/course/upload-diagnostics.js",
         "sha256": "3c3673f47f0fc8c13186df560222dffb085f9682e676428814891429087ba6c0",
