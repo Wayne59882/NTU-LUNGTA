@@ -130,7 +130,7 @@ function userBar(){
 function studentBuilder(b){
   const h=b.querySelector('.v241-head h2'),sub=b.querySelector('.v241-head .v241-sub');
   if(h)h.textContent='我的課程 My Courses';
-  if(sub)sub.textContent='預設為內建呼吸生理課程。若老師提供課程代碼，輸入後即可使用老師上傳的課程（講解、AI 助理問答與練習題）。';
+  if(sub)sub.textContent='預設為內建生理學課程。若老師提供課程代碼，輸入後即可使用老師上傳的課程（講解、AI 助理問答與練習題）。';
   const label=b.querySelector('label[for="v241ExistingCourses"]');if(label)label.textContent='目前課程 Current course';
   const note=b.querySelector('.v241-active+.v241-sub');if(note)note.hidden=true;
   if($('vqJoin'))return;

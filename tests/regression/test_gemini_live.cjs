@@ -30,9 +30,13 @@ async function main(){
   assert.equal(tool.name,'search_course_material');assert.equal(tool.behavior,'BLOCKING');
   assert.match(setup.systemInstruction.parts[0].text,/ALWAYS call search_course_material/);
   assert.match(setup.systemInstruction.parts[0].text,/out_of_scope/);
+  // Scope is decided by the server only; the course title must not make Gemini refuse (e.g. kidney questions in the built-in textbooks).
+  assert.match(setup.systemInstruction.parts[0].text,/only the tool result decides/);
+  assert.match(female.setupMessage('', 'selected').setup.systemInstruction.parts[0].text,/only the tool result decides/);
+  assert.doesNotMatch(setup.systemInstruction.parts[0].text,/Respiratory Physiology/);
   assert.equal(female.setupMessage('h-7').setup.sessionResumption.handle,'h-7');
   const ok=await female.searchCourse('What is the normal V/Q ratio?');
-  assert.equal(ok.status,'ok');assert.match(ok.passages,/0\.8/);assert.equal(calls.at(-1).url,'/api/reference/context');
+  assert.equal(ok.status,'ok');assert.match(ok.passages,/0\.8/);assert.equal(ok.scope,'confirmed_in_course_by_server');assert.equal(calls.at(-1).url,'/api/reference/context');
   const outside=await female.searchCourse('明天天氣如何');
   assert.equal(outside.status,'out_of_scope');
   const course=await load('yating','pde-1',fetchImpl);

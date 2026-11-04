@@ -79,7 +79,7 @@ try {
       return 'I cannot determine the intended concept yet. Please ask a specific course-related question, for example: “What is low V/Q?”, “Why is pulmonary embolism dead-space-like?”, or “Why does PaCO2 rise?”';
     }
     if(reason === 'admin_vague'){
-      return '你目前在「老師講解 / 自由問答」模式。這裡只回答目前呼吸生理課程相關問題。請把問題寫得更具體，例如問 ventilation、perfusion、V/Q ratio、shunt、dead space、diffusion、PaO2、PaCO2 或 oxygen content。';
+      return '你目前在「老師講解 / 自由問答」模式。這裡只回答目前生理學課程相關問題。請把問題寫得更具體，例如問 ventilation、perfusion、V/Q ratio、shunt、dead space、diffusion、PaO2、PaCO2 或 oxygen content。';
     }
     return '這個問題和目前課程主題不相關，因此我不會硬套課程內容回答。請改問 gas exchange、V/Q ratio、ventilation、perfusion、shunt、dead space、diffusion、PaO2、PaCO2、hemoglobin 或相關疾病案例。';
   }
