@@ -49,7 +49,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;',
 
 function refreshModeLabel(){
   const opt=document.querySelector('#vqLiveMode option[value="selected"]');
-  if(opt)opt.textContent='Answer source: '+selectedModelLabel()+' · checked, slower';
+  if(opt)opt.textContent='Checked reply · '+selectedModelLabel()+' · slower';
 }
 
 function injectUI(){
@@ -78,17 +78,17 @@ function injectUI(){
   left.innerHTML='<div class="section-label">STUDENT Q&amp;A · TYPE OR RECORD</div>';
   left.appendChild(controls);if(grid)left.appendChild(grid);
   const box=document.createElement('div');box.className='vq-qa-col vq-live';box.id='vqLivePanel';
-  box.innerHTML='<div class="section-label">NATURAL CONVERSATION · GEMINI LIVE</div>'+
-    '<div class="vq-live-row"><select id="vqLiveMode" aria-label="Answer source">'+
-      '<option value="gemini">Answer source: Gemini (fastest)</option>'+
-      '<option value="selected">Answer source: selected Q&amp;A model · checked, slower</option></select></div>'+
+  box.innerHTML='<div class="section-label">NATURAL CONVERSATION</div>'+
+    '<div class="vq-live-row"><select id="vqLiveMode" aria-label="Reply mode">'+
+      '<option value="gemini">Fast reply · Gemini</option>'+
+      '<option value="selected">Checked reply · selected Q&amp;A model · slower</option></select></div>'+
     '<div class="vq-live-row"><input id="vqLiveKey" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Paste your Gemini API key">'+
     '<button type="button" class="secondary" id="vqLiveKeyBtn">Confirm Key</button><button type="button" class="secondary" id="vqLiveClearBtn">Clear</button></div>'+
     '<div class="vq-live-row"><button type="button" class="primary" id="vqLiveStart">🗣 Start Natural Conversation</button>'+
     '<button type="button" class="danger" id="vqLiveStop" disabled>■ End Conversation</button></div>'+
     '<div class="v241-api-status" id="vqLiveStatus"></div>'+
     '<div class="vq-live-log" id="vqLiveLog" aria-live="polite"></div>'+
-    '<div class="vq-live-note">Press Start and talk any time — you can interrupt. Voice is processed by Google Gemini.</div>';
+    '<div class="vq-live-note">Press Start and talk any time. Answers use only the course material. Voice is processed by Google.</div>';
   columns.appendChild(left);columns.appendChild(box);
   const mode=$('vqLiveMode');try{mode.value=localStorage.getItem(MODE_STORE)==='selected'?'selected':'gemini';}catch(_){}
   refreshModeLabel();

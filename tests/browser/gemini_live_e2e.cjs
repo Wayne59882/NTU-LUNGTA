@@ -133,7 +133,7 @@ async function main(){
   await page.waitForFunction(()=>/Listening|Reconnected/.test(document.getElementById('vqLiveStatus').textContent),null,{timeout:5000});
   const before=g.setups.length;
   await page.focus('#vqLiveMode');
-  assert.match(await page.$eval('#vqLiveMode option[value="selected"]',o=>o.textContent),/Gemma 4 12B \(local\) · checked/);
+  assert.match(await page.$eval('#vqLiveMode option[value="selected"]',o=>o.textContent),/^Checked reply · Gemma 4 12B \(local\) · slower$/);
   await page.selectOption('#vqLiveMode','selected');
   await until(()=>g.setups.length===before+1,8000,'setup for selected-model mode');
   const sel=g.setups.at(-1);
