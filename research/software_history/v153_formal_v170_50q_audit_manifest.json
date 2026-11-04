@@ -1,0 +1,184 @@
+{
+  "archive": "v153_formal_v170_50q_audit.zip",
+  "source_archive": "02_VQ_TA_ORIGINAL_50Q_FORMAL_V153_AUDIT_v170.zip",
+  "source_archive_sha256": "e7ad34d96a44450e09b20da3610a47b071a889abdcbc6446f35e0088f5a327f1",
+  "archive_sha256": "fb2b4a300bf6d80d4d72b0ce32f0a868b33e422342d45ddfd567dd9c8f132763",
+  "included": [
+    {
+      "path": "CHECKSUMS_SHA256.csv",
+      "size_bytes": 12301,
+      "sha256": "ec12bd225538cdf2c30b53ec11286ff6d53a900c84cd8050291aaa75b16579bf"
+    },
+    {
+      "path": "MANIFEST.csv",
+      "size_bytes": 6323,
+      "sha256": "9c46de5fdc20fa75eb9aff777c45c378d99e369fc7eee603904a6d848e4d9efc"
+    },
+    {
+      "path": "00_START_HERE/v153_formal_evaluator_mapped_basic.js",
+      "size_bytes": 16505,
+      "sha256": "d2e84d123651dbb71470aa0f9a7cc661c1431ca26e38922c05189967864b9be4"
+    },
+    {
+      "path": "00_START_HERE/Exact_v153_Summary.csv",
+      "size_bytes": 310,
+      "sha256": "aced0e69e3eb5909d1de6cf11e91f65cef8f286365eb33367b0ef0536bef977c"
+    },
+    {
+      "path": "00_START_HERE/Verification_Checks.csv",
+      "size_bytes": 338,
+      "sha256": "2aafe08e2daaa74c86a2066751ccd67d131624481b98b66bd8b021854d5ec3f0"
+    },
+    {
+      "path": "00_START_HERE/METHOD_VERIFICATION.md",
+      "size_bytes": 550,
+      "sha256": "265e3af7a9fb0d33c2ff7cfa69c38cc15d901e934bb9de717772af5abc27c0a9"
+    },
+    {
+      "path": "00_START_HERE/README.md",
+      "size_bytes": 1172,
+      "sha256": "192be297cf5f57657925f3d386a3fc539a82306d2b6c7db74e5947886adadfa1"
+    },
+    {
+      "path": "00_START_HERE/FINAL_METHOD_VERIFICATION_v170.md",
+      "size_bytes": 966,
+      "sha256": "becd26395defa184b63b6b2297df0dc29363c627231f3f114ea11451934cb224"
+    },
+    {
+      "path": "00_START_HERE/V153_Source_Line_Map.csv",
+      "size_bytes": 437,
+      "sha256": "d00cc2c425d37accfdb9ea538c49edf7884c5ff53e23729368cb32791d262bce"
+    },
+    {
+      "path": "00_START_HERE/FINAL_METHOD_VERIFICATION_v170.csv",
+      "size_bytes": 730,
+      "sha256": "af30277d1b7a028c79db4d6dfb3e5407ac0d25a3f55d8d05a41ba725dc490da0"
+    },
+    {
+      "path": "00_START_HERE/FORMAL_CALIBRATION_AND_VALIDATION_METHOD_v170.md",
+      "size_bytes": 1658,
+      "sha256": "0840956acf3902075c1c91738faebe36ddc2fa5d056cc2865ca871758133ade2"
+    },
+    {
+      "path": "06_KB_FORMAL_WEIGHT_SELECTION/README.md",
+      "size_bytes": 944,
+      "sha256": "dc188c5263894fe8e7103638cb2dba72441950e96decbb12add74670b6a07aa0"
+    },
+    {
+      "path": "03_QUESTION_AUDIT/Original50_Top1_KB_Score_Breakdown.csv",
+      "size_bytes": 6279,
+      "sha256": "9fd9a87a9cbf41fc91ac3a428355408afc59836faad43a6558472134544f35fe"
+    },
+    {
+      "path": "03_QUESTION_AUDIT/Original50_Returned_Top6_KB_Items.csv",
+      "size_bytes": 23214,
+      "sha256": "4c784522d861eda03cc8177c20af7837e3d195c655efab1daeb6fa62f5518f7e"
+    },
+    {
+      "path": "03_QUESTION_AUDIT/Original50_Full_Results.csv",
+      "size_bytes": 11392,
+      "sha256": "d32e7724aaddb929baab39fe11ca6f46289691f58fe19094fce7606dd6ed5e8a"
+    },
+    {
+      "path": "03_QUESTION_AUDIT/Original50_All_Passing_KB_Candidates.csv",
+      "size_bytes": 1527288,
+      "sha256": "f5d3d5546849f30b57dc20142f7cb501472f6bb9a681289de248ce0946185578"
+    },
+    {
+      "path": "03_QUESTION_AUDIT/Original50_Component_Sums.csv",
+      "size_bytes": 693,
+      "sha256": "ab735b60d48ba7bb4f17c9cd0371325ab57ec43d2858f059aaba0022196a5e70"
+    },
+    {
+      "path": "03_QUESTION_AUDIT/Original50_Domain_Hits_Long.csv",
+      "size_bytes": 7590,
+      "sha256": "02ad381309dfc4bd05e5b6c2a3fb901be43c8c8907ef9fdfba4b19fcd7fe66d2"
+    },
+    {
+      "path": "08_WORD_READY/WORD_READY_README.md",
+      "size_bytes": 297,
+      "sha256": "9bbce4364c1e5472ea354732592c11611ec03ab39961c47e5b1dd6e09ce6b5d3"
+    },
+    {
+      "path": "02_MAIN_KB_INVENTORY/Main_KB_Scoring_Rubric_10_Items.csv",
+      "size_bytes": 1258,
+      "sha256": "4976b724f1e3bb1bdc6a1c975f0f58cfbf97de53b064e866fd9f963e42dba4e4"
+    },
+    {
+      "path": "02_MAIN_KB_INVENTORY/Main_KB_Course_Summary.csv",
+      "size_bytes": 890,
+      "sha256": "42f45c48677e2508771f7c508d3e713940193050c325f8aedb3074828eeb672b"
+    },
+    {
+      "path": "02_MAIN_KB_INVENTORY/Main_KB_Items_11013_FULL.csv",
+      "size_bytes": 8891845,
+      "sha256": "79b47706e2d11bcef6a94fe3676927d09bb7d8414c7f15a71d1b6272d3aa38e1"
+    },
+    {
+      "path": "01_DOMAIN_INVENTORY/Domain_Items_151.csv",
+      "size_bytes": 14978,
+      "sha256": "e6415870a5300fd0404c00cf0b1b196335ec5c2cb9a9a0c45c153089c0e7b058"
+    },
+    {
+      "path": "01_DOMAIN_INVENTORY/Domain_Category_Summary.csv",
+      "size_bytes": 413,
+      "sha256": "2109a66a694ced2a7b6e2c9acd8d3e2a3925fcee8c975d84160f06d4acdf8ca7"
+    },
+    {
+      "path": "05_MAIN_KB_STATISTICS/data/Original50_KB_Threshold_Sweep.csv",
+      "size_bytes": 7192,
+      "sha256": "c11c0b6d4ad094909852491dcbff1e7ec5ea0b6103b4b7ae2644495f15447eb6"
+    },
+    {
+      "path": "08_WORD_READY/tables_csv/Table_01_Threshold_Selection.csv",
+      "size_bytes": 342,
+      "sha256": "c5f1489a5ee70468859c572a62def45fc81e145a12151588a3e06e55e5a9efab"
+    },
+    {
+      "path": "08_WORD_READY/tables_csv/Table_Weights_Locked_Across_Datasets.csv",
+      "size_bytes": 581,
+      "sha256": "2a58cabf7cce15cff788c817d22632cf2253b3d83843c9ec51dedf4ff2b923a2"
+    },
+    {
+      "path": "08_WORD_READY/tables_csv/Table_Formal_Main_KB_Weights.csv",
+      "size_bytes": 2847,
+      "sha256": "bdd48dcb9181d3c8c24bb5372d31fbb5cc26f1f4a3234491ec909fcd350c36be"
+    },
+    {
+      "path": "08_WORD_READY/tables_csv/Table_02_Formal_Weight_Selection.csv",
+      "size_bytes": 2847,
+      "sha256": "bdd48dcb9181d3c8c24bb5372d31fbb5cc26f1f4a3234491ec909fcd350c36be"
+    },
+    {
+      "path": "08_WORD_READY/tables_csv/Table_03_Original50_Component_Sums.csv",
+      "size_bytes": 693,
+      "sha256": "ab735b60d48ba7bb4f17c9cd0371325ab57ec43d2858f059aaba0022196a5e70"
+    },
+    {
+      "path": "06_KB_FORMAL_WEIGHT_SELECTION/data/Formal_Weight_Selection_OFAT_Raw_Original50.csv",
+      "size_bytes": 122436,
+      "sha256": "237834a2585bda979cd96470ae5b79254679c379ded769a546f0fa4725b91f4d"
+    },
+    {
+      "path": "06_KB_FORMAL_WEIGHT_SELECTION/data/Formal_Weight_Selection_OFAT_Summary.csv",
+      "size_bytes": 2847,
+      "sha256": "bdd48dcb9181d3c8c24bb5372d31fbb5cc26f1f4a3234491ec909fcd350c36be"
+    },
+    {
+      "path": "06_KB_FORMAL_WEIGHT_SELECTION/data/Formal_Weights_Locked_Across_Datasets.csv",
+      "size_bytes": 581,
+      "sha256": "2a58cabf7cce15cff788c817d22632cf2253b3d83843c9ec51dedf4ff2b923a2"
+    },
+    {
+      "path": "04_DOMAIN_STATISTICS/data/Original50_Domain_Item_Count_Sweep.csv",
+      "size_bytes": 688,
+      "sha256": "570a54142a654e2bad663af2970ea7ed78056b890f067de101457f5ab810a038"
+    },
+    {
+      "path": "04_DOMAIN_STATISTICS/data/Original50_Domain_Group_Count_Sweep.csv",
+      "size_bytes": 442,
+      "sha256": "6021b918f7f81edf70362030147a21b988aabb63efb88b78efb41eb39d0bb950"
+    }
+  ],
+  "note": "Unmodified evaluator, methods documentation, and CSV audit data; generated images, spreadsheets and Word copies omitted."
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "archive": "v153_original_split_source.zip",
+    "source_archive": "VQ_TA_SPLIT_FILE_v153_NO_STUDENT_COMPARISON.zip",
+    "source_archive_sha256": "44c7a08ec0c7d0627d030c0a9d8be8991c62f2ae437b7b7d399a2668ce1c29bf",
+    "archive_sha256": "431ad05e4214438b18d6d57bd6110dea6a9f360be375b0f65f828005b7bde493",
+    "note": "Original v153 split application source, byte-for-byte; image assets and non-software analysis documents omitted."
+  },
+  {
+    "archive": "v153_github_ready_source.zip",
+    "source_archive": "01_VQ_TA_v153_GITHUB_READY.zip",
+    "source_archive_sha256": "9e54040a7d8dc8e26797397bcb8a8439b97ae9480691634feee35d1ff92f2b3e",
+    "archive_sha256": "38ccd5763b854ecb09cb0d68c11d6c87d05e5d4f784bd3df137dffd7bca79467",
+    "note": "Selected source files are byte-for-byte copies. Image/audio assets, private textbook corpus, and non-source outputs are excluded. This is a source archive, not a complete deployable distribution."
+  },
+  {
+    "archive": "v153_formal_v170_source.zip",
+    "source_archive": "01_VQ_TA_v153_GITHUB_READY_FORMAL_v170.zip",
+    "source_archive_sha256": "d80814e769bf70bd6bfbc7e9324c1eb099f853f06ef0bfc6a9f99d79de9dee70",
+    "archive_sha256": "e1ef631e4a57a2238ad723b390f80482f2d3132cdb991e51d53e9c488638e436",
+    "note": "Selected source files are byte-for-byte copies. Image/audio assets, private textbook corpus, and non-source outputs are excluded. This is a source archive, not a complete deployable distribution."
+  },
+  {
+    "archive": "v241_12_5_source.zip",
+    "source_archive": "NTULUNG_TA_v241_12_5_VQ_CALCULATION_FIXED.zip",
+    "source_archive_sha256": "e8b96029f94687e295319cf56d19ed0095fa3f67e96e2eafad859273e0ecd5bc",
+    "archive_sha256": "9b4e3b66acda0f8d842457ea26b08afd2ad1b4a6702b4501634525c3eebea20e",
+    "note": "Selected source files are byte-for-byte copies. Image/audio assets, private textbook corpus, and non-source outputs are excluded. This is a source archive, not a complete deployable distribution."
+  },
+  {
+    "archive": "v241_12_5_R12_source.zip",
+    "source_archive": "MC_VHTA_COMPLETE_R12_MATH_AUDIO_20261102.zip",
+    "source_archive_sha256": "63a1a3611030a7d36a0a8236e4c1b6abee2d01eede4e5f5545167502a09d21bc",
+    "archive_sha256": "7f0fd357396f3383e22fe3be22c1ef210a733d6dfc4b539aa382593a3b8ac3ca",
+    "note": "Selected source files are byte-for-byte copies. Image/audio assets, private textbook corpus, and non-source outputs are excluded. This is a source archive, not a complete deployable distribution."
+  },
+  {
+    "archive": "v153_formal_v170_200q_audit.zip",
+    "source_archive": "03_VQ_TA_ADDED150_TOTAL200_FORMAL_V153_AUDIT_v170.zip",
+    "source_archive_sha256": "239690cc1b7fbab394ccbf7287835ea3f2f84eb34756a4382eb98adefe859a9f",
+    "archive_sha256": "ebe6e55b16a542cad3a18e72d5a0c9d7932113a6351b565f49c6c37f0e0970eb",
+    "note": "Unmodified evaluator, methods documentation, and CSV audit data; generated images, spreadsheets and Word copies omitted."
+  },
+  {
+    "archive": "v153_formal_v170_50q_audit.zip",
+    "source_archive": "02_VQ_TA_ORIGINAL_50Q_FORMAL_V153_AUDIT_v170.zip",
+    "source_archive_sha256": "e7ad34d96a44450e09b20da3610a47b071a889abdcbc6446f35e0088f5a327f1",
+    "archive_sha256": "fb2b4a300bf6d80d4d72b0ce32f0a868b33e422342d45ddfd567dd9c8f132763",
+    "note": "Unmodified evaluator, methods documentation, and CSV audit data; generated images, spreadsheets and Word copies omitted."
+  }
+]

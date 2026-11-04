@@ -1,0 +1,356 @@
+{
+  "archive": "v153_github_ready_source.zip",
+  "source_archive": "01_VQ_TA_v153_GITHUB_READY.zip",
+  "source_archive_sha256": "9e54040a7d8dc8e26797397bcb8a8439b97ae9480691634feee35d1ff92f2b3e",
+  "archive_sha256": "38ccd5763b854ecb09cb0d68c11d6c87d05e5d4f784bd3df137dffd7bca79467",
+  "included": [
+    {
+      "path": "index.html",
+      "size_bytes": 18086,
+      "sha256": "9132c196dc6642dd3f0879031a1e92e6858bb6b9d6d318aa1b1797c2c726a45d"
+    },
+    {
+      "path": "package.json",
+      "size_bytes": 322,
+      "sha256": "8052481996018b2c2a500e9cb4c358e30f40d64f0d4af0b1964a5cee4044f8ca"
+    },
+    {
+      "path": "CHECKSUMS_SHA256.csv",
+      "size_bytes": 7125,
+      "sha256": "d4316099904936662ef8ba16ef8cc94095a59c3e61a1040b890eb9f86770a6bb"
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 1792,
+      "sha256": "1d7e63ee2590f0c1cc9a7de776934cf83d7f32f99acfbff2a18d7ca1eb7c1d5f"
+    },
+    {
+      "path": ".gitignore",
+      "size_bytes": 127,
+      "sha256": "173986d2a9e25d9af0e81a33c477c3ea2d155e3c280c0702d811e3c1e62b5834"
+    },
+    {
+      "path": "START_HERE.html",
+      "size_bytes": 153,
+      "sha256": "d26b03ea3dd367586fda927d07caf8d340b4abd03ba78aadbf79a420fd8e4a76"
+    },
+    {
+      "path": "VERIFICATION.json",
+      "size_bytes": 298,
+      "sha256": "4a0a624fcebc5900da2ff9f6c0508791e13d13f3f20f31f0e00e4afa93eb9fbe"
+    },
+    {
+      "path": "data/full_kb.json",
+      "size_bytes": 13736487,
+      "sha256": "0c6612ab5b5fc8fc049138b78fb306ffdd675c3d738a44a23d806485dc64f1f6"
+    },
+    {
+      "path": "data/node_syntax_checks.csv",
+      "size_bytes": 862,
+      "sha256": "040b021333b75248a5c628b70549e511610f9973f2458b8d2f87954927d6fb96"
+    },
+    {
+      "path": "data/kb_course_summary.csv",
+      "size_bytes": 1825,
+      "sha256": "3002301ee4f34495ffcbcc258099fa24fca8692bd015ec82eb9d290222d908c4"
+    },
+    {
+      "path": "data/javascript_manifest.csv",
+      "size_bytes": 4283,
+      "sha256": "9d50ec3f0c60673b265b0642b855d807703bb9794081718f59a0b25b7091363f"
+    },
+    {
+      "path": "js/05_recognition_stop_on_submit.js",
+      "size_bytes": 4274,
+      "sha256": "181c54619a1eb75b06e0cecaa436120dafdc77b23220ab12ce4ae1f6362d9591"
+    },
+    {
+      "path": "js/15_voice_options_restore.js",
+      "size_bytes": 4133,
+      "sha256": "01e4c0e33b1f9e833ebde5df31246a24510bdd45aa04411f860b66a6ade7d347"
+    },
+    {
+      "path": "js/17_voice_live_sync_pause_button_fix.js",
+      "size_bytes": 9069,
+      "sha256": "17fa9fad26ef61f69c9b5e003297b467c0fa8637c42f977e48bd4636cbe749d4"
+    },
+    {
+      "path": "js/26_realistic_avatar_photo_mouth_sync.js",
+      "size_bytes": 16222,
+      "sha256": "8fe1f29eb065bf44893a642d8ae68065acff09d838a581d3aaedfe10abfc817e"
+    },
+    {
+      "path": "js/01_original_ui_core.js",
+      "size_bytes": 33133,
+      "sha256": "492135a2adeed9fe9a9bb9fb8be95026e0685e7528abed56d0884952e87ba792"
+    },
+    {
+      "path": "js/25_v105_resume_after_question_mouth_sync.js",
+      "size_bytes": 34146,
+      "sha256": "1787788ba16471d544f9210b7f3dba9b7f6d9c212d95055bce46a147b56290b6"
+    },
+    {
+      "path": "js/20_stop_clears_teacher_script_patch.js",
+      "size_bytes": 2431,
+      "sha256": "0f91653764c9551a09a9ca63352c51dbbb4008ff6a16f977a1543692c17bbb12"
+    },
+    {
+      "path": "js/27_force_yating_zhiwei_voice.js",
+      "size_bytes": 7311,
+      "sha256": "98894d5a75c20fee188d43b964d384311f04d07506fc67b722fdd86ffab874aa"
+    },
+    {
+      "path": "js/03_qa_engine.js",
+      "size_bytes": 53836,
+      "sha256": "ce717d921a20ca2abb5b0ae8d4e99f56148f0d4d11ad626c9f2bc18602a54ffa"
+    },
+    {
+      "path": "js/02_stable_webspeech_patch.js",
+      "size_bytes": 7497,
+      "sha256": "981f5ad1676a47de81438079181c074798cd91e46b0159fc6749e88072121fa7"
+    },
+    {
+      "path": "js/14_voice_live_sync_patch.js",
+      "size_bytes": 6124,
+      "sha256": "e511a72e30df548ae3c05400b5fd732fdfdc2a04ebece07ded90ff8709370e86"
+    },
+    {
+      "path": "js/06_abort_guard_patch.js",
+      "size_bytes": 1428,
+      "sha256": "5cef69791f2f01a84fe2ea6124954140568b439196eec8ee5bf1ccf625d4168d"
+    },
+    {
+      "path": "js/09_lesson_dropdown_confirm_stop.js",
+      "size_bytes": 16574,
+      "sha256": "4d71e18dc2963e15a275d22573de69c2e15287318eebea4a8554c391a73b6d96"
+    },
+    {
+      "path": "js/13_voice_speed_restore.js",
+      "size_bytes": 4016,
+      "sha256": "42ed6f8505f67ae010e8a1664fa81287743e1757567caa634b7f6203b92fbe03"
+    },
+    {
+      "path": "js/07_typewriter_highlight_patch.js",
+      "size_bytes": 18386,
+      "sha256": "f5f0ef0939a92ee14331014d35a291acc15d340fd65a28687ca65c773a850dc3"
+    },
+    {
+      "path": "js/08_script_typewriter_sync.js",
+      "size_bytes": 20774,
+      "sha256": "484f28b69d0e283a29f3ea08a6589c79827d43bd068378c09354701f13974377"
+    },
+    {
+      "path": "js/29_v153_course_aligned_student_results.js",
+      "size_bytes": 33235,
+      "sha256": "7ed70c517914bfd4b3e4a1a15888e4da8b6b3fad6c03f77caa7d1310ade3130c"
+    },
+    {
+      "path": "js/00_full_kb_data.generated.js",
+      "size_bytes": 11128234,
+      "sha256": "fb5564ce11cb3f28c63e0b0d1f0d0417234f57375d0e3f1bac0bc4205921ca44"
+    },
+    {
+      "path": "js/04_global_speech_stop_patch.js",
+      "size_bytes": 5948,
+      "sha256": "3692cfb1a614dcff6e82b8a6fe9d432c116087b4138dd8df79cafbf5722a57ec"
+    },
+    {
+      "path": "js/16_voice_switch_script_control_fix.js",
+      "size_bytes": 6130,
+      "sha256": "5afa896dff8fcb2d5d3600fa077b306b852957fd0ca8e73a281572d9d3fb7235"
+    },
+    {
+      "path": "css/v149_hard_integrated.css",
+      "size_bytes": 6391,
+      "sha256": "729916f7c391d9eebfa37b22e932218eae55d8595c7f389ec5acfd705e6f381d"
+    },
+    {
+      "path": "css/styles.css",
+      "size_bytes": 53736,
+      "sha256": "93870c5602770f0653731054b334c4b9a4efd3a317372ecd5cc58e483b77706b"
+    },
+    {
+      "path": "css/v130_right_panel_background_theme.css",
+      "size_bytes": 10311,
+      "sha256": "a702d55aaf8cfefdc48febe66d5f21f41ad6a729f721ec379dca8d38c4951943"
+    },
+    {
+      "path": "css/v150_ui_repackaged.css",
+      "size_bytes": 4812,
+      "sha256": "cea8e05e5f277872e617098398f69e8c2b7e182041e045172e51bd19c4399db7"
+    },
+    {
+      "path": "css/v148_coursebank_static_lung.css",
+      "size_bytes": 5238,
+      "sha256": "c1b87aa7f7d74960843533ec15bfbcd80135862f08dd5af2ffd8690093a7e317"
+    },
+    {
+      "path": "css/v153_student_results_lecture_controls.css",
+      "size_bytes": 2834,
+      "sha256": "c782de4c37fcf212ef2c14f6a457cc7e85fc7363890ccc4b38e99f6e2b26c1f6"
+    },
+    {
+      "path": "tools/check_index_scripts.py",
+      "size_bytes": 551,
+      "sha256": "9b032c6e519b64acf4b3852a06f0c57841f32a6c93a481a136b20a2dbfd8cf8d"
+    },
+    {
+      "path": "tools/build_kb_js.py",
+      "size_bytes": 496,
+      "sha256": "20cfb63407ddf8dfae0ac9e317e34efeb6eaad30bd09fa7ef036d989150cab1d"
+    },
+    {
+      "path": "docs/SCORING_PIPELINE.md",
+      "size_bytes": 964,
+      "sha256": "b6a53a865d2f1c4837bfaec558a6de68a9ae74506aedbe10cbb36ceb0e724287"
+    },
+    {
+      "path": "docs/MIGRATION_NOTES.md",
+      "size_bytes": 557,
+      "sha256": "c4abea859563a872402ae3250f70d31292ac719ed94ea14cf71330363700661c"
+    },
+    {
+      "path": "docs/KB_DATA.md",
+      "size_bytes": 374,
+      "sha256": "1e15f79aedfa95619e2919747a7a30ddf9b11e0a4bdaaf1090e3e8484102c49b"
+    },
+    {
+      "path": "docs/REPOSITORY_STRUCTURE.md",
+      "size_bytes": 582,
+      "sha256": "0362cae84dbcfdada8552df697b8ce8ccee59de58a1f9e87f8beb05dfeed0ef8"
+    },
+    {
+      "path": "docs/JAVASCRIPT_LOAD_ORDER.md",
+      "size_bytes": 900,
+      "sha256": "78399982df9e7b43331d95afe74761cf8f1d22e814dbdc51f04c3464feb42530"
+    },
+    {
+      "path": "js/archive_not_loaded/12_percent_weight_two_lobe_patch.js",
+      "size_bytes": 18099,
+      "sha256": "b87c1719cda1cfdd22e1a774cd4b08185cb2f2c094a684fe173c540a1695b9f3"
+    },
+    {
+      "path": "js/archive_not_loaded/18_lung_model_single_region_patch.js",
+      "size_bytes": 13074,
+      "sha256": "765fbf759e6691cf2c1614808bfc2bcd943aeca590619b27a5a2f97849184bf4"
+    },
+    {
+      "path": "js/archive_not_loaded/19_label_alignment_patch.js",
+      "size_bytes": 2443,
+      "sha256": "4c62b0e96017c74d020874cde0c5ebcf0d4dc1892b360d4145614df478ad02d1"
+    },
+    {
+      "path": "js/archive_not_loaded/21_calculate_result_persist_patch.js",
+      "size_bytes": 2246,
+      "sha256": "5c20c778d1e7f909efa65af14e68b124fc14e6f8754b827108e8e5ccd4287146"
+    },
+    {
+      "path": "js/archive_not_loaded/11_lung_model_consistency_patch.js",
+      "size_bytes": 10920,
+      "sha256": "6c96abd87fcde3adce8bca5878879891facd407efcd9bf7c9f338bc31406d49c"
+    },
+    {
+      "path": "js/archive_not_loaded/22_no_flash_linebreak_patch.js",
+      "size_bytes": 2046,
+      "sha256": "f1d37966b5ce4f53e9dff609b7ee038df18359f7ec3c8bbadda533bbc2b44af4"
+    },
+    {
+      "path": "js/archive_not_loaded/24_case_feedback_linebreak_true_patch.js",
+      "size_bytes": 1970,
+      "sha256": "19a127bd62525c0c21fcfd733d508763c7ba5b0e06c98026986ac4d0ac45e255"
+    },
+    {
+      "path": "js/archive_not_loaded/23_units_in_result_no_live_hang_patch.js",
+      "size_bytes": 6953,
+      "sha256": "d5306b1bd26788f4a4237548b10174da99b3b16bdb9536a32060049e1bbe2294"
+    },
+    {
+      "path": "js/archive_not_loaded/10_model_restore_patch.js",
+      "size_bytes": 7690,
+      "sha256": "f73f58672264acb55ba422baf8288d3506d75427594915dce7f2d6770753b68f"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "assets/avatar_female_closed.png",
+      "size_bytes": 1925423,
+      "sha256": "b6fc84b4a19a9e9d6cb497447e432b8c83a0be3ffafa67e8fcf07083586529d8"
+    },
+    {
+      "path": "assets/avatar_female_small.png",
+      "size_bytes": 1901306,
+      "sha256": "4fef8efe5f91a789e790ab366fe71f03cbac2678f881bcb90ebbd9a56c0a48d6"
+    },
+    {
+      "path": "assets/avatar_female_a.png",
+      "size_bytes": 1938545,
+      "sha256": "619bb4996aa7c4ab6c9bb5b9676f4c9fa1de209441d117b21699ee52211bbfa1"
+    },
+    {
+      "path": "assets/avatar_male_a.png",
+      "size_bytes": 1944962,
+      "sha256": "b36cfae9a528a0933338c5a9aed68358687a1063ecedac032eef0ca9918854a8"
+    },
+    {
+      "path": "assets/avatar_female_o.png",
+      "size_bytes": 1928450,
+      "sha256": "36f829735762b5012df11d7981dfdf9a98b2568d5fa134f89329124a8e5b7bf1"
+    },
+    {
+      "path": "assets/avatar_male_e.png",
+      "size_bytes": 1963304,
+      "sha256": "c4af826efc653872d091a6d7f35f1baebfebeefbb8bf5b9800623dc002a7f227"
+    },
+    {
+      "path": "assets/avatar_male_mbp.png",
+      "size_bytes": 1833015,
+      "sha256": "57e657d3f77dc257bc78873f320becfd67174302d4fab6b4cc2ce482d8a52bf5"
+    },
+    {
+      "path": "assets/avatar_female_base.png",
+      "size_bytes": 1925423,
+      "sha256": "b6fc84b4a19a9e9d6cb497447e432b8c83a0be3ffafa67e8fcf07083586529d8"
+    },
+    {
+      "path": "assets/avatar_male_o.png",
+      "size_bytes": 1871850,
+      "sha256": "7b6010f245a6d7e15fd825a96614ca879dd7d5759bb45e52533868cbea50e2d5"
+    },
+    {
+      "path": "assets/avatar_female_e.png",
+      "size_bytes": 1960189,
+      "sha256": "6113b050cf6d1b63ce985d18c81b08df0286a7d4e76cadb329c858fd34d65a98"
+    },
+    {
+      "path": "assets/lung_reference_v149.png",
+      "size_bytes": 457578,
+      "sha256": "e8074537a5d9bb1e9b95a57de679a401c215bbf0e5afca624f24a0fbef867365"
+    },
+    {
+      "path": "assets/avatar_female_mbp.png",
+      "size_bytes": 1941133,
+      "sha256": "03b16e4676f447656d9e847176e0bf54fbfc99ca103d8541ab9218b734ee85c7"
+    },
+    {
+      "path": "assets/lung_static_reference.png",
+      "size_bytes": 313160,
+      "sha256": "ee904a26f73c6b2c11b1da0de81585251e69589306703218372d4a7c4009e1fc"
+    },
+    {
+      "path": "assets/avatar_male_base.png",
+      "size_bytes": 1885902,
+      "sha256": "0b325ce57ee0c1f02a14423953c75cf59ee5bd138ca966b142bdb2a2989bded5"
+    },
+    {
+      "path": "assets/avatar_male_small.png",
+      "size_bytes": 1963304,
+      "sha256": "c4af826efc653872d091a6d7f35f1baebfebeefbb8bf5b9800623dc002a7f227"
+    },
+    {
+      "path": "assets/avatar_male_closed.png",
+      "size_bytes": 1885902,
+      "sha256": "0b325ce57ee0c1f02a14423953c75cf59ee5bd138ca966b142bdb2a2989bded5"
+    }
+  ],
+  "note": "Selected source files are byte-for-byte copies. Image/audio assets, private textbook corpus, and non-source outputs are excluded. This is a source archive, not a complete deployable distribution."
+}

@@ -1,0 +1,2776 @@
+{
+  "archive": "v241_12_5_R12_source.zip",
+  "source_archive": "MC_VHTA_COMPLETE_R12_MATH_AUDIO_20261102.zip",
+  "source_archive_sha256": "63a1a3611030a7d36a0a8236e4c1b6abee2d01eede4e5f5545167502a09d21bc",
+  "archive_sha256": "7f0fd357396f3383e22fe3be22c1ef210a733d6dfc4b539aa382593a3b8ac3ca",
+  "included": [
+    {
+      "path": "APPLY_FULL_UPDATE_LEGACY.sh",
+      "size_bytes": 2798,
+      "sha256": "751435621dfcff6e509b980a94d60884f0a4348de68e894895380900f8c8aaeb"
+    },
+    {
+      "path": "DEFAULT_VQ_ONLY_VALIDATION_20261021.json",
+      "size_bytes": 1520,
+      "sha256": "f6eb3f4023406d44b6b0a91442d613c9baff62832decaf413eab2dd8a13b1f1d"
+    },
+    {
+      "path": "DEPLOYMENT_SIMULATIONS_R3.json",
+      "size_bytes": 2159,
+      "sha256": "52de4a17b23ceddcce870462afc7f1006ffae8a58666508b1dc8f73f5d37998a"
+    },
+    {
+      "path": "DEPLOY_FROM_POWERSHELL.ps1",
+      "size_bytes": 84,
+      "sha256": "4dae3e5ae1644a1708dd9f9a3963a60eaa76d6569ceedf4ceca66fde68ea4705"
+    },
+    {
+      "path": "DEPLOY_FULL_FROM_POWERSHELL.ps1",
+      "size_bytes": 84,
+      "sha256": "4dae3e5ae1644a1708dd9f9a3963a60eaa76d6569ceedf4ceca66fde68ea4705"
+    },
+    {
+      "path": "MANUAL_RECORDING_VALIDATION_20261021.json",
+      "size_bytes": 12104,
+      "sha256": "f4935f440f46eccb30f33ef2781ab2cec862452fe9dcd67b99a45c827bca0359"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/.gitignore",
+      "size_bytes": 282,
+      "sha256": "1b65bc79595e62b86d9ac13730329cb06892e8d8e8c06c7d21dc0dcca7ebb2bc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/ACCEPTANCE_TESTS.txt",
+      "size_bytes": 1978,
+      "sha256": "d8409d229d46853ac9cebefa0d3543fdd01e1388b7b8490259e7d133a4392ccf"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/ADAPTIVE_ANSWER_VERIFICATION_V227.md",
+      "size_bytes": 1741,
+      "sha256": "2b54c8b9119555987e7c2d1ddb66a27f32b4bab30429eb67c9cbf6af4b221af5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/APPLY_VQ_CALCULATION_UPDATE.sh",
+      "size_bytes": 2124,
+      "sha256": "8a770d8abfc18110d972a95f82d8ced4307b27a2a3a80e846baf10d9f636d511"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V206_7.txt",
+      "size_bytes": 2064,
+      "sha256": "39609100e04a400db586e57d392f265920a933842b89c6fafbbaba1ef3011305"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V218.txt",
+      "size_bytes": 629,
+      "sha256": "81c45a7ba128f87b2704ba8de2e4aebec1cae4093c9c3ff89e48645b6c6342ab"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V222.txt",
+      "size_bytes": 1013,
+      "sha256": "4bff27d4b4222b24a0d722d917fc71f8306d0f39e5c013d45b404dfa2195bce6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V224.txt",
+      "size_bytes": 1274,
+      "sha256": "2f2d72fb18f749d3ee908f49d666f2aa5641a04104e5c4944ce050eaaad67dfd"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V225.txt",
+      "size_bytes": 445,
+      "sha256": "d91abae592f7bc3cc303ce43ad3b503e5e32251fdba517f4864f1d914a765ffc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V226.txt",
+      "size_bytes": 1191,
+      "sha256": "8be58870e93461b1d74d8cc14c5238cbc6c01c3fead4bb35a0223513b7098d33"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V227.txt",
+      "size_bytes": 2132,
+      "sha256": "edfe73bda4a11a71fd16f2cd2b9b371eded31059eb96850c37b6afeabf5609c4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V228.txt",
+      "size_bytes": 1943,
+      "sha256": "0fb908426b02fcd545f1d4e2a67652b4f2cef5623489d28010b69e3548f2fa4e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V229.txt",
+      "size_bytes": 1739,
+      "sha256": "e69b595c25fcd3fb369c16f85ac84481c7ee1e0f1fcbdc06bdc7eb5bd4378db2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V231.txt",
+      "size_bytes": 1008,
+      "sha256": "c8b18dfbdab30606596a2f15333e7755a16f3620d4d35dd026d37451afea78ac"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V231_STABLE_SERVING.txt",
+      "size_bytes": 2462,
+      "sha256": "24ea4677190768833da40916e8ae5821c754bfa1c314bc19278344d1d3c6edca"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V232.txt",
+      "size_bytes": 2377,
+      "sha256": "7eda3033a3b94fae4767525b6a41997feede51d0464c34d45856381245f3459c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V233.txt",
+      "size_bytes": 1801,
+      "sha256": "9eb2b9fe6f8de5546729f2516f27aac5c95ab9a00715c9a118da7a714b1812b0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V235.txt",
+      "size_bytes": 2629,
+      "sha256": "f534f079097033c29ac55c3398df7dfa061073b1768ca49367e915efa2ec057e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V236.txt",
+      "size_bytes": 1034,
+      "sha256": "2fb2811cfdd56e6d7a3cba66891f92971d838d4a6020bfe8e346b744e1e42934"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V236_1.txt",
+      "size_bytes": 709,
+      "sha256": "47981bf5b6116c8cfce613edb4947d1239f38ab6b35e13c4dabde9636030e6fc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V237.txt",
+      "size_bytes": 1582,
+      "sha256": "8f30fbff9196d41d6656194938f6ba99d807fdf8b3517d8ec3706222082978ca"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V238.txt",
+      "size_bytes": 1362,
+      "sha256": "23f618cf38ddcc8c647b84a1d8d7ef645272ec8391c73076240111c0369a274f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V238_1_GEMINI.txt",
+      "size_bytes": 545,
+      "sha256": "701214107171b5442997ef44bf166a07ba8403b04adcf490609abdc3e6630998"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V239.txt",
+      "size_bytes": 1492,
+      "sha256": "74cd7932fcf2b9469de415c5bad7d4d579bb4ebbeee250c116f54590eef35648"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V239_1_RESEND.txt",
+      "size_bytes": 27,
+      "sha256": "8d11383df3d6022012a3409bc5e70fbfd3f7bbfbf2e504a507e7a15d0f28675f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V239_2_RUNTIME_SECRET_SAFE.txt",
+      "size_bytes": 580,
+      "sha256": "972dc4c92ee941097de8b82a3481c9dbe1445f138f70204672a4e212921bc8f0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V239_3_CHECKED.txt",
+      "size_bytes": 579,
+      "sha256": "65528ba9b76c3fc0e0114acefb138922735fd504677857448e46abadb607aadd"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V239_4_DYNAMIC_BATCH_FEEDBACK.txt",
+      "size_bytes": 1060,
+      "sha256": "d258178a53c14edc7148cafaede5b4b176868352020efb5bff2bb22291e531ee"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V239_5_SCOPE_SHORT_QUERY.txt",
+      "size_bytes": 392,
+      "sha256": "5f92f16891a3dad50a67adf1af2eae441affccefb1ed4a7c355c1033a03d5593"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V239_6_ALIAS_NORMALIZATION.txt",
+      "size_bytes": 621,
+      "sha256": "e6e5725c4b1884ddbc35f90c9f5ea5dd949f009d22957aa228baa3c0f4909f25"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V240.txt",
+      "size_bytes": 740,
+      "sha256": "6f5d10032a6906546774d81bbfa1620ece4462c22249f6ec23fbfdbb53e49270"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V240_1_NODE_PATH_FIX.txt",
+      "size_bytes": 706,
+      "sha256": "ac284d69c9c6a43be88181365e17c498af30fac3e8aa125d7774a47e58f962ab"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_10.txt",
+      "size_bytes": 974,
+      "sha256": "4a45226008b3a6f07d9e7b3b16f9c841b6ba10cadd03616b67248ad846fb7f4f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_11.txt",
+      "size_bytes": 757,
+      "sha256": "a2d2d119a0324062758d1792bd74a90d1b87ae43b27cee7fc1b171ebb5a72434"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_12.txt",
+      "size_bytes": 807,
+      "sha256": "98506fc15304c92753ecceb4a841ce8c169a36c2306ed2d1e8bce6f067b0d989"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_12_1.txt",
+      "size_bytes": 1394,
+      "sha256": "f1dce11131b5b95e7e43b882a77c37695532ad4c412aee9da8ca732e53719de7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_12_1_QUIZ_SPEED.txt",
+      "size_bytes": 1305,
+      "sha256": "be644c6078609869a984da252e50e8ff984e988e3db60b4a4059fa28d3b6be2a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_12_2_17_UNIT_QUICK_START.txt",
+      "size_bytes": 1027,
+      "sha256": "18744c7a002c1d042db11720121f10d2cdc86656a0ef79c0e8d7736ba04fb0a1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_12_3_CLEAN_CHAPTER_LIST.txt",
+      "size_bytes": 462,
+      "sha256": "4108b76dfb40b9612da84e53c6a8ff7574cd9f9390e8a06285393ab1f303d8ff"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_12_5_FULL.txt",
+      "size_bytes": 4842,
+      "sha256": "84451f17239ad4e7a6f70e0c4bb393dbebd3d53854f62851e261bc8dfd1889a2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_4.txt",
+      "size_bytes": 807,
+      "sha256": "789c36fd6715ccf0e101514315b263472930d8906b4a562c2f424648ea1bbdec"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_5.txt",
+      "size_bytes": 689,
+      "sha256": "1301c7650eed1d534418ea64ab06b93385ace7517170b068d70d781c4551cc18"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_6.txt",
+      "size_bytes": 314,
+      "sha256": "a6a193b6e88dae541027f751fb716ec8d969ce6d026f9112a2a4036d71b84387"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_7.txt",
+      "size_bytes": 446,
+      "sha256": "a0fd4e42d3942fb49270e5a5b2fe72f4a1e0afc61871844c2f7cfcc5ee26e1b2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_8.txt",
+      "size_bytes": 1200,
+      "sha256": "8af1f991a2ce3c09392045998ceb70586baa5e9e5feb1a5fd7e7b0bc3cafcdd0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/BUILD_MANIFEST_V241_9.txt",
+      "size_bytes": 912,
+      "sha256": "8ce12733acb6d4c0acb7182b2abed64bee0df12c3939edbf6fdc86b2cbbc847c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_HOPKINS_REFERENCE.sh",
+      "size_bytes": 631,
+      "sha256": "6c9a4f454ceb9d03ff0e7a3c7b77b2844701cd0c3c358934a873e50d88eb9373"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_REFERENCE_ANSWER_RUNTIME.sh",
+      "size_bytes": 1274,
+      "sha256": "c34bf7f8abe836ab05340abf137da6857eeecaa612a2813adee09b697edc1685"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_REFERENCE_RETRIEVAL_RUNTIME.sh",
+      "size_bytes": 1505,
+      "sha256": "290b595c42be30935ca91df7ce286a1c0c9ade85443606fcbc99510eef1a4c51"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_REFERENCE_TEXTBOOK.py",
+      "size_bytes": 1226,
+      "sha256": "0e9c07847f0b869ff7abf1ceee2b355c2ed97e0a48ec5ce93ca730984a5fc776"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_SERVER.sh",
+      "size_bytes": 1109,
+      "sha256": "6cef4560fdf145d3de17a6da2c5a4da0ebba29e89b3193bfbee7ddf21b2ab795"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_TEACHER_VOICE_TTS.sh",
+      "size_bytes": 125,
+      "sha256": "2f01ca5daa1df294a462d64e6af8b069114b084d036ba50b5ba8b9953bcb7c85"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V199_3D.sh",
+      "size_bytes": 812,
+      "sha256": "ec600cfed77d72366f2d39d3fd72c216b38f8aefcd3d6a3f9160cd249d4666e8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V206_7.sh",
+      "size_bytes": 31108,
+      "sha256": "ce24d5f45fe9714b5518f340d827f5a2651d6be8ec73db9834b085d8eade7fb3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V231_STABLE_SERVING.sh",
+      "size_bytes": 1381,
+      "sha256": "a622ecb47f1fad18b26a16cb4ffec109d7b303f2805f8a1ced4a30a2eeb3255a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V232_ACCURACY_STABLE.sh",
+      "size_bytes": 1482,
+      "sha256": "82ea7ccfe4d185f79498a5d1b04a406e0ba75ed167ea676708dce7d1c3dea3ea"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V233_SCOPE_LOCKED_STABLE.sh",
+      "size_bytes": 1713,
+      "sha256": "a7cfc8da5343d1020619c23359b715897bbe1bc0b397c20302dc347c3311d2e9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V235_FULL_PHYSIOLOGY_STABLE.sh",
+      "size_bytes": 1296,
+      "sha256": "be485e4cbbb8f9de73a91398a7885f90851073fec85cdedeaa8e0873f23f16aa"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V236_EVIDENCE_PRECISION_STABLE.sh",
+      "size_bytes": 1226,
+      "sha256": "85e909047fc6ddfc21f8f889f897af6754bc70686da019bc3e6e79290d94b5da"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V237_SELECTIVE_EVIDENCE_STABLE.sh",
+      "size_bytes": 1437,
+      "sha256": "06ae7b233f7769feab7a68ea19059bf2afc70bb26cd106eb541718d59ad36184"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V238_1_GEMINI_BYOK.sh",
+      "size_bytes": 327,
+      "sha256": "f64cd22b2827dfeb821aace0ab0cebdc1f58d437686089d718390c3794c6e674"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V238_ACCURACY_ROBUST_BATCH_STABLE.sh",
+      "size_bytes": 1726,
+      "sha256": "b207ad9b54ea5bcb5b8dd40d981accf4b31c3ce25254ea761806f71fc3d4ebea"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_1_RESEND_FEEDBACK.sh",
+      "size_bytes": 2718,
+      "sha256": "ee6dcafbd50199360d6057e2e70c94c0771541687bc3e6c728084037203fe848"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_2_RUNTIME_SECRET_SAFE.sh",
+      "size_bytes": 789,
+      "sha256": "79b7b6eeb3b44ad2fce3e66918614c15d62fa933e645726827420038c2db0d47"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_3_FULL_PREFLIGHT.sh",
+      "size_bytes": 3058,
+      "sha256": "8519f326aeee11d86dc6df54c8839962411596cc4cf1e83fb2ac7893e67af057"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_4_DYNAMIC_BATCH_FEEDBACK.sh",
+      "size_bytes": 8335,
+      "sha256": "66e17590e463357fb7172d36305a1b0471fe10b2baa9fce2b035e1fbbbf24f33"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_4_FULL_PREFLIGHT.sh",
+      "size_bytes": 856,
+      "sha256": "e254e37b797a67ea7d44a3c035fc69431e4e2c3c5aaab15c92d006b87915f9c5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_5_FULL_PREFLIGHT.sh",
+      "size_bytes": 1005,
+      "sha256": "4d680eb962ce1b0e66d2986a8daf86e63a0eb24bf93a88f4c570c19b8d8baf66"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_5_SCOPE_SHORT_QUERY.sh",
+      "size_bytes": 1232,
+      "sha256": "104f8bcd5939ca8b1a987e8322d44152f0b21f99982689ead8b118bc257d2efe"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_6_ALIAS_NORMALIZATION.sh",
+      "size_bytes": 1996,
+      "sha256": "b876ea02d5e044f6e5f61be72b914f60ab75b63478541a9a95825bd70db86704"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_6_FULL_PREFLIGHT.sh",
+      "size_bytes": 1073,
+      "sha256": "3b404a5b5017aa5423c0ea50e7ca552da2af02a6ae98f2a5d170340776e63e64"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V239_RESEARCH_FEEDBACK.sh",
+      "size_bytes": 2423,
+      "sha256": "e7fb9f3683ae0d5b0ad79ab45ef5bc815417d4eedad106c4a23384b36db548c3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V240_SITE_METRICS_3MODEL_UI.sh",
+      "size_bytes": 3734,
+      "sha256": "f5fe0e928bdc417be062650d8027d56768cbe6aefbed3956097ff1a29f66ceb9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V241_2_ONE_CLICK_STABLE.sh",
+      "size_bytes": 5244,
+      "sha256": "2ef7c56ba3f43353e8a104628329427fd7d7104ce629cad39c543fbe3f94b9ae"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CHECK_V241_COURSE_ADAPTIVE.sh",
+      "size_bytes": 3844,
+      "sha256": "08cf5efcb82933d863aceb5874c2e1a988d17fd4d5ca9a8c52940c313a6e6297"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/CLOUDFLARE_LOGIN_DEVICE.sh",
+      "size_bytes": 511,
+      "sha256": "99e225429feb1b84b029ed35ae7eefba977fc03c25b4fc48f2248faa8e57a38a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/DEPLOY_CLOUDFLARE_WORKERS_DEV.sh",
+      "size_bytes": 1282,
+      "sha256": "b4a7346971b50223248cf1dc22a457dbd25b089b7aa25e31f33e0619cffe3c8c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/DEPLOY_V206_7.sh",
+      "size_bytes": 4289,
+      "sha256": "bdd2e648fa74d648e603e570fd0dbb404b52805f202ae8b984fc709923f26954"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/ENSURE_3D_RUNTIME.sh",
+      "size_bytes": 391,
+      "sha256": "959b91b40ae2f60e952f9c2bf05c36606ddfa6a1ab649935ad095d48d16e1727"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/FULL_RELEASE_FILES.txt",
+      "size_bytes": 19806,
+      "sha256": "d2318f01cd999fed342f7d25c7f7503523aebebd8caefab854e3453481c87466"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/HOPKINS_LUNG_REFERENCE_VALIDATION.md",
+      "size_bytes": 1467,
+      "sha256": "fcc67b599d200cc366df909a15a2f476e9327adff2d6fa0f012b3c43c59d4e63"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_FINAL.sh",
+      "size_bytes": 106,
+      "sha256": "38524192eeaaa7f9049997d593ba5c129706b0f051bdf568e5a288eb4eaa5976"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V231_STABLE_SERVING.sh",
+      "size_bytes": 2490,
+      "sha256": "4c99a7dba85ff3b76c8d5a0f96d87b494c21093e7ca9332c29d9e6cb0361d68b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V232_ACCURACY_STABLE.sh",
+      "size_bytes": 2528,
+      "sha256": "bcae981986e682b71cf80681351629faab7720337b877cd125d12e648a1483d1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V233_SCOPE_LOCKED_STABLE.sh",
+      "size_bytes": 2524,
+      "sha256": "779f068e46d4ff755d97b8c5216e0e3b923748b283df392de094b21eaf387cb3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V235_FULL_PHYSIOLOGY_STABLE.sh",
+      "size_bytes": 3426,
+      "sha256": "28aa18aefb01d5cc6ad0adc343784d55d482af488ce6b31ea9fdb841536da497"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V236_EVIDENCE_PRECISION_STABLE.sh",
+      "size_bytes": 3247,
+      "sha256": "3e8475079a8590a82f338d96a0612042aea8ee31c00d135ab682becabde7a293"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V237_SELECTIVE_EVIDENCE_STABLE.sh",
+      "size_bytes": 3281,
+      "sha256": "995891b0ac20d7213ca00a7140aab3e9ef81c6f75c440ed938f6aea8303b55a6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V238_ACCURACY_ROBUST_BATCH_STABLE.sh",
+      "size_bytes": 3685,
+      "sha256": "d4692a4091f24ce33733c86d0333ab2db8f06f3ac2e0c65a43a8544fe5e41a34"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V239_2_RUNTIME_SECRET_SAFE.sh",
+      "size_bytes": 920,
+      "sha256": "3e3d9b41c8e26855d5433ad526bb8538dba8d0ea5d8dbfe7f33c8d9506586d10"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V239_3_CHECKED.sh",
+      "size_bytes": 1056,
+      "sha256": "179852ce30d52fb4185a3a8475979d90bc9ec16cad9eca75864547b0f3e2ab52"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V239_4_DYNAMIC_BATCH_FEEDBACK.sh",
+      "size_bytes": 1472,
+      "sha256": "7f9e02d88ac3c16bb5bc74dce86c28f3cac4c028c2c4f13f815d37c190d1fdd0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V239_5_SCOPE_SHORT_QUERY_FIXED.sh",
+      "size_bytes": 1067,
+      "sha256": "adbe11765f757713ebbd1cc30c4f02013e26e66d2d49a3845187c510d8d4d9ff"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V239_6_ALIAS_NORMALIZATION_FIXED.sh",
+      "size_bytes": 967,
+      "sha256": "aac6e1cd41d04324b802c855e797f3af82a91baa892b9de1112e2e2551e0f57c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V239_RESEARCH_FEEDBACK.sh",
+      "size_bytes": 1164,
+      "sha256": "c53bdfa736a84097197ae3f909876712a0c4796c04d5a7e8f60b7cf62cc23644"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V240_1_NODE_BOOTSTRAP_FIXED.sh",
+      "size_bytes": 947,
+      "sha256": "85bb5aa3e7104d054ffb16be760bfe6989df1975253df89c843b2c1cb338c73c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V240_SITE_METRICS_3MODEL_REFERENCE_FLOW.sh",
+      "size_bytes": 1021,
+      "sha256": "3499c4057a23da6e904827bcdf991e2ad50a8e0a7782451c711ea9619c0e3c1f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V241_2_ONE_CLICK_STABLE.sh",
+      "size_bytes": 20886,
+      "sha256": "8c4fef299ace954e04c68ca328394418da973e816b3b454b2789b20b5b711339"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/INSTALL_V241_COURSE_ADAPTIVE.sh",
+      "size_bytes": 2898,
+      "sha256": "34b48210400e0c1c10f951048aa08f0e2c8289f10791f38ba2e461771214ec0d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PHYSICIAN_BENCHMARK_DATA/mean_sd_summary.csv",
+      "size_bytes": 376,
+      "sha256": "adcc82712269f882cf7d62f68e78ebc39fb47304b7a5f12231b0b012be6b4501"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PHYSICIAN_BENCHMARK_DATA/question_sources.csv",
+      "size_bytes": 7629,
+      "sha256": "795658ff742959f26e3f55b579f896ae2f7f87426c3ebf6f8b16aa09fb9a4843"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_3_MODELS.bat",
+      "size_bytes": 417,
+      "sha256": "3cb620c10b71dfc29c0e5982d4da338f93219ed87b64af5bdf003f3fb25f4287"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_3_MODELS.sh",
+      "size_bytes": 889,
+      "sha256": "b9371502d5d3c7372c3f968010cd7116d030baaa1e55618f569fcf9463cd4878"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_MULTILINGUAL_STT.sh",
+      "size_bytes": 413,
+      "sha256": "04d9e0599befc659a099af4e0578ef8cf4949c94d62e5901bdee2d1d2b5385d1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_REFERENCE_TEXTBOOK.py",
+      "size_bytes": 1433,
+      "sha256": "a8fc5cf9cddf8cdb2437101c7d38dcb00d832e96bcbf9da57af014240083dabc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_REFERENCE_VECTOR_RAG.sh",
+      "size_bytes": 1778,
+      "sha256": "2ff989f7cf684a8b9d5573bf9ccb29924767dd7b8c6eccc0b0ac2523bebd3b7a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_SELF_HOSTED_3D.sh",
+      "size_bytes": 87,
+      "sha256": "ff0408b960265d048b052845a5fd7a7c57d3ad5c1af33e0cefa1ee6da70d22b4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_SERVER_TTS.sh",
+      "size_bytes": 1240,
+      "sha256": "bb8db1f866edba1976bfd70afedde5d5402934fe77e6f74928a8b79a08339338"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_TEACHER_VOICE_TTS.sh",
+      "size_bytes": 291,
+      "sha256": "d5e73b92e01cf47150c7f2ade1d7b5d4ea4ae581011a4f98d168dea3ec56d516"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PREPARE_V199_3D.sh",
+      "size_bytes": 1698,
+      "sha256": "93d0670b6c1d1ab9ce638a13874449621a91be114b9b5db4b5f1134934428935"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V206_7_zh-TW.md",
+      "size_bytes": 2109,
+      "sha256": "de5444b6412d7e3f3e129949d2bf937f71b4e07635b8aac2195bc8c1ac7c65bf"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V231_AUTO_zh-TW.md",
+      "size_bytes": 1692,
+      "sha256": "6d00bc37852c97e3ffb3a1faf248e5569b6f21b3c6fce87f77e78439367a7af6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V231_STABLE_SERVING_zh-TW.md",
+      "size_bytes": 990,
+      "sha256": "2c65d07919b0d37893a554f721542380697d0f1177674aff8f8cc40e27ea1b15"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V232_zh-TW.md",
+      "size_bytes": 895,
+      "sha256": "e6a015706b8c0f88b76cc4291456abaac5da028caf7a86ded5a8da99a6a12ab1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V233_zh-TW.md",
+      "size_bytes": 812,
+      "sha256": "b8b080b6379cfb7ff0cccfa5083d77e94e6380b7087af2869b713b4178edbcae"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V235_zh-TW.md",
+      "size_bytes": 2298,
+      "sha256": "bdff033eb2e99572be048e6f3d276269ce8645fa23ea616a6dd53b9fc733bb8b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V236_zh-TW.md",
+      "size_bytes": 456,
+      "sha256": "4fe0ef42e90a0f79e891b88f8518337a4c6e2fa203abbca78715ae3bfe25e8a4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V237_zh-TW.md",
+      "size_bytes": 3103,
+      "sha256": "40c0844be8f11ce7211be46a62518d48caa9854ae1ddcba8ef6b86190a4a77e4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V238_1_GEMINI_zh-TW.md",
+      "size_bytes": 409,
+      "sha256": "b29b7a10c05defd55a5dfd83183481c6e5cfb2db6ea64ef0cf9cc13b9d6b3fcc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V238_zh-TW.md",
+      "size_bytes": 913,
+      "sha256": "04d0543345291993ec72f5bda40b31a75a343aebffcfdce315603ba723fddb36"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V239_1_RESEND_zh-TW.md",
+      "size_bytes": 1324,
+      "sha256": "f87868bc9f6452a094cfffca082d971d2c94ab9ed4a269ee86329582961144c1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V239_2_zh-TW.md",
+      "size_bytes": 750,
+      "sha256": "135e96e51d37c805b3afc138ebaf0a5412639202adfeb233c71ee1de0c3bc3d0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V239_3_zh-TW.md",
+      "size_bytes": 879,
+      "sha256": "d02caa186e80bacdc069f2365c49e3ce16eedc04d32e21174490e970eb204e3c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V239_4_zh-TW.md",
+      "size_bytes": 1277,
+      "sha256": "2bca36483e4ce1be18d1a91f8bb7ee45e0546349241deddf7f629be4351600c2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V239_5_zh-TW.md",
+      "size_bytes": 678,
+      "sha256": "8d3aa4641750ee044c91afd290f3afc440e612291122a50fbcf0042a619ba5e4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V239_6_zh-TW.md",
+      "size_bytes": 846,
+      "sha256": "60061adc9c00da14ccab3ef06360889889ea95f61a9cf146bba2fee7c586d568"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V239_zh-TW.md",
+      "size_bytes": 1573,
+      "sha256": "3b93bab613a8a08593a33e39bca7cad957093787719acfe5b2c2419fbafbfb6b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V240_1_zh-TW.md",
+      "size_bytes": 760,
+      "sha256": "97c77b22616b1a231f2e64944559a7ce27e6939ab1bc0743653434d420e466dc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V240_zh-TW.md",
+      "size_bytes": 1715,
+      "sha256": "ccedc09d07635bf507ddfa3bb076d89b7ce7fc10be8d72a41fd4ef67e2023e98"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_10_zh-TW.md",
+      "size_bytes": 4613,
+      "sha256": "42b1a5bbdb640f44bc8f781f66eff49a4080dc9c4ea643d6bf8d987cbdc25668"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_11_zh-TW.md",
+      "size_bytes": 3184,
+      "sha256": "2a8d9b72a7e9608bdde0dee2ca777d76058035c4e5aa8cbd6c7f43fc3ab553a6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_12_1_zh-TW.md",
+      "size_bytes": 1579,
+      "sha256": "d92c2ef80260434096d43d7935b8b5d984d7924573ed6ac49bc1444bcaf4743e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_12_2_17_UNIT_QUICK_START_zh-TW.md",
+      "size_bytes": 2114,
+      "sha256": "f6713a494ef1b43cdd283bc6c390ceaf6157fa0dd50cbca7dadbb3ee0e4fb70e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_12_3_CLEAN_CHAPTER_LIST_zh-TW.md",
+      "size_bytes": 1579,
+      "sha256": "d92c2ef80260434096d43d7935b8b5d984d7924573ed6ac49bc1444bcaf4743e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_12_5_FULL_zh-TW.md",
+      "size_bytes": 2685,
+      "sha256": "306d2a91ba38b63fbd10704ce3aede1a85b96ef67e11cfff73a8608710dc3be3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_12_zh-TW.md",
+      "size_bytes": 4323,
+      "sha256": "6e1bdeee0a59b04b19285a986d51b1268c74505cfcb09f1730d629a7d3b719f6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_1_ONE_CLICK_zh-TW.md",
+      "size_bytes": 1687,
+      "sha256": "8a76bfeefbd30696c8a30d14210d7512707e486c78a9e3f2a6c57d0af7bcd8a0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_2_ONE_CLICK_zh-TW.md",
+      "size_bytes": 2704,
+      "sha256": "3a8fd6cbd0bf948042b1744354bd4234abd6b1f2f75649bc404f44fb4fcb3756"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_3_zh-TW.md",
+      "size_bytes": 2954,
+      "sha256": "052994fed36601ef0976a4cd0ee47e90b89ec1877cd3cd1caebee0237a1cee2c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_4_zh-TW.md",
+      "size_bytes": 2542,
+      "sha256": "d5dc0f546bb780f3219ef624728a050e0514548158f1807e680c454431529196"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_5_zh-TW.md",
+      "size_bytes": 2133,
+      "sha256": "599245c601c429fa51af13b8ab59edbcb8b2caca52440f72e7bfd9ef31212280"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_6_zh-TW.md",
+      "size_bytes": 2906,
+      "sha256": "2afa5f6f9f0968f8c571d90c9ed066254da9f77b77759a2a59a5d0ca721c85fe"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_7_zh-TW.md",
+      "size_bytes": 2516,
+      "sha256": "087ecd4b42f87927f1fe30615993b393c8e4c6af9396abf699f1b3dbe8152004"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_8_zh-TW.md",
+      "size_bytes": 3957,
+      "sha256": "ca008974fe88b97a8ea8e36b22330246eca4c053d7968545b2fe21df60aaea02"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_9_zh-TW.md",
+      "size_bytes": 4321,
+      "sha256": "e0860faf0c1a961d996dae56bbed162c48f0a67a9160c42e2b349e8bf11e31ef"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/README_V241_COURSE_ADAPTIVE_zh-TW.md",
+      "size_bytes": 3305,
+      "sha256": "59e4f647db10346df755b6f082c31bb2712398bf68286fb82fba3f1d9ae30b39"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/RUN_V241_1_ONE_CLICK.sh",
+      "size_bytes": 88,
+      "sha256": "b18d106ebc41f5785f2b79ad35fa5c97e07043d4fe32110c7216be4d74f03aa7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/RUN_V241_2_ONE_CLICK.sh",
+      "size_bytes": 88,
+      "sha256": "b18d106ebc41f5785f2b79ad35fa5c97e07043d4fe32110c7216be4d74f03aa7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/SERVER_TTS_DEPLOYMENT.txt",
+      "size_bytes": 512,
+      "sha256": "f89e77e59c9656e0214145aa9d7ae53ecfe1ca19566d0f77359cba9906d99d57"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/START_CLOUDFLARE_TUNNEL.sh",
+      "size_bytes": 1329,
+      "sha256": "0fcb6c2282aa2039865090f00b0e303406accb3297ac2a1a30c2683e8baf2c3c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/START_MULTILINGUAL_STT.sh",
+      "size_bytes": 1394,
+      "sha256": "533dc938933b088e4a99cba16ec245bda357f841556551727802d1fa27ea6012"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/START_PRIVATE_OLLAMA.sh",
+      "size_bytes": 1103,
+      "sha256": "fda81575be3fb63e6dd106443298323dab3295df2fcd3a7ba524f3ddb59a11e9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/START_REFERENCE_EMBEDDING_OLLAMA.sh",
+      "size_bytes": 1002,
+      "sha256": "300af9714653e89ad46f2f6782372c0dd92a15caf4091a67da5e8e0a518905a5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/START_TEACHER_VOICE_TTS.sh",
+      "size_bytes": 295,
+      "sha256": "fc898b2b2b28f4cb8fcd55d956addf27595f23c799715ae5fbd646b28f4dd62a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/START_VQ_TA.bat",
+      "size_bytes": 262,
+      "sha256": "ec4ff2669f5da1ccee0fd4f3b5b72e7f6e92719c2702ba9e65daa9647abc1db4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/START_VQ_TA_SERVER.sh",
+      "size_bytes": 5202,
+      "sha256": "6ef120d207c396b0938ed7cdca26291054719d125bd09d015c8e6c62dd24f3bc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/TEST_ZHIWEI_AUDIO.sh",
+      "size_bytes": 944,
+      "sha256": "37b404d0ca3822fe8c851d3c1896ae7b4f898ba76b97125899e0f6f98454d328"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/V239_5_FEATURE_VERSION.txt",
+      "size_bytes": 36,
+      "sha256": "cb173f9e9e264b75690ac3c49b1020709e5f5620c0004d0bf4f684d20bd623fe"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/V239_FEATURE_VERSION.txt",
+      "size_bytes": 30,
+      "sha256": "324c39d48f5c6ba7a62f7dfcb09693ff5feccfa012095dfba321216219f62d04"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_HOPKINS_LUNG_REFERENCE.cjs",
+      "size_bytes": 184,
+      "sha256": "4a6390cadb366128a60c96156993504ff7a94927087a6802143ab4ead3d5dbf5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_R12_MATH.py",
+      "size_bytes": 4299,
+      "sha256": "ecef810fef8042dab3f1d2e5cac9da3f8d5ac82509646efe8295bbcd17290161"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_R12_MATH_AUDIO.cjs",
+      "size_bytes": 6316,
+      "sha256": "0a85d6577c8143537da1270e1d2fab33cf6bdd4a3528f6ae1549030197de3eec"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V206_7_LUNG.cjs",
+      "size_bytes": 3366,
+      "sha256": "e9c5c1500d22e58367e00fb0b06fce2f2db70d40b44f69574fadd80b4687416e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V228_MULTI_QUESTION_BATCH.cjs",
+      "size_bytes": 7481,
+      "sha256": "62b04837dc905f7c08c0d7e688865aacbd5dde90ea87032dc1f3ec2be2df8a55"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V229_SEMANTIC_MICROBATCH.cjs",
+      "size_bytes": 3439,
+      "sha256": "59d334da67e2ddf58e02e4826147c0582d0fd55806231ce6391500060459870e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V231_MOEX_AGENT_OPTIMIZATION.py",
+      "size_bytes": 3832,
+      "sha256": "42fb51aed4ee02cbff46d86fa0ee7c682751874abe582254aed865c6a64dffa7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V232_MOEX_AGENT_OPTIMIZATION.py",
+      "size_bytes": 3826,
+      "sha256": "6a80142a5df3a47298d5e199e8c6cffe6117585bf284712f533e934d56c675d5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V232_SEMANTIC_CONSTRAINTS.py",
+      "size_bytes": 1459,
+      "sha256": "9081e1aa0d702d20b0fd6b59950442ced97aeaa6d186f966eaa4e1fc9995870a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V233_MOEX_AGENT_OPTIMIZATION.py",
+      "size_bytes": 4140,
+      "sha256": "86b4f74f21d85235574eade6f04a52b76eaf0d32e93500c082c6fafce48b13c1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V233_SCOPE_LOCK.py",
+      "size_bytes": 2156,
+      "sha256": "6229ff5a158a70b95bf19a8568b78b17feeb491b868577ec0d9e04651bacf98b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V235_FULL_PHYSIOLOGY_AGENT.py",
+      "size_bytes": 6714,
+      "sha256": "8b51bd485a04079f22ce6e1654c0f42f3334ad7c8029f0939aa25d3062d613a6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V236_EVIDENCE_PRECISION_AGENT.py",
+      "size_bytes": 7473,
+      "sha256": "fd4637a1b9333052c4e2d6e838bbb7413fb4b099eeb3b1b98f00caa128d2ef37"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V237_SELECTIVE_EVIDENCE_AGENT.py",
+      "size_bytes": 8207,
+      "sha256": "4e54ae7bf263d5989c24900774cdd6838fe7262b55a9ed7c1f8d80af786d821b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V238_ACCURACY_ROBUST_BATCH_AGENT.py",
+      "size_bytes": 8205,
+      "sha256": "867f0eba5c74f74a4ab709dcd06e9b253c3c7657273af771d17abe0f356c2f9b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V238_ROBUST_BATCH_PARSER.cjs",
+      "size_bytes": 2132,
+      "sha256": "cc13f9cdea0f85243107e71138aa35122098968db57b9817be14cabbe584db71"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V239_RESEARCH_FEEDBACK.py",
+      "size_bytes": 3316,
+      "sha256": "356e81134e2e2f9baa520d0478dabab66a837ad7c59fefeb8de0977bde8c09ed"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_10_UI.cjs",
+      "size_bytes": 2806,
+      "sha256": "4aa4cff60ee6ddacc13d60862ecd0a9bd46c5fae3b147a3247f608e4a204d905"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_11_DIRECT_CLOUD.cjs",
+      "size_bytes": 3455,
+      "sha256": "343b4e1cd4af199277aa89575e41f9416b63800244509b5ec50d884d72f6fbe6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_11_UI.cjs",
+      "size_bytes": 1573,
+      "sha256": "61795869d544bfb1b36ec80e2f102e55ea19b146673ee6b5ef91914741b46030"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_1_INSTALL_MIGRATION.py",
+      "size_bytes": 2471,
+      "sha256": "e8c89af9bfbe9396f089ec033b48f709be6bd2e0a2fd7ddfdbd65301455edc82"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_1_QUIZ_NAV.cjs",
+      "size_bytes": 6556,
+      "sha256": "4a531c513883440ebceb1269479e1a6316e61d0e8faeed1f8e5029d3f5cea533"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_1_QUIZ_QUALITY.py",
+      "size_bytes": 8279,
+      "sha256": "0b1065ec097fb3100a9f794c9442f8c388e408ff36f68af6628aa1449836f1da"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_2_17_UNIT_FAST_START.py",
+      "size_bytes": 5922,
+      "sha256": "c20fef2e4ef6afb63ae957c37a26bed930943821a2bb836cc706f0b8242edb0c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_4_BATCH.cjs",
+      "size_bytes": 7931,
+      "sha256": "46f7fea9c496d0e7c2d1d8eac105da66440bdb693ace947a8b9daee15308adb2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_4_BATCH.py",
+      "size_bytes": 3166,
+      "sha256": "e73f6de4ae9bf97e3dff736abddc765a72d4e5fcbe161b1fbc2f0dac770b74c4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_5_VOICE.cjs",
+      "size_bytes": 2379,
+      "sha256": "575da2143db771801a8321a734463cf6b3f2e3d1caed554d1a3ef61a9a5b5feb"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_CORRECTION_MEMORY.cjs",
+      "size_bytes": 2329,
+      "sha256": "fe79bc8712dd6629a521a2e6ce9ccabcc6b37692570e14bb5a917ff8c8ae8f1f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_FEEDBACK_MAIL.py",
+      "size_bytes": 5280,
+      "sha256": "a1a5969eeb1295ef009a61e4f6251d651c6b301d0047cc80c76dd8afccbe7eda"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_12_FEEDBACK_UI.cjs",
+      "size_bytes": 2356,
+      "sha256": "4d3d3ebf7e6203167ca0b2f03f00157b94a864d269c603a928bcf6df1d2a9fad"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_2_RUNTIME_COMPAT.py",
+      "size_bytes": 8033,
+      "sha256": "c79b4f8e589c91667e0d32f575923dbcfb24191503f1953c1c7c5b6d12f4e905"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_6_COURSE_FLOW.py",
+      "size_bytes": 32185,
+      "sha256": "b9efd6728bdc2266363c28b9199406eef8d13864515adc6134e598ca10c56e19"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_7_LECTURE_ROUTE.cjs",
+      "size_bytes": 1731,
+      "sha256": "4c42519b11e2224795c146079faac0edc78629d16d2fd1b3083482234f44e416"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_V241_9_UI.cjs",
+      "size_bytes": 3671,
+      "sha256": "fa81661fe79aca5f6929efd04eb04da770504b04f0bfab08d964d66f0b976de0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERIFY_VQ_CONSERVATION.cjs",
+      "size_bytes": 9911,
+      "sha256": "e7613bea623a9eabeb8431b88ae123e6b421230fb8c4fff2c66f5bcd24a49389"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VERSION.txt",
+      "size_bytes": 28,
+      "sha256": "400e834b9d470b31d11fd86b4872a447116c49bfb03df2b27106d06464de4a27"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/REFERENCE_CALIBRATION_R4.json",
+      "size_bytes": 474,
+      "sha256": "48440cd39766804ee019fe345e55ef41a5c2e8fe2cbe22805460439a7fa49b82"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/REFERENCE_CALIBRATION_R4.md",
+      "size_bytes": 3204,
+      "sha256": "6651450bc910034dc18d69de4f85289f5f32e8bc921f1b90a54c9036e39e5669"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/SELECTED_REGION_R5.md",
+      "size_bytes": 1808,
+      "sha256": "62722b681e712b3315d829737a7c76262279ff66f64986058adf3ccc5f3910b9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/changed_files.json",
+      "size_bytes": 452,
+      "sha256": "5f2da2ea23cd3bdb609d458f935e3f18f073b33ef231fc80c8e0be011c2d9023"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_20261009/README.txt",
+      "size_bytes": 189,
+      "sha256": "46a4c6c4606cadb68e65286a77a3808369ceb2dbcb28d54957cd4897c011a3d9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_20261009/teacher_case_comparisons.json",
+      "size_bytes": 3068,
+      "sha256": "a813e0441a1a68fd937db1f9d4a1d54bf4e7363a7a99db6a6d9f16e014b15cee"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_20261009/ui_checks.json",
+      "size_bytes": 32933,
+      "sha256": "a8a201f2bd902f311c0d7f11ae20d3549100550486957bac7a17bb8549738672"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_R3_20261010/normal_baseline_R3_20261010.json",
+      "size_bytes": 2433,
+      "sha256": "439ed6f9f1ab25e3cb46e9422165035884978544b3563c26a81c0863ff41d56b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_R3_20261010/teacher_cases_R3_20261010.json",
+      "size_bytes": 55669,
+      "sha256": "5c97ec9cc5a14fc2ef31c08e3ee2d47a2685bdb63a9c92c49a3e59feec16f03e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_R3_20261010/true_shunt_fio2_series.csv",
+      "size_bytes": 17768,
+      "sha256": "f5093b2bc5bdad4344191edadde103dccf6401545f4b779f20c3896e082d6067"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_R3_20261010/ui_checks_R3_20261010.json",
+      "size_bytes": 64641,
+      "sha256": "ca0c64795a97bec64402459f7617e64e906e69a83d9f3ce01c50e284acdcbec7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_R3_20261010/verified_cases.csv",
+      "size_bytes": 1846,
+      "sha256": "5b5d38ed725f3cef3876b6a67c09997931431dae5b6ae30c41fac097adaa4ed5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/normal_baseline_R3_20261010.json",
+      "size_bytes": 2433,
+      "sha256": "439ed6f9f1ab25e3cb46e9422165035884978544b3563c26a81c0863ff41d56b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/normal_reference_R4_20261010.json",
+      "size_bytes": 3081,
+      "sha256": "e4f449696a4ca2c667e76898b0b83e74375132884dfcea14dbcba55a5d957480"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/normal_reference_R5_20261010.json",
+      "size_bytes": 3691,
+      "sha256": "81abb3cfad0192d592c58102f25558064bea8addbc3122a8cbd282e0a210f969"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/selected_region_checks_R5_20261010.json",
+      "size_bytes": 42162,
+      "sha256": "685e00e5d3f6badef227537d516e1e6f9ab7b4b33d9edb89a5117ee6b5768d49"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/teacher_cases_R3_20261010.json",
+      "size_bytes": 55669,
+      "sha256": "5c97ec9cc5a14fc2ef31c08e3ee2d47a2685bdb63a9c92c49a3e59feec16f03e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/teacher_cases_R4_20261010.json",
+      "size_bytes": 55955,
+      "sha256": "8f5c1d36b894c35b35450e4e692bb6d0c80216ef3d892d99f521b20c494a99e1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/true_shunt_fio2_series.csv",
+      "size_bytes": 17768,
+      "sha256": "f5093b2bc5bdad4344191edadde103dccf6401545f4b779f20c3896e082d6067"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/ui_checks_R3_20261010.json",
+      "size_bytes": 64641,
+      "sha256": "ca0c64795a97bec64402459f7617e64e906e69a83d9f3ce01c50e284acdcbec7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/ui_checks_R4_20261010.json",
+      "size_bytes": 65263,
+      "sha256": "4ac651587574ca21d109b9b187dab876afe1aa3e3ee9bf8a79fb3d3730506e4d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/verified_cases.csv",
+      "size_bytes": 1814,
+      "sha256": "70a7cf97a007d4e8f2e9b89714e2787c9f322b3af39c64b75696af9ccd6f9ae2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/verified_cases.json",
+      "size_bytes": 19891,
+      "sha256": "670043fabe93bf7b18c13f003b86ea6dd3583e65fae03ce5ccc3317c281f1cbe"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/verified_cases_R4_20261010.csv",
+      "size_bytes": 1834,
+      "sha256": "e31d1663d809bdeee3cd2b6bd81f4d845764cca86899129035a0216f21beee94"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/verified_cases_R4_20261010.json",
+      "size_bytes": 19327,
+      "sha256": "c23c3b110d163ec4ad070575e9cd01e413be75c6754024d782c8c7959a88d611"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/verified_cases_R5_20261010.csv",
+      "size_bytes": 1803,
+      "sha256": "85b21f32d67d3275caa612ef36ff793816df988775b68aa625a17d0e6bf243d8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/verified_cases_R5_20261010.json",
+      "size_bytes": 19304,
+      "sha256": "79106b191b02149070a01233aeef96308a7e22540bdf31c065a1128d40c41e2f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_UPDATE_README.md",
+      "size_bytes": 5012,
+      "sha256": "5718631d13d5536f3ee46153fc1167d51e3d4421c30ae12cdb04241b67930764"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/analytics/README.md",
+      "size_bytes": 558,
+      "sha256": "6abb102014391acf80f5186dbf61e09ebe482e8d65302718af839b3d610e95c1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/APPLY_SUPPLEMENTAL_CORPUS.py",
+      "size_bytes": 1019,
+      "sha256": "f178ee7575361e44730d6bcff9d9620c9f75c60d9c39c7b7d3bcea4ec918d6b5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/COMPARE_AND_SELECT.py",
+      "size_bytes": 2514,
+      "sha256": "168f6b2c3c022c867722d3ebefc35d59ef5a314213d621e1de849c66c865b283"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/DIAGNOSE_V231_ERRORS.py",
+      "size_bytes": 7269,
+      "sha256": "5b9fd3f4ac659ec9c1c887b4445425404f4d27ab5d1f441e8f94ff64559a3e17"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/EVALUATE_V231_TRACE.py",
+      "size_bytes": 4167,
+      "sha256": "f86a63ad792e859f4f1fda1c27d5b62b282e1dedd5890db1f9be4186a3ee6b08"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/FETCH_MOEX_BENCHMARK.py",
+      "size_bytes": 11962,
+      "sha256": "6e20ffb77a66a5768ff4988829c25fe312346875e95d947377f0d3dae08fab0b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/MAKE_FINAL_REPORT.py",
+      "size_bytes": 2526,
+      "sha256": "12fbede8dd00eea4ba6018e0f86a7658d7aae64bdca311f3c51261b294ef4026"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/PREPARE_MOEX_BENCHMARK_ENV.sh",
+      "size_bytes": 416,
+      "sha256": "4ea215f550cbdaf6aff632028b0f735371a44540fb2081dec4b34f5d02e9893c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/moex/RUN_V231_FULL_BENCHMARK_DIAGNOSE_AND_DEPLOY.sh",
+      "size_bytes": 6160,
+      "sha256": "a30f4bce339d2d58a569c5a449988581aa1379d2a7abaf0acf14465611ece54c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/RUN_V235_SEEN_REGRESSION.py",
+      "size_bytes": 4099,
+      "sha256": "db10cda65f737e95a1fc0a24cbf0c96dec02fc331baab9e3c58ec6d8ed5aaaee"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/RUN_V235_SEEN_REGRESSION.sh",
+      "size_bytes": 126,
+      "sha256": "61cf41cac778adaf344d7c2773ca13284a80a02ace92a63ebda841189e2d2c31"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/RUN_V236_SEEN_REGRESSION.py",
+      "size_bytes": 4099,
+      "sha256": "51b8c52ad74a1659d4c610b241b79e7eabbc30c51e9b89ceaf6a8ed04476adea"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/RUN_V236_SEEN_REGRESSION.sh",
+      "size_bytes": 132,
+      "sha256": "cd8b77f6eaea57282535432490e43d2dbf18085db59f590a5362f7bb2b0f884a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/RUN_V237_EXTENDED_SEEN_REGRESSION.py",
+      "size_bytes": 4126,
+      "sha256": "6247d71e606f62b26809bf8aab65fedcdf5d7780a531c94e9b24cf17e9ba5eeb"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/RUN_V237_EXTENDED_SEEN_REGRESSION.sh",
+      "size_bytes": 141,
+      "sha256": "113012e1fd34710eb7696728ef14eb49ad999abc41a6065f4fe04e5659c80638"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/RUN_V237_SEEN_REGRESSION.py",
+      "size_bytes": 4099,
+      "sha256": "571f6c4d9fe861c3610250c3c9891d07062e422e6724feae53f21e5b2672cb67"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/RUN_V237_SEEN_REGRESSION.sh",
+      "size_bytes": 132,
+      "sha256": "5016051e065640407ef546ef54a706524d8594f397a7e2f0ef05e6cf4d33982a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/cloudflare/worker/src/index.js",
+      "size_bytes": 52602,
+      "sha256": "5c679e9f76a971cb711b9ebfb81ba884edbc4fb64b2e427748ae59173352a789"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/course_runtime.py",
+      "size_bytes": 92746,
+      "sha256": "be8e172a970ec4543282187c631c71974427d0517a91182d7ec8ecba76565b36"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/ARCHITECTURE_V181.txt",
+      "size_bytes": 727,
+      "sha256": "16843cd7e2273296df109d6e4d88b39e449ff573eda7a25140fd30d9dc95e051"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/V181_VERIFICATION.txt",
+      "size_bytes": 510,
+      "sha256": "e866a363049d70d4528d88cb3eca19b033c6adddc16935b32a148a66b26b02e8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/legacy_v176/ARCHITECTURE_VERIFICATION.txt",
+      "size_bytes": 1025,
+      "sha256": "5371a1b40bf7d407f2b3f7c9291021e1bf0266c9d9b9b0c81f269b85cbc7e528"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/legacy_v176/README.txt",
+      "size_bytes": 215,
+      "sha256": "f7f16ca37ec9e94a866e5d4a03c4e3e73986bcc0c60bcd42248b9c1ace3e37ca"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/legacy_v176/RECOGNITION_COVERAGE.txt",
+      "size_bytes": 2541,
+      "sha256": "a3d1828f124452df5e26692fd7a710ea5f88214288fc447bb6afa362eb1d22c9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/legacy_v176/V173_VERIFICATION.txt",
+      "size_bytes": 1047,
+      "sha256": "fe3045590360252c33c38f709fb8eaeb8b15e77051f12cdd926b6321f3d70dc6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/legacy_v176/V174_VERIFICATION.txt",
+      "size_bytes": 1035,
+      "sha256": "cca3ee012e4e854ef1b5c8f8bb8fe12fbc06f5177e976033a4688d564db4e818"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/legacy_v176/V175_VERIFICATION.txt",
+      "size_bytes": 927,
+      "sha256": "c8ba809fd70996de83d1cd842f7cf7a3d323e80577d2ca1a9630b7ea0ded9579"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/legacy_v176/V176_VERIFICATION.txt",
+      "size_bytes": 647,
+      "sha256": "d1c03b3ac8e3ece2e4dc8a9491c120eb45c51332e047813a208aad36efe4f013"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/exam_questions.py",
+      "size_bytes": 12927,
+      "sha256": "7a9085fcc3c6f6d18d36f9afaa2f797251c14b4475876d7e903ab1c8df545f5e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/CONFIGURE_FEEDBACK_EMAIL.sh",
+      "size_bytes": 1673,
+      "sha256": "ae5829fb45efdd99395ab60d4201f5cbbbd960262c6fe610f649f39f433b3fd8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/CONFIGURE_FEEDBACK_RESEND.sh",
+      "size_bytes": 2812,
+      "sha256": "aab00d6a9e53d80e52c681a6e07c100d3deef054febce1a8f035f6afae85a353"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/EXPORT_FEEDBACK_CSV.py",
+      "size_bytes": 752,
+      "sha256": "86924b0a93751f02a8c8db670df729235ddde31d25bb273bcb4285c0612cc33c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/MIGRATE_FEEDBACK_HISTORY.py",
+      "size_bytes": 3980,
+      "sha256": "8bf73df25e9f5d89573fd9ba8ef0278b25ca3639bc4277fa15ad387fe949551e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/RETRY_FEEDBACK_EMAIL.py",
+      "size_bytes": 1754,
+      "sha256": "9f53c298d089cab0758251101c587e2734fa17ed48c56340cac11eb00d8dc67b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/RETRY_FEEDBACK_EMAIL.sh",
+      "size_bytes": 394,
+      "sha256": "e5e37caf3bf703b78ccb3bad7c25fd0cc003aca8e576a3de1727d1250c49dc79"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/TEST_RESEND_EMAIL.py",
+      "size_bytes": 583,
+      "sha256": "c265c40418ba9b38be9ae9402ddca6fda42bc99b4663bbcca20c552d1495cd85"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/__init__.py",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/feedback/feedback_service.py",
+      "size_bytes": 23770,
+      "sha256": "04e145c158d341af9feaac927adabd764052355d04e0d7900907410387cebf06"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/BUILD_BEHAVIOR_SFT_DATASET.py",
+      "size_bytes": 47693,
+      "sha256": "eb2c70ec885588131814ef676b53265bcc9cdb77b17e822e5e44c50cc482ab45"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/CHECK_FINETUNE_READINESS.sh",
+      "size_bytes": 1042,
+      "sha256": "ea98d41634178801e60a9aa4b2ffc64464068bfb266204584f54facd2fd34d64"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/DISABLE_FINETUNED_GRANITE.sh",
+      "size_bytes": 112,
+      "sha256": "a4737b3a5aa9b9343dc2feb3011f323fac1655e8431636dc7c2b1a195cbe7fc1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/DISABLE_FINETUNED_LOCAL_MODELS.sh",
+      "size_bytes": 289,
+      "sha256": "3d4c56227275b7cfe0a76cebc3097cf9c22ad70418fbc1086fd95ad85b33f3e2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/ENABLE_FINETUNED_GRANITE.sh",
+      "size_bytes": 111,
+      "sha256": "48e3bcf5feb1bb84faeda0f6cc4b6fb4a57fbeb72f5829747a9af427b92b9ef0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/ENABLE_FINETUNED_LOCAL_MODELS.sh",
+      "size_bytes": 1498,
+      "sha256": "b33808277a9c185a3bece13fb493d6ee2a2dd43323c5fc4f8af56709cf96c275"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/EVALUATE_BASE_VS_FINETUNED.py",
+      "size_bytes": 7800,
+      "sha256": "3737090e9e158c9255e11ca131c73b938f94ff7cf5addccdd41477567828f1b9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/PREPARE_FINETUNE_ENV.sh",
+      "size_bytes": 902,
+      "sha256": "9da24491cffa714154ede5c75bd03b163b12b63cdb89564faafc5bccf2a30201"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/README_FINE_TUNING_zh-TW.md",
+      "size_bytes": 2791,
+      "sha256": "0847d36319e63b79b312d50fb7f8ae9acdd4461d6fdabfecdf8a8315a6d7a74a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/START_FINETUNED_GRANITE_SERVER.sh",
+      "size_bytes": 110,
+      "sha256": "189e0967cd4275e86c64b4241a6bd01d8f893424f6610ef6d1b3843f98dc238a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/START_FINETUNED_LOCAL_ROUTER.sh",
+      "size_bytes": 796,
+      "sha256": "e613899c751296689310a300c5288b89fecddc4d3af5afd17ee3be7f68f2dae6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/TRAIN_ALL_3_AND_ENABLE.sh",
+      "size_bytes": 238,
+      "sha256": "603c3ab580e0445877714468567976cebba02bb3879ad5180afd426e532e6234"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/TRAIN_ALL_3_LOCAL_MODELS_QLORA.sh",
+      "size_bytes": 364,
+      "sha256": "fd69add3d14de3c89a3ff8f201b005bbf2e188e38d6fe8af0a12abfdbb27c016"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/TRAIN_AND_ENABLE_FINETUNED_GRANITE.sh",
+      "size_bytes": 343,
+      "sha256": "fb87b932da9f2070ee778245ae39d316098b52977cea23909a012c30bc16bd57"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/TRAIN_GRANITE42_QLORA.sh",
+      "size_bytes": 122,
+      "sha256": "ef99365189116a93858a0f8896c84104da39a19b864ff9259b61eeebcbb377ea"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/TRAIN_ONE_LOCAL_MODEL_QLORA.sh",
+      "size_bytes": 407,
+      "sha256": "190583dc3442b83248029222ad0b3854448e7b999f81031ddb78d1fbd914bfd4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/VALIDATE_SFT_DATASET.py",
+      "size_bytes": 3609,
+      "sha256": "9779da85c7fd6ed9fa85005047af348b1724b93c75bf4653c1f4f1089f9ff887"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/dataset/dataset_manifest.json",
+      "size_bytes": 472,
+      "sha256": "5037f9f55662e065dfad8b01192838d086d4da6a767f993324fff259c737810f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/finetuned_local_router.py",
+      "size_bytes": 6103,
+      "sha256": "ba0cee0f06224c0de0d2fb0d60acbc7b0b766c9eb7869f03142063ebee0990ae"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/model_profiles.py",
+      "size_bytes": 1355,
+      "sha256": "d7954f09cffd23f2c7c9c863f45fd218b7df6f63e9a7ae7dcd3c33fe48885812"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/train_granite42_qlora.py",
+      "size_bytes": 285,
+      "sha256": "119601da104fb899a9b38404ec0c23e97eb7892c98b637fb54479286d4121184"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/train_local_model_qlora.py",
+      "size_bytes": 8507,
+      "sha256": "c7faf93cd72db453d98eaea9b899ffaebac4038d4b96466232e26ab0a9307e22"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/gateway.py",
+      "size_bytes": 3535,
+      "sha256": "7866f28c6ff22ab5830d2c50594197844e4689f207ba98768b2e14cc1dfd2f56"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/kb_server.py",
+      "size_bytes": 65179,
+      "sha256": "d32583571e2b902f19e6651f743556c917978448631d3d990dc43d4aa2409631"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/math_integrity.py",
+      "size_bytes": 4373,
+      "sha256": "bfe31a974eefdd4ac7a419cf521858626482b2057a05bf40beaa827cd12b9abf"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/package.json",
+      "size_bytes": 391,
+      "sha256": "5f464605a63f97d420064b3a3ca5523dbcde8db90ac7abec1a8429debdacc728"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/reference_corpus/README.md",
+      "size_bytes": 184,
+      "sha256": "846a8768f905ae51448bc2a31f4cf160e7ebabd084c095038a7ef7544f5e53a2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/reference_search.py",
+      "size_bytes": 52532,
+      "sha256": "e0baf264a4372971b9a16cd7d830dbdd56388805fee1de305ae5ca7cae81e314"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/reference_server.py",
+      "size_bytes": 144881,
+      "sha256": "7702e868514f718de521ef7666b0180bbe28baccee7f30e49e60f63834f8eab9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/five_model_benchmark/CONFIGURE_CLOUD_KEYS.sh",
+      "size_bytes": 482,
+      "sha256": "13a2af210529851b901a569179269ac646f7b424ea953f722eda5bcaeb974a69"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/five_model_benchmark/README_zh-TW.md",
+      "size_bytes": 2496,
+      "sha256": "2bdb492ce532507997b20186cc2d67a42abacf37c636d9d35b21a37c95db2e12"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/five_model_benchmark/RUN_5MODEL_BENCHMARK.sh",
+      "size_bytes": 326,
+      "sha256": "7e12a9d44320e5a7c192e9735cc416622d367357fa1dc57f18f755ac407330ac"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/five_model_benchmark/benchmark_5models.py",
+      "size_bytes": 20014,
+      "sha256": "ae66ce93a5582a70d782391b82908a01b14b6e42b139ac411a6d748d95dd298a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/three_model_10q/README_zh-TW.md",
+      "size_bytes": 909,
+      "sha256": "8b50a73d11830d304f29c7f156bbf0f66abe653764f274615dd1b511fac430b6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/three_model_10q/RUN_3MODEL_10Q_BENCHMARK.sh",
+      "size_bytes": 275,
+      "sha256": "7915ff2f669cbca8c25c5411305fb70c02e51863e0362188eff55b88370aad75"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/three_model_10q/SOURCE_AUDIT_10Q.md",
+      "size_bytes": 2811,
+      "sha256": "3f0c2f5297cc8accc0eaa83853038c3dfbc88e74cb6425280783a102c625d7f3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/three_model_10q/benchmark_3models.py",
+      "size_bytes": 11273,
+      "sha256": "c69b9485af3a860e374c556abcde31c8422d400d14e9f1bbc9ab3ff7e7feb8be"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/scope_guard.py",
+      "size_bytes": 9059,
+      "sha256": "6bcfe2b582357f3d3ce9d1536955e5e7b01a28f665c522a9aea8aaccaf62dcc8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/site_metrics.py",
+      "size_bytes": 3157,
+      "sha256": "5e55ae342e1f9d25d024fdd35f9f2bb8c906bde17a020e7a4fcbc67dbe26783f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/speech_stt_server.py",
+      "size_bytes": 7727,
+      "sha256": "e715df2616788e6e8586b1a50730c6673d90fe50f260ecdea8bde3e689d95df6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/teacher_voice_tts_server.py",
+      "size_bytes": 5277,
+      "sha256": "b57be887ff723c22a1b15c7fcb50e3461193a800c4ea4015c2a433662e92122c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/index.html",
+      "size_bytes": 206,
+      "sha256": "89174d087101fef14a8751ea5fc915294b8d5aeb9a3018031642403dd27886d8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/course_math.css",
+      "size_bytes": 419,
+      "sha256": "b3b64c7c1c6e11c4462ca0bc77b17ec8d6f32b7a2ae554f9fa84fd01b9b2cfae"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/styles.css",
+      "size_bytes": 55986,
+      "sha256": "317f40740d476e8a9bfeeac3dac4546bccec2c545e2d19104f03c32945048083"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v130_right_panel_background_theme.css",
+      "size_bytes": 10320,
+      "sha256": "d9eb71a7f8381de8adf3db386d9839b00a6e7ba308ba9c5448cbc46c3713656f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v148_coursebank_static_lung.css",
+      "size_bytes": 5238,
+      "sha256": "c1b87aa7f7d74960843533ec15bfbcd80135862f08dd5af2ffd8690093a7e317"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v149_hard_integrated.css",
+      "size_bytes": 6391,
+      "sha256": "729916f7c391d9eebfa37b22e932218eae55d8595c7f389ec5acfd705e6f381d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v150_ui_repackaged.css",
+      "size_bytes": 4812,
+      "sha256": "cea8e05e5f277872e617098398f69e8c2b7e182041e045172e51bd19c4399db7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v153_student_results_lecture_controls.css",
+      "size_bytes": 2834,
+      "sha256": "c782de4c37fcf212ef2c14f6a457cc7e85fc7363890ccc4b38e99f6e2b26c1f6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v194_avatar_animation.css",
+      "size_bytes": 2776,
+      "sha256": "d04aa8ad52fc4780edfd9dc398959400cf7da377e2cb5fad1efe621688c52ce6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v195_sprite_avatar.css",
+      "size_bytes": 2806,
+      "sha256": "287cf4cd92148aec825db31eafe36ee9fae6f2f48c9e2684e2b93adc1eda8bc0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v198_3d_avatar.css",
+      "size_bytes": 3950,
+      "sha256": "43f9cea6d61178905d6fad12fdabfcf992990d9e650b86eb0a8dc3ddcd0d3a36"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v199_main_3d_avatar.css",
+      "size_bytes": 4504,
+      "sha256": "364784cb25e821d9c394c1362fc9904b15624bca0170ffab4a5b466d81712060"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v206_knowledge_source.css",
+      "size_bytes": 1280,
+      "sha256": "d08c1572aa854ced9835c53397e7f0f29dd3cf653a04db9d5cef8312cf105a56"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v216_ui_cleanup.css",
+      "size_bytes": 517,
+      "sha256": "faaa41233d205b5bcc239b002cc9e71093956cccde52d34bda8d556f577b592b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v240_site_metrics.css",
+      "size_bytes": 503,
+      "sha256": "5f70fee3d5fc681740c80b6891fa399e91e84337ca07162f59277f4df7d869f6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/css/v241_course_adaptive.css",
+      "size_bytes": 7907,
+      "sha256": "426055f9dbd5d23ebf9ee22c1f51ef8b640f767c4e1be1d9ca62dee51fbbe87b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/index.html",
+      "size_bytes": 22691,
+      "sha256": "96689c7fb6d1ed94f61dd30b711f704d1f12f542a63c415ab17ae6a273e51fc9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/01_original_ui_core.js",
+      "size_bytes": 32740,
+      "sha256": "bfafbcb6aa07c154788fb70eb1d7525e45f002132290014d8aaff0f9e32a2dd9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/02_stable_webspeech_patch.js",
+      "size_bytes": 7342,
+      "sha256": "573a0adca0aea7be8b9e85288b10fd37791e148882f1646c119838006604ebf4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/03_full_kb_course_specific_qa.js",
+      "size_bytes": 106538,
+      "sha256": "80522390223ffc56a261a7f140caddb228ca926357a19ff540755202b82c0faa"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/04_global_speech_stop_patch.js",
+      "size_bytes": 5933,
+      "sha256": "eb4726a0d2cf9133e4f063f49cf32e557a687a62be119c1656e525ee2c443278"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/05_recognition_stop_on_submit.js",
+      "size_bytes": 4224,
+      "sha256": "9325bd7b51ce0659d55dad058fe24f3f0e2e3ed4f51b820d3e4b64e7f22b156c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/06_abort_guard_patch.js",
+      "size_bytes": 1199,
+      "sha256": "f95a8148e0038f88d419a115139f39a2e7e614035d9457fbfe697ec30f0fef7f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/07_typewriter_highlight_patch.js",
+      "size_bytes": 139,
+      "sha256": "cd724714c23d0ae83fbdf1f102d1172e24fba2268fcd58f29455a06e834cbe97"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/08_script_typewriter_sync.js",
+      "size_bytes": 139,
+      "sha256": "cd724714c23d0ae83fbdf1f102d1172e24fba2268fcd58f29455a06e834cbe97"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/09_lesson_dropdown_confirm_stop.js",
+      "size_bytes": 327,
+      "sha256": "a70d31255a0e2646afa1bed432cd4159c1f904476e10a286108f92e33d166644"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/10_model_restore_patch.js",
+      "size_bytes": 7389,
+      "sha256": "69d74e9a85034e32793fc3c305f82b78caf0423618bd8d018b8aa8b5a74f1e9c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/11_lung_model_consistency_patch.js",
+      "size_bytes": 10600,
+      "sha256": "6fbafd51771a1a3627b3959e4ef909cfd6fbe94284ac4d84234d46d74fa85080"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/12_percent_weight_two_lobe_patch.js",
+      "size_bytes": 17782,
+      "sha256": "e6f63ffa89be6199a42dd32e13cee261ef184bbdb23aa72883ccc0c0f6757018"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/13_voice_speed_restore.js",
+      "size_bytes": 3770,
+      "sha256": "4589f01ed8489b37da7f57cf996c6b3ee154ed6f69d353a20bdac9580ee76f0d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/14_voice_live_sync_patch.js",
+      "size_bytes": 5879,
+      "sha256": "aa95410c786b0a5a209bbef1f77bedc94560b9aed7bdaaed8592d5364b5d9dea"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/15_voice_options_restore.js",
+      "size_bytes": 3912,
+      "sha256": "42be37b4daf15d79b44780fa417913e9c88405b51cf6dbb921be52f7fd97574d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/16_voice_switch_script_control_fix.js",
+      "size_bytes": 5899,
+      "sha256": "8c6567bd7f2d56f3ae69c433fe8caa8b2b159403d67587bab4513a84373deba3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/17_voice_live_sync_pause_button_fix.js",
+      "size_bytes": 8802,
+      "sha256": "0a455bfc1b16f1199c53a6c28be0513676b7630b899c316020ebdfa461081373"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/18_lung_model_single_region_patch.js",
+      "size_bytes": 12757,
+      "sha256": "4020835e7e833a4bef899297f46e5e404a1e8b7ad4c8b772822b7cb1343b10bc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/19_label_alignment_patch.js",
+      "size_bytes": 2138,
+      "sha256": "bd51e30baf7aa50ac8ca078b334cb2c9524893e24ce3284394d7ec4c0b92da11"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/20_stop_clears_teacher_script_patch.js",
+      "size_bytes": 2165,
+      "sha256": "b5d27e71d9991c4362d89b94719c5428e18892c22ddb9d0f83819d646aa44c7e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/21_calculate_result_persist_patch.js",
+      "size_bytes": 1929,
+      "sha256": "96a616f53f049dfd3e6180d8acc1371f49569cf6a0fc9f6d5ac8b8b73db0a3fe"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/22_no_flash_linebreak_patch.js",
+      "size_bytes": 1746,
+      "sha256": "9ae9e99157848d11ed107af90c94633611276181e2254791aad47c8fa25aa070"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/23_units_in_result_no_live_hang_patch.js",
+      "size_bytes": 6673,
+      "sha256": "4f6467f9cea99930d65f5f489adb8c839f25d8f7cdc4e1ca508f9c5955657119"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/24_case_feedback_linebreak_true_patch.js",
+      "size_bytes": 1643,
+      "sha256": "a9ee99149ee9d61399d0e0b734f34ca94a5d3f16b4f8d2828bc2313596adf00c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/25_v105_resume_after_question_mouth_sync.js",
+      "size_bytes": 66152,
+      "sha256": "60e9be5ae98cbf3d61c02c97f7986593d387b6ca96453a60ca4d631bcc7db905"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/26_realistic_avatar_photo_mouth_sync.js",
+      "size_bytes": 16558,
+      "sha256": "ad2dc21d6dfd7fdfb0a595bee537beec2aa641ec1f53012d9fd9d739550ad52d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/27_force_yating_zhiwei_voice.js",
+      "size_bytes": 9773,
+      "sha256": "01201cf52ebc665b7f1f944e563968a1ed22520ff5651a727e4b6d2b27f336f7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/29_v153_course_aligned_student_results.js",
+      "size_bytes": 35067,
+      "sha256": "d40c16bb9effd732a0b99f28380d89abb0c6effbe0f26b8f3728d298a0e1712e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/30_server_response_diversification.js",
+      "size_bytes": 3260,
+      "sha256": "8bf4d8971f74b1cab4cb7b18204f02b1849537379c001481f9e773e1316e61f1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/31_local_llm_selector.js",
+      "size_bytes": 2981,
+      "sha256": "062041a658b0fcc034978f0d2a5fde464b33cb20aade6fa786f508a94764aa4a"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/32_server_side_tts.js",
+      "size_bytes": 21071,
+      "sha256": "3022d6b74dffbbb5c611504b73a9d81ae91943b093a36d105a2dccd08bd5df9e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/33_v191_lung_calculate_sync_fix.js",
+      "size_bytes": 6927,
+      "sha256": "279bd71a93bb84b420f2e9fc629e216c30b51f0fed9ae0a2713e8b90a86a07f3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/34_v192_full_coupled_lung_physiology.js",
+      "size_bytes": 10089,
+      "sha256": "728f3ccf6d29ed8063645b3a13e4fd4bd77eea2b0af03dba5288ec1de00d769d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/35_hopkins_reference_lung_physiology.js",
+      "size_bytes": 21664,
+      "sha256": "cb330392486649bb44aa99ccb5e3017d8b9d53f1f9a4a2fc9cdbffe4280962c6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/35_v193_verified_lung_physiology.BACKUP.js",
+      "size_bytes": 14966,
+      "sha256": "052007b943ec21e7a987e495e7b5f8119306a97c62cf42518d98c459eb0057da"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/35_v193_verified_lung_physiology.js",
+      "size_bytes": 14966,
+      "sha256": "052007b943ec21e7a987e495e7b5f8119306a97c62cf42518d98c459eb0057da"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/36_v194_avatar_animation.js",
+      "size_bytes": 2154,
+      "sha256": "924b620dc7cf0954f239c64a3ecdc4be78515780c676fa3feae07a230c9d8761"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/37_v195_sprite_avatar.js",
+      "size_bytes": 4278,
+      "sha256": "8a7f1a80c8899faeb976b21f0f7ad6236fd8edc30895eae6aab67ebc546e06f1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/40_v199_main_3d_avatar.js",
+      "size_bytes": 12576,
+      "sha256": "22b2084f692f77d2c3b046f7893daa1f414d12d8fc13795c868518cd665401c8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/41_v200_english_ui_bilingual.js",
+      "size_bytes": 1437,
+      "sha256": "d92e2cdb517954cff0974b5feb75b85c674693b929fceb601cf66d6d58369d39"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/42_v201_final_ui_language_teacher_voice.js",
+      "size_bytes": 2280,
+      "sha256": "391a27863f10825559f55f4430f07e7f5d7cfef6ffeb616d0cc8258710eb9534"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/43_v202_strict_final.js",
+      "size_bytes": 1808,
+      "sha256": "c35ff6ca7f66c7468fc492026a8af0c6b5d1c908e872ba86563d2e2e2ff1f83e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/45_v204_final_voice_controller.js",
+      "size_bytes": 22546,
+      "sha256": "09f2f8844c5bba440efc23af57c0ce6ab97e1db9444adca1648c392b58a45703"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/46_v204_2_multilingual_language_router.js",
+      "size_bytes": 7015,
+      "sha256": "9a7bb57a6eb55712b0115deeb0ff23a16bf28955130227f509c48af2acf84abe"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/47_v204_2_single_qa_guard.js",
+      "size_bytes": 1766,
+      "sha256": "7bb426fa8a6d2a0f278f73bd548a0afdee1304338220f0896bb770be9cd9f6e5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/49_v206_knowledge_source_nav.js",
+      "size_bytes": 1146,
+      "sha256": "456bd43d87dc8ebcc71733380566cf65427da789b6c9dcbe8fca3649edf93f7b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/50_cloud_byok_selector.js",
+      "size_bytes": 3276,
+      "sha256": "9c466a83fcac5930834a76a3e7e1210e1a9a838fbef4f32de2daf1ce656e38f9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/51_v228_multi_question_batch.js",
+      "size_bytes": 7359,
+      "sha256": "765847e52d881413242eb4fc2938d0d466addcb76bdb6dedf6d98a08218aff25"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/53_local_answer_feedback.js",
+      "size_bytes": 14664,
+      "sha256": "6c1c44c1f03856ed08fe3bb91ed9caaf9ac8a159ace37ed21ea17dc69a5c0208"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/54_site_metrics.js",
+      "size_bytes": 2042,
+      "sha256": "ed59ba240068fec066034f0506c2970f15024f33e54ad3d977d9adbe33ac01bc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/55_v241_course_adaptive_ta.js",
+      "size_bytes": 45541,
+      "sha256": "17f814da72a14caf5564a8a26611fa873e3c5a73cb3bb50dfa6bcb51c2c94399"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/56_course_math.js",
+      "size_bytes": 2351,
+      "sha256": "8e7985dd55a8fa8097e66529fc60a1d9a82a4b63907295bdc375a1d9f638bb6c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/00_kb_bootstrap.js",
+      "size_bytes": 508,
+      "sha256": "0d4b27dc167130c1ae90b4386b965b1c464ee9da1a779f1797ec8b65ce99515d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/01_basic.js",
+      "size_bytes": 1368828,
+      "sha256": "6f88476c74c1032dbe2271bac75db59f247102645abe205c67209dda979189ef"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/02_ventilation.js",
+      "size_bytes": 1184414,
+      "sha256": "12fe7dcd93b3f508fd580403a016db315190ba8c20c18b38cae2e63df82f2761"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/03_alveolar_gas.js",
+      "size_bytes": 1197884,
+      "sha256": "e324d953636389a711c3a53edb4d2c8da7ad81602cea45e10166d196192497ae"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/04_perfusion.js",
+      "size_bytes": 1183393,
+      "sha256": "fde1a8f2c60b4a7b71feef40f603c838331dcc6239649ba32d9de436838d1a52"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/05_normal_vq.js",
+      "size_bytes": 1167217,
+      "sha256": "6bf6cab2276b2831e928c441a7dd67d06f9ee0953caaa1a634c059fc92f60a56"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/06_low_vq.js",
+      "size_bytes": 1185647,
+      "sha256": "78e532761fe0042d846bc297dc5daa3449a95329195f8afc61794820d40db89c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/07_high_vq.js",
+      "size_bytes": 1190996,
+      "sha256": "439af08f67b543d7ccd713c540b3b6b18d32c26a714c808b11e2d9e6c815efd4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/08_shunt.js",
+      "size_bytes": 1157957,
+      "sha256": "52e9651c62b783166ffbd42a40ac12abfece98cae6ec40ddc2ba015a9a9c45c9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/09_diffusion.js",
+      "size_bytes": 1175916,
+      "sha256": "f9f60234298be5d1aaa415b0b72bda089eac26df25d718101436fad225344531"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/10_oxygen_content.js",
+      "size_bytes": 1124211,
+      "sha256": "fd6b205181c7c162d837ecc47509f27dfee2cb9b2c39abddc73e60818fdedbe1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/11_integrated_disease.js",
+      "size_bytes": 1150759,
+      "sha256": "4de6e032980593e76c22169638a4c0a8aa8fd51e77a069ad142ee4640a6bdbd6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/12_fine_grained_terms.js",
+      "size_bytes": 25612,
+      "sha256": "891c9b262500f0becb700abdf727a40c24be0c5c3aa078d0aa371ba3b5d62dc4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/js/kb_data/13_ppt_lecture_questions.js",
+      "size_bytes": 25932,
+      "sha256": "832f5a003a3300f9cff1f7e62168ee9c89fd37106310127d0cf8674d383f8113"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/vendor/temml/Temml-Local.css",
+      "size_bytes": 8993,
+      "sha256": "490530d4e725e31076d147752a1c607fdbbe67033a4415ff630dcf0d3cf3f81c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/vendor/temml/temml.min.js",
+      "size_bytes": 167882,
+      "sha256": "d4fc39a4729deca1c8e12624885a7616cb661a4ab8e9cd4d6fc1fed23c653308"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/course_math.css",
+      "size_bytes": 419,
+      "sha256": "b3b64c7c1c6e11c4462ca0bc77b17ec8d6f32b7a2ae554f9fa84fd01b9b2cfae"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/styles.css",
+      "size_bytes": 55986,
+      "sha256": "317f40740d476e8a9bfeeac3dac4546bccec2c545e2d19104f03c32945048083"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v130_right_panel_background_theme.css",
+      "size_bytes": 10320,
+      "sha256": "d9eb71a7f8381de8adf3db386d9839b00a6e7ba308ba9c5448cbc46c3713656f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v148_coursebank_static_lung.css",
+      "size_bytes": 5238,
+      "sha256": "c1b87aa7f7d74960843533ec15bfbcd80135862f08dd5af2ffd8690093a7e317"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v149_hard_integrated.css",
+      "size_bytes": 6391,
+      "sha256": "729916f7c391d9eebfa37b22e932218eae55d8595c7f389ec5acfd705e6f381d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v150_ui_repackaged.css",
+      "size_bytes": 4812,
+      "sha256": "cea8e05e5f277872e617098398f69e8c2b7e182041e045172e51bd19c4399db7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v153_student_results_lecture_controls.css",
+      "size_bytes": 2834,
+      "sha256": "c782de4c37fcf212ef2c14f6a457cc7e85fc7363890ccc4b38e99f6e2b26c1f6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v194_avatar_animation.css",
+      "size_bytes": 2776,
+      "sha256": "d04aa8ad52fc4780edfd9dc398959400cf7da377e2cb5fad1efe621688c52ce6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v195_sprite_avatar.css",
+      "size_bytes": 2806,
+      "sha256": "287cf4cd92148aec825db31eafe36ee9fae6f2f48c9e2684e2b93adc1eda8bc0"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v198_3d_avatar.css",
+      "size_bytes": 3950,
+      "sha256": "43f9cea6d61178905d6fad12fdabfcf992990d9e650b86eb0a8dc3ddcd0d3a36"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v199_main_3d_avatar.css",
+      "size_bytes": 4504,
+      "sha256": "364784cb25e821d9c394c1362fc9904b15624bca0170ffab4a5b466d81712060"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v206_knowledge_source.css",
+      "size_bytes": 1928,
+      "sha256": "f0b5cb53725653479fafb51e7ef4279008076a13dee1aa40a12828d735758f94"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v216_ui_cleanup.css",
+      "size_bytes": 517,
+      "sha256": "faaa41233d205b5bcc239b002cc9e71093956cccde52d34bda8d556f577b592b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v240_site_metrics.css",
+      "size_bytes": 503,
+      "sha256": "5f70fee3d5fc681740c80b6891fa399e91e84337ca07162f59277f4df7d869f6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/css/v241_course_adaptive.css",
+      "size_bytes": 7907,
+      "sha256": "426055f9dbd5d23ebf9ee22c1f51ef8b640f767c4e1be1d9ca62dee51fbbe87b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/index.html",
+      "size_bytes": 22973,
+      "sha256": "d44ddf21afd76c6e8bb624886955bc046376017892f315621f5ee97029092269"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/01_original_ui_core.js",
+      "size_bytes": 32740,
+      "sha256": "bfafbcb6aa07c154788fb70eb1d7525e45f002132290014d8aaff0f9e32a2dd9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/02_stable_webspeech_patch.js",
+      "size_bytes": 7342,
+      "sha256": "573a0adca0aea7be8b9e85288b10fd37791e148882f1646c119838006604ebf4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/04_global_speech_stop_patch.js",
+      "size_bytes": 5933,
+      "sha256": "eb4726a0d2cf9133e4f063f49cf32e557a687a62be119c1656e525ee2c443278"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/05_recognition_stop_on_submit.js",
+      "size_bytes": 4224,
+      "sha256": "9325bd7b51ce0659d55dad058fe24f3f0e2e3ed4f51b820d3e4b64e7f22b156c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/06_abort_guard_patch.js",
+      "size_bytes": 1199,
+      "sha256": "f95a8148e0038f88d419a115139f39a2e7e614035d9457fbfe697ec30f0fef7f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/07_typewriter_highlight_patch.js",
+      "size_bytes": 139,
+      "sha256": "cd724714c23d0ae83fbdf1f102d1172e24fba2268fcd58f29455a06e834cbe97"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/08_script_typewriter_sync.js",
+      "size_bytes": 139,
+      "sha256": "cd724714c23d0ae83fbdf1f102d1172e24fba2268fcd58f29455a06e834cbe97"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/09_lesson_dropdown_confirm_stop.js",
+      "size_bytes": 327,
+      "sha256": "a70d31255a0e2646afa1bed432cd4159c1f904476e10a286108f92e33d166644"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/10_model_restore_patch.js",
+      "size_bytes": 7389,
+      "sha256": "69d74e9a85034e32793fc3c305f82b78caf0423618bd8d018b8aa8b5a74f1e9c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/11_lung_model_consistency_patch.js",
+      "size_bytes": 10600,
+      "sha256": "6fbafd51771a1a3627b3959e4ef909cfd6fbe94284ac4d84234d46d74fa85080"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/12_percent_weight_two_lobe_patch.js",
+      "size_bytes": 17782,
+      "sha256": "e6f63ffa89be6199a42dd32e13cee261ef184bbdb23aa72883ccc0c0f6757018"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/13_voice_speed_restore.js",
+      "size_bytes": 3770,
+      "sha256": "4589f01ed8489b37da7f57cf996c6b3ee154ed6f69d353a20bdac9580ee76f0d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/14_voice_live_sync_patch.js",
+      "size_bytes": 5879,
+      "sha256": "aa95410c786b0a5a209bbef1f77bedc94560b9aed7bdaaed8592d5364b5d9dea"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/15_voice_options_restore.js",
+      "size_bytes": 3912,
+      "sha256": "42be37b4daf15d79b44780fa417913e9c88405b51cf6dbb921be52f7fd97574d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/16_voice_switch_script_control_fix.js",
+      "size_bytes": 5899,
+      "sha256": "8c6567bd7f2d56f3ae69c433fe8caa8b2b159403d67587bab4513a84373deba3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/17_voice_live_sync_pause_button_fix.js",
+      "size_bytes": 8802,
+      "sha256": "0a455bfc1b16f1199c53a6c28be0513676b7630b899c316020ebdfa461081373"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/18_lung_model_single_region_patch.js",
+      "size_bytes": 12757,
+      "sha256": "4020835e7e833a4bef899297f46e5e404a1e8b7ad4c8b772822b7cb1343b10bc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/19_label_alignment_patch.js",
+      "size_bytes": 2138,
+      "sha256": "bd51e30baf7aa50ac8ca078b334cb2c9524893e24ce3284394d7ec4c0b92da11"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/20_stop_clears_teacher_script_patch.js",
+      "size_bytes": 2165,
+      "sha256": "b5d27e71d9991c4362d89b94719c5428e18892c22ddb9d0f83819d646aa44c7e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/21_calculate_result_persist_patch.js",
+      "size_bytes": 1929,
+      "sha256": "96a616f53f049dfd3e6180d8acc1371f49569cf6a0fc9f6d5ac8b8b73db0a3fe"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/22_no_flash_linebreak_patch.js",
+      "size_bytes": 1746,
+      "sha256": "9ae9e99157848d11ed107af90c94633611276181e2254791aad47c8fa25aa070"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/23_units_in_result_no_live_hang_patch.js",
+      "size_bytes": 6673,
+      "sha256": "4f6467f9cea99930d65f5f489adb8c839f25d8f7cdc4e1ca508f9c5955657119"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/24_case_feedback_linebreak_true_patch.js",
+      "size_bytes": 1643,
+      "sha256": "a9ee99149ee9d61399d0e0b734f34ca94a5d3f16b4f8d2828bc2313596adf00c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/25_v105_resume_after_question_mouth_sync.js",
+      "size_bytes": 66152,
+      "sha256": "60e9be5ae98cbf3d61c02c97f7986593d387b6ca96453a60ca4d631bcc7db905"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/26_realistic_avatar_photo_mouth_sync.js",
+      "size_bytes": 16558,
+      "sha256": "ad2dc21d6dfd7fdfb0a595bee537beec2aa641ec1f53012d9fd9d739550ad52d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/27_force_yating_zhiwei_voice.js",
+      "size_bytes": 9773,
+      "sha256": "01201cf52ebc665b7f1f944e563968a1ed22520ff5651a727e4b6d2b27f336f7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/29_v153_course_aligned_student_results.js",
+      "size_bytes": 35067,
+      "sha256": "d40c16bb9effd732a0b99f28380d89abb0c6effbe0f26b8f3728d298a0e1712e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/31_local_llm_selector.js",
+      "size_bytes": 2985,
+      "sha256": "8ffe9cbb6a530c4d9cc3a0adb3a83f4dde6b1603561bef6c4f72ed2ed36e1a50"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/32_server_side_tts.js",
+      "size_bytes": 21078,
+      "sha256": "5c24a50e993d788e1464a093a134f0c56f3e89ed5d1a1b930918430c0c8efcdd"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/33_v191_lung_calculate_sync_fix.js",
+      "size_bytes": 6927,
+      "sha256": "279bd71a93bb84b420f2e9fc629e216c30b51f0fed9ae0a2713e8b90a86a07f3"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/34_v192_full_coupled_lung_physiology.js",
+      "size_bytes": 10089,
+      "sha256": "728f3ccf6d29ed8063645b3a13e4fd4bd77eea2b0af03dba5288ec1de00d769d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/35_hopkins_reference_lung_physiology.js",
+      "size_bytes": 21664,
+      "sha256": "cb330392486649bb44aa99ccb5e3017d8b9d53f1f9a4a2fc9cdbffe4280962c6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/35_v193_verified_lung_physiology.BACKUP.js",
+      "size_bytes": 14966,
+      "sha256": "052007b943ec21e7a987e495e7b5f8119306a97c62cf42518d98c459eb0057da"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/35_v193_verified_lung_physiology.js",
+      "size_bytes": 14966,
+      "sha256": "052007b943ec21e7a987e495e7b5f8119306a97c62cf42518d98c459eb0057da"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/36_v194_avatar_animation.js",
+      "size_bytes": 2154,
+      "sha256": "924b620dc7cf0954f239c64a3ecdc4be78515780c676fa3feae07a230c9d8761"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/37_v195_sprite_avatar.js",
+      "size_bytes": 4278,
+      "sha256": "8a7f1a80c8899faeb976b21f0f7ad6236fd8edc30895eae6aab67ebc546e06f1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/40_v199_main_3d_avatar.js",
+      "size_bytes": 12576,
+      "sha256": "22b2084f692f77d2c3b046f7893daa1f414d12d8fc13795c868518cd665401c8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/41_v200_english_ui_bilingual.js",
+      "size_bytes": 1437,
+      "sha256": "d92e2cdb517954cff0974b5feb75b85c674693b929fceb601cf66d6d58369d39"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/42_v201_final_ui_language_teacher_voice.js",
+      "size_bytes": 2280,
+      "sha256": "391a27863f10825559f55f4430f07e7f5d7cfef6ffeb616d0cc8258710eb9534"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/43_v202_strict_final.js",
+      "size_bytes": 1808,
+      "sha256": "c35ff6ca7f66c7468fc492026a8af0c6b5d1c908e872ba86563d2e2e2ff1f83e"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/45_v204_final_voice_controller.js",
+      "size_bytes": 22546,
+      "sha256": "09f2f8844c5bba440efc23af57c0ce6ab97e1db9444adca1648c392b58a45703"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/46_v204_2_multilingual_language_router.js",
+      "size_bytes": 7015,
+      "sha256": "9a7bb57a6eb55712b0115deeb0ff23a16bf28955130227f509c48af2acf84abe"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/47_v204_2_single_qa_guard.js",
+      "size_bytes": 1766,
+      "sha256": "7bb426fa8a6d2a0f278f73bd548a0afdee1304338220f0896bb770be9cd9f6e5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/48_reference_textbook.js",
+      "size_bytes": 5512,
+      "sha256": "99bf21de6ec66d0fdba9b81a5511a4f179ad9801c3907ffb067b9570b83463c8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/49_v206_knowledge_source_nav.js",
+      "size_bytes": 1146,
+      "sha256": "456bd43d87dc8ebcc71733380566cf65427da789b6c9dcbe8fca3649edf93f7b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/50_cloud_byok_selector.js",
+      "size_bytes": 3276,
+      "sha256": "9c466a83fcac5930834a76a3e7e1210e1a9a838fbef4f32de2daf1ce656e38f9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/51_v228_multi_question_batch.js",
+      "size_bytes": 7359,
+      "sha256": "765847e52d881413242eb4fc2938d0d466addcb76bdb6dedf6d98a08218aff25"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/52_v229_semantic_microbatch.js",
+      "size_bytes": 12243,
+      "sha256": "10c5f7ecabb1b1a82d7eacd1128101ccb0a4de4ab4f8dc9dc1171bb30c6001ba"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/53_local_answer_feedback.js",
+      "size_bytes": 14664,
+      "sha256": "6c1c44c1f03856ed08fe3bb91ed9caaf9ac8a159ace37ed21ea17dc69a5c0208"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/54_site_metrics.js",
+      "size_bytes": 2042,
+      "sha256": "ed59ba240068fec066034f0506c2970f15024f33e54ad3d977d9adbe33ac01bc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/55_v241_course_adaptive_ta.js",
+      "size_bytes": 45541,
+      "sha256": "17f814da72a14caf5564a8a26611fa873e3c5a73cb3bb50dfa6bcb51c2c94399"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/js/56_course_math.js",
+      "size_bytes": 2351,
+      "sha256": "8e7985dd55a8fa8097e66529fc60a1d9a82a4b63907295bdc375a1d9f638bb6c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/vendor/temml/Temml-Local.css",
+      "size_bytes": 8993,
+      "sha256": "490530d4e725e31076d147752a1c607fdbbe67033a4415ff630dcf0d3cf3f81c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/vendor/temml/temml.min.js",
+      "size_bytes": 167882,
+      "sha256": "d4fc39a4729deca1c8e12624885a7616cb661a4ab8e9cd4d6fc1fed23c653308"
+    },
+    {
+      "path": "QA_FIX_VALIDATION_R11_20261028.json",
+      "size_bytes": 1006,
+      "sha256": "efa2e405b3dcebb583a243e460d41c0a22b43abd2dcc19f68781879764aa1cfb"
+    },
+    {
+      "path": "R11_EXTRAS/55_v241_course_adaptive_ta.plain.js",
+      "size_bytes": 45541,
+      "sha256": "17f814da72a14caf5564a8a26611fa873e3c5a73cb3bb50dfa6bcb51c2c94399"
+    },
+    {
+      "path": "R12_VALIDATION_20261102.json",
+      "size_bytes": 17381,
+      "sha256": "b60f01c511f6507e4ecaf524174303ad94e930322293dacfce0212c31dcd2d0a"
+    },
+    {
+      "path": "R5_NODE22_VERIFIER_REPAIR_20261010.txt",
+      "size_bytes": 1891,
+      "sha256": "e5c8db24d3aca8f748e94641793150275fac90996ebeb9c7c2544d6116a04091"
+    },
+    {
+      "path": "README_DEFAULT_VQ_ONLY_R8_20261021.md",
+      "size_bytes": 1831,
+      "sha256": "5a555c5ee37dbfd920f8d963143cfa2c10f39ce173d24359f59b7abc29ba9942"
+    },
+    {
+      "path": "README_FULL_PROGRAM_R4.txt",
+      "size_bytes": 320,
+      "sha256": "d74ef0d9254fe7f6d855ad9b8cce452e5748ca71bb44c368da89ccd2c241b839"
+    },
+    {
+      "path": "README_FULL_PROGRAM_R5.txt",
+      "size_bytes": 268,
+      "sha256": "28824fa756e534ea845cf9d74ab688f28d166a14a2c1584d17d8cee1182d2634"
+    },
+    {
+      "path": "README_MANUAL_RECORDING_R7_20261021.md",
+      "size_bytes": 3637,
+      "sha256": "5fca789f17b22724dd8c8ebaf8faa26a12b28059455ce4fba26de3bf07b50b73"
+    },
+    {
+      "path": "README_QA_FIX_R11_20261028.md",
+      "size_bytes": 2178,
+      "sha256": "922cedf135cef4ec165c08b1a1ae7fdb98548dd63b5cf2709f323bbec6b10f58"
+    },
+    {
+      "path": "README_R12_START_HERE_zh-TW.md",
+      "size_bytes": 2749,
+      "sha256": "3c6d35679bbed764556c263029a992668790cc007a7fe92d7bd78dfa79ce8cbc"
+    },
+    {
+      "path": "README_VOICE_FIX_R9_20261021.md",
+      "size_bytes": 2950,
+      "sha256": "81199a003339e024713bd80c85ce13743528e4b89649d0ec6865b21644de617c"
+    },
+    {
+      "path": "RESUME_MOEX_CLOUD_PY36.ps1",
+      "size_bytes": 3820,
+      "sha256": "46f96b80b76cf274070c75cf7b7acfdced4d388c93040a99ee57dcd057cf8833"
+    },
+    {
+      "path": "VERIFY_VOICE_MANUAL_STOP.cjs",
+      "size_bytes": 21752,
+      "sha256": "0cb598ff7630e6457f49283d191ecbbba79639d488ad8f02ef7ae12d1e74563f"
+    },
+    {
+      "path": "VOICE_FIX_VALIDATION_R9_20261021.json",
+      "size_bytes": 2657,
+      "sha256": "d37fcd741725d21c17ee024707b30dc7631fd9b0405ddeba7e00578e56bb1073"
+    },
+    {
+      "path": "VQ_TEACHER_FEEDBACK_20261010.md",
+      "size_bytes": 3468,
+      "sha256": "35e2b8da5fce0d05167182cae0128a0a418e2c793c1da1064211af5077ce4271"
+    },
+    {
+      "path": "full_deployment_validation.json",
+      "size_bytes": 5343,
+      "sha256": "ba498491c0742c679ace3678c71d0ee1eea1ee2192d0b39235a7017ca345e88f"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "APPLY_FULL_UPDATE.sh",
+      "size_bytes": 2798,
+      "sha256": "751435621dfcff6e509b980a94d60884f0a4348de68e894895380900f8c8aaeb"
+    },
+    {
+      "path": "BASELINE_R11_SHA256.json",
+      "size_bytes": 56055,
+      "sha256": "f4666309e0f4907a82984f5a512af2aa7171193926ca6b99480bf6d3a8033a06"
+    },
+    {
+      "path": "DEPLOY_COMPLETE.sh",
+      "size_bytes": 17201,
+      "sha256": "af4bb9833abc8c9e6d56f27e043c5860b60d2bfe142832ac50df544028d2ebcc"
+    },
+    {
+      "path": "DEPLOY_FROM_WINDOWS.ps1",
+      "size_bytes": 10604,
+      "sha256": "f51d059d849c7d8a4d3b672911510dee7d33b77363cd09b7010ed6e547e7c6d6"
+    },
+    {
+      "path": "INSTALL_FULL_PROGRAM.cjs",
+      "size_bytes": 4821,
+      "sha256": "c06e98d99a89e2400e7fad06d0b34926dcd8ac7c819ff29607bde7f5a1575ea9"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/PHYSICIAN_BENCHMARK_DATA/physician_results_original.json",
+      "size_bytes": 127792,
+      "sha256": "6367f1685cd84c41f7a705025c479fb7e01bc4d3f1eda4079f78928407204137"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/VQ_TRUE_SHUNT_COMPARE_20261010.png",
+      "size_bytes": 275223,
+      "sha256": "fc7b19a552b8028259aad23d0671c7360a7378aba12820e4b7588ab45e68a143"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_20261009/normal_baseline_validation.json",
+      "size_bytes": 2433,
+      "sha256": "439ed6f9f1ab25e3cb46e9422165035884978544b3563c26a81c0863ff41d56b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_20261009/vq_diffusion_corrected.png",
+      "size_bytes": 2540017,
+      "sha256": "f3168e4f9a0e4302fa7037c3fa361b9484e26b18a549ecae23b59fb0be5598cd"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_20261009/vq_lowvq_corrected.png",
+      "size_bytes": 2588768,
+      "sha256": "d7ab07a6225c795583b1bfb60f8769cfbee0d253a6de23eacd987bd79bf40a04"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_20261009/vq_shunt_corrected.png",
+      "size_bytes": 2550365,
+      "sha256": "c68ca473776ae3c159a2f4180a7d5479068f2e7544db84c5e6fe9c47d9b5eeb2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_R3_20261010/VQ_TRUE_SHUNT_COMPARE_20261010.png",
+      "size_bytes": 275223,
+      "sha256": "fc7b19a552b8028259aad23d0671c7360a7378aba12820e4b7588ab45e68a143"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_R3_20261010/vq_corrected_ui.png",
+      "size_bytes": 2557085,
+      "sha256": "f4dcbc56ca8d70ac57299301450035c0f8919e845315877972f5aafc63400274"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/historical_R3_20261010/vq_highvq_corrected.png",
+      "size_bytes": 2589573,
+      "sha256": "657b8e4e90b20ecbb2f616fee63e9b7e0823a89fa2c0f3f9aafc1b855c3cb8df"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/vq_corrected_ui.png",
+      "size_bytes": 2557085,
+      "sha256": "f4dcbc56ca8d70ac57299301450035c0f8919e845315877972f5aafc63400274"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/VQ_CALCULATION_REPORT/vq_highvq_corrected.png",
+      "size_bytes": 2589573,
+      "sha256": "657b8e4e90b20ecbb2f616fee63e9b7e0823a89fa2c0f3f9aafc1b855c3cb8df"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/v235_seen_regression.jsonl",
+      "size_bytes": 4228,
+      "sha256": "8ec4adefaddb69a8ebe97c26c2cd01e9021babf7ddca50841e0342b009ad2a6b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/regression/v237_extended_seen_regression.jsonl",
+      "size_bytes": 8134,
+      "sha256": "72537b9405f618ad6f2168eda2cf48d9f6ec222f025a072b7adbc60067e3d920"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/supplemental_sources/beachey_respiratory_core.jsonl",
+      "size_bytes": 1257409,
+      "sha256": "7db111a27b1366bd5ecdb6c1e6b608aa6ade7a8e04ffb1c473b7ec96dcd09bee"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/supplemental_sources/vander_full_human_physiology.jsonl",
+      "size_bytes": 3954578,
+      "sha256": "31650682960e71766300cc231a22e4a9c444fd88452320d6bf95e6b822c5a146"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/benchmark/supplemental_sources/vander_respiratory_ch13.jsonl",
+      "size_bytes": 257988,
+      "sha256": "23ace7d8438cccb119f38d725b7fc059819b6141f748f7bb65c73d3cedcdace4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/cloudflare/worker/wrangler.jsonc",
+      "size_bytes": 241,
+      "sha256": "f63145c8a4680933ffc4fdc6337b9921c8d8245c3525b830bc0cabc3eb343ce4"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/docs/V240_VQ_RATIO_VIRTUAL_HUMAN_TA_SUMMARY_FLOWCHART.png",
+      "size_bytes": 1122657,
+      "sha256": "158139ad38d2c8cd83ed0357e76f2a12cc4f6cd0d0b61027b4173fe34282d840"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/dataset/test.jsonl",
+      "size_bytes": 41189,
+      "sha256": "f51e12e3a3c7438022358f46730127d4ee1c71e200eec97bfa3117175b98d638"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/dataset/train.jsonl",
+      "size_bytes": 254071,
+      "sha256": "c120a0a0d03cf55d3560d9185138cc4e0dba299b3f91b7754ed97943ce27a8d7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/finetune/dataset/val.jsonl",
+      "size_bytes": 40728,
+      "sha256": "af4aacc649d947cc0a6538004fd183867e51979bb777463b49951fcf6b6f03f6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/reference_corpus/chunks.jsonl",
+      "size_bytes": 11457984,
+      "sha256": "e6941278363d91ebdba12bad78b5f3da15a31fcee359a395f639c1f9acaed632"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/reference_corpus/corpus_meta.json",
+      "size_bytes": 1383,
+      "sha256": "0fda417a8fb23e6fa5e7173cd5bc9773c0ed10b19bcc0dc4588cf1888257ab1d"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/five_model_benchmark/questions_unseen.template.jsonl",
+      "size_bytes": 350,
+      "sha256": "1697f57f3e320b88f1c3dae3ad01508c92ed97ec936119b2d1437369d780057f"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/research/three_model_10q/questions_10_exact_sources.jsonl",
+      "size_bytes": 4308,
+      "sha256": "31956ab2ed84ec738da9c4cc28c5a8cce930472052c5adc215e395fe940e2e82"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/vendor/temml/LICENSE",
+      "size_bytes": 1075,
+      "sha256": "0d2d195ac7d57995ac4e93c430d2084dcba74c70befce37e0166279e20222207"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/kb/vendor/temml/Temml.woff2",
+      "size_bytes": 9404,
+      "sha256": "fc70501355ae6d38ff0b80f825af153557d5f2f474198d6b9b7dd2d3a291a0cc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_a.png",
+      "size_bytes": 1938545,
+      "sha256": "619bb4996aa7c4ab6c9bb5b9676f4c9fa1de209441d117b21699ee52211bbfa1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_base.png",
+      "size_bytes": 1925423,
+      "sha256": "b6fc84b4a19a9e9d6cb497447e432b8c83a0be3ffafa67e8fcf07083586529d8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_closed.png",
+      "size_bytes": 1925423,
+      "sha256": "b6fc84b4a19a9e9d6cb497447e432b8c83a0be3ffafa67e8fcf07083586529d8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_e.png",
+      "size_bytes": 1960189,
+      "sha256": "6113b050cf6d1b63ce985d18c81b08df0286a7d4e76cadb329c858fd34d65a98"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_gesture_0.png",
+      "size_bytes": 276599,
+      "sha256": "02faa0ee67e113922849e026c6aedf24c23597fa25b0bb1a8fa4e26956d229f2"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_gesture_1.png",
+      "size_bytes": 281273,
+      "sha256": "f7b4600769395b4c2f86dae3fedd4fff86d658062901719f483a57b8336e4333"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_gesture_2.png",
+      "size_bytes": 280293,
+      "sha256": "f94e07fccc75d098ff9f74ae997658f12dc4639a9b8957f3ebcfb83a4aecb2d7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_gesture_3.png",
+      "size_bytes": 272261,
+      "sha256": "25ad8f64a0ae7f8de2ace786b74badfa296c7afc3b7df9598fd3502da863a3bc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_gesture_4.png",
+      "size_bytes": 274864,
+      "sha256": "1126dd6afe23523651b8021280f22cff9ea0c867b3fb55131f83ca8a2cba0a31"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_gesture_5.png",
+      "size_bytes": 276884,
+      "sha256": "c2b9686a57858c62e9566cd0d003daed471dae3883e26d0d6e5a8391660abe69"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_mbp.png",
+      "size_bytes": 1941133,
+      "sha256": "03b16e4676f447656d9e847176e0bf54fbfc99ca103d8541ab9218b734ee85c7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_o.png",
+      "size_bytes": 1928450,
+      "sha256": "36f829735762b5012df11d7981dfdf9a98b2568d5fa134f89329124a8e5b7bf1"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_female_small.png",
+      "size_bytes": 1901306,
+      "sha256": "4fef8efe5f91a789e790ab366fe71f03cbac2678f881bcb90ebbd9a56c0a48d6"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_a.png",
+      "size_bytes": 1944962,
+      "sha256": "b36cfae9a528a0933338c5a9aed68358687a1063ecedac032eef0ca9918854a8"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_base.png",
+      "size_bytes": 1885902,
+      "sha256": "0b325ce57ee0c1f02a14423953c75cf59ee5bd138ca966b142bdb2a2989bded5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_closed.png",
+      "size_bytes": 1885902,
+      "sha256": "0b325ce57ee0c1f02a14423953c75cf59ee5bd138ca966b142bdb2a2989bded5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_e.png",
+      "size_bytes": 1963304,
+      "sha256": "c4af826efc653872d091a6d7f35f1baebfebeefbb8bf5b9800623dc002a7f227"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_gesture_0.png",
+      "size_bytes": 222662,
+      "sha256": "de4a48bd8ed427c07a0150130ff23037a2f45be6a0034e85fc79acf997fd3e39"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_gesture_1.png",
+      "size_bytes": 222813,
+      "sha256": "ef55422f2db4c542035e9740807f04ff50583c17834b29549fd502d39eff3d80"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_gesture_2.png",
+      "size_bytes": 243946,
+      "sha256": "511bf84f29b82a1657914bf3a15e0ae1a246bebd1a138b1add5caf4e02b5db9c"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_gesture_3.png",
+      "size_bytes": 253681,
+      "sha256": "5454f246373da74e110bebc8d7d6cbd377c9dc25eefbd5fdf0b7ce98cdc9c419"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_gesture_4.png",
+      "size_bytes": 235154,
+      "sha256": "88629aa7a08786f7f8362b04af3a6f0349de9bbe82775e5ad02091f195a124c5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_gesture_5.png",
+      "size_bytes": 223426,
+      "sha256": "93c4b2c733f20ce7643ea16c55a912747586b05c6c0489e6558afa85e9a2b5c7"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_mbp.png",
+      "size_bytes": 1833015,
+      "sha256": "57e657d3f77dc257bc78873f320becfd67174302d4fab6b4cc2ce482d8a52bf5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_o.png",
+      "size_bytes": 1871850,
+      "sha256": "7b6010f245a6d7e15fd825a96614ca879dd7d5759bb45e52533868cbea50e2d5"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/avatar_male_small.png",
+      "size_bytes": 1963304,
+      "sha256": "c4af826efc653872d091a6d7f35f1baebfebeefbb8bf5b9800623dc002a7f227"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/lung_reference_v149.png",
+      "size_bytes": 457578,
+      "sha256": "e8074537a5d9bb1e9b95a57de679a401c215bbf0e5afca624f24a0fbef867365"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/lung_static_reference.png",
+      "size_bytes": 313160,
+      "sha256": "ee904a26f73c6b2c11b1da0de81585251e69589306703218372d4a7c4009e1fc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/voice/teacher_voice_reference.wav",
+      "size_bytes": 1478734,
+      "sha256": "a984f382b763249135bfca8c256a981ec28451a189b32fce097acb960eab5f1b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/voice/teacher_voice_reference_v203_old.wav",
+      "size_bytes": 2974798,
+      "sha256": "01ba40bd16d676152e6bef965ac346472f2c1c37e999e5c9e50e8e643254072b"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/assets/voice/zhiwei_reference_source.m4a",
+      "size_bytes": 256955,
+      "sha256": "e19556f469e34b9ad4fc10bd70a5f63590a0a3f3dffd97682d75110c38095991"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/vendor/temml/LICENSE",
+      "size_bytes": 1075,
+      "sha256": "0d2d195ac7d57995ac4e93c430d2084dcba74c70befce37e0166279e20222207"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/web/reference/vendor/temml/Temml.woff2",
+      "size_bytes": 9404,
+      "sha256": "fc70501355ae6d38ff0b80f825af153557d5f2f474198d6b9b7dd2d3a291a0cc"
+    },
+    {
+      "path": "NTULUNG_TA_v241_12_1_QUIZ_NAV_VERIFIED/wrangler.jsonc",
+      "size_bytes": 374,
+      "sha256": "1bb33c249fdd4b54acb5a3f40dfe92bc4f9a0a94da9f18f5038c2f68f8c53f38"
+    },
+    {
+      "path": "PACKAGE.sha256",
+      "size_bytes": 77432,
+      "sha256": "9f6d0fde78d8085c9d00b97fef58c82c3fae1507924aa0ebd0e7f0297d9318a0"
+    },
+    {
+      "path": "PATCH_HTML_CACHE.cjs",
+      "size_bytes": 1799,
+      "sha256": "3a0d62c9b82d581edcc31b6dfc4de950f132c03dd34d7065db2312ffbe997a17"
+    },
+    {
+      "path": "README_FULL_ONE_CLICK.md",
+      "size_bytes": 1831,
+      "sha256": "5a555c5ee37dbfd920f8d963143cfa2c10f39ce173d24359f59b7abc29ba9942"
+    },
+    {
+      "path": "README_VQ_R3_20261010.md",
+      "size_bytes": 1997,
+      "sha256": "8158e8c09477a256eb6fddd065247584222a9e74adb7c1db1aa1146451687ce5"
+    },
+    {
+      "path": "RESTART_REFERENCE_R12.py",
+      "size_bytes": 2883,
+      "sha256": "59de755e9d552a818d1cd32ad1165664f29cbb12f68406758dac009234c88155"
+    },
+    {
+      "path": "RUN_FROM_WINDOWS.ps1",
+      "size_bytes": 84,
+      "sha256": "4dae3e5ae1644a1708dd9f9a3963a60eaa76d6569ceedf4ceca66fde68ea4705"
+    },
+    {
+      "path": "RUN_R12.ps1",
+      "size_bytes": 741,
+      "sha256": "1c2de94c820b23419df61b9bf89b377830b15af6fcf436166e5e6e7bda22051c"
+    },
+    {
+      "path": "RUN_UPDATE.cmd",
+      "size_bytes": 79,
+      "sha256": "7ef6a3d31300cbde30aa5a809ed2fdbce8cdcf32e3a10efbfdd7f57f87d0f9b9"
+    }
+  ],
+  "note": "Selected source files are byte-for-byte copies. Image/audio assets, private textbook corpus, and non-source outputs are excluded. This is a source archive, not a complete deployable distribution."
+}

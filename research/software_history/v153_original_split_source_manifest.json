@@ -1,0 +1,291 @@
+{
+  "archive": "v153_original_split_source.zip",
+  "source_archive": "VQ_TA_SPLIT_FILE_v153_NO_STUDENT_COMPARISON.zip",
+  "source_archive_sha256": "44c7a08ec0c7d0627d030c0a9d8be8991c62f2ae437b7b7d399a2668ce1c29bf",
+  "archive_sha256": "431ad05e4214438b18d6d57bd6110dea6a9f360be375b0f65f828005b7bde493",
+  "included": [
+    {
+      "path": "index.html",
+      "size_bytes": 18047,
+      "sha256": "5130ffa4b177cf125ddb8870393252840aba04e55816771e4c4d7702805b8e5b"
+    },
+    {
+      "path": "css/styles.css",
+      "size_bytes": 53736,
+      "sha256": "93870c5602770f0653731054b334c4b9a4efd3a317372ecd5cc58e483b77706b"
+    },
+    {
+      "path": "css/v130_right_panel_background_theme.css",
+      "size_bytes": 10311,
+      "sha256": "a702d55aaf8cfefdc48febe66d5f21f41ad6a729f721ec379dca8d38c4951943"
+    },
+    {
+      "path": "css/v148_coursebank_static_lung.css",
+      "size_bytes": 5238,
+      "sha256": "c1b87aa7f7d74960843533ec15bfbcd80135862f08dd5af2ffd8690093a7e317"
+    },
+    {
+      "path": "css/v149_hard_integrated.css",
+      "size_bytes": 6391,
+      "sha256": "729916f7c391d9eebfa37b22e932218eae55d8595c7f389ec5acfd705e6f381d"
+    },
+    {
+      "path": "css/v150_ui_repackaged.css",
+      "size_bytes": 4812,
+      "sha256": "cea8e05e5f277872e617098398f69e8c2b7e182041e045172e51bd19c4399db7"
+    },
+    {
+      "path": "css/v153_student_results_lecture_controls.css",
+      "size_bytes": 2834,
+      "sha256": "c782de4c37fcf212ef2c14f6a457cc7e85fc7363890ccc4b38e99f6e2b26c1f6"
+    },
+    {
+      "path": "js/01_original_ui_core.js",
+      "size_bytes": 32858,
+      "sha256": "9349ce213197fdb533583a7c1c0c55352c2723e39b040c89f8e4f3927f1b8b85"
+    },
+    {
+      "path": "js/02_stable_webspeech_patch.js",
+      "size_bytes": 7217,
+      "sha256": "ac4bf0ac34affa3c51a4359684f747381dc73f505d67a6356f8d6356635fccfc"
+    },
+    {
+      "path": "js/03_full_kb_course_specific_qa.js",
+      "size_bytes": 11181616,
+      "sha256": "6d145def3be014016d70ba5e3c24a5192fd85a46c54efa447bba57e42e29683d"
+    },
+    {
+      "path": "js/04_global_speech_stop_patch.js",
+      "size_bytes": 5674,
+      "sha256": "6d876627f9e9f94a43de27f346e5d88a3441a583288b136d0f2d7f5382a452b4"
+    },
+    {
+      "path": "js/05_recognition_stop_on_submit.js",
+      "size_bytes": 3986,
+      "sha256": "eb4532bf7fa6a2da259dd9422fc012e8a78f61377beb735953b4e774ba3b3b85"
+    },
+    {
+      "path": "js/06_abort_guard_patch.js",
+      "size_bytes": 1186,
+      "sha256": "8bd6b74d18a2c23ebec6629779bc88958f4f72849d4eb15a553abbc4f080fa4e"
+    },
+    {
+      "path": "js/07_typewriter_highlight_patch.js",
+      "size_bytes": 18129,
+      "sha256": "1e73707dce74880800804caa571561c0fcea4a2e2058a7e99dd35d5ee4df069c"
+    },
+    {
+      "path": "js/08_script_typewriter_sync.js",
+      "size_bytes": 20483,
+      "sha256": "796e4335da0e493a60fc42c30b4ed8eb38da503f98eed5ada19cecfa17686f13"
+    },
+    {
+      "path": "js/09_lesson_dropdown_confirm_stop.js",
+      "size_bytes": 16303,
+      "sha256": "959d29d897b443f907c325b909ee779eb2053ecde5fda68d6b2d25a063cb8918"
+    },
+    {
+      "path": "js/10_model_restore_patch.js",
+      "size_bytes": 7389,
+      "sha256": "69d74e9a85034e32793fc3c305f82b78caf0423618bd8d018b8aa8b5a74f1e9c"
+    },
+    {
+      "path": "js/11_lung_model_consistency_patch.js",
+      "size_bytes": 10601,
+      "sha256": "704888f412a0213dafce016e2f711ba3c76fd5f66e74e55c69c0e9e6d8bef151"
+    },
+    {
+      "path": "js/12_percent_weight_two_lobe_patch.js",
+      "size_bytes": 17782,
+      "sha256": "e6f63ffa89be6199a42dd32e13cee261ef184bbdb23aa72883ccc0c0f6757018"
+    },
+    {
+      "path": "js/13_voice_speed_restore.js",
+      "size_bytes": 3763,
+      "sha256": "ef24326515fb0c17c72706186bebc589f5cd834e2a43abbe685ab807dc3d4b5b"
+    },
+    {
+      "path": "js/14_voice_live_sync_patch.js",
+      "size_bytes": 5847,
+      "sha256": "c30fba9d00e3350829f7c3eb22cd793b3cd517bfd4d20828a5e899ae97617530"
+    },
+    {
+      "path": "js/15_voice_options_restore.js",
+      "size_bytes": 3874,
+      "sha256": "2f735b6a5a87a7d87234b33e5716251904daff4749d6fa10745db9427b2f145f"
+    },
+    {
+      "path": "js/16_voice_switch_script_control_fix.js",
+      "size_bytes": 5849,
+      "sha256": "e8ee59ae722c554b38e1076f5a736ea7fe197859fdc0e176bee18606d340857a"
+    },
+    {
+      "path": "js/17_voice_live_sync_pause_button_fix.js",
+      "size_bytes": 8762,
+      "sha256": "d92c0b09d784e284cdd2de9516e99c4ba1cab1b5a30fa6dc8b1e53bf2805a987"
+    },
+    {
+      "path": "js/18_lung_model_single_region_patch.js",
+      "size_bytes": 12757,
+      "sha256": "4020835e7e833a4bef899297f46e5e404a1e8b7ad4c8b772822b7cb1343b10bc"
+    },
+    {
+      "path": "js/19_label_alignment_patch.js",
+      "size_bytes": 2138,
+      "sha256": "bd51e30baf7aa50ac8ca078b334cb2c9524893e24ce3284394d7ec4c0b92da11"
+    },
+    {
+      "path": "js/20_stop_clears_teacher_script_patch.js",
+      "size_bytes": 2157,
+      "sha256": "6c7e02586ec8907a8ecef7b545bdc49d7b3455ed18e599602c2a4ea5c5afb96a"
+    },
+    {
+      "path": "js/21_calculate_result_persist_patch.js",
+      "size_bytes": 1929,
+      "sha256": "96a616f53f049dfd3e6180d8acc1371f49569cf6a0fc9f6d5ac8b8b73db0a3fe"
+    },
+    {
+      "path": "js/22_no_flash_linebreak_patch.js",
+      "size_bytes": 1746,
+      "sha256": "9ae9e99157848d11ed107af90c94633611276181e2254791aad47c8fa25aa070"
+    },
+    {
+      "path": "js/23_units_in_result_no_live_hang_patch.js",
+      "size_bytes": 6638,
+      "sha256": "d7c504ff574df13629d4a4279dff52fb51992c8a39b68452adee5825ee109631"
+    },
+    {
+      "path": "js/24_case_feedback_linebreak_true_patch.js",
+      "size_bytes": 1643,
+      "sha256": "a9ee99149ee9d61399d0e0b734f34ca94a5d3f16b4f8d2828bc2313596adf00c"
+    },
+    {
+      "path": "js/25_v105_resume_after_question_mouth_sync.js",
+      "size_bytes": 33845,
+      "sha256": "922fc45451861e97f82b27b2006b82b35b45edfe1a92fe7d4de86b8742f210d4"
+    },
+    {
+      "path": "js/26_realistic_avatar_photo_mouth_sync.js",
+      "size_bytes": 15931,
+      "sha256": "a91148c66a4e7ea51c77f27ff9e08d084f62a92826b92a3a8f3b467d7f508e9c"
+    },
+    {
+      "path": "js/27_force_yating_zhiwei_voice.js",
+      "size_bytes": 7023,
+      "sha256": "1f0506561069ce9d68f1b82dae728b299466e2c6d5b8c200eba33be03bf1255b"
+    },
+    {
+      "path": "js/29_v153_course_aligned_student_results.js",
+      "size_bytes": 32911,
+      "sha256": "3511ce5dbc7f9f43c509e11a3a3f041cc1f82ba2f7dacc0bd07fa19c8a39914c"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "assets/avatar_female_a.png",
+      "size_bytes": 1938545,
+      "sha256": "619bb4996aa7c4ab6c9bb5b9676f4c9fa1de209441d117b21699ee52211bbfa1"
+    },
+    {
+      "path": "assets/avatar_female_base.png",
+      "size_bytes": 1925423,
+      "sha256": "b6fc84b4a19a9e9d6cb497447e432b8c83a0be3ffafa67e8fcf07083586529d8"
+    },
+    {
+      "path": "assets/avatar_female_closed.png",
+      "size_bytes": 1925423,
+      "sha256": "b6fc84b4a19a9e9d6cb497447e432b8c83a0be3ffafa67e8fcf07083586529d8"
+    },
+    {
+      "path": "assets/avatar_female_e.png",
+      "size_bytes": 1960189,
+      "sha256": "6113b050cf6d1b63ce985d18c81b08df0286a7d4e76cadb329c858fd34d65a98"
+    },
+    {
+      "path": "assets/avatar_female_mbp.png",
+      "size_bytes": 1941133,
+      "sha256": "03b16e4676f447656d9e847176e0bf54fbfc99ca103d8541ab9218b734ee85c7"
+    },
+    {
+      "path": "assets/avatar_female_o.png",
+      "size_bytes": 1928450,
+      "sha256": "36f829735762b5012df11d7981dfdf9a98b2568d5fa134f89329124a8e5b7bf1"
+    },
+    {
+      "path": "assets/avatar_female_small.png",
+      "size_bytes": 1901306,
+      "sha256": "4fef8efe5f91a789e790ab366fe71f03cbac2678f881bcb90ebbd9a56c0a48d6"
+    },
+    {
+      "path": "assets/avatar_male_a.png",
+      "size_bytes": 1944962,
+      "sha256": "b36cfae9a528a0933338c5a9aed68358687a1063ecedac032eef0ca9918854a8"
+    },
+    {
+      "path": "assets/avatar_male_base.png",
+      "size_bytes": 1885902,
+      "sha256": "0b325ce57ee0c1f02a14423953c75cf59ee5bd138ca966b142bdb2a2989bded5"
+    },
+    {
+      "path": "assets/avatar_male_closed.png",
+      "size_bytes": 1885902,
+      "sha256": "0b325ce57ee0c1f02a14423953c75cf59ee5bd138ca966b142bdb2a2989bded5"
+    },
+    {
+      "path": "assets/avatar_male_e.png",
+      "size_bytes": 1963304,
+      "sha256": "c4af826efc653872d091a6d7f35f1baebfebeefbb8bf5b9800623dc002a7f227"
+    },
+    {
+      "path": "assets/avatar_male_mbp.png",
+      "size_bytes": 1833015,
+      "sha256": "57e657d3f77dc257bc78873f320becfd67174302d4fab6b4cc2ce482d8a52bf5"
+    },
+    {
+      "path": "assets/avatar_male_o.png",
+      "size_bytes": 1871850,
+      "sha256": "7b6010f245a6d7e15fd825a96614ca879dd7d5759bb45e52533868cbea50e2d5"
+    },
+    {
+      "path": "assets/avatar_male_small.png",
+      "size_bytes": 1963304,
+      "sha256": "c4af826efc653872d091a6d7f35f1baebfebeefbb8bf5b9800623dc002a7f227"
+    },
+    {
+      "path": "assets/lung_static_reference.png",
+      "size_bytes": 313160,
+      "sha256": "ee904a26f73c6b2c11b1da0de81585251e69589306703218372d4a7c4009e1fc"
+    },
+    {
+      "path": "assets/lung_reference_v149.png",
+      "size_bytes": 457578,
+      "sha256": "e8074537a5d9bb1e9b95a57de679a401c215bbf0e5afca624f24a0fbef867365"
+    },
+    {
+      "path": "VQ_TA_SPLIT_FILE_v153_NO_STUDENT_COMPARISON/preview/PREVIEW_SCENARIO_v151.png",
+      "size_bytes": 12768,
+      "sha256": "ff0e9a7a8287a8f006d6ac4d8415e23219016b5c7e60a7d48039642548102fa4"
+    },
+    {
+      "path": "VQ_TA_SPLIT_FILE_v153_NO_STUDENT_COMPARISON/START_HERE_v153.html",
+      "size_bytes": 996,
+      "sha256": "03be147d7281280001281984227b32da5044c370fbb51b118f6a9e66a5fea3cd"
+    },
+    {
+      "path": "VQ_TA_SPLIT_FILE_v153_NO_STUDENT_COMPARISON/README_v153.md",
+      "size_bytes": 1996,
+      "sha256": "746c6da50a281ccd74f737c0b84de0d4e35e9a058dd1ac072febcb477f5ef386"
+    },
+    {
+      "path": "VQ_TA_SPLIT_FILE_v153_NO_STUDENT_COMPARISON/VERIFICATION_v153.txt",
+      "size_bytes": 447,
+      "sha256": "f028e935bd9580ae8d01cbf0b4dc46162c3e4b1d1f447465975e69fbcb0ae59b"
+    },
+    {
+      "path": "VQ_TA_SPLIT_FILE_v153_NO_STUDENT_COMPARISON/COURSE_ALIGNMENT_v153.csv",
+      "size_bytes": 814,
+      "sha256": "b950ccbd9a2dd4341b1824a73c7c4d69c1ed92df2a3c5d019adb2c0cb6a35eef"
+    }
+  ],
+  "note": "Original v153 split application source, byte-for-byte; image assets and non-software analysis documents omitted."
+}
