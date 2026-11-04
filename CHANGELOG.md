@@ -1,5 +1,10 @@
 # Change Log
 
+## R17d — 2026-11-04
+
+- 修正：自然對話一開始沒人說話卻用西班牙文開頭。背景雜音被當成說話，Gemini 再從雜音猜語言。現在預設語言為台灣華語（繁體用語），開始時先用中文簡短問候；學生清楚說出完整的其他語言句子才切換；雜音不會再決定語言，也較不容易被誤判為說話。
+- 自然對話說明文字精簡為一行：「Press Start and talk any time — you can interrupt. Voice is processed by Google Gemini.」；狀態列簡化為「Listening — talk any time.」。
+
 ## R17c — 2026-11-04
 
 - 修正：自然對話（Gemini Live）把內建課程名稱「Respiratory Physiology」當成範圍，拒答腎臟、腸胃等其他生理章節。內建教材本來就涵蓋整套生理學教科書；現在範圍只由伺服器的教材搜尋決定，伺服器找到教材片段時 Gemini 必須依片段回答，不再自行依課程名稱判斷。

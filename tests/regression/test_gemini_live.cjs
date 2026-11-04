@@ -35,6 +35,12 @@ async function main(){
   assert.match(female.setupMessage('', 'selected').setup.systemInstruction.parts[0].text,/only the tool result decides/);
   assert.doesNotMatch(setup.systemInstruction.parts[0].text,/Respiratory Physiology/);
   assert.equal(female.setupMessage('h-7').setup.sessionResumption.handle,'h-7');
+  // Default language is Taiwan Mandarin; noise never picks a language (it once opened in Spanish with nobody speaking).
+  assert.match(setup.systemInstruction.parts[0].text,/default language is Mandarin Chinese as spoken in Taiwan/);
+  assert.match(setup.systemInstruction.parts[0].text,/Background noise, very short or unclear sounds never decide the language/);
+  assert.equal(setup.realtimeInputConfig.automaticActivityDetection.startOfSpeechSensitivity,'START_SENSITIVITY_LOW');
+  const greet=female.greetingMessage().clientContent;
+  assert.equal(greet.turnComplete,true);assert.match(greet.turns[0].parts[0].text,/Taiwan Mandarin/);
   const ok=await female.searchCourse('What is the normal V/Q ratio?');
   assert.equal(ok.status,'ok');assert.match(ok.passages,/0\.8/);assert.equal(ok.scope,'confirmed_in_course_by_server');assert.equal(calls.at(-1).url,'/api/reference/context');
   const outside=await female.searchCourse('明天天氣如何');
@@ -71,6 +77,6 @@ async function main(){
   assert.match(lunaAnswer.answer_text,/Luna/);
   const failing=await load('yating','',async()=>{throw new Error('offline');});
   assert.equal((await failing.searchCourse('V/Q')).status,'error');
-  console.log('[OK] Gemini Live: Yating->Kore, Zhiwei->Charon, both answer sources (Gemini course search; Gemma/Ministral/Luna checked answers), scope and offline handling');
+  console.log('[OK] Gemini Live: Yating->Kore, Zhiwei->Charon, Mandarin default and greeting, both answer sources (Gemini course search; Gemma/Ministral/Luna checked answers), scope and offline handling');
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

@@ -215,8 +215,8 @@
       {
         "old": "shared/js/qa/gemini-live.js",
         "new": "shared/js/qa/gemini-live.js",
-        "sha256": "36db69a48fb9ad54d2bc07aabbf5fb915b9c214349ab218daa237387f83d8379",
-        "query": "v=R17c-20261104"
+        "sha256": "640be986f8141de9162ddcf724cb8feaba1222c84787cf752ce04cdafeb3ea21",
+        "query": "v=R17d-20261104"
       },
       {
         "old": "shared/js/course/upload-diagnostics.js",

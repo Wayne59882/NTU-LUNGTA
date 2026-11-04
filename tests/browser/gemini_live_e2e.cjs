@@ -40,7 +40,7 @@ async function main(){
     const key=new URL(route.request().url()).searchParams.get('key');
     return key==='good-key'?json(route,{name:'models/gemini-3.8-live'}):json(route,{error:{message:'API key not valid.'}},400);
   });
-  const g={setups:[],audio:0,toolResponses:[],closed:0,ws:null};
+  const g={setups:[],audio:0,toolResponses:[],closed:0,ws:null,client:[]};
   await page.routeWebSocket(/generativelanguage\.googleapis\.com\/ws\//,ws=>{
     g.ws=ws;g.url=ws.url();
     ws.onMessage(raw=>{
@@ -48,6 +48,7 @@ async function main(){
       if(m.setup){g.setups.push(m.setup);ws.send(JSON.stringify({setupComplete:{}}));ws.send(JSON.stringify({sessionResumptionUpdate:{newHandle:'handle-'+g.setups.length,resumable:true}}));return;}
       if(m.realtimeInput&&m.realtimeInput.audio){g.audio++;g.mime=m.realtimeInput.audio.mimeType;g.bytes=Buffer.from(m.realtimeInput.audio.data,'base64').length;return;}
       if(m.toolResponse)g.toolResponses.push(m.toolResponse.functionResponses);
+      if(m.clientContent)g.client.push(m.clientContent);
     });
     ws.onClose(()=>{g.closed++;});
   });
@@ -81,9 +82,13 @@ async function main(){
   const fn=s.tools[0].functionDeclarations[0];
   assert.equal(fn.name,'search_course_material');assert.equal(fn.behavior,'BLOCKING');
   assert(s.inputAudioTranscription&&s.outputAudioTranscription&&/ALWAYS call search_course_material/.test(s.systemInstruction.parts[0].text));
+  // A fresh conversation opens with one short Taiwan-Mandarin greeting.
+  await until(()=>g.client.length===1,8000,'greeting');
+  assert.match(g.client[0].turns[0].parts[0].text,/Taiwan Mandarin/);assert.equal(g.client[0].turnComplete,true);
+  assert.equal(await page.$eval('#vqLiveStatus',e=>e.textContent.trim()),'🎙 Listening — talk any time.');
   await until(()=>g.audio>=5,8000,'microphone audio');
   assert.equal(g.mime,'audio/pcm;rate=16000');assert(g.bytes>=3000&&g.bytes<=3400,'about 100 ms of 16 kHz PCM per message: '+g.bytes);
-  results.setup='model gemini-3.8-live, voice '+(role==='zhiwei'?'Charon (Zhiwei male)':'Kore (Yating female)')+', blocking course-search tool, 16 kHz microphone stream';
+  results.setup='model gemini-3.8-live, voice '+(role==='zhiwei'?'Charon (Zhiwei male)':'Kore (Yating female)')+', blocking course-search tool, Mandarin greeting once, 16 kHz microphone stream';
 
   // An in-course question: the browser searches the course and returns the passages.
   g.ws.send(JSON.stringify({serverContent:{inputTranscription:{text:'什麼是通氣灌流比？'}}}));
@@ -120,6 +125,7 @@ async function main(){
     await until(()=>g.setups.length===2,8000,'reconnect');
     assert.equal(g.setups[1].generationConfig.speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName,other==='zhiwei'?'Charon':'Kore');
     assert.equal(g.setups[1].sessionResumption.handle,'handle-1');
+    await new Promise(r=>setTimeout(r,500));assert.equal(g.client.length,1,'no second greeting after a voice-switch reconnect');
     results.voice_switch='teacher voice change reconnected with '+(other==='zhiwei'?'Charon':'Kore')+' and resumed the same conversation';
   }
 
