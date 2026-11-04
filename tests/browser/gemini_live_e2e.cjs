@@ -18,17 +18,11 @@ async function main(){
   const browser=await chromium.launch({args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream','--autoplay-policy=no-user-gesture-required']});
   const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(String(e)));
   const json=(route,body,status=200)=>route.fulfill({status,contentType:'application/json',body:JSON.stringify(body)});
-  const searches=[],jobs=new Map(),cancels=[];let jobSeq=0,jobDelay=1500;
+  const searches=[];
   await page.route('**/api/**',async route=>{
     const req=route.request(),p=new URL(req.url()).pathname;let body={};try{body=JSON.parse(req.postData()||'{}');}catch(_){}
     if(p==='/api/auth/me')return json(route,{ok:true,user:{id:1,name:'Fixture Teacher',email:'t@example.test',role:'teacher',status:'approved'}});
     if(p==='/api/reference/course-list')return json(route,{ok:true,courses:[]});
-    if(p==='/api/reference/answer-job-start'){const id=(++jobSeq).toString(16).padStart(32,'0');jobs.set(id,{q:body.question,model:body.model_key,at:Date.now(),status:'answering'});return json(route,{ok:true,job_id:id},202);}
-    if(p==='/api/reference/job-status'){const j=jobs.get(new URL(req.url()).searchParams.get('id'));if(!j)return json(route,{error:'job not found'},404);
-      if(j.status==='cancelled')return json(route,{status:'cancelled'});
-      if(Date.now()-j.at<jobDelay)return json(route,{status:'answering'});
-      return json(route,{status:'done',result:{answer:'【'+j.model+'】正常的通氣灌流比約為 0.8。',engine:'local',sources:[{source:'Guyton and Hall',page:530}]}});}
-    if(p==='/api/reference/job-cancel'){const j=jobs.get(body.job_id);if(j)j.status='cancelled';cancels.push(body.job_id);return json(route,{ok:!!j});}
     if(p==='/api/reference/course-context'){searches.push('course:'+body.course_id+':'+body.question);
       return json(route,{ok:true,in_scope:true,context:'The transport equation u_t + b . grad u = 0 has constant coefficients.',sources:[{source:'PDE lecture notes',page:12}],course:{course_name:'PDE'}});}
     if(p==='/api/reference/context'){searches.push(body.question);
@@ -59,8 +53,7 @@ async function main(){
   const layout=await page.evaluate(()=>{const l=document.getElementById('vqQaLeft'),r=document.getElementById('vqLivePanel'),a=l.getBoundingClientRect(),b=r.getBoundingClientRect();
     return {leftHasQa:!!l.querySelector('#askBtn')&&!!l.querySelector('#teacherAnswer'),sideBySide:b.left>=a.right-1&&Math.abs(a.top-b.top)<5};});
   assert(layout.leftHasQa,'regular Q&A stays in the left column');assert(layout.sideBySide,'two columns side by side at desktop width');
-  assert.equal(await page.$eval('#vqLiveMode',e=>e.value),'gemini');
-  results.layout='left: regular Q&A; right: natural conversation (default answer source: Gemini)';
+  results.layout='left: regular Q&A; right: natural conversation';
 
   // Key check: rejected key is not stored; a working key is.
   await page.fill('#vqLiveKey','bad-key');await page.click('#vqLiveKeyBtn');
@@ -129,31 +122,12 @@ async function main(){
     results.voice_switch='teacher voice change reconnected with '+(other==='zhiwei'?'Charon':'Kore')+' and resumed the same conversation';
   }
 
-  // Answer source "Selected Q&A model": Gemini only listens/speaks; Gemma writes the checked answer.
-  await page.waitForFunction(()=>/Listening|Reconnected/.test(document.getElementById('vqLiveStatus').textContent),null,{timeout:5000});
-  const before=g.setups.length;
-  await page.focus('#vqLiveMode');
-  assert.match(await page.$eval('#vqLiveMode option[value="selected"]',o=>o.textContent),/^Checked reply · Gemma 4 12B \(local\) · slower$/);
-  await page.selectOption('#vqLiveMode','selected');
-  await until(()=>g.setups.length===before+1,8000,'setup for selected-model mode');
-  const sel=g.setups.at(-1);
-  assert.equal(sel.tools[0].functionDeclarations[0].name,'answer_course_question');
-  assert.equal(sel.tools[0].functionDeclarations[0].behavior,'NON_BLOCKING');
-  assert(!sel.sessionResumption.handle,'a new answer source starts a fresh session');
-  assert.match(sel.systemInstruction.parts[0].text,/never answer course questions yourself/);
-  const responsesBefore=g.toolResponses.length;
-  g.ws.send(JSON.stringify({toolCall:{functionCalls:[{id:'call-3',name:'answer_course_question',args:{question:'正常的通氣灌流比是多少？'}}]}}));
-  await page.waitForFunction(()=>/is answering from the course/.test(document.getElementById('vqLiveStatus').textContent),null,{timeout:4000});
-  // A newer question replaces the one still being prepared: its job is cancelled and its result silenced.
-  g.ws.send(JSON.stringify({toolCall:{functionCalls:[{id:'call-4',name:'answer_course_question',args:{question:'通氣灌流比正常值是多少？'}}]}}));
-  await until(()=>g.toolResponses.length>=responsesBefore+2,15000,'selected-model tool responses');
-  const silenced=g.toolResponses.find(r=>r[0].id==='call-3'),answered=g.toolResponses.find(r=>r[0].id==='call-4');
-  assert(silenced&&silenced[0].scheduling==='SILENT'&&silenced[0].response.result.status==='superseded');
-  assert.equal(cancels.length,1,'the replaced Gemma job was cancelled on the server');
-  assert(answered&&answered[0].scheduling==='WHEN_IDLE');
-  assert.equal(answered[0].response.result.status,'answered');assert.match(answered[0].response.result.answer_text,/【gemma】.*0\.8/);
-  await page.waitForFunction(()=>/Checked answer by Gemma 4 12B \(local\)/.test(document.getElementById('vqLiveLog').textContent));
-  results.selected_model='Gemini listens/speaks; Gemma wrote the checked answer (WHEN_IDLE); a newer question cancelled the older Gemma job';
+  // Only one way to answer: no reply-mode menu, no checked-reply tool, and a short note.
+  assert.equal(await page.$('#vqLiveMode'),null);
+  assert.equal(await page.$eval('#vqLivePanel .vq-live-note',e=>e.textContent),'Press Start and talk any time. Answers use only the course material.');
+  assert.equal(await page.$eval('#vqLivePanel .section-label',e=>e.textContent),'NATURAL CONVERSATION');
+  assert(g.setups.every(x=>x.tools[0].functionDeclarations.map(f=>f.name).join()==='search_course_material'));
+  results.single_mode='no reply-mode menu; every setup only has the course-search tool';
 
   // Starting the regular voice question ends the live conversation (one sound source).
   const closedBefore=g.closed;

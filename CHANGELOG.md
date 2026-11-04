@@ -1,5 +1,10 @@
 # Change Log
 
+## R17f — 2026-11-04
+
+- 自然對話只保留一種回答方式：伺服器先在選定課程（內建教材或上傳的 PDF）搜尋，Gemini 只依回傳的教材片段回答，超出範圍由伺服器拒答。移除「Checked reply」選項及其程式（由 Gemma／Ministral／Luna 寫答案再由 Gemini 念出）；左邊原本的 Q&A 與模型完全不變。
+- 說明文字只留「Press Start and talk any time. Answers use only the course material.」
+
 ## R17e — 2026-11-04
 
 - 自然對話的選項改名，避免誤以為答案來自 Gemini 自己的知識：兩種方式都只用課程教材（內建教材或上傳的 PDF）。「Fast reply · Gemini」由 Gemini 依教材片段直接回答；「Checked reply · <選定模型> · slower」由 Gemma／Ministral／Luna 依教材寫答案並核對，Gemini 只負責念。標題改為「NATURAL CONVERSATION」，說明文字註明答案只用課程教材。
