@@ -51,7 +51,25 @@ def _load_env_file(path):
 _load_env_file(ROOT / 'feedback' / 'feedback.env')
 
 DB_PATH = Path(os.environ.get('VQ_AUTH_DB') or str(ROOT / 'auth' / 'auth.sqlite3'))
-PUBLIC_URL = (os.environ.get('VQ_PUBLIC_URL') or 'https://lungta.twchu.workers.dev').strip().rstrip('/')
+_SITE_URL_FILE = Path(__file__).resolve().parent / 'logs' / 'site_url.txt'
+
+
+def public_url():
+    """The site's public address: VQ_PUBLIC_URL, else the address recorded by the
+    automatic update after the site moved, else the original address."""
+    configured = os.environ.get('VQ_PUBLIC_URL')
+    if configured:
+        return configured.strip().rstrip('/')
+    try:
+        recorded = _SITE_URL_FILE.read_text(encoding='utf-8').strip().rstrip('/')
+        if recorded.startswith('https://'):
+            return recorded
+    except OSError:
+        pass
+    return 'https://lungta.twchu.workers.dev'
+
+
+PUBLIC_URL = public_url()
 # Existing deployments keep their session-cookie protocol across the project rename.
 COOKIE = 'lungta_sid'
 SESSION_SEC = 30 * 86400
@@ -331,7 +349,7 @@ def send_email(to_addr, subject, text, html_body=None, key=''):
 
 
 def _review_email(user, token):
-    link = PUBLIC_URL + '/api/auth/review?t=' + quote(token)
+    link = public_url() + '/api/auth/review?t=' + quote(token)
     role = ROLE_LABEL.get(user['requested_role'], user['requested_role'])
     when = time.strftime('%Y-%m-%d %H:%M', time.localtime(user['created_at'] or time.time()))
     subject = '[MC-VHTA] 帳號申請待審核：%s（申請身分：%s）' % (user['name'], role.split(' ')[0])
@@ -363,7 +381,7 @@ def _notify_applicant(user, decision):
     else:
         subject = '[MC-VHTA] 帳號已開通'
         text = ('%s 您好：\n\n您的 MC-VHTA 帳號已核准，身分：%s。\n請到以下網址登入：\n%s/login/\n'
-                % (user['name'], ROLE_LABEL.get(decision, decision), PUBLIC_URL))
+                % (user['name'], ROLE_LABEL.get(decision, decision), public_url()))
     try:
         send_email(to_addr, subject, text, key='auth-decision/%s/%s/%d' % (user['id'], decision, int(time.time() // 60)))
         return True, ''
@@ -782,7 +800,7 @@ def handle(handler, method, path, query):
             if sent:
                 notice = '已寄信通知申請人。'
             elif action != 'reject':
-                notice = '系統無法直接寄信給申請人（目前的寄件者只能寄到管理員信箱），請自行告知對方可以登入：%s/login/' % PUBLIC_URL
+                notice = '系統無法直接寄信給申請人（目前的寄件者只能寄到管理員信箱），請自行告知對方可以登入：%s/login/' % public_url()
             else:
                 notice = ''
             _log('review decision %s for user %s' % (action, updated['email']))

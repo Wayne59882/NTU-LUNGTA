@@ -19,11 +19,18 @@ import socket
 import subprocess
 import tempfile
 import time
+import urllib.error
 import urllib.request
 
 ROOT=Path(__file__).resolve().parents[2]
 REPO='Wayne59882/multi-course-virtual-human-ta'
 PRESERVE={'wrangler.jsonc','reference_corpus/chunks.jsonl','reference_corpus/corpus_meta.json'}
+# Public address named after the thesis: https://multicourse-ta.<account>.workers.dev.
+# A small Worker with this name passes every request to the existing teaching Worker
+# (service binding), which keeps its tunnel origin and settings; the old address then
+# forwards visitors to the new one.
+SITE_WORKER='multicourse-ta'
+SITE_RETRY_SECONDS=1800
 
 def run(args,**kwargs):
     return subprocess.check_output(args,cwd=str(ROOT),**kwargs).decode().strip()
@@ -38,6 +45,56 @@ def load_config(path,target):
     cfg['main']=str(target/'cloudflare/worker/src/index.js')
     cfg['assets']['directory']=str(target/'web')
     return cfg
+
+def deploy_worker(target,cfg,extra=()):
+    """Deploy one Worker configuration with wrangler; return its output."""
+    with tempfile.NamedTemporaryFile(mode='w',suffix='.json',dir=str(target),delete=False) as file:json.dump(cfg,file);config_path=file.name
+    try:
+        try:output=subprocess.check_output(['npx','--yes','wrangler@4.127.0','deploy','--config',config_path]+list(extra),cwd=str(target),stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as error:
+            raise RuntimeError('wrangler deploy of '+str(cfg.get('name'))+' failed: '+(error.output or b'').decode('utf-8','replace')[-600:])
+        output=output.decode('utf-8','replace');print(output,flush=True);return output
+    finally:os.unlink(config_path)
+
+def site_answers(url,timeout=15):
+    """True: the new address serves the site. False: it answers with something else.
+    None: this server cannot reach workers.dev (its DNS may not resolve it)."""
+    request=urllib.request.Request(url.rstrip('/')+'/login/',headers={'User-Agent':'MC-VHTA-site-check'})
+    try:
+        with urllib.request.urlopen(request,timeout=timeout) as response:return response.status==200
+    except urllib.error.HTTPError:return False
+    except (urllib.error.URLError,OSError):return None
+
+def move_site(target,cfg,deploy=None,check=None,wait=time.sleep):
+    """Give the site its thesis address; the old address forwards there. Returns the new URL."""
+    deploy=deploy or deploy_worker;check=check or site_answers
+    old=cfg['name']
+    if old==SITE_WORKER:return None
+    proxy={'name':SITE_WORKER,'main':str(target/'cloudflare/worker/src/site-proxy.js'),'compatibility_date':cfg.get('compatibility_date') or '2026-08-28',
+           'workers_dev':True,'services':[{'binding':'APP','service':old}]}
+    if cfg.get('account_id'):proxy['account_id']=cfg['account_id']
+    match=re.search(r'https://'+re.escape(SITE_WORKER)+r'\.[a-z0-9-]+\.workers\.dev',deploy(target,proxy,[]))
+    if not match:raise RuntimeError('wrangler did not report the new address')
+    site=match.group(0);result=None
+    for _ in range(12):  # a new workers.dev address can take a minute to answer
+        result=check(site)
+        if result is not False:break
+        wait(5)
+    if result is False:raise RuntimeError(site+' does not serve the site yet')
+    # Only now does the old address start forwarding (kept by later --keep-vars deploys).
+    deploy(target,cfg,['--keep-vars','--var','SITE_URL:'+site])
+    (target/'logs'/'site_url.txt').write_text(site+'\n')
+    print('SITE ADDRESS: '+site+' (the old address forwards there)',flush=True)
+    return site
+
+def site_step(target,cfg,previous):
+    """State fields for the site address. Never raises: on failure the old address keeps serving."""
+    if previous.get('site_url'):return {'site_url':previous['site_url']}
+    try:site=move_site(target,cfg)
+    except Exception as error:
+        print('SITE ADDRESS UNCHANGED: '+str(error)[:400]+' Retrying later.',flush=True)
+        return {'site_pending':True,'site_attempt_at':time.time()}
+    return {'site_url':site} if site else {}
 
 def ci_passed(sha):
     url='https://api.github.com/repos/'+REPO+'/actions/runs?event=push&head_sha='+sha+'&per_page=30'
@@ -239,7 +296,13 @@ def main():
         if run(['git','status','--porcelain','--untracked-files=no']):raise RuntimeError('Source checkout has local edits; no forced reset was performed')
         run(['git','fetch','origin','main']);sha=run(['git','rev-parse','origin/main'])
         state=target/'logs/auto_sync_state.json'
-        if state.exists() and json.loads(state.read_text()).get('commit')==sha and (not args.publish or json.loads(state.read_text()).get('published')):print('Already synchronized: '+sha);return
+        previous=json.loads(state.read_text()) if state.exists() else {}
+        if previous.get('commit')==sha and (not args.publish or previous.get('published')):
+            if args.publish and previous.get('site_pending') and time.time()-float(previous.get('site_attempt_at') or 0)>SITE_RETRY_SECONDS:
+                fields=site_step(target,load_config(target/'wrangler.jsonc',target),{})
+                for key in ('site_pending','site_attempt_at'):previous.pop(key,None)
+                previous.update(fields);state.write_text(json.dumps(previous))
+            print('Already synchronized: '+sha);return
         if not ci_passed(sha):print('Waiting for successful Offline checks on '+sha);return
         if not args.apply:print('CI-approved update available: '+sha);return
         run(['git','merge','--ff-only','origin/main'])
@@ -262,7 +325,9 @@ def main():
                 with tempfile.NamedTemporaryFile(mode='w',suffix='.json',dir=str(target),delete=False) as file:json.dump(cfg,file);config_path=file.name
                 try:subprocess.check_call(['npx','--yes','wrangler@4.127.0','deploy','--config',config_path,'--keep-vars'],cwd=str(target))
                 finally:os.unlink(config_path)
-            state.write_text(json.dumps({'commit':sha,'updated_at':time.time(),'published':args.publish,'backup':str(backup)}))
+            record={'commit':sha,'updated_at':time.time(),'published':args.publish,'backup':str(backup)}
+            if args.publish:record.update(site_step(target,cfg,previous))
+            state.write_text(json.dumps(record))
             print('SYNC COMPLETE '+sha+'; backup '+str(backup))
         except Exception:
             restore_files(target,backup)

@@ -6,7 +6,7 @@
   function localKey(){const el=document.getElementById('localModelSelect');return String(el&&el.value||'gemma');}
   function selectedModel(){
     const config=window.VQ_getCloudConfig&&window.VQ_getCloudConfig();
-    if(config&&config.provider&&config.provider!=='off'&&config.apiKey)return 'cloud:'+config.provider;
+    if(config&&config.provider&&config.provider!=='off'&&config.apiKey)return 'cloud:'+config.provider+':'+(config.model||'');
     return 'local:'+localKey();
   }
   function cancelLocalJob(request){

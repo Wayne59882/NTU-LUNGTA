@@ -20,7 +20,7 @@ National Taiwan University.
 The technical evaluation focuses on software behavior, answer accuracy, and
 response time. Learning outcomes require a separate educational study.
 
-[Hosted teaching system](https://lungta.twchu.workers.dev) (approved account required)
+[Hosted teaching system](https://multicourse-ta.twchu.workers.dev) (approved account required)
 · [Setup guide](docs/getting-started.md)
 · [Code guide](docs/code-map.md)
 · [Evaluation guide](docs/evaluation.md)

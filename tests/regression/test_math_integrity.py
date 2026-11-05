@@ -61,7 +61,7 @@ with tempfile.TemporaryDirectory() as td:
         assert manager._quarantine_damaged_math(fixed)==fixed
     finally:cr.COURSE_ROOT=old
 print('[OK] Existing corrupted content backup/quarantine, safe draw, saved score preservation, idempotent repair')
-for name in ('math_integrity.py','course_runtime.py','exam_questions.py','reference_server.py','ollama_cancel.py','model_lock.py','pdf_ingestion.py','pdf_vision.py','kb_server.py'):
+for name in ('math_integrity.py','course_runtime.py','exam_questions.py','reference_server.py','ollama_cancel.py','model_lock.py','pdf_ingestion.py','pdf_vision.py','kb_server.py','access_control.py','../scripts/deploy/auto_sync.py'):
     if __import__('sys').version_info>=(3,8):ast.parse(Path(name).read_text(),feature_version=(3,6))
     else:ast.parse(Path(name).read_text())
 print('[OK] Updated Python modules parse with Python 3.6 grammar')

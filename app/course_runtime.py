@@ -116,6 +116,9 @@ PART_HEADING=re.compile(r'^(?:(?:part|section|volume)\s+(?:[ivxlcdm]+|\d+)|(?:�
 
 def _course_title(metadata_title,filename):
     title=_clean_text(metadata_title or '')
+    # Office "print to PDF" titles look like "Microsoft PowerPoint - deck.pptm".
+    title=re.sub(r'^Microsoft\s+(?:Office\s+)?(?:PowerPoint|Word|Excel)\s*[-–:]\s*','',title,flags=re.I)
+    title=re.sub(r'\.(?:pptx?|pptm|ppsx?|potx?|docx?|docm|xlsx?|key|odp|odt)\s*$','',title,flags=re.I).strip()
     if not title or len(title)>110 or re.search(r'[{}]|libgen|doi:|https?://|[/\\]',title,re.I):
         title=Path(filename).stem.split('{',1)[0].replace('_',' ')
         title=re.sub(r'\s*(?:libgen(?:\.li)?|\([^)]*\d{4}[^)]*\))\s*$','',title,flags=re.I)
@@ -192,12 +195,79 @@ def _resolve_course_name(course_name, stage, units, unit_texts, model_key, model
     return (fallback or 'Uploaded Course'), 'title'
 
 
+# Generic outline names that say nothing about the content, e.g. PowerPoint's
+# default section names exported as PDF bookmarks.
+GENERIC_UNIT_TITLE=re.compile(r'^(?:未命名(?:的)?(?:章節|區段|節|段落|部分)?|預設(?:章節|區段)|默认节|未命名节|无标题节|無標題(?:章節)?|untitled(?:\s+section)?|default\s+section|new\s+section|section\s*\d*|slide\s*\d+|投影片\s*\d+|幻灯片\s*\d+|page\s*\d+|第\s*\d+\s*頁)$',re.I)
+# Short slides that end or organize a talk are not topics.
+NON_TOPIC_SLIDE=re.compile(r'^(?:thank\s*you!?|thanks!?|questions?\??|any\s+questions\??|q\s*&\s*a|the\s+end|end|references?|bibliography|acknowledg(?:e)?ments?|outline|agenda|contents?|overview|summary|謝謝(?:聆聽|大家|觀看)?|感謝(?:聆聽|大家)?|問題(?:與|和)?討論|提問|參考(?:文獻|資料)|大綱|目錄|總結|摘要)[!！.。]?$',re.I)
+UNIT_SPLIT_PAGES=30      # slide-deck units at least this long are split at section-title slides
+UNIT_MIN_PAGES=3         # a split never leaves a part shorter than this
+HEADING_SCAN_SECONDS=25  # page-heading scan budget during upload inspection
+
+def _word_count(text):
+    text=str(text or '')
+    cjk=len(re.findall(r'[㐀-鿿豈-﫿]',text))
+    latin=len(re.findall(r'[A-Za-z0-9]+(?:[\'’.-][A-Za-z0-9]+)*',re.sub(r'[㐀-鿿豈-﫿]',' ',text)))
+    return latin+(cjk+1)//2
+
+def _page_heading(page):
+    """The largest-font line(s) of a page: its slide title or heading."""
+    flags=getattr(fitz,'TEXT_PRESERVE_LIGATURES',1)|getattr(fitz,'TEXT_PRESERVE_WHITESPACE',2)
+    try:d=page.get_text('dict',flags=flags)
+    except TypeError:d=page.get_text('dict')
+    except Exception:return None
+    lines=[];words=0
+    for bi,block in enumerate(d.get('blocks') or []):
+        if block.get('type',0)!=0:continue
+        for line in block.get('lines') or []:
+            spans=[x for x in line.get('spans') or [] if str(x.get('text') or '').strip()]
+            if not spans:continue
+            text=_clean_text(''.join(str(x.get('text') or '') for x in spans))
+            if not text or re.fullmatch(r'[\d\W_]+',text):continue  # page numbers, bullets
+            words+=_word_count(text)
+            box=line.get('bbox') or spans[0].get('bbox') or (0,0,0,0)
+            lines.append({'text':text,'size':max(float(x.get('size') or 0) for x in spans),'block':bi,'y0':float(box[1]),'y1':float(box[3])})
+    if not lines:return None
+    top=max(x['size'] for x in lines)
+    first=next(x for x in lines if x['size']>=top-0.01)
+    title=[x for x in lines if x['block']==first['block'] and x['size']>=top*0.9]
+    title.sort(key=lambda x:x['y0'])
+    text=_clean_text(' '.join(x['text'] for x in title))
+    text=re.sub(r'\s+',' ',text).strip(' -–—:|•·')[:90].strip()
+    height=float(page.rect.height) or 1.0
+    centre=(min(x['y0'] for x in title)+max(x['y1'] for x in title))/2.0/height
+    return {'title':text,'size':top,'centre':centre,'words':words,'height':height}
+
+def _usable_title(text):
+    t=_clean_text(text)
+    return bool(t) and 2<=len(t)<=90 and not GENERIC_UNIT_TITLE.match(t) and not NON_TOPIC_SLIDE.match(t) and not re.fullmatch(r'[\d\W_]+',t)
+
+def _is_section_slide(info):
+    """A section-title slide: a large, vertically centred title and little else."""
+    if not info or not _usable_title(info['title']):return False
+    return info['words']<=20 and 0.22<=info['centre']<=0.78 and info['size']>=20*info['height']/540.0
+
+def _is_slide_deck(doc):
+    n=doc.page_count;step=max(1,n//24);wide=total=0
+    for i in range(0,n,step):
+        r=doc[i].rect;total+=1
+        if r.width>r.height*1.05:wide+=1
+    return total>0 and wide>=0.7*total
+
 def _course_chapters(doc):
+    """Teaching units as (title, start_page, end_page), in page order.
+
+    The PDF outline decides the units. Its entries are put in page order (an
+    outline listed out of page order gave wrong page ranges), and generic or
+    repeated names are replaced or told apart. Slide decks also use their
+    section-title slides: they name the slides before the first bookmark and
+    split very long units, or form the units when there is no outline."""
+    total=doc.page_count
     rows=[]
     for row in doc.get_toc(simple=True) or []:
         try:level,title,page=int(row[0]),_clean_text(row[1]),int(row[2])
         except (TypeError,ValueError,IndexError):continue
-        if title and 1<=page<=doc.page_count and not FRONT_MATTER.match(title) and not PART_HEADING.match(title):
+        if title and 1<=page<=total and not FRONT_MATTER.match(title) and not PART_HEADING.match(title):
             rows.append((level,title,page))
     explicit=[r for r in rows if CHAPTER_HEADING.match(r[1])]
     if explicit:
@@ -209,11 +279,57 @@ def _course_chapters(doc):
         levels=sorted(set(r[0] for r in rows))
         level=next((l for l in levels if len([r for r in rows if r[0]==l])>=2),levels[0] if levels else None)
         chosen=[r for r in rows if r[0]==level]
-    unique=[];seen=set()
-    for _,title,page in chosen:
+    starts=[];seen=set()
+    for _,title,page in sorted(chosen,key=lambda r:r[2]):  # stable: outline order within a page
         if page in seen:continue
-        seen.add(page);unique.append((title,page))
-    return unique or [('Entire PDF — review or upload separate chapter PDFs',1)]
+        seen.add(page);starts.append([title,page])
+    headings={};slides=_is_slide_deck(doc);sections=[]
+    def heading(page):
+        if page not in headings:headings[page]=_page_heading(doc[page-1])
+        return headings[page]
+    if slides:
+        began=time.time()
+        for page in range(1,total+1):
+            if time.time()-began>HEADING_SCAN_SECONDS:sections=[];break
+            info=heading(page)
+            if _is_section_slide(info):sections.append([info['title'],page])
+    review=False
+    if not starts:
+        if len(sections)>=2:starts=[list(x) for x in sections]
+        else:return [('Entire PDF — review or upload separate chapter PDFs',1,total)]
+    if slides and starts[0][1]-1>=UNIT_MIN_PAGES:
+        # Slides before the first bookmark are part of the talk, not book front matter.
+        first=heading(1)
+        starts.insert(0,[first['title'] if first and _usable_title(first['title']) else '',1])
+    units=[]
+    for i,(title,start) in enumerate(starts):
+        end=starts[i+1][1]-1 if i+1<len(starts) else total
+        units.append([title,start,max(start,end)])
+    if slides and sections:
+        split=[]
+        for title,start,end in units:
+            cuts=[(t,p) for t,p in sections if start<p<=end] if end-start+1>=UNIT_SPLIT_PAGES else []
+            parts=[[title,start]]
+            for t,p in cuts:
+                if p-parts[-1][1]>=UNIT_MIN_PAGES and end-p+1>=UNIT_MIN_PAGES:parts.append([t,p])
+            for j,(t,p) in enumerate(parts):
+                split.append([t,p,parts[j+1][1]-1 if j+1<len(parts) else end])
+        units=split
+    for unit in units:
+        if not _usable_title(unit[0]):
+            info=heading(unit[1])
+            unit[0]=info['title'] if info and _usable_title(info['title']) else 'Pages %d–%d'%(unit[1],unit[2])
+    merged=[]
+    for unit in units:
+        if merged and merged[-1][0].casefold()==unit[0].casefold():merged[-1][2]=unit[2]   # one topic split by a repeated bookmark
+        else:merged.append(unit)
+    counts=Counter(u[0].casefold() for u in merged);used=Counter()
+    for unit in merged:
+        key=unit[0].casefold()
+        if counts[key]>1:
+            used[key]+=1
+            if used[key]>1:unit[0]='%s (%d)'%(unit[0],used[key])
+    return [(t,a,b) for t,a,b in merged]
 
 def _word_chunks(text,max_words=420,overlap=70):
     from math_integrity import MATH_PATTERN
@@ -719,9 +835,7 @@ class CourseManager(object):
                     # background worker instead of rejecting the original here.
                     requires_ocr=readable<40
                     if not auto_name:auto_name=title
-                    for ci,(ctitle,start) in enumerate(chapter_rows,1):
-                        end=(chapter_rows[ci][1]-1) if ci<len(chapter_rows) else doc.page_count
-                        if end<start:end=start
+                    for ctitle,start,end in chapter_rows:
                         units.append({'id':'u%03d'%len(units),'title':title if ctitle.startswith('Entire PDF —') else ctitle,'source_file':safe,'source_title':title,'start_page':start,'end_page':end,'enabled':True,'needs_review':ctitle.startswith('Entire PDF —')})
                     respiratory=_is_respiratory_physiology(' '.join([x[0] for x in chapter_rows]+samples))
                     receipt.update({'inspection_status':'ready','pages':doc.page_count,'ocr_recommended':requires_ocr});atomic_json(sd/'receipts'/(safe+'.json'),receipt)
@@ -739,11 +853,19 @@ class CourseManager(object):
         if not stage_path.exists():raise ValueError('Upload staging data was not found.')
         stage=json.loads(stage_path.read_text(encoding='utf-8'))
         allowed={u['id']:u for u in stage.get('units',[])};selected=[]
+        pages={s.get('file_name'):int(s.get('pages') or 0) for s in stage.get('sources',[])}
         for x in units or []:
             uid=str((x or {}).get('id') or '')
             if uid not in allowed:continue
             u=dict(allowed[uid]);title=_clean_text((x or {}).get('title') or u['title'])
-            if title:u['title']=title
+            if title:u['title']=title[:160]
+            # The teacher may correct a unit's page range within its own PDF.
+            if (x or {}).get('start_page') is not None or (x or {}).get('end_page') is not None:
+                try:start=int(x.get('start_page',u['start_page']));end=int(x.get('end_page',u['end_page']))
+                except (TypeError,ValueError):raise ValueError('Unit pages must be whole numbers: '+u['title'])
+                last=pages.get(u.get('source_file')) or int(u['end_page'])
+                if not 1<=start<=end<=last:raise ValueError('Pages of "%s" must be between 1 and %d, first page not after last page.'%(u['title'],last))
+                if (start,end)!=(int(u['start_page']),int(u['end_page'])):u.update({'start_page':start,'end_page':end,'pages_corrected':True})
             selected.append(u)
         if not selected:raise ValueError('Select at least one chapter/unit.')
         if len({u['id'] for u in selected})!=len(selected):raise ValueError('Each chapter/unit can only be selected once.')

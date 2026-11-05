@@ -43,8 +43,8 @@
       },
       {
         "old": "js/50_cloud_byok_selector.js",
-        "query": "v=R16-20261103",
-        "sha256": "7c20adadb437d98b13e839a153485270ea0488b912c02d815a9d973fdc5605c0",
+        "query": "v=R18-20261105",
+        "sha256": "8a1d14ccf3624c0948aaeab35b99693ba8e56e19a85a37fa741c9e3ad2f8c9c3",
         "new": "shared/js/models/cloud-selector.js",
         "previous_sha256": "9c466a83fcac5930834a76a3e7e1210e1a9a838fbef4f32de2daf1ce656e38f9"
       },
@@ -56,8 +56,8 @@
       },
       {
         "old": "js/48_reference_textbook.js",
-        "query": "v=R16-20261103",
-        "sha256": "bffbc1db75eb40fa81cec6b4022fe590ea1c80e4f54c4a8ab352fc52494e7ba6",
+        "query": "v=R18-20261105",
+        "sha256": "36e37604521ba952f6ea925deb683130455d3527962df22b89fa8a5eca54cd81",
         "new": "reference/js/reference-textbook.js",
         "previous_sha256": "e8271de6aac6c80a18c01b720f681ed0680baf2472bb3208086642032afcfe64"
       },
@@ -107,13 +107,13 @@
       {
         "old": "shared/js/qa/request-controller.js",
         "new": "shared/js/qa/request-controller.js",
-        "sha256": "206c4864cabe38ae28ab9cb30216df8905e17e1cc7fa6fd7272157cf542cbde0",
-        "query": "v=R16-20261103"
+        "sha256": "4df10a04e1da1f3077067e33453e3553fcada7822f058c60d3b7b0b9bcd488b3",
+        "query": "v=R18-20261105"
       },
       {
         "old": "js/25_v105_resume_after_question_mouth_sync.js",
-        "query": "v=R16-20261103",
-        "sha256": "6f0329347a5fc83c9d2bf411b65e3d739b46e7d9f3cac51d4b4392ed3d1ccabd",
+        "query": "v=R18-20261105",
+        "sha256": "982c1aada3f93e28bcb28af300aa9efd11f31561295e160f9bb40d748352bda9",
         "new": "shared/js/speech/recognition-controller.js",
         "previous_sha256": "ecbb7424a024d3b310e8b2ea3407e2d1a932396e866d2e3ef4d34d46a1061ddd"
       },
@@ -182,15 +182,15 @@
       },
       {
         "old": "js/52_v229_semantic_microbatch.js",
-        "query": "v=R16-20261103",
-        "sha256": "8fe0d7918d494d0bc7e6f9dbca157d51ccf22e8796d907371c9774bfc688488e",
+        "query": "v=R18-20261105",
+        "sha256": "5fc4bef9a41cc26e05770835239881ff2072403ba1ddfe2d806b95c00a535466",
         "new": "reference/js/semantic-microbatch.js",
         "previous_sha256": "b320c526f3340e99011ccb54a6a126a9180a82e6ea30949fd5486b203ace02f1"
       },
       {
         "old": "js/53_local_answer_feedback.js",
-        "query": "v=241121mailfix",
-        "sha256": "6c1c44c1f03856ed08fe3bb91ed9caaf9ac8a159ace37ed21ea17dc69a5c0208",
+        "query": "v=R18-20261105",
+        "sha256": "34ff7713a4497975766be0bd888cd8587417574491196f75cac4727c6485e300",
         "new": "shared/js/feedback/answer-feedback.js"
       },
       {
@@ -201,8 +201,8 @@
       },
       {
         "old": "js/55_v241_course_adaptive_ta.js",
-        "query": "v=R17c-20261104",
-        "sha256": "7406206758565d88dcad462a1d4cbb047f4b9c92adfb677cecbb959240fe0eee",
+        "query": "v=R18-20261105",
+        "sha256": "f955b157df5f28c2db44cd96bd8741f1b26172991346d80e356f84af80fd46a1",
         "new": "shared/js/course/course-controller.js",
         "previous_sha256": "bad39c56c62505ca5ce92bf96ef77b6ac7a941f8f3468cdb21ee85d13de8102f"
       },
@@ -409,8 +409,8 @@
       },
       {
         "old": "js/25_v105_resume_after_question_mouth_sync.js",
-        "query": "v=R16-20261103",
-        "sha256": "6f0329347a5fc83c9d2bf411b65e3d739b46e7d9f3cac51d4b4392ed3d1ccabd",
+        "query": "v=R18-20261105",
+        "sha256": "982c1aada3f93e28bcb28af300aa9efd11f31561295e160f9bb40d748352bda9",
         "new": "shared/js/speech/recognition-controller.js",
         "previous_sha256": "6a4c87062a768339c317eb4af48d6356c8f93b3b3c00e00604e9c8e1cf9d95e7"
       },
@@ -479,8 +479,8 @@
       },
       {
         "old": "js/53_local_answer_feedback.js",
-        "query": "v=241121mailfix",
-        "sha256": "6c1c44c1f03856ed08fe3bb91ed9caaf9ac8a159ace37ed21ea17dc69a5c0208",
+        "query": "v=R18-20261105",
+        "sha256": "34ff7713a4497975766be0bd888cd8587417574491196f75cac4727c6485e300",
         "new": "shared/js/feedback/answer-feedback.js"
       },
       {
@@ -491,8 +491,8 @@
       },
       {
         "old": "js/55_v241_course_adaptive_ta.js",
-        "query": "v=R17c-20261104",
-        "sha256": "7406206758565d88dcad462a1d4cbb047f4b9c92adfb677cecbb959240fe0eee",
+        "query": "v=R18-20261105",
+        "sha256": "f955b157df5f28c2db44cd96bd8741f1b26172991346d80e356f84af80fd46a1",
         "new": "shared/js/course/course-controller.js",
         "previous_sha256": "bad39c56c62505ca5ce92bf96ef77b6ac7a941f8f3468cdb21ee85d13de8102f"
       },

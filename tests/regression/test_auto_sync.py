@@ -30,4 +30,33 @@ with tempfile.TemporaryDirectory() as temporary:
     try:sync.install_files(source,target,backup,['../outside.py'])
     except ValueError:pass
     else:raise AssertionError('unsafe path accepted')
-print('PASS atomic source install/rollback, private PDF/account preservation, original Worker name/bindings and remote variables retained')
+    # Site address: a proxy Worker with the thesis name is deployed and checked first;
+    # only then does the existing Worker learn SITE_URL and forward its old address.
+    (target/'logs').mkdir()
+    deployed=[]
+    def fake_deploy(where,cfg,extra):
+        deployed.append((cfg['name'],cfg.get('services'),list(extra)))
+        return 'Deployed %s\n  https://%s.twchu.workers.dev\n'%(cfg['name'],cfg['name'])
+    answers=iter([False,True]);waits=[]
+    site=sync.move_site(target,config,deploy=fake_deploy,check=lambda url:next(answers),wait=waits.append)
+    assert site=='https://multicourse-ta.twchu.workers.dev' and waits==[5]
+    assert deployed[0]==('multicourse-ta',[{'binding':'APP','service':'lungta'}],[])
+    assert deployed[1]==('lungta',None,['--keep-vars','--var','SITE_URL:https://multicourse-ta.twchu.workers.dev'])
+    assert (target/'logs/site_url.txt').read_text().strip()==site
+    # A new address that never serves the site leaves the old address untouched.
+    deployed.clear()
+    try:sync.move_site(target,config,deploy=fake_deploy,check=lambda url:False,wait=lambda s:None);raise AssertionError('must not forward')
+    except RuntimeError as error:assert 'does not serve' in str(error)
+    assert [d[0] for d in deployed]==['multicourse-ta'],'SITE_URL is not set when the check fails'
+    # When this server cannot reach workers.dev, the wrangler-validated binding is trusted.
+    deployed.clear();assert sync.move_site(target,config,deploy=fake_deploy,check=lambda url:None)==site and len(deployed)==2
+    # Already moved, or already the thesis name: nothing is deployed again; failures never raise.
+    assert sync.site_step(target,config,{'site_url':site})=={'site_url':site}
+    assert sync.move_site(target,dict(config,name='multicourse-ta'),deploy=lambda *a:1/0) is None
+    original=sync.move_site
+    sync.move_site=lambda *a,**k:(_ for _ in ()).throw(RuntimeError('wrangler offline'))
+    try:fields=sync.site_step(target,config,{})
+    finally:sync.move_site=original
+    assert fields['site_pending'] is True and fields['site_attempt_at']>0
+print('PASS atomic source install/rollback, private PDF/account preservation, original Worker name/bindings and remote variables retained, '
+      'site address moved only after the new address serves the site')

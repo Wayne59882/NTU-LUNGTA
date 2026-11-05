@@ -5,7 +5,7 @@
   function modelKey(){ const s=$('localModelSelect'); return (s&&s.value)||'granite'; }
   function cloudConfig(){
     const c=(window.VQ_getCloudConfig&&window.VQ_getCloudConfig())||{provider:'off',apiKey:''};
-    return {provider:String(c.provider||'off'),apiKey:String(c.apiKey||'').trim()};
+    return {provider:String(c.provider||'off'),model:String(c.model||''),apiKey:String(c.apiKey||'').trim()};
   }
   function questionLanguage(q){
     try{
@@ -75,7 +75,7 @@
     const timer=setTimeout(()=>controller.abort(),300000);
     try{
       const payload={question:String(q||''),model_key:modelKey(),cloud_provider:cloud.provider,language_tag:language};
-      if(cloud.provider!=='off')payload.cloud_api_key=cloud.apiKey;
+      if(cloud.provider!=='off'){payload.cloud_api_key=cloud.apiKey;payload.cloud_model=cloud.model;}
       const r=await fetch('/api/reference/answer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store',signal:controller.signal});
       const d=await r.json().catch(()=>({error:'Invalid server response'}));
       if(!r.ok) throw new Error(friendlyError(d,r.status));

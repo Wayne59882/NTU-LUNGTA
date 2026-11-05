@@ -1,5 +1,13 @@
 # Change Log
 
+## R18 — 2026-11-05
+
+- 網址改為論文名稱：**https://multicourse-ta.twchu.workers.dev**。自動更新會建立這個新網址（一個小 Worker 透過 service binding 把每個請求交給原本的教學網站 Worker，原本的 tunnel、設定與登入都不變）；確認新網址能打開網站後，舊網址 lungta.twchu.workers.dev 才開始自動轉到新網址。若新網址暫時無法確認，舊網址照常服務並每 30 分鐘重試。帳號通知信的網站連結也跟著改成新網址。換網址後需在新網址重新登入一次。
+- 教學單元偵測：PDF 書籤不照頁碼排列時（例如 PowerPoint 匯出的投影片），改依頁碼排序後再算頁數範圍，不再出現「pp. 3–1138」這類錯誤範圍；「未命名的章節」等預設名稱改用該段第一張投影片的標題；重複名稱加上 (2)；投影片檔會用置中的大標題分段頁（section title slide）命名書籤前的開頭投影片、把 30 頁以上的長單元在分段頁切開，沒有書籤時也用分段頁建立單元。一般教科書（直式頁面、正常書籤）結果不變。
+- 建課前可直接修改每個單元的名稱與起訖頁碼（有框線的輸入欄），頁碼超出 PDF 範圍或起頁大於迄頁時不會開始建課。PDF 標題「Microsoft PowerPoint - 檔名.pptm」只保留檔名。
+- 雲端模型（自備 API Key）：除 ChatGPT（OpenAI）外新增 Claude（Anthropic）與 Gemini（Google），每家提供多個版本並依費用由低到高排列：GPT-6 Luna／GPT-6.1 Terra／GPT-6.1 Sol（另保留論文評估用的 GPT-5.6 Luna）、Claude Haiku 5.5／Sonnet 5.5／Opus 5.5、Gemini 3.5 Flash-Lite／3.8 Flash／4 Argon。每家公司一把 Key（只存在此瀏覽器分頁），每個模型先驗證才使用；同一家的其他模型會用已存的 Key 自動驗證。所有雲端模型都用同一套教材檢索、範圍判斷與答案核對；思考程度設為低以節省 token。
+- 新增測試：單元偵測與頁碼修正、三家雲端模型的請求格式／驗證／白名單、網址搬移與舊網址轉址。
+
 ## R17f — 2026-11-04
 
 - 自然對話只保留一種回答方式：伺服器先在選定課程（內建教材或上傳的 PDF）搜尋，Gemini 只依回傳的教材片段回答，超出範圍由伺服器拒答。移除「Checked reply」選項及其程式（由 Gemma／Ministral／Luna 寫答案再由 Gemini 念出）；左邊原本的 Q&A 與模型完全不變。

@@ -95,7 +95,7 @@ elif name == "ollama" and args == ["list"]:
         deployments = [c for c in calls if c["name"] == "npx"]
         assert len(deployments) == 1
         assert deployments[0]["args"] == ["--yes", "wrangler@4.127.0", "deploy", "--config",
-                                           str(project / "app/wrangler.jsonc"), "--var",
+                                           str(project / "app/wrangler.jsonc"), "--keep-vars", "--var",
                                            "ORIGIN_URL:https://backend.invalid"]
         # A missing real resource must block deployment before the stand-in npx.
         (project / "app/web/shared/js/avatar/avatar-controller.js").unlink()

@@ -26,6 +26,7 @@ async function main(){
   const flush=async()=>{for(let i=0;i<12;i++)await Promise.resolve();};
   $('localModelSelect').value='gemma';
   $('cloudModelSelect').value='off';
+  $('cloudModelSelect').options=[['off','Off — Local only'],['openai:gpt-6-luna','GPT-6 Luna · lowest cost'],['anthropic:claude-haiku-5-5','Claude Haiku 5.5 · lowest cost']].map(([value,textContent])=>({value,textContent}));
   load('shared/js/qa/request-controller.js');
   const qa=window.VQ_QA_REQUESTS;
   assert(qa);
@@ -39,7 +40,7 @@ async function main(){
   assert.equal(qa.begin('What is V/Q?',{source:'voice'}).joined,true);
   assert.equal(qa.lastQuestion(),'What is V/Q?');
   load('shared/js/models/cloud-selector.js');
-  $('cloudModelSelect').value='openai';$('cloudModelSelect').dispatchEvent(new context.Event('change'));
+  $('cloudModelSelect').value='openai:gpt-6-luna';$('cloudModelSelect').dispatchEvent(new context.Event('change'));
   assert.equal(handoffs.length,0,'No handoff before a usable cloud key is confirmed');
   // A rejected key never switches: the local model keeps the question.
   $('cloudApiKeyInput').value='bad-key';
@@ -49,21 +50,21 @@ async function main(){
   assert.equal(handoffs.length,0,'A failed key check must not hand off the question');
   assert.equal(window.VQ_getCloudConfig().provider,'off','Local model stays in charge after a failed key check');
   assert.match($('cloudApiKeyStatus').textContent,/failed/);
-  assert.equal(sessionStorage.getItem('VQ_CLOUD_API_KEY_SESSION'),null);
+  assert.equal(sessionStorage.getItem('VQ_CLOUD_API_KEY_SESSION:openai'),null);
   assert.equal(qa.isCurrent(first),true,'The local answer continues after a failed key check');
   $('cloudApiKeyInput').value='fixture-api-key';
   $('cloudApiKeyInput').dispatchEvent(new context.Event('input'));
   $('cloudApiKeyConfirmBtn').dispatchEvent(new context.Event('click'));
   await flush();
   assert.equal(requests.filter(r=>r.url==='/api/cloud/verify-key').length,2,'Every Confirm verifies the key first');
-  assert.match($('cloudApiKeyStatus').textContent,/Switched to GPT-5\.6 Luna/);
+  assert.match($('cloudApiKeyStatus').textContent,/Switched to GPT-6 Luna/);
   assert.equal(handoffs.length,1);
-  assert.equal(qa.current().model,'cloud:openai');
+  assert.equal(qa.current().model,'cloud:openai:gpt-6-luna');
   assert.equal(handoffs[0].q,'What is V/Q?');
   assert.equal(handoffs[0].source,'voice');
   assert.equal(first.invalid,true);
   assert.equal(qa.isCurrent(first),false,'Superseded local answer must never render');
-  assert.equal(sessionStorage.getItem('VQ_CLOUD_API_KEY_SESSION'),'fixture-api-key');
+  assert.equal(sessionStorage.getItem('VQ_CLOUD_API_KEY_SESSION:openai'),'fixture-api-key');
   const cloud=qa.current();
   // A server job that is still queued gets a best-effort cancellation.
   qa.rememberJob(cloud,'0123456789abcdef0123456789abcdef');

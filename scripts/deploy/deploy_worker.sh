@@ -13,6 +13,7 @@ command -v npx >/dev/null 2>&1 || { echo '[ERROR] npx not found.'; exit 1; }
 cd "$BASE"
 echo '[INFO] Deploying the Multi-Course Virtual Human Teaching Assistant Worker and web assets.'
 echo '[INFO] Query Knowledge Base remains Local-only.'
-echo '[INFO] Reference Textbook and uploaded-course modes use semantic Vector RAG. Local answer first; optional BYOK GPT-5.6 Luna fallback uses the same retrieved evidence. No system-owned cloud API key is configured.'
+echo '[INFO] Reference Textbook and uploaded-course modes use semantic Vector RAG. Local answer first; optional BYOK cloud models (ChatGPT, Claude, Gemini) use the same retrieved evidence. No system-owned cloud API key is configured.'
 echo "[INFO] API origin: $ORIGIN"
-npx --yes wrangler@4.127.0 deploy --config "$BASE/wrangler.jsonc" --var "ORIGIN_URL:$ORIGIN"
+# --keep-vars keeps SITE_URL (the site address) set by the automatic update.
+npx --yes wrangler@4.127.0 deploy --config "$BASE/wrangler.jsonc" --keep-vars --var "ORIGIN_URL:$ORIGIN"

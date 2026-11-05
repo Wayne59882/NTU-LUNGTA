@@ -6,7 +6,7 @@
  - The server dynamically groups up to 4 items per LLM call for accuracy-first reasoning.
  - Every item is solved by an LLM and receives a mandatory semantic verification pass.
  - Deterministic checks are validation safeguards only; they never replace LLM understanding.
- - Optional BYOK GPT-5.6 Luna remains a backup path; v229 gives Local 10 s before cloud starts.
+ - Optional BYOK cloud models (ChatGPT, Claude, Gemini) remain a backup path; v229 gives Local 10 s before cloud starts.
  - Single-question behavior remains unchanged.
 */
 const $=id=>document.getElementById(id);
@@ -97,7 +97,7 @@ window.VQ_fallbackSplitBatch238=fallbackSplitBatch;
 function modelKey(){const s=$('localModelSelect');return (s&&s.value)||'granite';}
 function cloudConfig(){
   const c=(window.VQ_getCloudConfig&&window.VQ_getCloudConfig())||{provider:'off',apiKey:''};
-  return {provider:String(c.provider||'off'),apiKey:String(c.apiKey||'').trim()};
+  return {provider:String(c.provider||'off'),model:String(c.model||''),apiKey:String(c.apiKey||'').trim()};
 }
 function questionLanguage(q){
   try{
@@ -187,7 +187,7 @@ function install(){
           if(signal){if(signal.aborted)controller.abort();else signal.addEventListener('abort',()=>controller.abort(),{once:true});}
           const timer=setTimeout(()=>controller.abort(),300000);
           try{
-            const body={questions:group,model_key:modelKey(),cloud_provider:cloud.provider,cloud_api_key:cloud.apiKey,language_tags:group.map(questionLanguage)};
+            const body={questions:group,model_key:modelKey(),cloud_provider:cloud.provider,cloud_model:cloud.model,cloud_api_key:cloud.apiKey,language_tags:group.map(questionLanguage)};
             const r=await fetch('/api/reference/answer-batch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store',signal:controller.signal});
             data=await r.json().catch(()=>({error:'Invalid server response'}));
             if(!r.ok)throw new Error(friendlyError(data,r.status));

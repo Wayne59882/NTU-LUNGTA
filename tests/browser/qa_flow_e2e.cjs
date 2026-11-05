@@ -22,7 +22,7 @@ async function main(){
   const srv=await staticServer(),base='http://127.0.0.1:'+srv.address().port;
   const browser=await chromium.launch({args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream','--autoplay-policy=no-user-gesture-required']});
   const page=await browser.newPage();
-  const log=[],jobs=new Map();let seq=0,slowMs=4000;
+  const log=[],jobs=new Map(),cloudBodies=[];let seq=0,slowMs=4000;
   const json=(route,body,status=200)=>route.fulfill({status,contentType:'application/json',body:JSON.stringify(body)});
   await page.route('**/api/**',async route=>{
     const req=route.request(),url=new URL(req.url()),p=url.pathname;let body={};
@@ -38,8 +38,8 @@ async function main(){
       if(Date.now()-j.at<slowMs)return json(route,{status:'answering',progress:40});
       return json(route,{status:'done',result:{answer:'LOCAL-'+j.model+': '+j.q,engine:'local',answer_language:'en',sources:[]}});}
     if(p==='/api/reference/job-cancel'){const j=jobs.get(body.job_id);if(j)j.status='cancelled';return json(route,{ok:!!j});}
-    if(p==='/api/cloud/verify-key')return json(route,body.cloud_api_key==='good-key'?{ok:true}:{ok:false,error:'OpenAI rejected this API key.'});
-    if(p==='/api/reference/answer'){await new Promise(r=>setTimeout(r,800));return json(route,{answer:'CLOUD-LUNA: '+body.question,engine:'openai-api',answer_language:'en',sources:[]});}
+    if(p==='/api/cloud/verify-key')return json(route,body.cloud_api_key==='good-key'?{ok:true}:{ok:false,error:'Anthropic rejected this API key.'});
+    if(p==='/api/reference/answer'){cloudBodies.push(body);await new Promise(r=>setTimeout(r,800));return json(route,{answer:'CLOUD-CLAUDE: '+body.question,engine:body.cloud_provider+'-api',cloud_model:body.cloud_model,answer_language:'en',sources:[]});}
     return json(route,{ok:true});
   });
   page.on('pageerror',e=>log.push({p:'pageerror',body:String(e)}));
@@ -88,16 +88,17 @@ async function main(){
   slowMs=6000;
   await page.$eval('#studentQuestion',el=>{el.textContent='What limits diffusion across the alveolar membrane?';});
   await page.click('#submitTypedQuestionBtn');await page.waitForTimeout(600);
-  await page.selectOption('#cloudModelSelect','openai');
+  await page.selectOption('#cloudModelSelect','anthropic:claude-haiku-5-5');
   await page.fill('#cloudApiKeyInput','bad-key');await page.click('#cloudApiKeyConfirmBtn');
   await page.waitForFunction(()=>/failed/.test(document.getElementById('cloudApiKeyStatus').textContent),null,{timeout:8000});
   const pending=[...jobs.entries()].filter(([,j])=>j.status==='answering').at(-1);
   assert(pending&&pending[1].model==='mistral','the local answer keeps running after a rejected key');
   await page.fill('#cloudApiKeyInput','good-key');await page.click('#cloudApiKeyConfirmBtn');
-  await page.waitForFunction(()=>/CLOUD-LUNA: What limits diffusion/.test(document.getElementById('teacherAnswer').textContent),null,{timeout:20000});
-  assert.equal(jobs.get(pending[0]).status,'cancelled','local job cancelled when Luna takes over');
-  assert.match(await page.$eval('#cloudApiKeyStatus',el=>el.textContent),/Luna/);
-  results.cloud='wrong key -> stays local with error; correct key -> Luna answered the same question';
+  await page.waitForFunction(()=>/CLOUD-CLAUDE: What limits diffusion/.test(document.getElementById('teacherAnswer').textContent),null,{timeout:20000});
+  assert.equal(jobs.get(pending[0]).status,'cancelled','local job cancelled when Claude takes over');
+  assert.match(await page.$eval('#cloudApiKeyStatus',el=>el.textContent),/Claude Haiku 5\.5/);
+  assert.deepEqual([cloudBodies.at(-1).cloud_provider,cloudBodies.at(-1).cloud_model,cloudBodies.at(-1).cloud_api_key],['anthropic','claude-haiku-5-5','good-key']);
+  results.cloud='wrong key -> stays local with error; correct key -> Claude Haiku 5.5 answered the same question';
 
   // 5) Finished answer, then switch back to a local model: answered again once by that model.
   slowMs=300;
@@ -105,7 +106,7 @@ async function main(){
   await page.selectOption('#cloudModelSelect','off');
   await page.waitForFunction(()=>/LOCAL-mistral: What limits diffusion/.test(document.getElementById('teacherAnswer').textContent),null,{timeout:20000});
   assert.equal(starts().length-n,1,'one re-answer after switching back to local');
-  results.finished_switch='finished Luna answer -> Off: answered again once by the local model';
+  results.finished_switch='finished Claude answer -> Off: answered again once by the local model';
 
   const errors=log.filter(x=>x.p==='pageerror');
   await browser.close();srv.close();
