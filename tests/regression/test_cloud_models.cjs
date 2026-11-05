@@ -123,14 +123,14 @@ async function main(){
   $('cloudApiKeyInput').value='good';$('cloudApiKeyInput').dispatchEvent(new context.Event('input'));
   $('cloudApiKeyConfirmBtn').dispatchEvent(new context.Event('click'));await flush();
   assert.deepEqual({...checks.at(-1)},{cloud_provider:'anthropic',cloud_model:'claude-haiku-5-5',cloud_api_key:'good'});
-  assert.deepEqual({...window.VQ_getCloudConfig()},{provider:'anthropic',model:'claude-haiku-5-5',apiKey:'good',label:'Claude Haiku 5.5 · lowest cost'});
+  assert.deepEqual({...window.VQ_getCloudConfig()},{provider:'anthropic',model:'claude-haiku-5-5',apiKey:'good',label:'Claude Haiku 5.5'});
   // Another Claude model reuses the stored key and is checked at once.
   choose('anthropic:claude-sonnet-5-5');assert.equal(window.VQ_getCloudConfig().provider,'off');await flush();
   assert.equal(checks.at(-1).cloud_model,'claude-sonnet-5-5');assert.equal(window.VQ_getCloudConfig().model,'claude-sonnet-5-5');
   // A different company needs its own key; until then the local model answers.
   choose('gemini:gemini-3.8-flash');await flush();
   assert.equal($('cloudApiKeyInput').value,'');assert.equal(window.VQ_getCloudConfig().provider,'off');
-  assert.equal(window.VQ_CLOUD_MODEL_LABELS['gemini:gemini-3.8-flash'],'Gemini 3.8 Flash · balanced');
+  assert.equal(window.VQ_CLOUD_MODEL_LABELS['gemini:gemini-3.8-flash'],'Gemini 3.8 Flash');
   choose('anthropic:claude-haiku-5-5');assert.equal(window.VQ_getCloudConfig().model,'claude-haiku-5-5','already verified models switch back without a new check');
   console.log('[OK] cloud models: ChatGPT, Claude and Gemini request shapes, answer extraction, key checks per company, model whitelist, legacy OpenAI default and per-model verification');
 }

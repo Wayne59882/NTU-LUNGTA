@@ -26,7 +26,7 @@ async function main(){
   const flush=async()=>{for(let i=0;i<12;i++)await Promise.resolve();};
   $('localModelSelect').value='gemma';
   $('cloudModelSelect').value='off';
-  $('cloudModelSelect').options=[['off','Off — Local only'],['openai:gpt-6-luna','GPT-6 Luna · lowest cost'],['anthropic:claude-haiku-5-5','Claude Haiku 5.5 · lowest cost']].map(([value,textContent])=>({value,textContent}));
+  $('cloudModelSelect').options=[['off','Off — Local only'],['openai:gpt-6-luna','GPT-6 Luna'],['anthropic:claude-haiku-5-5','Claude Haiku 5.5']].map(([value,textContent])=>({value,textContent}));
   load('shared/js/qa/request-controller.js');
   const qa=window.VQ_QA_REQUESTS;
   assert(qa);
