@@ -298,7 +298,9 @@ def main():
         state=target/'logs/auto_sync_state.json'
         previous=json.loads(state.read_text()) if state.exists() else {}
         if previous.get('commit')==sha and (not args.publish or previous.get('published')):
-            if args.publish and previous.get('site_pending') and time.time()-float(previous.get('site_attempt_at') or 0)>SITE_RETRY_SECONDS:
+            # Also covers the first run after this updater learned to move the site: the
+            # update itself was installed by the previous version of this script.
+            if args.publish and not previous.get('site_url') and time.time()-float(previous.get('site_attempt_at') or 0)>SITE_RETRY_SECONDS:
                 fields=site_step(target,load_config(target/'wrangler.jsonc',target),{})
                 for key in ('site_pending','site_attempt_at'):previous.pop(key,None)
                 previous.update(fields);state.write_text(json.dumps(previous))
