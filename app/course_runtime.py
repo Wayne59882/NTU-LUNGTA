@@ -1343,7 +1343,7 @@ class CourseManager(object):
                 status(status='unavailable',message='Figures on text pages were not read: '+vision.error);return
             cache_path=cd/'figure_cache.json'
             done=json.loads(cache_path.read_text(encoding='utf-8')) if cache_path.exists() else {}
-            units={u['id']:u for u in m.get('units') or []};docs={};totals={'added':0,'indexed':0};published=set()
+            units={u['id']:u for u in m.get('units') or []};docs={};totals={'added':0,'indexed':0,'replaced':0};published=set()
             def publish(final):
                 """Add every read page's passages to course Q&A (a batch at a time on long decks)."""
                 added=[]
@@ -1359,19 +1359,34 @@ class CourseManager(object):
                             'source':unit.get('source_title') or 'Uploaded PDF','source_file':row['source_file'],'pdf_page':int(row['page']),
                             'extraction_method':'local_vision_figure','text':value})
                 self._alive(cid)
+                read={(c['unit_id'],c['pdf_page']) for c in added}
                 with self.manifest_lock:
-                    cp=cd/'chunks.jsonl';have={json.loads(x)['id'] for x in cp.read_text(encoding='utf-8').splitlines() if x}
+                    cp=cd/'chunks.jsonl';rows=[json.loads(x) for x in cp.read_text(encoding='utf-8').splitlines() if x]
+                    have={c['id'] for c in rows}
                     fresh=[c for c in added if c['id'] not in have]
-                    if fresh:
+                    # A page the vision model has read (and reviewed) no longer keeps its
+                    # interim OCR text: the reviewed reading replaces it in course Q&A.
+                    stale=[c for c in rows if c.get('extraction_method')=='local_ocr' and (c['unit_id'],c.get('pdf_page')) in read]
+                    if stale:
+                        drop={c['id'] for c in stale}
+                        rows=[c for c in rows if c['id'] not in drop]+fresh
+                        temporary=cp.with_name(cp.name+'.tmp')
+                        with temporary.open('w',encoding='utf-8') as f:
+                            for c in rows:f.write(json.dumps(c,ensure_ascii=False)+'\n')
+                        os.replace(str(temporary),str(cp))
+                    elif fresh:
                         with cp.open('a',encoding='utf-8') as f:
                             for c in fresh:f.write(json.dumps(c,ensure_ascii=False)+'\n')
-                totals['added']+=len(fresh)
+                if stale:self._drop_indexed_chunks(cid,[c['id'] for c in stale])
+                totals['added']+=len(fresh);totals['replaced']+=len({(c['unit_id'],c.get('pdf_page')) for c in stale})
                 with self.running_lock:indexing=(cid,'index') in self.running
                 if final:
                     while indexing:  # the full index may still be embedding the original passages
                         self._alive(cid);time.sleep(5)
                         with self.running_lock:indexing=(cid,'index') in self.running
-                if not indexing:totals['indexed']+=self._index_missing_chunks(cid)
+                if not indexing:
+                    totals['indexed']+=self._index_missing_chunks(cid)
+                    if final:self._drop_indexed_chunks(cid)  # an index built meanwhile may still hold replaced OCR passages
                 else:
                     with self.cache_lock:self.cache.pop(cid,None)  # text search sees new passages at once
             try:
@@ -1390,9 +1405,27 @@ class CourseManager(object):
             publish(True)
             read=sum(bool((done.get('%s|%s'%(r['source_file'],r['page'])) or {}).get('ok')) for r in pages)
             status(status='ready',completed=len(pages),total=len(pages),pages_read=read,passages_added=totals['added'],passages_indexed=totals['indexed'],
-                   message='Figures read on %s / %s pages; %s figure passages added to course Q&A'%(read,len(pages),totals['added']))
+                   ocr_pages_replaced=totals['replaced'],
+                   message='Figures read on %s / %s pages; %s figure passages added to course Q&A'%(read,len(pages),totals['added'])+
+                   ('; reviewed readings replaced interim OCR text on %s pages'%totals['replaced'] if totals['replaced'] else ''))
         except CourseDeleted:raise
         except Exception as e:status(status='error',error=str(e)[:400],message='Figure reading stopped; text-based course content remains available')
+
+    def _drop_indexed_chunks(self,cid,ids=None):
+        """Remove replaced passages from the semantic index (text search reads chunks.jsonl).
+        Without ids, every indexed passage that is no longer in chunks.jsonl is removed."""
+        cd=self._course_dir(cid);vp=cd/'vector_index.sqlite3'
+        if vp.exists() and ids!=[]:
+            conn=sqlite3.connect(str(vp))
+            try:
+                if ids is None:
+                    current={json.loads(x)['id'] for x in (cd/'chunks.jsonl').read_text(encoding='utf-8').splitlines() if x}
+                    ids=[r[0] for r in conn.execute('SELECT chunk_id FROM vectors') if r[0] not in current]
+                conn.executemany('DELETE FROM vectors WHERE chunk_id=?',[(i,) for i in ids])
+                conn.execute("UPDATE meta SET value=? WHERE key='count'",(str(conn.execute('SELECT COUNT(*) FROM vectors').fetchone()[0]),))
+                conn.commit()
+            finally:conn.close()
+        with self.cache_lock:self.cache.pop(cid,None)
 
     def _index_missing_chunks(self,cid):
         """Embed passages appended after the semantic index was built."""

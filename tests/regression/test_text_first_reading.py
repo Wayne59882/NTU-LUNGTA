@@ -126,5 +126,39 @@ with tempfile.TemporaryDirectory() as temporary:
     assert len({c['pdf_page'] for c in figures}) == 12, figures
     assert seen[:2] == [5, 10] and seen[-1] == 12, 'passages are added every few pages, not only at the end: %s' % seen
     assert manager.manifest(cid)['preparation']['figures']['status'] == 'ready'
+    # 7. Image-only slides opened with OCR: once the vision model has read a page,
+    #    its reviewed reading replaces the interim OCR text (also in the semantic index).
+    scans = fitz.open()
+    for n in range(1, 4):
+        slide(scans, image=True)
+    scan_pdf = directory / 'scans.pdf'; scans.save(str(scan_pdf))
+    class CourseOCR(OCR):
+        def __init__(self):
+            super().__init__('OCR guess for this slide: Nothern blot detets RNA molecules after gel electrophoresis.')
+    pdf_ingestion.LocalOCR = CourseOCR
+    stage = manager.inspect([('scans.pdf', scan_pdf)], course_name='Scans')
+    job = manager.start_build(stage['stage_id'], 'Scans', 'none', stage['units'], 'gemma', lambda *a: '')
+    for _ in range(200):
+        if manager.job_status(job['id']).get('status') in ('done', 'error'): break
+        time.sleep(0.05)
+    cid = job['course_id']
+    before = chunks()
+    ocr_ids = [c['id'] for c in before if c['extraction_method'] == 'local_ocr']
+    assert len({c['pdf_page'] for c in before if c['extraction_method'] == 'local_ocr'}) == 3, before
+    import sqlite3, struct
+    vp = manager._course_dir(cid) / 'vector_index.sqlite3'
+    conn = sqlite3.connect(str(vp))
+    conn.execute('CREATE TABLE vectors (idx INTEGER PRIMARY KEY, chunk_id TEXT, unit_id TEXT, source TEXT, page INTEGER, text TEXT, dim INTEGER, vec BLOB)')
+    conn.execute('CREATE TABLE meta (key TEXT PRIMARY KEY,value TEXT)'); conn.execute("INSERT INTO meta VALUES ('count',?)", (str(len(before)),))
+    conn.executemany('INSERT INTO vectors VALUES (?,?,?,?,?,?,?,?)', [(i + 1, c['id'], c['unit_id'], c['source'], c['pdf_page'], c['text'], 1, struct.pack('f', 1.0)) for i, c in enumerate(before)])
+    conn.commit(); conn.close()
+    manager._index_missing_chunks = lambda course: 0
+    manager._prepare_figures(cid, 'gemma', lambda *a: '')
+    after = chunks()
+    assert not [c for c in after if c['extraction_method'] == 'local_ocr'], 'interim OCR text was not replaced'
+    assert {c['pdf_page'] for c in after if c['extraction_method'] == 'local_vision_figure'} == {1, 2, 3}
+    conn = sqlite3.connect(str(vp)); left = {r[0] for r in conn.execute('SELECT chunk_id FROM vectors')}; conn.close()
+    assert not left & set(ocr_ids), 'replaced OCR passages were left in the semantic index'
+    assert manager.manifest(cid)['preparation']['figures']['ocr_pages_replaced'] == 3
 print('[OK] text-first reading: slide text or OCR opens the course, images are read afterwards and reach Q&A in batches; '
-      'pages with no text are still read by vision during the build; the R15 full reading remains selectable')
+      'reviewed readings replace interim OCR text; pages with no text are still read by vision during the build; the R15 full reading remains selectable')
