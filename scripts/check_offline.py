@@ -84,6 +84,7 @@ def main():
         ("Gemini Live natural conversation", [node, str(TESTS / "test_gemini_live.cjs")]),
         ("Cloud models: ChatGPT, Claude, Gemini", [node, str(TESTS / "test_cloud_models.cjs")]),
         ("Site address and old-address forwarding", [node, str(TESTS / "test_site_address.cjs")]),
+        ("Login page show-password buttons", [node, str(TESTS / "test_login_page.cjs")]),
         ("Ollama cancellation", [sys.executable, str(TESTS / "test_ollama_cancel.py")]),
         ("Student priority, delete and cancel", [sys.executable, str(TESTS / "test_course_priority_delete.py")]),
         ("Answer job HTTP responses", [sys.executable, str(TESTS / "test_answer_jobs_http.py")]),

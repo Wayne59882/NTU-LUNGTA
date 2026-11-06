@@ -47,6 +47,7 @@ function injectUI(){
     '.vq-live{background:#f7fbff}'+
     '.vq-live-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}'+
     '.vq-live-row input,.vq-live-row select{flex:1 1 220px;min-width:0;box-sizing:border-box;border:1px solid #b8cce1;border-radius:9px;padding:9px;font:inherit;background:#fff}'+
+    '.vq-live-row .vq-show-wrap{flex:1 1 220px}'+
     '.vq-live-note{font-size:12px;color:#52708d;margin-top:8px;line-height:1.45}'+
     '.vq-live-log{margin-top:10px;max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:8px}'+
     '.vq-live-turn{border-radius:10px;padding:8px 10px;font-size:14px;line-height:1.55;white-space:pre-wrap}'+
@@ -72,6 +73,7 @@ function injectUI(){
     '<div class="vq-live-note">Press Start and talk any time. Answers use only the course material.</div>';
   columns.appendChild(left);columns.appendChild(box);
   const input=$('vqLiveKey');try{input.value=storedKey();}catch(_){}
+  if(window.VQ_addShowToggle)window.VQ_addShowToggle(input);  // 顯示／隱藏 the pasted key
   $('vqLiveKeyBtn').addEventListener('click',confirmKey);
   input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();confirmKey();}});
   input.addEventListener('input',()=>{if(String(input.value||'').trim()!==storedKey()){try{sessionStorage.removeItem(KEY_STORE);}catch(_){}setStatus('New key detected. Press Enter or “Confirm Key”.','pending');}});

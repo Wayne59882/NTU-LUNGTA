@@ -1,6 +1,6 @@
 {
   "baseline_commit": "16701b93f1d24dfd6798a690689c1a5e5b942f2f",
-  "shared_javascript_modules": 27,
+  "shared_javascript_modules": 28,
   "shared_stylesheets": 9,
   "pages": {
     "reference": [
@@ -40,6 +40,13 @@
         "sha256": "6e673ef7fcf85a029728b65ea69b64e9bcda0750b1299c10220eac1b50906917",
         "new": "reference/js/local-llm-selector.js",
         "previous_sha256": "8ffe9cbb6a530c4d9cc3a0adb3a83f4dde6b1603561bef6c4f72ed2ed36e1a50"
+      },
+      {
+        "old": "shared/js/ui/show-toggle.js",
+        "query": "v=R18b-20261106",
+        "sha256": "d4a84fb4e9d81e74eba4b3025aea4d335a90d0d2ebb8242a7ec2bf6790759872",
+        "new": "shared/js/ui/show-toggle.js",
+        "previous_sha256": "d4a84fb4e9d81e74eba4b3025aea4d335a90d0d2ebb8242a7ec2bf6790759872"
       },
       {
         "old": "js/50_cloud_byok_selector.js",
@@ -208,15 +215,15 @@
       },
       {
         "old": "js/57_role_access.js",
-        "query": "v=R17c-20261104",
-        "sha256": "c59c6fff329e2197999aa484296ab07d9c1e44c67602c976cdb53e513f8910b2",
+        "query": "v=R18b-20261106",
+        "sha256": "ddcbea788faf09e02fb576547dcb1bbe31f697b96ac7bea65c8e0e7a199a81c3",
         "new": "shared/js/auth/role-access.js"
       },
       {
         "old": "shared/js/qa/gemini-live.js",
         "new": "shared/js/qa/gemini-live.js",
-        "sha256": "8680ba3f8509d9556eae3eb4b6cbf0e7bd130880e6cc373de3d720e0a543bf35",
-        "query": "v=R17f-20261104"
+        "sha256": "38341da6dd5015edc896ef8fb6319ae288929d62c980cd2c59fd3b6e616ac7c8",
+        "query": "v=R18b-20261106"
       },
       {
         "old": "shared/js/course/upload-diagnostics.js",
@@ -498,8 +505,8 @@
       },
       {
         "old": "js/57_role_access.js",
-        "query": "v=R17c-20261104",
-        "sha256": "c59c6fff329e2197999aa484296ab07d9c1e44c67602c976cdb53e513f8910b2",
+        "query": "v=R18b-20261106",
+        "sha256": "ddcbea788faf09e02fb576547dcb1bbe31f697b96ac7bea65c8e0e7a199a81c3",
         "new": "shared/js/auth/role-access.js"
       },
       {

@@ -51,7 +51,7 @@ body:not(.vq-role-teacher):not(.vq-role-student) #v241CourseBuilder{visibility:h
 .vq-modal .vq-acts .s{border-color:#1f6fb2!important;color:#1f6fb2}.vq-modal .vq-acts .t{border-color:#0f766e!important;color:#0f766e}.vq-modal .vq-acts .r{border-color:#e3b4b4!important;color:#a12d2d}
 .vq-pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11.5px;font-weight:800}.vq-pill.pending{background:#fff3d6;color:#7a4b00}.vq-pill.approved{background:#e8f6ee;color:#185c37}.vq-pill.rejected,.vq-pill.disabled{background:#f3e8e8;color:#8f2f2f}
 .vq-modal-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.vq-modal form label{display:block;font-size:13px;font-weight:700;margin:10px 0 4px}.vq-modal form input{width:100%;box-sizing:border-box;border:1px solid #b8cce1;border-radius:9px;padding:9px;font:inherit}
+.vq-modal form label{display:block;font-size:13px;font-weight:700;margin:10px 0 4px}.vq-modal form label.vq-showpw{display:flex;align-items:center;gap:7px;font-weight:600;color:#42617e;cursor:pointer}.vq-modal form label.vq-showpw input{width:auto;margin:0}.vq-modal form input{width:100%;box-sizing:border-box;border:1px solid #b8cce1;border-radius:9px;padding:9px;font:inherit}
 .vq-modal .vq-note{margin-top:10px;font-size:13px}.vq-modal .vq-note.err{color:#8f2f2f}.vq-modal .vq-note.ok{color:#185c37}
 @media(max-width:640px){.vq-modal table thead{display:none}.vq-modal table,.vq-modal tbody,.vq-modal tr,.vq-modal td{display:block;width:100%}.vq-modal tr{border-bottom:1px solid #dbe7f2;padding:6px 0}.vq-modal td{border:0;padding:3px 0}}
 `;document.head.appendChild(s);
@@ -71,13 +71,15 @@ async function signOut(){
 
 function changePassword(){
   const m=modal(`<div class="vq-modal-head"><div><h3>修改密碼</h3><div class="vq-sub">Change password</div></div><button class="vq-close" type="button">關閉</button></div>
-  <form><label>目前密碼</label><input type="password" name="old" autocomplete="current-password" required><label>新密碼（至少 8 個字元）</label><input type="password" name="new" autocomplete="new-password" minlength="8" required>
+  <form><label>目前密碼</label><input type="password" name="old" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" required><label>新密碼（至少 8 個字元）</label><input type="password" name="new" autocomplete="new-password" autocapitalize="none" autocorrect="off" spellcheck="false" minlength="8" required>
+  <label class="vq-showpw"><input type="checkbox" name="show"> 顯示密碼 Show password</label>
   <div style="margin-top:14px"><button type="submit">儲存 Save</button></div><div class="vq-note"></div></form>`);
   const f=m.querySelector('form'),note=m.querySelector('.vq-note');
+  f.show.addEventListener('change',()=>{const type=f.show.checked?'text':'password';f.old.type=type;f.new.type=type;});
   f.addEventListener('submit',async e=>{e.preventDefault();note.className='vq-note';note.textContent='儲存中…';
     const r=await nativeFetch('/api/auth/password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({old_password:f.old.value,new_password:f.new.value})});
     const d=await r.json().catch(()=>({}));
-    if(r.ok&&d.ok){note.className='vq-note ok';note.textContent='密碼已更新。';f.reset();}else{note.className='vq-note err';note.textContent=d.error||'無法更新密碼。';}});
+    if(r.ok&&d.ok){note.className='vq-note ok';note.textContent='密碼已更新。';f.reset();f.old.type=f.new.type='password';}else{note.className='vq-note err';note.textContent=d.error||'無法更新密碼。';}});
 }
 
 function fmt(t){if(!t)return '—';const d=new Date(t*1000);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
