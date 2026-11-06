@@ -29,7 +29,7 @@ with patch.dict(os.environ,{'VQ_PDF_VISION':'auto','VQ_PDF_VISION_HOST':'http://
         fingerprint='fixture-ocr'
         def read(self,page):raise AssertionError('vision succeeded; OCR must not overwrite it')
     calls[:]=[]
-    ingested=pdf_ingestion.inspect_page(scan_page,4,ocr=NeverOCR(),vision=reader)
+    ingested=pdf_ingestion.inspect_page(scan_page,4,ocr=NeverOCR(),vision=reader,mode='inline')  # R15 full reading
     assert ingested['extraction_method']=='local_vision' and ingested['image_content_read']
     assert ingested['page']==4 and r'\Delta' in ingested['text'] and ingested['status']=='partial'
     scan.close()

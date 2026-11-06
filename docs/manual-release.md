@@ -24,7 +24,7 @@ python3 scripts/deploy/apply_release.py --target /path/to/existing/live/app --pu
 
 ## OCR 套件（伺服器只需準備一次）
 
-圖片頁及亂碼頁先嘗試已安裝且支援影像的本機 Ollama 模型，並以原頁再次核對；Tesseract 作為文字 OCR 備援。不會自動呼叫付費雲端或下載模型。詳見[本機辨識與來源核對](server-sync.md)。預設需要 `eng`、`chi_tra` 語言資料。在 Ubuntu／Debian 伺服器上：
+預設採「先文字後圖片」：有文字層的頁面直接使用文字、沒有文字層的頁面先用 Tesseract OCR，課程讀完文字就開放；之後在背景由已安裝且支援影像的本機 Ollama 模型讀取這些頁面的圖片（先抄寫、再以原頁獨立核對），每讀完一批就加入課程 Q&A。連 OCR 都讀不到文字的頁面仍在建課時直接用本機影像模型讀取。建課畫面可勾選「Read every slide image before the course opens」改回 R15 的完整讀圖流程（每張有圖的頁面都先讀圖、課程較晚開放）。不會自動呼叫付費雲端或下載模型。詳見[本機辨識與來源核對](server-sync.md)。預設需要 `eng`、`chi_tra` 語言資料。在 Ubuntu／Debian 伺服器上：
 
 ```bash
 sudo apt-get update

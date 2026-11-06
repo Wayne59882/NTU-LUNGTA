@@ -1708,7 +1708,7 @@ class Handler(SharedAssetsMixin, SimpleHTTPRequestHandler):
         if self.path=='/api/reference/course-build':
             try:
                 req=self.read_json();stage_id=str(req.get('stage_id') or '');course_name=str(req.get('course_name') or '');visual_model=str(req.get('visual_model') or 'none');units=req.get('units') or [];model_key=key_of(req.get('model_key'))
-                job=COURSES.start_build(stage_id,course_name,visual_model,units,model_key,lambda mk,sys,user,max_tokens:course_model_call(self.server,mk,sys,user,max_tokens));self.send_json(202,{'ok':True,'job':job})
+                job=COURSES.start_build(stage_id,course_name,visual_model,units,model_key,lambda mk,sys,user,max_tokens:course_model_call(self.server,mk,sys,user,max_tokens),reading=req.get('reading'));self.send_json(202,{'ok':True,'job':job})
             except ValueError as e:self.send_json(400,{'ok':False,'error':str(e)})
             except Exception as e:self.send_json(500,{'ok':False,'error':'Course build could not start','detail':str(e)})
             return

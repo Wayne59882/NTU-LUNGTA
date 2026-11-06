@@ -15,10 +15,21 @@ from pdf_ocr import LocalOCR
 from pdf_vision import LocalVision,teaching_images
 
 REVISION='R15'
-# Figures on text-rich pages: read during the build (inline, the R15 method and
-# default), or after lectures by a background task (background, faster course
-# availability), or never (off). The default keeps the documented R15 method.
-FIGURES_MODE=os.environ.get('VQ_PDF_VISION_FIGURES','inline').strip().lower()
+# How pages with images are read during a course build:
+#   fast (default since R18c): text first. A page's own text layer, or local OCR when
+#     it has none, is used at once and the course opens; the local vision model reads
+#     the page's images afterwards in the background and adds them to course Q&A.
+#     Only pages with no usable text at all are read by the vision model during the build.
+#   inline (the R15 method): every page with teaching images is read by the vision
+#     model (transcription + independent review) before the course opens.
+#   background: like inline, but text-rich pages defer their figures.  off: never read figures.
+FIGURES_MODE=os.environ.get('VQ_PDF_VISION_FIGURES','fast').strip().lower()
+READING_MODES=('fast','inline','background','off')
+USABLE_TEXT=40  # letters/digits a page needs before it can be taught from without the vision model
+
+def reading_mode(value=None):
+    value=str(value or FIGURES_MODE).strip().lower()
+    return value if value in READING_MODES else 'fast'
 
 def atomic_json(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
@@ -32,7 +43,8 @@ def digest_file(path):
         for block in iter(lambda:stream.read(1024*1024),b''):digest.update(block)
     return digest.hexdigest()
 
-def inspect_page(page,number,ocr=None,activity=None,vision=None):
+def inspect_page(page,number,ocr=None,activity=None,vision=None,mode=None):
+    mode=reading_mode(mode)
     ocr=ocr if ocr is not None else LocalOCR()
     vision=vision if vision is not None else LocalVision()
     native=False
@@ -52,10 +64,14 @@ def inspect_page(page,number,ocr=None,activity=None,vision=None):
             except Exception:pass
         rich=sum(c.isalnum() for c in row['text'])>=160
         if not outlined and not teaching_images(page,row) and (not row.get('has_images') or rich):return row
-        if rich and FIGURES_MODE!='inline':
+        if rich and mode!='inline':
             # Enough native text to teach from now; do not hold the whole
             # course build for a slow two-pass vision reading of this figure.
-            if FIGURES_MODE!='off':row['figure_pending']=True
+            if mode!='off':row['figure_pending']=True
+            return row
+        if mode=='fast' and sum(c.isalnum() for c in row['text'])>=USABLE_TEXT:
+            # Slide titles and bullets are enough to open the course; images follow.
+            row['figure_pending']=True
             return row
         native=bool(row['text'])
         row['status']='partial' if row['text'] else 'needs_review';row['issues']=['Sparse searchable text over image or outlined content; visual text requires OCR.']
@@ -74,6 +90,20 @@ def inspect_page(page,number,ocr=None,activity=None,vision=None):
         if sum(c.isalpha() for c in text)<40:text=''
         row={'page':int(number),'text':text,'status':'partial' if text else 'needs_review',
                 'issues':[str(error)[:600]],'image_content_read':False}
+    if mode=='fast':
+        if sum(c.isalnum() for c in row['text'])>=USABLE_TEXT:
+            row.update({'figure_pending':True,'ocr_config':ocr.fingerprint,'vision_config':vision.fingerprint})
+            return row
+        # No usable text layer: local OCR now (seconds), the vision model later.
+        if activity:activity({'page':int(number),'status':'ocr_running'},False)
+        recovered=ocr.read(page)
+        text=recovered.get('text','') if recovered.get('ok') else ''
+        if sum(c.isalnum() for c in text)>=USABLE_TEXT:
+            row.update({'text':text,'status':'partial','extraction_method':'local_ocr','image_content_read':False,'figure_pending':True,
+                        'ocr_config':ocr.fingerprint,'vision_config':vision.fingerprint,'ocr':dict({key:value for key,value in recovered.items() if key!='text'},languages=ocr.requested),
+                        'issues':['Text recovered with local OCR so the course can open; the local vision model reads this page in the background and adds what it reads to course Q&A.']})
+            return row
+        # Nothing to teach from without the vision model: read it now.
     if activity:activity({'page':int(number),'status':'vision_running'},False)
     visual=vision.read(page);row['vision_config']=vision.fingerprint
     row['vision']={key:value for key,value in visual.items() if key!='text'}
@@ -95,7 +125,8 @@ def inspect_page(page,number,ocr=None,activity=None,vision=None):
     else:row['issues'].append(recovered.get('error','Local OCR unavailable.'))
     return row
 
-def iter_pages(doc,start,end,cache_directory,source_identity,progress=None,ocr=None,vision=None):
+def iter_pages(doc,start,end,cache_directory,source_identity,progress=None,ocr=None,vision=None,mode=None):
+    mode=reading_mode(mode)
     ocr=ocr if ocr is not None else LocalOCR()
     vision=vision if vision is not None else LocalVision()
     directory=Path(cache_directory)/hashlib.sha256((REVISION+'|'+source_identity).encode()).hexdigest()[:24]
@@ -107,9 +138,11 @@ def iter_pages(doc,start,end,cache_directory,source_identity,progress=None,ocr=N
                 row=json.loads(path.read_text(encoding='utf-8'))
                 cached=row.get('page')==number and row.get('status') in ('readable','blank','partial')
                 if row.get('status')=='partial':cached=cached and row.get('ocr_config')==ocr.fingerprint and row.get('vision_config')==vision.fingerprint
+                # A page read text-first is not a complete reading for a full (inline) build.
+                if mode=='inline' and row.get('figure_pending'):cached=False
             except Exception:pass
         if not cached:
-            row=inspect_page(doc[number-1],number,ocr,progress,vision)
+            row=inspect_page(doc[number-1],number,ocr,progress,vision,mode)
             atomic_json(path,row)
         if progress:progress(row,cached)
         yield row

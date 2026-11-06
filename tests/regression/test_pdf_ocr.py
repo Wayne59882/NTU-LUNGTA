@@ -38,7 +38,8 @@ with tempfile.TemporaryDirectory() as temporary:
         assert recovered['extraction_method']=='local_ocr' and 'Transcriptome' in recovered['text'],recovered
         assert recovered['ocr']['accepted_paragraphs']>=1 and recovered['ocr']['mean_confidence']>=80
         assert recovered['status']=='partial' and not recovered['image_content_read']
-        assert events[0][0]=='vision_running' and any(event[0]=='ocr_running' for event in events)
+        # Text-first (default): OCR opens the page at once; the vision model reads it later.
+        assert events[0][0]=='ocr_running' and not any(event[0]=='vision_running' for event in events) and recovered.get('figure_pending')
         # A restart uses saved OCR, not another rasterization/subprocess.
         engine.read=lambda page:(_ for _ in ()).throw(AssertionError('OCR cache was not reused'))
         cached=list(ingestion.iter_pages(document,1,1,directory/'cache','scan-test',ocr=engine))

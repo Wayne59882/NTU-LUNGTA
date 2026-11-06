@@ -8,7 +8,7 @@ from pathlib import Path
 from exam_questions import build as build_exam_questions,reviewed_card
 from math_integrity import math_issues, question_math_ok
 from content_integrity import text_issues, clean_course_text, question_text_ok, extract_page, ContentIntegrityError, SOURCE_RULE
-from pdf_ingestion import iter_pages, unit_quality, write_receipt, atomic_json, upload_diagnostics
+from pdf_ingestion import iter_pages, unit_quality, write_receipt, atomic_json, upload_diagnostics, reading_mode
 from course_grounding import review_text,REVISION as REVIEW_REVISION
 from ollama_cancel import BackgroundWork
 from pdf_vision import LocalVision
@@ -54,6 +54,7 @@ SOURCE_CANDIDATES=max(2,min(8,int(os.environ.get('VQ_COURSE_SOURCE_CANDIDATES','
 SOURCE_MAX_FINAL=max(2,min(5,int(os.environ.get('VQ_COURSE_SOURCE_MAX_FINAL','3'))))
 CONTEXT_BUDGET=max(4500,int(os.environ.get('VQ_COURSE_CONTEXT_CHARS','8500')))
 QUESTION_TARGET=100
+FIGURE_BATCH=10  # figure pages read before their passages are added to course Q&A
 QUESTION_GENERATION='exam-mcq-v5'
 RERANK_BLEND=float(os.environ.get('VQ_COURSE_RERANK_BLEND','0.92'))
 MIN_SCOPE_SCORE=float(os.environ.get('VQ_COURSE_MIN_SCOPE_SCORE','0.26'))
@@ -848,7 +849,7 @@ class CourseManager(object):
         _json_dump(sd/'stage.json',meta)
         return meta
 
-    def start_build(self,stage_id,course_name,visual_model,units,model_key,model_call):
+    def start_build(self,stage_id,course_name,visual_model,units,model_key,model_call,reading=None):
         sd=self._stage_dir(stage_id);stage_path=sd/'stage.json'
         if not stage_path.exists():raise ValueError('Upload staging data was not found.')
         stage=json.loads(stage_path.read_text(encoding='utf-8'))
@@ -886,7 +887,8 @@ class CourseManager(object):
                 return self.job_status(existing['id'])
         base=_safe_id(course_name or stage.get('course_name') or 'uploaded-course');course_id=base+'-'+uuid.uuid4().hex[:8]
         job_id='course-'+uuid.uuid4().hex[:12]
-        job={'id':job_id,'status':'queued','progress':0,'message':'Queued','course_id':course_id,'stage_id':stage_id,'selected':selected,'course_name':course_name,'model_key':model_key,'created_at':time.time(),'updated_at':time.time()}
+        job={'id':job_id,'status':'queued','progress':0,'message':'Queued','course_id':course_id,'stage_id':stage_id,'selected':selected,'course_name':course_name,'model_key':model_key,
+             'reading':reading_mode(reading),'created_at':time.time(),'updated_at':time.time()}
         with self.jobs_lock:
             self.jobs[job_id]=job;_json_dump(sd/'build_job.json',job);_json_dump(self._job_path(job_id),job)
         th=threading.Thread(target=self._build,args=(job_id,stage,selected,course_id,course_name,stage.get('visual_model','none'),model_key,model_call),daemon=True);th.start()
@@ -1057,6 +1059,8 @@ class CourseManager(object):
             phase='extracting chapter text'
             self._set_job(jid,status='running',progress=4,message='Extracting chapter text')
             chunks=[];unit_texts={};source_quality={};doc=None;last_file=None;figure_pages=[]
+            # Builds started before reading modes existed (or after a restart) read text first.
+            reading=reading_mode((self.job_status(jid) or {}).get('reading'))
             total_pages=sum(int(u['end_page'])-int(u['start_page'])+1 for u in units);page_progress=[0]
             try:
                 for ui,u in enumerate(units,1):
@@ -1073,7 +1077,7 @@ class CourseManager(object):
                         page_progress[0]+=1
                         if page_progress[0]%5==0 or row['status']=='needs_review' or page_progress[0]==total_pages:
                             self._set_job(jid,status='running',progress=4+int(10*page_progress[0]/max(1,total_pages)),message='Reading PDF page %s (%s / %s selected pages)'%(row['page'],page_progress[0],total_pages),processed_pages=page_progress[0],total_pages=total_pages,current_page=row['page'],current_source=source.get('display_name') or u['source_file'])
-                    pages=list(iter_pages(doc,u['start_page'],u['end_page'],sd/'page_cache',identity,page_done))
+                    pages=list(iter_pages(doc,u['start_page'],u['end_page'],sd/'page_cache',identity,page_done,mode=reading))
                     figure_pages.extend({'unit_id':u['id'],'source_file':u['source_file'],'page':row['page']} for row in pages if row.get('figure_pending'))
                     source_quality[u['id']]=unit_quality(pages)
                     atomic_json(cd/'source_quality.json',source_quality)
@@ -1326,7 +1330,7 @@ class CourseManager(object):
             self._update_manifest(cid,lambda m:m['preparation']['lectures'].update({'status':'error','error':str(e),'message':'Chinese lecture preparation stopped'}))
 
     def _prepare_figures(self,cid,model_key,model_call):
-        """Read figures of text-rich pages after the lectures, then add them to course search."""
+        """Read figures (and text-first pages) after the lectures; add them to course Q&A as they are read."""
         cd=self._course_dir(cid)
         def status(**values):
             self._update_manifest(cid,lambda m:m.setdefault('preparation',{}).setdefault('figures',{}).update(values))
@@ -1339,7 +1343,37 @@ class CourseManager(object):
                 status(status='unavailable',message='Figures on text pages were not read: '+vision.error);return
             cache_path=cd/'figure_cache.json'
             done=json.loads(cache_path.read_text(encoding='utf-8')) if cache_path.exists() else {}
-            units={u['id']:u for u in m.get('units') or []};docs={}
+            units={u['id']:u for u in m.get('units') or []};docs={};totals={'added':0,'indexed':0};published=set()
+            def publish(final):
+                """Add every read page's passages to course Q&A (a batch at a time on long decks)."""
+                added=[]
+                for row in pages:
+                    key='%s|%s'%(row['source_file'],row['page'])
+                    if key in published or key not in done:continue
+                    published.add(key);entry=done[key]
+                    text=_safe_source_text(entry.get('text') or '') if entry.get('ok') else ''
+                    unit=units.get(row['unit_id'])
+                    if not text or not unit or text_issues(text):continue
+                    for k,value in enumerate(_word_chunks(text),1):
+                        added.append({'id':'%s_p%04d_fig%02d'%(unit['id'],int(row['page']),k),'unit_id':unit['id'],'unit_title':unit['title'],
+                            'source':unit.get('source_title') or 'Uploaded PDF','source_file':row['source_file'],'pdf_page':int(row['page']),
+                            'extraction_method':'local_vision_figure','text':value})
+                self._alive(cid)
+                with self.manifest_lock:
+                    cp=cd/'chunks.jsonl';have={json.loads(x)['id'] for x in cp.read_text(encoding='utf-8').splitlines() if x}
+                    fresh=[c for c in added if c['id'] not in have]
+                    if fresh:
+                        with cp.open('a',encoding='utf-8') as f:
+                            for c in fresh:f.write(json.dumps(c,ensure_ascii=False)+'\n')
+                totals['added']+=len(fresh)
+                with self.running_lock:indexing=(cid,'index') in self.running
+                if final:
+                    while indexing:  # the full index may still be embedding the original passages
+                        self._alive(cid);time.sleep(5)
+                        with self.running_lock:indexing=(cid,'index') in self.running
+                if not indexing:totals['indexed']+=self._index_missing_chunks(cid)
+                else:
+                    with self.cache_lock:self.cache.pop(cid,None)  # text search sees new passages at once
             try:
                 for n,row in enumerate(pages,1):
                     self._alive(cid)
@@ -1350,33 +1384,13 @@ class CourseManager(object):
                         result=vision.read(docs[row['source_file']][int(row['page'])-1])
                         done[key]={'ok':bool(result.get('ok')),'text':result.get('text','') if result.get('ok') else '','error':result.get('error','')[:240]}
                         self._alive(cid);_json_dump(cache_path,done)
+                        if n%FIGURE_BATCH==0:publish(False)
             finally:
                 for doc in docs.values():doc.close()
-            added=[]
-            for row in pages:
-                entry=done.get('%s|%s'%(row['source_file'],row['page'])) or {}
-                text=_safe_source_text(entry.get('text') or '') if entry.get('ok') else ''
-                unit=units.get(row['unit_id'])
-                if not text or not unit or text_issues(text):continue
-                for k,value in enumerate(_word_chunks(text),1):
-                    added.append({'id':'%s_p%04d_fig%02d'%(unit['id'],int(row['page']),k),'unit_id':unit['id'],'unit_title':unit['title'],
-                        'source':unit.get('source_title') or 'Uploaded PDF','source_file':row['source_file'],'pdf_page':int(row['page']),
-                        'extraction_method':'local_vision_figure','text':value})
-            self._alive(cid)
-            with self.manifest_lock:
-                cp=cd/'chunks.jsonl';have={json.loads(x)['id'] for x in cp.read_text(encoding='utf-8').splitlines() if x}
-                fresh=[c for c in added if c['id'] not in have]
-                if fresh:
-                    with cp.open('a',encoding='utf-8') as f:
-                        for c in fresh:f.write(json.dumps(c,ensure_ascii=False)+'\n')
-            while True:  # the full index may still be embedding the original passages
-                with self.running_lock:indexing=(cid,'index') in self.running
-                if not indexing:break
-                self._alive(cid);time.sleep(5)
-            indexed=self._index_missing_chunks(cid)
+            publish(True)
             read=sum(bool((done.get('%s|%s'%(r['source_file'],r['page'])) or {}).get('ok')) for r in pages)
-            status(status='ready',completed=len(pages),total=len(pages),pages_read=read,passages_added=len(fresh),passages_indexed=indexed,
-                   message='Figures read on %s / %s pages; %s figure passages added to course Q&A'%(read,len(pages),len(fresh)))
+            status(status='ready',completed=len(pages),total=len(pages),pages_read=read,passages_added=totals['added'],passages_indexed=totals['indexed'],
+                   message='Figures read on %s / %s pages; %s figure passages added to course Q&A'%(read,len(pages),totals['added']))
         except CourseDeleted:raise
         except Exception as e:status(status='error',error=str(e)[:400],message='Figure reading stopped; text-based course content remains available')
 
